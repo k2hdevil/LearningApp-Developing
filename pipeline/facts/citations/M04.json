@@ -1,0 +1,314 @@
+{
+  "_note": "M04 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다.",
+  "module": "M04",
+  "verified_on": "2026-08-25",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / HTTP 리다이렉트 확인",
+  "citations": [
+    {
+      "id": "policy-types-nine",
+      "claim": "AWS는 9가지 정책 유형을 지원한다: 자격 증명 기반 정책, 리소스 기반 정책, VPC 엔드포인트 정책, 권한 경계, AWS Organizations 서비스 제어 정책(SCP), AWS Organizations 리소스 제어 정책(RCP), 액세스 제어 목록(ACL), AWS Resource Access Manager(RAM) 공유, 세션 정책. 자격 증명 기반 정책은 관리형(AWS 관리형/고객 관리형)과 인라인으로 나뉜다. 리소스 기반 정책은 인라인만 존재하며 관리형 리소스 기반 정책은 없다. ACL은 JSON 정책 문서 구조를 쓰지 않는 유일한 정책 유형이고 같은 계정 내 엔터티에는 권한을 부여할 수 없다. 권한 경계, SCP, RCP, 세션 정책, VPC 엔드포인트 정책은 권한을 부여하지 않고 상한만 정한다. SCP는 멤버 계정의 각 AWS 계정 루트 사용자를 포함해 보안 주체의 권한을 제한하고, RCP는 루트 사용자를 포함한 자격 증명의 유효 권한에 영향을 줄 수 있다.",
+      "corrects_courseware": "교재 슬라이드 7 강사 노트는 '가장 일반적인 두 가지 정책 유형은 자격 증명 기반 정책과 리소스 기반 정책입니다'로만 서술하고 권한 경계를 별도 고급 기능으로 다룬다. SCP/RCP/세션 정책/VPC 엔드포인트 정책/RAM 공유는 교재에 없다. 또한 슬라이드 17 강사 노트의 '루트 보안 인증 정보로 요청하는 경우는 항상 허용됩니다'는 조직 안에서는 성립하지 않는다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html",
+      "fetched_with": "mcp",
+      "section": "Policy types"
+    },
+    {
+      "id": "policy-evaluation-logic",
+      "claim": "정책 평가는 인증 -> 요청 컨텍스트 처리 -> 집행 코드 평가 3단계로 진행된다. 자격 증명 기반 정책과 리소스 기반 정책은 같은 계정 내에서 권한의 합집합이고, 자격 증명 기반 정책과 권한 경계는 교집합이다. 리소스 기반 정책이 없는 리소스에 대해 조직 멤버 계정의 사용자가 접근하면 사용자 정책, SCP, RCP 세 가지 모두가 허용해야 한다. 어느 정책의 명시적 거부든 허용을 무시한다. 인증 단계는 Amazon S3처럼 익명 사용자의 요청을 일부 허용하는 서비스에서는 필요하지 않다.",
+      "corrects_courseware": "교재는 자격 증명 기반과 리소스 기반 두 정책만 전제로 2단 판정 다이어그램을 제시하고, 계층 조합 규칙(합집합/교집합/삼중 교집합)을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html",
+      "fetched_with": "mcp",
+      "section": "Policy evaluation logic"
+    },
+    {
+      "id": "enforcement-code-order",
+      "claim": "AWS 집행 코드의 평가 순서: (0) 기본적으로 모든 요청은 암시적으로 거부되며 AWS 계정 루트 사용자만 예외로 완전한 액세스를 갖는다. (1) 거부 평가 - SCP, RCP, 리소스 기반, 자격 증명 기반, 권한 경계, 세션 정책 전체에서 Deny 문장을 찾고 하나라도 있으면 Deny 확정. (2) RCP - Allow 문장이 없으면 Deny. RCP 활성화 시 RCPFullAWSAccess 관리형 정책이 모든 엔터티에 자동 생성·연결되며 분리할 수 없어 항상 Allow 문장이 존재한다. (3) SCP - Allow 문장이 없으면 Deny. (4) 리소스 기반 정책 - 대부분의 리소스는 자격 증명 기반 또는 리소스 기반 한쪽의 명시적 Allow만 있으면 되지만 IAM 역할 신뢰 정책과 AWS KMS 키 정책은 예외로 보안 주체에 대해 명시적으로 허용해야 한다. IAM 사용자 ARN 또는 세션 보안 주체에 직접 부여한 권한은 자격 증명 기반 정책·권한 경계·세션 정책의 암시적 거부에 제한되지 않으나, 역할 ARN에 부여한 권한은 권한 경계·세션 정책의 암시적 거부에 제한된다. (5) 자격 증명 기반 정책 - 허용 문장이 없으면 Deny. (6) 권한 경계 - 허용하지 않으면 Deny. (7) 세션 정책 - 세션 보안 주체가 아니면 Allow, 세션 정책이 없으면 기본 세션 정책이 만들어지고 Allow, 있고 허용하지 않으면 Deny. 명시적 거부는 명시적 허용을 무시한다.",
+      "corrects_courseware": "교재 슬라이드 17 강사 노트의 '충돌이 있는 경우 가장 제한적인 정책이 적용됩니다'는 결과적으로 맞지만 규칙 서술이 부정확하다. 정확한 규칙은 명시적 거부 우선이다. 또한 교재는 계층별 순서를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic_policy-eval-denyallow.html",
+      "fetched_with": "mcp",
+      "section": "How AWS enforcement code logic evaluates requests to allow or deny access"
+    },
+    {
+      "id": "cross-account-evaluation",
+      "claim": "교차 계정 액세스에서 보안 주체가 있는 계정을 신뢰받는(trusted) 계정, 리소스가 있는 계정을 신뢰하는(trusting) 계정이라 한다. 신뢰받는 계정 A의 요청자는 계정 B 리소스에 대한 요청을 허용하는 자격 증명 기반 정책이 있어야 하고, 계정 B의 리소스 기반 정책도 계정 A의 요청자를 허용해야 한다. AWS는 두 계정에서 각각 평가하고 두 평가 모두 Allow일 때만 요청을 허용한다. IAM 역할에 붙는 리소스 기반 정책을 역할 신뢰 정책이라 하며, 역할을 수임한 보안 주체는 결과 임시 자격 증명으로 그 계정의 여러 리소스에 접근할 수 있고 범위는 역할의 자격 증명 기반 권한 정책이 정한다.",
+      "corrects_courseware": "교재 슬라이드 7 강사 노트는 '리소스 기반 정책은 교차 계정 액세스 권한 부여(3a)에 널리 사용됩니다'로만 서술하고 양쪽 계정 모두의 허용이 필요하다는 점을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html",
+      "fetched_with": "mcp",
+      "section": "Determining whether a cross-account request is allowed"
+    },
+    {
+      "id": "identity-vs-resource-policies",
+      "claim": "자격 증명 기반 정책은 IAM 사용자·그룹·역할에 연결되며 관리형 또는 인라인일 수 있다. 리소스 기반 정책은 리소스에 연결되며 인라인만 존재한다(관리형 리소스 기반 정책 없음). IAM 서비스가 지원하는 리소스 기반 정책은 역할 신뢰 정책 한 가지뿐이고, IAM 역할은 자격 증명이면서 리소스 기반 정책을 지원하는 리소스이므로 신뢰 정책과 자격 증명 기반 정책을 모두 연결해야 한다. 리소스 기반(resource-based) 정책과 리소스 수준(resource-level) 권한은 다른 개념이다. 같은 계정 내 요청에서는 AWS가 먼저 모든 정책에서 Deny를 확인하고, 하나라도 있으면 거부한다. 그다음 Allow를 확인하며 자격 증명 기반이든 리소스 기반이든 한 문장이라도 허용하면 허용된다.",
+      "supports_courseware": "교재 슬라이드 8~10의 자격 증명 기반·리소스 기반 정책 서술과 인용 URL(access_policies_identity-vs-resource.html)이 현재도 유효하다는 근거다. 정책 하위 유형 구분과 역할 신뢰 정책 설명은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html",
+      "fetched_with": "mcp",
+      "section": "Identity-based policies and resource-based policies"
+    },
+    {
+      "id": "iam-best-practices",
+      "claim": "IAM 보안 모범 사례: 사람 사용자는 자격 증명 공급자와의 페더레이션으로 임시 보안 인증 정보를 사용해야 하며, 중앙 집중식 액세스 관리에는 AWS IAM Identity Center가 권장된다. 워크로드는 IAM 역할의 임시 보안 인증 정보를 사용해야 하고, Amazon EC2·Lambda 같은 AWS 컴퓨팅에서는 AWS가 역할의 임시 자격 증명을 리소스에 전달한다. AWS 외부 워크로드는 IAM Roles Anywhere(X.509), AssumeRoleWithSAML, AssumeRoleWithWebIdentity, AWS IoT Core mTLS 등으로 임시 자격 증명을 받을 수 있다. IAM 사용자나 루트 사용자가 필요한 시나리오에서는 MFA를 요구하고, 가능하면 패스키·보안 키 같은 피싱 저항 MFA를 사용한다. 장기 액세스 키가 필요한 사용 사례로는 IAM 역할을 쓸 수 없는 워크로드(WordPress 플러그인 등), IAM Identity Center를 지원하지 않는 서드 파티 AWS 클라이언트, CodeCommit, Amazon Keyspaces가 있으며 이 경우 마지막 사용 정보로 키를 갱신·삭제한다. 여러 계정에는 SCP로 보안 주체 가드레일, RCP로 리소스 가드레일을 설정하되 SCP·RCP는 권한을 부여하지 않으므로 자격 증명 기반 또는 리소스 기반 정책을 연결해야 한다. 계정 내 권한 관리를 위임할 때는 권한 경계로 위임 권한의 상한을 설정한다.",
+      "corrects_courseware": "교재는 IAM 사용자 생성과 aws configure 로 장기 액세스 키를 저장하는 것을 기본 경로로 제시한다. 현재 권장 경로는 페더레이션·IAM Identity Center·IAM 역할이다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+      "fetched_with": "mcp",
+      "section": "Security best practices in IAM"
+    },
+    {
+      "id": "programmatic-access-credentials",
+      "claim": "AWS는 프로그래밍 방식 호출에 가능하면 단기 액세스 키를 사용하도록 권장한다. 비밀 액세스 키는 생성 시점에만 다운로드할 수 있고 잃어버리면 새로 만들어야 한다. 액세스 키 ID가 AKIA 로 시작하면 IAM 사용자 또는 AWS 계정 루트 사용자의 장기 액세스 키이고, ASIA 로 시작하면 AWS STS 작업으로 만든 임시 보안 인증 정보의 액세스 키다. IAM 사용자에게는 콘솔 자격 증명을 임시 자격 증명으로 사용해 요청에 서명하는 방식이 권장(Recommended)되고, 장기 자격 증명 사용은 권장되지 않는다(Not recommended). 장기 액세스 키 대안: 코드·리포지토리에 키를 넣지 말고 AWS Secrets Manager 사용, IAM 역할로 임시 자격 증명 발급, AWS 외부 머신에는 IAM Roles Anywhere, AWS CLI 버전 2의 aws login 명령으로 콘솔 자격 증명 기반 단기 자격 증명 생성, 브라우저 기반 사전 인증 셸인 AWS CloudShell 사용, 사람 사용자에게는 IAM Identity Center 권한 세트 사용.",
+      "corrects_courseware": "교재 슬라이드 19 데모는 assume-role 로 받은 임시 자격 증명의 예시 액세스 키를 AKIAIOSFODNN7EXAMPLE 로 적는다. AKIA 는 장기 키 접두사이므로 임시 자격 증명 예시로는 ASIA 형태가 맞다. aws login 과 CloudShell 사전 인증도 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html",
+      "fetched_with": "mcp",
+      "section": "Alternatives to long-term access keys"
+    },
+    {
+      "id": "root-user-mfa",
+      "claim": "루트 사용자는 특권 작업을 수행할 수 있으므로 이메일·암호에 더해 MFA를 두 번째 인증 요소로 추가하는 것이 중요하다. 루트 사용자에 지원되는 MFA 유형을 조합해 최대 8개 디바이스를 등록할 수 있다. 모든 AWS 계정 유형(독립 실행형, 관리 계정, 멤버 계정)이 루트 사용자에 MFA를 구성해야 하며, MFA가 이미 활성화되어 있지 않으면 사용자는 AWS Management Console 접근을 위한 첫 로그인 시도로부터 35일 이내에 MFA를 등록해야 한다. MFA 유형은 FIDO 인증 하드웨어 보안 키, 하드웨어 TOTP 토큰, 가상 MFA 애플리케이션이다. 루트 사용자의 액세스 키는 만들지 않도록 강력히 권장되며, 프로그래밍 방식 액세스가 필요하면 루트 자격 증명으로 aws login 명령을 사용한다. AWS Organizations로 관리하는 여러 계정에서는 멤버 계정의 루트 자격 증명(암호, 액세스 키, 서명 인증서, MFA)을 제거하도록 권장하며, 제거된 멤버 계정은 루트로 로그인하거나 루트 암호를 복구할 수 없다. 루트 암호 요구 사항은 8~128자이며 대문자·소문자·숫자·기호 중 세 종류 이상을 포함해야 한다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html",
+      "fetched_with": "mcp",
+      "section": "Secure your root user sign-in with multi-factor authentication (MFA)"
+    },
+    {
+      "id": "permissions-boundaries",
+      "claim": "권한 경계는 관리형 정책으로 자격 증명 기반 정책이 IAM 엔터티(사용자 또는 역할)에 부여할 수 있는 최대 권한을 설정하는 고급 기능이다. 엔터티는 자격 증명 기반 정책과 권한 경계 모두에서 허용되는 작업만 수행할 수 있어 유효 권한은 두 정책의 교집합이다. 권한 경계는 그 자체로 권한을 부여하지 않으므로 권한 정책을 별도로 연결해야 한다. AWS 관리형 정책 또는 고객 관리형 정책을 경계로 사용할 수 있다. 권한 경계가 연결된 IAM 사용자·역할에 대해서는 리소스 기반 정책에서 NotPrincipal 요소와 Deny 효과를 함께 쓰지 말아야 한다. NotPrincipal 값과 무관하게 권한 경계가 연결된 모든 IAM 보안 주체가 거부되기 때문이며, 대신 ArnNotEquals 조건 연산자와 aws:PrincipalArn 컨텍스트 키를 사용해야 한다. 리소스 기반 정책이 IAM 사용자 ARN에 권한을 부여하면(페더레이션 사용자 세션이 아닌 경우) 자격 증명 기반 정책이나 권한 경계의 암시적 거부에 제한되지 않고, 역할 ARN에 부여하면 권한 경계·세션 정책의 암시적 거부에 제한된다. 문서의 예시 권한 경계는 s3:*, cloudwatch:*, ec2:* 를 허용하는 정책이다.",
+      "supports_courseware": "교재 슬라이드 11~12의 권한 경계 설명과 슬라이드 18 데모의 S3elevated/S3restricted 정책 형태가 공식 문서 예시와 일치한다는 근거다. '권한을 부여하지 않는다', NotPrincipal 주의 사항, 권한 관리 위임 용도는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html",
+      "fetched_with": "mcp",
+      "section": "Permissions boundaries for IAM entities"
+    },
+    {
+      "id": "poweruseraccess-policy",
+      "claim": "PowerUserAccess 는 AWS 관리형 정책이며 설명은 'AWS 서비스와 리소스에 대한 완전한 액세스를 제공하지만 사용자와 그룹 관리는 허용하지 않음'이다. ARN 은 arn:aws:iam::aws:policy/PowerUserAccess 이고 기본 버전은 v12 다. 첫 문장은 NotAction 으로 iam:*, organizations:*, account:* 를 제외한 모든 작업을 모든 리소스에 허용한다. 둘째 문장은 account:GetAccountInformation, account:GetGovCloudAccountInformation, account:GetPrimaryEmail, account:ListRegions, iam:CreateServiceLinkedRole, iam:DeleteServiceLinkedRole, iam:ListRoles, organizations:DescribeEffectivePolicy, organizations:DescribeOrganization 을 허용한다. PowerUserAccess 는 직무용 AWS 관리형 정책 중 개발자 고급 사용자(Developer power user) 직무에 해당한다. AWS 관리형 정책은 모든 고객이 쓰도록 만들어졌으므로 최소 권한을 부여하지 않으며, 시작점으로 쓰고 고객 관리형 정책으로 좁히도록 권장된다.",
+      "corrects_courseware": "교재 슬라이드 11 강사 노트는 'NotAction 요소를 사용하여 IAM 및 AWS Organizations를 제외한 모든 AWS 서비스와 모든 리소스에 대한 모든 작업을 허용', '서비스 연결 역할을 생성하기 위해 IAM 권한만 부여됩니다'로 기재한다. 현재 v12 는 account:* 도 제외하고 예외 허용 작업이 9개다.",
+      "url": "https://docs.aws.amazon.com/aws-managed-policy/latest/reference/PowerUserAccess.html",
+      "fetched_with": "mcp",
+      "section": "JSON policy document"
+    },
+    {
+      "id": "job-functions-power-user",
+      "claim": "직무용 AWS 관리형 정책 목록에 '개발자 고급 사용자 직무(Developer power user job function)'가 있고 해당 AWS 관리형 정책 이름은 PowerUserAccess 다. AWS 관리형 정책은 일반적인 사용 사례를 다루지만 최소 권한 권한을 부여하지 않으므로, 필요 이상의 권한을 부여하는 보안 위험을 고려해야 한다. IAM Access Analyzer 로 AWS 관리형 정책을 쓰는 보안 주체를 모니터링해 실제 사용 권한을 파악한 뒤 커스텀 정책을 작성하거나 생성하는 것이 권장 경로다. 직무용 정책 중 일부는 iam:PassRole 액세스를 부여하며, 보안 모범 사례를 위해 전달 가능한 역할 이름을 제한하는 필터를 포함한다.",
+      "supports_courseware": "교재가 PowerUserAccess 를 '개발자 고급 사용자 직무'로 부르는 것과 슬라이드 12 인용 URL(access_policies_job-functions.html)이 현재도 유효하다는 근거다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html",
+      "fetched_with": "mcp",
+      "section": "Developer power user job function"
+    },
+    {
+      "id": "assume-role-api",
+      "claim": "AssumeRole 은 액세스 키 ID, 비밀 액세스 키, 보안 토큰으로 구성된 임시 보안 인증 정보를 반환한다. DurationSeconds 의 유효 범위는 900초(15분)~43200초(12시간)이고 기본값은 3600초다. 역할의 최대 세션 지속 시간 설정은 1시간~12시간 값을 가질 수 있으며, 이 설정이나 관리자 설정보다 큰 값을 지정하면 작업이 실패한다. 역할 체이닝은 AWS CLI 또는 AWS API 역할 세션을 최대 1시간으로 제한하고, 역할 체이닝 상태에서 1시간을 넘는 DurationSeconds 를 주면 작업이 실패한다. 인라인 세션 정책 하나 또는 관리형 정책 ARN 최대 10개를 전달할 수 있고 두 경우 모두 평문은 2,048자를 넘을 수 없다. 결과 세션의 권한은 역할의 자격 증명 기반 정책과 세션 정책의 교집합이며 세션 정책으로 역할 정책보다 많은 권한을 줄 수 없다. AssumeRole 로 만든 자격 증명으로는 AWS STS GetFederationToken 과 GetSessionToken 을 호출할 수 없다. 세션 태그는 최대 50개 전달 가능하다. 응답 요소는 AssumedRoleUser, Credentials, PackedPolicySize, SourceIdentity 이며 반환되는 보안 토큰 크기는 고정되어 있지 않다. 역할을 만들 때 누가 수임할 수 있는지 정하는 역할 신뢰 정책과 무엇을 할 수 있는지 정하는 권한 정책 두 개를 만든다. 같은 계정에서 사용자가 역할을 수임하게 하려면 사용자에게 AssumeRole 호출을 허용하는 정책을 연결하거나 역할 신뢰 정책에 사용자를 보안 주체로 직접 추가하는 두 방법 중 하나를 쓰면 된다. 역할 신뢰 정책이 IAM 리소스 기반 정책으로 동작하고, 리소스 기반 정책이 같은 계정의 보안 주체에 액세스를 부여하면 추가 자격 증명 기반 정책이 필요하지 않기 때문이다.",
+      "corrects_courseware": "교재 슬라이드 16 은 '세션 소요 시간을 사용자 지정할 수 있습니다'라고만 적고 기본값·범위·역할 체이닝 제한을 제시하지 않는다. 같은 계정 내 두 가지 수임 허용 방법과 세션 정책도 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html",
+      "fetched_with": "mcp",
+      "section": "Request Parameters / Response Elements"
+    },
+    {
+      "id": "temp-credentials-request",
+      "claim": "AWS STS API 작업은 액세스 키 페어(액세스 키 ID + 비밀 키)와 세션 토큰을 포함하는 임시 보안 인증 정보 세션을 만든다. 세션 토큰의 크기는 고정되어 있지 않으며 일반적으로 4,096바이트 미만이지만 최대 크기를 가정하지 않도록 강력히 권장된다. AWS STS API 호출은 글로벌 엔드포인트 또는 리전 엔드포인트로 보낼 수 있고, 가까운 엔드포인트를 선택하면 지연이 줄며 원래 엔드포인트와 통신할 수 없을 때 다른 리전 엔드포인트로 돌릴 수 있다. AWS SDK 를 쓰면 SDK 의 리전 지정 방식을 따르고, HTTP 요청을 직접 만들면 올바른 엔드포인트로 직접 보내야 한다. AssumeRole 응답의 Credentials 는 SessionToken, SecretAccessKey, Expiration, AccessKeyId 를 포함하고 AssumedRoleUser 는 Arn 과 AssumedRoleId 를 포함한다. AssumeRole 은 활성 자격 증명으로 호출해야 한다.",
+      "supports_courseware": "교재 슬라이드 30 의 임시 보안 인증 정보 특성 설명과 인용 URL(id_credentials_temp.html, API_Operations.html)의 근거다. 세션 토큰 크기와 리전 엔드포인트 선택은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html",
+      "fetched_with": "mcp",
+      "section": "Requesting credentials for cross-account delegation and federation through a custom identity broker"
+    },
+    {
+      "id": "oidc-federation",
+      "claim": "AWS 문서는 이 기능을 OIDC 페더레이션(OIDC federation)으로 부른다. AWS 외부 애플리케이션에 AWS 자격 증명을 장기 저장하지 말고, OIDC 페더레이션으로 필요할 때 동적으로 임시 AWS 보안 인증 정보를 요청하도록 강력히 권장한다. GitHub Actions 등 OIDC 호환 IdP 로 인증해 JSON 웹 토큰(JWT)을 받고 이를 임시 보안 인증 정보로 교환하며, 자격 증명은 필요한 작업만 수행할 수 있는 IAM 역할에 매핑된다. OIDC 페더레이션은 머신 대 머신 인증(CI/CD 파이프라인, 자동화 스크립트, 서버리스 애플리케이션)과 사람 사용자 인증을 모두 지원하고, 사람 사용자 시나리오에서 가입·로그인·사용자 프로필 관리가 필요하면 Amazon Cognito 를 자격 증명 브로커로 쓰는 것을 검토하도록 안내한다. OIDC IdP 가 발급한 JWT 의 exp 클레임 만료 시각 이후에도 IAM 은 시계 오차를 감안해 5분의 여유 창을 두고 토큰을 받아들인다.",
+      "corrects_courseware": "교재 슬라이드 30 은 'AWS STS 웹 ID 페더레이션은 Amazon, Facebook, Google 및 OpenID Connect(OIDC) 호환 공급자를 통한 로그인을 지원합니다'로 특정 소셜 공급자를 나열한다. 현재 문서는 명칭을 OIDC 페더레이션으로 쓰고 OIDC 호환 IdP 전반을 대상으로 서술하며, 사람 사용자 시나리오에는 Amazon Cognito 를 권장한다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html",
+      "fetched_with": "mcp",
+      "section": "OIDC federation"
+    },
+    {
+      "id": "get-caller-identity",
+      "claim": "GetCallerIdentity 는 호출에 사용된 자격 증명의 IAM 사용자 또는 역할 정보를 반환한다. 이 작업을 수행하는 데 권한이 필요하지 않으며, 관리자가 sts:GetCallerIdentity 액세스를 명시적으로 거부하는 정책을 연결해도 여전히 수행할 수 있다. 액세스가 거부될 때도 같은 정보가 반환되기 때문이다. 응답 요소는 Account(호출 엔터티를 소유·포함하는 AWS 계정 ID), Arn(호출 엔터티의 ARN), UserId(호출 엔터티의 고유 식별자) 세 개다. IAM 사용자 호출 예시의 Arn 은 arn:aws:iam::123456789012:user/Alice 이고, AssumeRole 로 만든 자격 증명 호출 예시의 Arn 은 arn:aws:sts::123456789012:assumed-role/my-role-name/my-role-session-name 이다.",
+      "supports_courseware": "교재 슬라이드 19 데모가 aws sts get-caller-identity 로 현재 자격 증명과 역할 수임 여부를 확인하는 절차의 근거다. 권한이 필요하지 않다는 점은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetCallerIdentity.html",
+      "fetched_with": "mcp",
+      "section": "Response Elements / Examples"
+    },
+    {
+      "id": "put-user-permissions-boundary",
+      "claim": "PutUserPermissionsBoundary 는 IAM 사용자의 권한 경계로 지정된 정책을 추가하거나 업데이트한다. AWS 관리형 정책 또는 고객 관리형 정책을 경계로 쓸 수 있다. 권한 경계로 사용되는 정책은 권한을 제공하지 않으므로 권한 정책을 반드시 별도로 연결해야 한다. 요청 파라미터는 PermissionsBoundary(경계로 사용할 관리형 정책의 ARN, 20~2048자, 필수)와 UserName(ARN 이 아닌 친숙한 이름, 1~64자, 필수)이다. 오류 유형은 InvalidInput(400), NoSuchEntity(404), PolicyNotAttachable(400), ServiceFailure(500)다.",
+      "supports_courseware": "교재 슬라이드 18 데모의 aws iam put-user-permissions-boundary 명령 파라미터가 현재도 유효하다는 근거다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_PutUserPermissionsBoundary.html",
+      "fetched_with": "mcp",
+      "section": "Request Parameters"
+    },
+    {
+      "id": "policy-simulator",
+      "claim": "IAM 정책 시뮬레이터로 자격 증명 기반 정책, IAM 권한 경계, 서비스 제어 정책(SCP), 그리고 직접 제공한 리소스 기반 정책을 테스트할 수 있다. 어떤 AWS 서비스에도 실제 요청을 보내지 않고 AWS 가 요청을 어떻게 평가할지 시뮬레이션하며, 각 작업·리소스에 대해 허용 또는 거부라는 이진 결과를 반환한다. 허용이나 명시적 거부인 경우 어느 정책이 그 결과를 만들었는지도 보여 준다. 모드는 두 가지다. Principal 모드는 기존 IAM 사용자·역할·그룹에 이미 연결된 정책을 테스트하고 커스텀 자격 증명 정책이나 권한 경계를 시뮬레이션에만 포함·제외할 수 있으며 계정은 변경되지 않는다. Custom 모드는 아직 연결하지 않은 정책을 테스트하고 계정에 저장되지 않는다. 시뮬레이터 결과는 실제 AWS 환경과 다를 수 있어 AWS 는 테스트 후 실제 환경에서 확인하도록 권장한다. 프로덕션의 실제 컨텍스트 키 값을 쓰지 않고 작업을 실제로 실행하지 않으므로 서비스 응답도 없다. 권한 경계는 한 번에 하나만 시뮬레이션할 수 있고, SCP 는 허용·거부 여부는 알려 주지만 보안상 매칭된 문장을 노출하지 않는다. 콘솔을 제외하면 리소스의 정책을 대신 가져오지 않으므로 리소스 기반 정책을 포함하려면 리소스와 함께 정책을 제공해야 한다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html",
+      "fetched_with": "mcp",
+      "section": "Policy simulator modes / How the IAM policy simulator works"
+    },
+    {
+      "id": "access-analyzer",
+      "claim": "IAM Access Analyzer 는 여섯 가지 기능을 제공한다: 외부 액세스 분석기(조직·계정 리소스가 외부 엔터티와 공유되는지 식별), 내부 액세스 분석기(선택한 리소스에 대한 내부 액세스 식별), 미사용 액세스 분석기(미사용 액세스 식별), IAM 정책을 정책 문법과 AWS 모범 사례에 대해 검증, 커스텀 정책 검사로 지정한 보안 표준에 대해 검증, AWS CloudTrail 로그의 액세스 활동 기반 정책 생성. 외부 액세스는 리소스 기반 정책을 논리 기반 추론으로 분석해 인스턴스별 결과(finding)를 생성한다. 분석기를 켤 때 조직 또는 계정을 신뢰 영역(zone of trust)으로 지정하고, 신뢰 영역 안 보안 주체의 액세스는 신뢰된 것으로 본다. 정책을 추가·변경하면 약 30분 안에 분석하며, 알림이 누락되면 다음 주기 검사(24시간 이내)에 분석한다. 외부 액세스는 분석기를 켠 리전의 리소스만 분석하므로 모든 리소스를 보려면 사용하는 리전마다 외부 액세스 분석기를 만들어야 한다. 미사용 액세스 결과는 리전에 따라 달라지지 않으므로 리전마다 만들 필요가 없다. 정책 검증은 100개가 넘는 정책 검사와 실행 가능한 권고를 제공하고, 콘솔에서 정책을 작성·편집하는 중에 권고가 표시된다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html",
+      "fetched_with": "mcp",
+      "section": "Using AWS Identity and Access Management Access Analyzer"
+    },
+    {
+      "id": "last-accessed-information",
+      "claim": "IAM 은 미사용 권한을 식별하도록 마지막 액세스 정보(last accessed information)를 제공한다. IAM 또는 AWS Organizations 에 존재하는 자격 증명·정책에 대해 조회할 수 있다. IAM 자격 증명에 대해 볼 수 있는 정보는 허용된 AWS 서비스 정보와 허용된 작업 정보 두 가지이며, AWS API 접근 시도 날짜·시각을 포함한다. 최근 활동은 IAM 콘솔에 4시간 안에 표시된다. 서비스 정보 추적 기간은 최소 400일이며, 작업 정보 추적 시작일은 Amazon S3 2020년 4월 12일, Amazon EC2·IAM·Lambda 2021년 4월 7일, 그 외 모든 서비스 2023년 5월 23일이다. 보고되는 시도에는 성공한 시도만이 아니라 AWS API 에 대한 모든 접근 시도가 포함되고 콘솔·SDK·명령줄 도구 경로 전부 해당한다. 예상 못한 항목이 계정 침해를 뜻하지는 않으며(요청이 거부됐을 수 있음) 성공·거부 여부의 권위 있는 출처는 CloudTrail 로그다. iam:PassRole 은 추적되지 않고 데이터 플레인 이벤트에 대한 작업 정보도 제공되지 않는다. 관리 계정 자격 증명으로 로그인하면 조직 루트·OU·계정에 대해 SCP 가 허용하는 서비스의 마지막 액세스 정보를 볼 수 있다. 미사용 액세스 분석기로 이 정보를 지속적으로 모니터링할 수 있다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_last-accessed.html",
+      "fetched_with": "mcp",
+      "section": "Things to know about last accessed information"
+    },
+    {
+      "id": "sigv4",
+      "claim": "AWS Signature Version 4(SigV4)는 AWS API 요청에 인증 정보를 추가하는 AWS 서명 프로토콜이다. 비밀 액세스 키를 요청 서명에 직접 사용하지 않고 SigV4 서명 프로세스를 거친다. 서명 절차는 요청 세부 정보로 정규 요청(canonical request) 생성, AWS 자격 증명으로 서명 계산, 서명을 Authorization 헤더로 추가 3단계다. 대칭 SigV4 는 하나의 AWS 서비스, 하나의 AWS 리전, 특정 하루로 범위가 지정된 키를 파생해야 하므로 서명이 리전마다 다르고 서명 대상 리전을 알아야 한다. 비대칭 Signature Version 4(SigV4a)는 둘 이상의 AWS 리전에서 검증 가능한 서명을 만드는 확장으로, ECDSA 키 페어를 기존 AWS 비밀 액세스 키에서 파생하고 날짜·서비스·리전별 서명 키를 따로 파생하지 않는다. AWS 는 공개키만 저장해 서명을 검증하며 공개키는 비밀이 아니고 서명에 쓸 수 없다. Amazon S3 다중 리전 액세스 포인트 같은 다중 리전 API 요청에는 비대칭 서명이 필수이고, AWS SDK 나 AWS CLI 로 다중 리전 서명이 필요한 기능을 호출하면 추가 구성 없이 자동으로 SigV4a 로 전환된다. 서명이 요청 보안을 지키는 방식은 요청자 자격 증명 확인(임시 보안 인증 정보를 쓰면 서명 계산에 보안 토큰도 필요), 전송 중 데이터 보호(요청 요소로 해시를 계산해 포함하고 AWS 가 재계산해 대조, 불일치 시 거부), 재전송 공격 방어(대부분의 경우 요청이 타임스탬프로부터 5분 안에 AWS 에 도달해야 하며 아니면 AWS 가 거부)다. AWS SDK 나 AWS CLI 를 쓰면 서명 과정을 건너뛸 수 있고, AWS 는 특별한 이유가 없으면 항상 SDK 나 CLI 를 쓰도록 권장한다. 직접 서명 코드가 필요한 경우는 AWS SDK 가 없는 언어를 쓰거나 요청 전송을 완전히 제어해야 할 때다.",
+      "corrects_courseware": "교재 슬라이드 29 는 재전송 공격 방어 기간을 '요청의 타임스탬프로부터 n분이며 정확한 요청 만료 기간은 서비스마다 다릅니다'로 기재한다. 현재 문서는 대부분의 경우 5분으로 명시한다. SigV4a 는 교재에 없다. 또한 교재가 인용한 general/latest/gr/signature-version-4.html 과 general/latest/gr/signing_aws_api_requests.html 은 이 페이지로 리다이렉트된다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html",
+      "fetched_with": "mcp",
+      "section": "How AWS SigV4a works / Why requests are signed"
+    },
+    {
+      "id": "cli-output-formats",
+      "claim": "AWS CLI 가 지원하는 출력 형식은 json(기본값), yaml, yaml-stream, text, table, off 여섯 가지다. yaml-stream 은 출력을 스트리밍해 큰 데이터 유형을 더 빠르게 처리한다. text 는 탭으로 구분된 여러 줄이며 grep, sed, awk 같은 텍스트 프로세서에 넘기기 좋다. table 은 +|- 문자로 셀 경계를 만드는 표로 사람이 읽기 쉽지만 프로그램 처리에는 부적합하다. off 는 stdout 출력을 전부 억제해, 종료 코드만 확인하면 되는 자동화 스크립트·CI/CD 파이프라인에 유용하다. 형식은 config 파일의 named profile 안 output 옵션, AWS_DEFAULT_OUTPUT 환경 변수, 명령줄 --output 옵션 세 가지로 지정하며 뒤로 갈수록 우선한다. 출력 형식은 --query 동작을 바꾼다. --output text 는 --query 적용 전에 페이지를 나누고 페이지마다 쿼리를 실행하므로 페이지별 첫 매칭 요소가 포함되어 예상 밖의 출력이 늘 수 있다. --output json, yaml, yaml-stream 은 전체를 하나의 구조로 처리한 뒤 쿼리를 한 번만 실행한다.",
+      "corrects_courseware": "교재 슬라이드 24 는 '옵션에는 json, yaml, text가 포함됩니다'로 세 가지만 나열한다. yaml-stream, table, off 가 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-output-format.html",
+      "fetched_with": "mcp",
+      "section": "Setting the output format in the AWS CLI"
+    },
+    {
+      "id": "credential-provider-chain",
+      "claim": "모든 AWS SDK 는 유효한 자격 증명을 찾기 위해 정해진 순서로 소스를 확인하며 이를 자격 증명 공급자 체인이라 한다. 유효한 자격 증명을 찾으면 탐색을 멈춘다. 표준화된 자격 증명 공급자를 쓰면 SDK 가 만료 시 자격 증명을 항상 자동으로 갱신하려 시도하고 추가 코드가 필요하지 않다. 체인은 SDK 마다 다르지만 일반적으로 다음을 포함한다: AWS 액세스 키(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY), 웹 자격 증명·OpenID Connect 페더레이션(AWS STS 의 JWT 로 IAM 역할 수임), 로그인 자격 증명 공급자(신규 또는 기존 콘솔 세션의 자격 증명), IAM Identity Center 자격 증명 공급자, 역할 수임 자격 증명 공급자, 컨테이너 자격 증명 공급자(Amazon ECS·Amazon EKS), 프로세스 자격 증명 공급자(IAM Roles Anywhere 포함), IMDS 자격 증명 공급자(Amazon EC2 인스턴스 프로파일, 인스턴스 메타데이터 서비스로 임시 자격 증명 전달). 각 단계에서 설정 값을 지정하는 방법은 여러 가지이며 코드에서 지정한 값이 항상 우선한다.",
+      "corrects_courseware": "교재 슬라이드 27·28 은 자격 증명 순서를 '작업별 파라미터 > 환경 변수 > 공유 보안 인증 정보 파일 > 공유 구성 파일 > 인스턴스 프로파일' 또는 '코드/CLI > 환경 변수 > 보안 인증 정보 파일 > 인스턴스 프로파일'로 제시한다. 인스턴스 프로파일은 설정 값 소스가 아니라 자격 증명 공급자이며, IAM Identity Center·컨테이너·프로세스 공급자가 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/standardized-credentials.html",
+      "fetched_with": "mcp",
+      "section": "Understand the credential provider chain"
+    },
+    {
+      "id": "settings-precedence",
+      "claim": "전역 설정 값 조회 우선순위는 다음 순서다: (1) 코드 또는 서비스 클라이언트 자체에 명시적으로 설정한 값이 다른 무엇보다 우선하며, 일부 설정은 작업 단위로 지정할 수 있고 AWS CLI·AWS Tools for PowerShell 에서는 명령줄의 작업별 파라미터 형태다. (2) Java·Kotlin 전용으로 해당 설정의 JVM 시스템 속성을 확인한다. (3) 환경 변수를 확인한다. (4) 공유 credentials 파일을 확인한다. (5) 공유 config 파일을 확인하며, AWS_PROFILE 환경 변수 또는 aws.profile JVM 시스템 속성으로 로드할 프로파일을 지정할 수 있다. (6) SDK 소스 코드가 제공하는 기본값이 마지막에 사용된다. 일부 SDK·도구는 다른 순서로 확인할 수 있고 다른 저장·조회 방법을 지원할 수도 있다(예: AWS SDK for .NET 의 SDK Store). 대부분의 SDK 에서 서비스 클라이언트 객체는 불변이므로 요청할 서비스마다, 그리고 같은 서비스를 다른 구성으로 호출하려면 새 클라이언트를 만들어야 한다.",
+      "corrects_courseware": "교재 슬라이드 27·28 의 4~5단 우선순위 목록에 Java·Kotlin JVM 시스템 속성과 SDK 기본값 단계가 없고, 자격 증명 공급자와 설정 값 소스가 한 목록에 섞여 있다.",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/settings-reference.html",
+      "fetched_with": "mcp",
+      "section": "Precedence of settings"
+    },
+    {
+      "id": "retry-behavior",
+      "claim": "재시도 모드는 standard, adaptive, legacy 세 가지다. standard 는 모든 워크로드의 기본값으로 권장되며 지터를 포함한 지수 백오프로 재시도하고, 일시적 오류(네트워크 타임아웃)에는 짧은 지연, 스로틀링 오류(ThrottlingException)에는 긴 지연을 쓴다. standard 는 재시도 할당량(토큰 버킷)을 포함해 재시도마다 토큰을 차감하고 요청 성공 시 보충하며, 토큰이 소진되면 재시도하지 않고 오류를 반환한다. 재시도 할당량은 초기 요청을 지연·차단하지 않고 재시도에만 영향을 준다. adaptive 는 standard 에 클라이언트 측 속도 제한기를 더해 스로틀링 응답을 추적하고 요청 전송 속도를 조절하며, 초기 요청도 지연·차단할 수 있다. 속도 제한기는 SDK 클라이언트 인스턴스 단위로 동작하므로 여러 리소스·테넌트를 담당하는 클라이언트에는 권장되지 않고 일반 기본값으로도 권장되지 않는다. legacy 는 standard 도입 전 각 SDK 동작이며 표준 재시도 할당량이 없고 재시도 횟수·백오프 타이밍·재시도 대상 오류·스로틀링 동작이 언어마다 다르다. legacy 는 Java, Python, Ruby, PHP, C++, CLI 에서 사용할 수 있고 .NET, Go, Kotlin, Rust, Swift, JavaScript 에는 없으며, 현재 legacy 를 쓰면 standard 로 전환하도록 권장된다. 설정은 재시도 모드(환경 변수 AWS_RETRY_MODE, config 키 retry_mode, 기본값 standard)와 최대 시도 횟수(환경 변수 AWS_MAX_ATTEMPTS, config 키 max_attempts, 기본값 3)다. max_attempts 3 은 초기 요청 1회와 최대 2회 재시도를 뜻하고 1 로 두면 재시도가 비활성화된다. DynamoDB·DynamoDB Streams 클라이언트는 max_attempts 기본값이 4 이고 기본 백오프 지연이 50ms 대신 25ms 다. 문서에 기술된 동작은 기본값이 되기 전까지 환경에 AWS_NEW_RETRIES_2026=true 를 설정해 옵트인해야 하며, 설정하지 않으면 2026년 이전 동작(백오프 타이밍, 재시도 할당량 비용, 서비스별 기본값이 다름)이 적용된다.",
+      "corrects_courseware": "교재 슬라이드 32 강사 노트는 각 AWS SDK 가 지수 백오프를 구현한다는 개념만 설명하고 재시도 모드 구분과 기본값을 다루지 않는다. 교재가 인용한 general/latest/gr/api-retries.html 은 이 페이지로 리다이렉트된다. 교재 슬라이드 27 config 예시의 retry_mode=standard, max_attempts=4 는 현재도 유효한 설정 키와 값이다.",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html",
+      "fetched_with": "mcp",
+      "section": "Configuring retries"
+    },
+    {
+      "id": "jvm-ttl-dns",
+      "claim": "JVM 은 DNS 이름 조회를 캐싱하며 호스트명을 IP 주소로 확인하면 그 IP 를 TTL 기간 캐시한다. AWS 리소스는 때때로 바뀌는 DNS 이름 항목을 사용하므로 AWS SDK for Java 2.x 문서는 JVM 을 TTL 값 5초로 구성하도록 권장한다. 일부 Java 구성에서는 JVM 기본 TTL 이 JVM 을 재시작할 때까지 DNS 항목을 절대 갱신하지 않도록 설정되어 있어, AWS 리소스 IP 가 바뀌면 JVM 을 수동 재시작할 때까지 그 리소스를 사용할 수 없다. TTL 을 바꾸려면 networkaddress.cache.ttl 보안 속성(security property) 값을 설정한다. 이것은 시스템 속성이 아니므로 -D 명령줄 플래그로 설정할 수 없다. 설정 방법은 세 가지다. (1) 애플리케이션 시작 초기, SDK 클라이언트 생성과 네트워크 요청 전에 java.security.Security.setProperty(\"networkaddress.cache.ttl\", \"5\") 호출. (2) Java 8 은 $JAVA_HOME/jre/lib/security/java.security, Java 11 이상은 $JAVA_HOME/conf/security/java.security 파일에 networkaddress.cache.ttl=5 설정. 이 값은 해당 $JAVA_HOME 의 JVM 에서 실행되는 모든 애플리케이션에 적용된다. (3) 보안 속성이 정의되지 않은 경우의 폴백으로 JDK 시스템 속성 sun.net.inetaddr.ttl(성공 조회)과 sun.net.inetaddr.negative.ttl(실패 조회)을 -D 로 지정. 다만 이들은 '향후 릴리스에서 지원되지 않을 수 있다'고 문서화된 JDK 내부 속성이므로 가능하면 옵션 1~2 를 쓴다.",
+      "corrects_courseware": "교재 슬라이드 32 강사 노트는 '60초 이하의 TTL 값으로 JVM 을 구성하는 것이 좋습니다'로 기재한다. 현재 AWS SDK for Java 2.x 문서의 권장값은 5초다. 교재가 인용한 sdk-for-java/v1/developer-guide/java-dg-jvm-ttl.html 은 v1 의 jvm-ttl-dns.html 로 리다이렉트되며 v1 은 지원이 종료되었다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/jvm-ttl-dns.html",
+      "fetched_with": "mcp",
+      "section": "How to set the JVM TTL"
+    },
+    {
+      "id": "java-sdk-v1-eos",
+      "claim": "AWS SDK for Java 1.x 는 2025년 12월 31일 지원이 종료(end-of-support)되었으며, AWS 는 새 기능·가용성 개선·보안 업데이트를 계속 받으려면 AWS SDK for Java 2.x 로 마이그레이션하도록 권장한다.",
+      "corrects_courseware": "교재 슬라이드 28 은 Java 자격 증명 문서로 sdk-for-java/v1/developer-guide/credentials.html 을, 슬라이드 32 는 JVM TTL 문서로 sdk-for-java/v1/developer-guide/java-dg-jvm-ttl.html 을 인용한다. 둘 다 지원이 종료된 v1 경로다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html",
+      "fetched_with": "mcp",
+      "section": "AWS SDK for Java 1.x end-of-support"
+    },
+    {
+      "id": "cloud9-closed-to-new-customers",
+      "claim": "AWS Cloud9 은 신규 고객에게 더 이상 제공되지 않는다(no longer available to new customers). 기존 AWS Cloud9 고객은 서비스를 평소와 같이 계속 사용할 수 있다. 문서 상단 배너는 마이그레이션 안내로 'How to migrate from AWS Cloud9 to AWS IDE Toolkits or AWS CloudShell' 블로그 글을 연결한다. AWS Cloud9 은 브라우저로 접근하는 통합 개발 환경(IDE)이며, 환경을 컴퓨팅 리소스에 연결하는 방식은 AWS Cloud9 이 Amazon EC2 인스턴스를 만들어 연결하는 EC2 환경과 기존 인스턴스·자체 서버에 연결하는 SSH 환경 두 가지다.",
+      "corrects_courseware": "교재는 슬라이드 2 강사 노트('실습 1: AWS Cloud9을 사용하여 개발 환경에서 IAM 권한을 구성하고 테스트합니다'), 슬라이드 32 강사 노트('서드 파티 IDE를 사용하건 AWS Cloud9을 사용하건'), 슬라이드 38 강사 참고 사항('여전히 Python 실습이 Cloud9에 배포되어 있습니다') 세 곳에서 Cloud9 을 개발 환경으로 제시한다.",
+      "url": "https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS Cloud9?"
+    },
+    {
+      "id": "cloud9-migration-blog",
+      "claim": "AWS Cloud9 문서가 마이그레이션 안내로 연결하는 AWS DevOps 블로그 글 'How to migrate from AWS Cloud9 to AWS IDE Toolkits or AWS CloudShell' 의 URL 이 유효하다. Cloud9 문서 배너의 Learn more 링크 대상이 이 글이라는 것이 본문 인용의 근거다.",
+      "url": "https://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/",
+      "fetched_with": "link_check",
+      "section": "AWS DevOps Blog"
+    },
+    {
+      "id": "cloudshell-preauthenticated",
+      "claim": "AWS CloudShell 은 AWS Management Console 에서 바로 실행하는 브라우저 기반 사전 인증(pre-authenticated) 셸이다. 콘솔에 로그인할 때 사용한 AWS 자격 증명이 새 셸 세션에서 자동으로 사용되며, CloudShell 사용자는 사전 인증되어 있으므로 AWS CLI 버전 2 로 AWS 서비스와 상호 작용할 때 자격 증명을 구성할 필요가 없다. AWS CLI 는 셸 컴퓨팅 환경에 미리 설치되어 있다. 실행 시 Amazon Linux 2023 기반 컴퓨팅 환경이 만들어지고 git, make, pip, sudo, tar, tmux, vim, wget, zip 등 도구와 Node.js·Python 런타임이 미리 구성된다. Bash, PowerShell, Z shell 을 전환할 수 있다. 리전별로 최대 1GB 의 영구 스토리지를 홈 디렉터리($HOME)에 추가 비용 없이 사용할 수 있고 세션 간 데이터가 유지된다. 단 CloudShell VPC 환경에는 영구 스토리지가 없고 $HOME 이 삭제되며, 환경은 20~30분(AWS GovCloud US 리전은 10분) 비활성 후 시간 초과된다. 관리자는 IAM 정책으로 CloudShell 사용자의 권한을 부여·거부할 수 있다.",
+      "supports_courseware": "교재 슬라이드 19 데모가 CloudShell 세션에서 자격 증명 구성 없이 AWS CLI 명령을 실행하는 근거다. 사전 인증이라는 사실 자체는 교재에 명시되어 있지 않다.",
+      "url": "https://docs.aws.amazon.com/cloudshell/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "Features of AWS CloudShell"
+    },
+    {
+      "id": "jetbrains-toolkit-credentials",
+      "claim": "AWS Toolkit for JetBrains 의 IAM 자격 증명 설정 경로는 AWS Connection Settings(... 아이콘) -> Set up authentication -> AWS Explorer 섹션의 Authenticate with IAM -> AWS Toolkit: Setup Authentication 대화 상자다. IAM Credentials 탭에서 Profile Name, Access Key ID, Secret Access Key 를 입력하고 Connect 를 선택하면 프로파일이 config 파일에 추가되고 툴킷이 AWS 계정에 연결된다. 문서는 세 가지 주의 사항을 명시한다: AWS CLI 등 다른 AWS 서비스로 IAM 자격 증명을 이미 설정했다면 툴킷이 자동으로 감지해 사용 가능하게 만든다, AWS 는 IAM Identity Center 인증을 권장한다, 보안 위험을 피하기 위해 목적이 있는 소프트웨어를 개발하거나 실제 데이터를 다룰 때는 IAM 사용자로 인증하지 말고 IAM Identity Center 같은 자격 증명 공급자와의 페더레이션을 사용한다.",
+      "corrects_courseware": "교재 슬라이드 26 강사 노트는 'JetBrains용 AWS Toolkit는 Eclipse 기본 설정 창을 통해 프로세스를 간소화합니다'라고 기재해 서로 다른 IDE 를 섞었다. 현재 JetBrains 툴킷의 설정 경로는 AWS Connection Settings 기반이다.",
+      "url": "https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/setup-credentials.html",
+      "fetched_with": "mcp",
+      "section": "AWS IAM credentials"
+    },
+    {
+      "id": "eclipse-toolkit-doc-redirect",
+      "claim": "교재 슬라이드 26 이 인용한 Eclipse 용 AWS Toolkit 문서 경로 https://docs.aws.amazon.com/toolkit-for-eclipse/v1/user-guide/setup-credentials.html 과 https://docs.aws.amazon.com/toolkit-for-eclipse/v1/user-guide/welcome.html 은 모두 https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html 로 리다이렉트된다(HTTP 200, 최종 URL 확인). 즉 Eclipse 용 AWS Toolkit 의 별도 사용 설명서가 더 이상 제공되지 않는다. 이 항목의 주장은 URL 의 최종 도달 지점 자체이며 페이지 내용에 근거한 주장이 아니다.",
+      "corrects_courseware": "교재는 JetBrains·Eclipse·Visual Studio·Visual Studio Code 네 툴킷의 자격 증명 설정 문서를 나란히 인용한다. Eclipse 링크만 다른 툴킷 문서로 리다이렉트된다.",
+      "url": "https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html",
+      "fetched_with": "link_check",
+      "section": "리다이렉트 도착 지점"
+    },
+    {
+      "id": "bucket-naming-rules",
+      "claim": "범용 버킷 이름은 3자 이상 63자 이하이고, 소문자·숫자·마침표(.)·하이픈(-)만으로 구성할 수 있으며, 문자 또는 숫자로 시작하고 끝나야 한다. 인접한 두 마침표를 포함할 수 없고 IP 주소 형식일 수 없다. xn--, sthree-, amzn-s3-demo- 접두사로 시작할 수 없고 -s3alias, --ol-s3, .mrap, --x-s3, --table-s3 접미사로 끝날 수 없으며, -an 접미사는 계정 리전 네임스페이스에 버킷을 만들 때만 쓸 수 있다. Transfer Acceleration 을 쓰는 버킷은 이름에 마침표를 쓸 수 없다. 범용 버킷은 전역 네임스페이스에 존재하므로 이름은 한 파티션 내 모든 AWS 계정의 모든 리전에서 고유해야 한다.",
+      "corrects_courseware": "교재 슬라이드 19 데모의 버킷 이름 s3://DevonAWStest_bucket 은 대문자와 밑줄을 포함해 명명 규칙을 위반한다. 이 명령은 권한과 무관하게 실패하므로 데모가 의도한 '권한 부족으로 실패' 시나리오를 정확히 보여 주지 못한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html",
+      "fetched_with": "mcp",
+      "section": "General purpose buckets naming rules"
+    },
+    {
+      "id": "iam-identity-center-sdk",
+      "claim": "AWS IAM Identity Center 는 AWS 외 컴퓨팅 환경에서 AWS 애플리케이션을 개발할 때 AWS 자격 증명을 제공하는 데 사용할 수 있다. Amazon EC2 나 AWS Cloud9 같은 AWS 리소스에서 개발한다면 그 서비스에서 자격 증명을 받는 것이 권장된다. 이미 계정 액세스에 Identity Center 를 쓰거나 조직 단위로 액세스를 관리해야 하면 IAM Identity Center 인증을 사용한다. AWS 액세스 포털은 IAM Identity Center 에 수동으로 로그인하는 웹 위치이며 URL 형식은 d-xxxxxxxxxx.awsapps.com/start 또는 your_subdomain.awsapps.com/start 다. AWS CLI 로 SDK·도구가 IAM Identity Center 인증을 쓰도록 구성하며, 이 일회성 절차가 공유 AWS config 파일을 갱신한다. 정기 개발에는 AdministratorAccess 권한 세트를 쓰지 말고 사전 정의된 PowerUserAccess 권한 세트를 쓰도록 권장된다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/access-sso.html",
+      "fetched_with": "mcp",
+      "section": "Configure programmatic access using IAM Identity Center"
+    },
+    {
+      "id": "courseware-url-redirects",
+      "claim": "교재가 인용한 URL 중 다음이 현재 다른 경로로 리다이렉트된다(HTTP 200, 최종 URL 확인). IAM/latest/UserGuide/AccessPolicyLanguage_EvaluationLogic.html -> IAM/latest/UserGuide/reference_policies_evaluation-logic.html. IAM/latest/UserGuide/getting-started_create-admin-group.html -> IAM/latest/UserGuide/getting-started-account-iam.html. IAM/latest/UserGuide/id_roles_terms-and-concepts.html -> IAM/latest/UserGuide/id_roles.html#id_roles_terms-and-concepts. cli/latest/userguide/cli-configure-profiles.html -> cli/latest/userguide/cli-configure-files.html. cli/latest/userguide/cli-configure-quickstart.html -> cli/latest/userguide/cli-chap-configure.html. sdkref/latest/guide/settings-global.html -> sdkref/latest/guide/settings-reference.html. sdk-for-net/v3/developer-guide/net-dg-config-creds.html -> sdk-for-net/v3/developer-guide/creds-idc.html. general/latest/gr/signature-version-4.html 과 general/latest/gr/signing_aws_api_requests.html -> IAM/latest/UserGuide/reference_sigv.html. general/latest/gr/api-retries.html -> sdkref/latest/guide/feature-retry-behavior.html. sdk-for-java/v1/developer-guide/java-dg-jvm-ttl.html -> sdk-for-java/v1/developer-guide/jvm-ttl-dns.html. 리다이렉트 없이 그대로 유효한 URL: IAM/latest/UserGuide/id.html, IAM/latest/UserGuide/access_policies_identity-vs-resource.html, IAM/latest/UserGuide/access_policies_job-functions.html, IAM/latest/UserGuide/id_roles.html, IAM/latest/UserGuide/id_roles_create_for-service.html, IAM/latest/UserGuide/id_roles_common-scenarios_aws-accounts.html, IAM/latest/UserGuide/id_credentials_temp.html, STS/latest/APIReference/API_Operations.html, IAM/latest/UserGuide/id_credentials_temp_use-resources.html, sdkref/latest/guide/environment-variables.html, cli/latest/userguide/cli-configure-envvars.html, toolkit-for-jetbrains/latest/userguide/setup-credentials.html, toolkit-for-visual-studio/latest/user-guide/keys-profiles-credentials.html, toolkit-for-vscode/latest/userguide/setup-credentials.html. 이 항목의 주장은 URL 의 도달 여부와 최종 경로 자체이며 페이지 내용에 근거한 주장이 아니다.",
+      "corrects_courseware": "교재 강사 노트의 두 링크는 http 스킴을 쓴다(AccessPolicyLanguage_EvaluationLogic.html, signing_aws_api_requests.html). 본문에서는 모두 https 최종 경로로 교체했다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html",
+      "fetched_with": "link_check",
+      "section": "리다이렉트 도착 지점"
+    },
+    {
+      "id": "boto3-docs-moved",
+      "claim": "교재 슬라이드 28 이 인용한 Boto3 자격 증명 문서 https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html 은 https://docs.aws.amazon.com/boto3/latest/guide/credentials.html 로 리다이렉트된다(HTTP 200, 최종 URL 확인). AWS SDKs and Tools 참조 가이드의 SDK 별 자격 증명 공급자 체인 목록도 SDK for Python (Boto3) 항목을 docs.aws.amazon.com/boto3/latest/guide/credentials.html 로 연결한다. 이 항목의 주장은 URL 의 최종 도달 지점 자체이며 페이지 내용에 근거한 주장이 아니다.",
+      "corrects_courseware": "교재는 Boto3 문서를 boto3.amazonaws.com 경로로 인용한다. 현재는 docs.aws.amazon.com 으로 통합되었다.",
+      "url": "https://docs.aws.amazon.com/boto3/latest/guide/credentials.html",
+      "fetched_with": "link_check",
+      "section": "리다이렉트 도착 지점"
+    }
+  ],
+  "unverified": [
+    {
+      "id": "demo-reproducibility",
+      "reason": "슬라이드 18·19 데모의 각 명령과 정책 형식은 API 문서로 확인했지만, 교재가 기술한 순서대로 실행해 같은 성공·실패 결과가 나오는지는 실행 검증하지 않았다. 계정 ID·역할 이름 불일치를 고친 뒤에도 역할 신뢰 정책 설정처럼 교재에 기술되지 않은 전제가 필요할 수 있다.",
+      "action": "본문 6.1·6.2 절에 교정 내역을 표로 남기고, 8.5 절에 실행 검증이 필요하다고 명시. 강의 전 실습 계정에서 재현 확인 필요."
+    },
+    {
+      "id": "lab-current-deployment",
+      "reason": "슬라이드 38 강사 참고 사항의 '현재 실습 버전(2026년 9월 24일 기준)에서는 여전히 Python 실습이 Cloud9에 배포되어 있습니다'를 확인할 수 없었다. Cloud9 이 신규 고객에게 제공되지 않는다는 것은 확인했으나, 실습 환경이 어떤 계정으로 제공되고 실제로 Cloud9 이 열리는지는 AWS 공식 문서의 대상이 아니다.",
+      "action": "본문 7.9 절에 Cloud9 제공 상태와 대체 경로를 제시하고, 8.5 절에 실습 환경 확인이 필요하다고 명시."
+    },
+    {
+      "id": "lab-infrastructure",
+      "reason": "슬라이드 2·38 다이어그램의 Guacamole·SSH·원격 데스크톱 연결과 CloudFormation 프로비저닝은 교육 과정의 실습 인프라 구성이며 AWS 공식 문서의 검증 대상이 아니다.",
+      "action": "교재 기재 내용을 그대로 옮기고 8.5 절에 검증 범위 밖임을 명시."
+    },
+    {
+      "id": "api-versions-config-setting",
+      "reason": "교재 슬라이드 27 ~/.aws/config 예시의 api_versions 항목(ec2 = 2015-03-01, cloudfront = 2015-09-17)을 현재 문서에서 확인하지 못했다. 같은 예시의 retry_mode, max_attempts, s3 하위 설정은 확인했다.",
+      "action": "본문 7.5 절에서 확인한 설정만 설명하고 api_versions 는 언급하지 않음. 8.5 절에 미확인으로 기록."
+    },
+    {
+      "id": "ide-toolkit-product-strategy",
+      "reason": "AWS IDE 툴킷 제품군의 구성·명칭 변화가 진행 중일 수 있으나 제품 전략 변화는 이번 검증 범위에 넣지 않았다. Eclipse 툴킷 문서 경로의 리다이렉트만 확인했다.",
+      "action": "본문 7.4 절에서 확인한 사실(리다이렉트, JetBrains 설정 경로, IAM Identity Center 권장)만 서술. 8.5 절에 검증 범위 밖임을 명시."
+    }
+  ]
+}

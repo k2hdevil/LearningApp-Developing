@@ -1,0 +1,231 @@
+# 폐기·변경 레지스트리
+#
+# 교재(Developing on AWS 강사용 덱)에 등장하지만 현재는 종료·비권장·변경된 항목을 기록합니다.
+# 본문에서 조용히 지우지 않고 여기에 근거와 함께 남긴 뒤, 각 모듈 끝
+# '교재 대비 변경 사항' 섹션에 delta로 표시합니다. 수강생이 공식 교재를 들고
+# 있으므로 "책에는 있는데 자료에는 없다"는 질문에 답할 수 있어야 합니다.
+#
+# state 값
+#   ended       : 서비스·버전 지원 종료. 본문에서 제거하고 대체안을 제시한다.
+#   discouraged : 동작하지만 권장되지 않음. 본문 주 경로에서 빼고 주의로만 남긴다.
+#   changed     : 동작·기본값·표기가 바뀜. 본문을 새 내용으로 교체한다.
+#   incorrect   : 교재 기술이 사실과 다름. 교정한다.
+#
+# verified_on 은 아래 항목을 공식 문서로 확인한 날짜입니다.
+
+verified_on: 2026-08-25
+
+items:
+  - id: js-sdk-v2
+    module: M03
+    state: ended
+    title: AWS SDK for JavaScript v2
+    courseware_location: '슬라이드 13 강사 노트의 API 참조 링크 https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/'
+    detail: >-
+      AWS SDK for JavaScript v2 는 지원이 종료되었습니다(SDK 수명 주기 표에서
+      1.x·2.x 모두 End-of-Support). 교재가 인용한 AWSJavaScriptSDK/latest 는
+      v2 API 참조 경로이고, 이 URL 자체는 아직 응답합니다.
+    replacement: AWS SDK for JavaScript v3 (https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/welcome.html)
+    evidence: https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/migrate.html
+
+  - id: java-sdk-v1
+    module: M03
+    state: ended
+    title: AWS SDK for Java 1.x
+    courseware_location: '슬라이드 13 API 참조 링크(AWSJavaSDK/latest/javadoc) 및 슬라이드 29·30의 예제·예외 클래스'
+    detail: >-
+      AWS SDK for Java 1.x 는 2025년 12월 31일 지원이 종료되었습니다.
+      교재의 waiter 예제(client.waiters().tableExists(), WaiterParameters,
+      WaiterUnrecoverableException)와 예외 클래스명(com.amazonaws.AmazonServiceException,
+      com.amazonaws.AmazonClientException)이 모두 1.x 문법·패키지입니다.
+      그런데 예외 슬라이드의 인용 링크는 2.x 개발자 안내서를 가리켜 자체 불일치입니다.
+    replacement: AWS SDK for Java 2.x (software.amazon.awssdk). waiter 는 DynamoDbWaiter/DynamoDbAsyncWaiter, 예외는 AwsServiceException/SdkClientException
+    evidence: https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/welcome.html
+
+  - id: go-sdk-v1
+    module: M03
+    state: ended
+    title: AWS SDK for Go V1
+    courseware_location: '슬라이드 13 강사 노트의 https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/welcome.html'
+    detail: >-
+      AWS SDK for Go V1 은 지원이 종료되었습니다. 교재는 V1 개발자 안내서를
+      설치 안내로 제시합니다.
+    replacement: AWS SDK for Go V2 (https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/welcome.html)
+    evidence: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/welcome.html
+
+  - id: dotnet-sdk-v3
+    module: M03
+    state: ended
+    title: AWS SDK for .NET 3.x
+    courseware_location: '슬라이드 13 강사 노트의 AWSSdkDocsNET/latest/V3/DeveloperGuide 링크 2건과 sdkfornet/v3/apidocs'
+    detail: >-
+      SDK 수명 주기 표에서 AWS SDK for .NET 1.x·2.x·3.x 는 End-of-Support 이고
+      4.x 가 General Availability(2025년 4월 28일)입니다. 교재가 인용한 두 설치 링크는
+      HTTP 404 를 반환합니다.
+    replacement: AWS SDK for .NET 4.x (https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-install-assemblies.html)
+    evidence: https://docs.aws.amazon.com/sdkref/latest/guide/version-support-matrix.html
+
+  - id: lambda-nodejs12-runtime
+    module: M03
+    state: ended
+    title: Lambda 런타임 nodejs12.x
+    courseware_location: '슬라이드 21 "개발자 도구: AWS CLI" 의 create-function 예제'
+    detail: >-
+      교재 예제는 --runtime nodejs12.x 를 사용합니다. 이 런타임은 2023년 3월 31일
+      지원이 중단되었고 같은 날부터 함수 생성이 차단되었으므로 예제를 그대로
+      실행하면 실패합니다.
+    replacement: 현재 지원되는 Node.js 런타임 (nodejs22.x / nodejs24.x / nodejs26.x)
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
+  - id: aws-cli-v1
+    module: M03
+    state: discouraged
+    title: AWS CLI v1
+    courseware_location: '슬라이드 19·20 "AWS CLI" (버전 구분 없이 단일 제품으로 설명)'
+    detail: >-
+      AWS CLI v1 은 Maintenance Announcement 단계이며 2026년 7월 15일 유지 관리
+      모드에 진입하고 2027년 7월 15일 지원이 종료됩니다. 유지 관리 모드에서는
+      중요 버그 수정과 보안 업데이트만 제공되고 신규 서비스·API 업데이트·신규
+      리전은 반영되지 않습니다. 교재는 v1 과 v2 를 구분하지 않아 수강생이 어느
+      버전을 설치해야 하는지 알 수 없습니다.
+    replacement: AWS CLI v2 (Python 내장, IAM Identity Center 인증, 위저드·자동 프롬프트, aws login)
+    evidence: https://aws.amazon.com/blogs/developer/cli-v1-maintenance-mode-announcement/
+
+  - id: aws-cloud9
+    module: M03
+    state: discouraged
+    title: AWS Cloud9
+    courseware_location: '슬라이드 23 "제품 시연: AWS CLI" 강사 참고 사항'
+    detail: >-
+      AWS Cloud9 은 신규 고객에게 더 이상 제공되지 않습니다. 기존 고객은 계속
+      사용할 수 있으므로 교육 계정에 이미 배포된 실습 환경은 동작할 수 있지만,
+      수강생이 자기 계정에서 Cloud9 환경을 새로 만들 수는 없습니다.
+    replacement: AWS IDE 도구 키트(JetBrains·VS Code·Visual Studio) 또는 AWS CloudShell
+    evidence: https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html
+
+  - id: boto3-resource-interface
+    module: M03
+    state: discouraged
+    title: boto3 리소스(resource) 인터페이스
+    courseware_location: '슬라이드 15 "사용할 SDK API 결정", 슬라이드 16·28 예제'
+    detail: >-
+      AWS Python SDK 팀은 boto3 리소스 인터페이스에 새 기능을 추가할 계획이
+      없습니다. 기존 인터페이스는 boto3 수명 주기 동안 계속 동작하지만 최신 서비스
+      기능은 클라이언트 인터페이스로 제공됩니다. 교재는 '간편성 때문에 상위 수준
+      API 를 사용하는 것이 좋다'고 권장하고 예제도 리소스 API 를 씁니다.
+      리소스 인스턴스는 스레드 안전하지 않다는 제약도 교재에 없습니다.
+    replacement: boto3 클라이언트 인터페이스 boto3.client(...)
+    evidence: https://docs.aws.amazon.com/boto3/latest/guide/resources.html
+
+  - id: amazon-q-developer-ide-plugins
+    module: M03
+    state: discouraged
+    title: Amazon Q Developer IDE 플러그인
+    courseware_location: '슬라이드 34 강사 노트 "API 및 확장 프로그램 이름 지정에서 이전 AI 어시스턴트의 흔적"'
+    detail: >-
+      AWS 는 2027년 4월 30일 Amazon Q Developer IDE 플러그인 지원을 중단하고,
+      유사 기능(에이전틱 코딩, 채팅, MCP 지원)을 위해 Kiro 를 살펴보도록 안내합니다.
+      교재가 암시하는 '이전 AI 어시스턴트'가 무엇인지 수강생이 물을 수 있으므로
+      명시적으로 남겨 둡니다.
+    replacement: Kiro (IDE·CLI·자율 웹 에이전트)
+    evidence: https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-developer-ide-end-of-support.html
+
+  - id: iam-user-long-term-access-keys
+    module: M03
+    state: discouraged
+    title: IAM 사용자 장기 액세스 키로 프로그래밍 방식 액세스
+    courseware_location: '슬라이드 19 강사 노트, 슬라이드 41 "AWS SDK 시작하기" 강사 노트'
+    detail: >-
+      교재는 'IAM 사용자를 사용하여 액세스 보안 인증 정보를 제공하는 것이 좋습니다'
+      라고 기재합니다. 루트 사용자보다 낫다는 점은 맞지만, 현재 AWS CLI 자격 증명
+      권장 순서에서 IAM 사용자 장기 자격 증명은 '권장하지 않음'으로 분류됩니다.
+      권장 순서는 콘솔 자격 증명 기반 단기 자격 증명 → IAM Identity Center →
+      IAM 단기 자격 증명 → EC2 인스턴스 메타데이터 → 역할 수임 입니다.
+    replacement: 콘솔 자격 증명 기반 단기 자격 증명(aws login), IAM Identity Center, IAM 역할·인스턴스 프로파일, IAM Roles Anywhere
+    evidence: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html
+
+  - id: cli-subcommand-labeling
+    module: M03
+    state: incorrect
+    title: AWS CLI 예제에서 대상 URI 를 하위 명령으로 표기
+    courseware_location: '슬라이드 20 "예제: AWS CLI" 도형 레이블과 강사 노트'
+    detail: >-
+      교재는 `aws s3 ls s3://mybucket --recursive` 에서 s3://mybucket 에도
+      '하위 명령' 레이블을 붙이고 강사 노트에서 '하위 명령은 s3://mybuket이 대상인
+      ls'라고 서술합니다. 공식 명령 구조는
+      `aws <command> <subcommand> [options and parameters]` 이므로 하위 명령은
+      ls 하나이고 s3://mybucket 은 파라미터(인수)입니다. 강사 노트가 같은 하위
+      명령을 'list'로도 표기하는 불일치도 있습니다.
+    replacement: 'aws(기본 호출) / s3(명령) / ls(하위 명령) / s3://mybucket, --recursive(파라미터)'
+    evidence: https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-commandstructure.html
+
+  - id: status-code-in-request-header
+    module: M03
+    state: incorrect
+    title: "'요청 헤더에 상태 및 상태 메시지가 포함된다'는 서술"
+    courseware_location: '슬라이드 7 "HTTP 상태 코드" 강사 노트 첫 문장'
+    detail: >-
+      강사 노트는 "서비스가 요청에 응답하면 요청 헤더에 상태 및 상태 메시지가
+      포함됩니다"라고 서술합니다. 상태 코드는 응답의 시작 줄(status line)에 오며,
+      같은 덱 슬라이드 6 의 노트는 "응답의 시작 줄에는 요청의 성공 또는 실패
+      여부가 표시됩니다"라고 올바르게 기재해 자체 모순입니다. 슬라이드 7 의 예제
+      코드 블록도 첫 줄이 `HTTP/1.1 200 OK` 로 응답 시작 줄입니다.
+    replacement: 상태 코드와 상태 메시지는 응답의 시작 줄에 온다
+    evidence: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html
+
+  - id: sdk-language-list-mismatch
+    module: M03
+    state: incorrect
+    title: SDK 지원 언어 목록 불일치
+    courseware_location: '슬라이드 13 "개발자 도구: AWS SDK" 그래픽 레이블과 강사 노트'
+    detail: >-
+      강사 노트 목록(Android, iOS, Go, Java, JavaScript, .NET, Node.js, PHP,
+      Python, Ruby)과 슬라이드 그래픽 목록(Python, .NET, Java, C++, Ruby,
+      JavaScript, Go, Node.js, PHP, Rust, Kotlin, Swift)이 서로 다릅니다.
+      Node.js 는 별도 SDK 가 아니라 JavaScript SDK 로 지원되고, Android·iOS 는
+      AWS SDK 및 도구 수명 주기 문서 범위(Mobile SDK 제외)에 없습니다.
+    replacement: 'C++, Go, Java, JavaScript, Kotlin, .NET, PHP, Python, Ruby, Rust, Swift (AWS SDK 및 도구 수명 주기 문서 등재 기준)'
+    evidence: https://docs.aws.amazon.com/sdkref/latest/guide/version-support-matrix.html
+
+  - id: courseware-broken-doc-urls
+    module: M03
+    state: incorrect
+    title: 끊어진 교재 문서 링크
+    courseware_location: '슬라이드 13 강사 노트의 SDK 설치·API 참조 링크 목록'
+    detail: >-
+      두 링크가 HTTP 404 를 반환합니다.
+      AWSSdkDocsNET/latest/V3/DeveloperGuide/net-dg-install-assemblies.html 과
+      docs.aws.amazon.com/pt_br/cli/latest/index.html (로케일이 pt_br 로 고정).
+      그 밖에 boto3.readthedocs.org(AWS 소유 아님), ErrorHandling.html#APIRetries,
+      LowLevelDotNetWorkingWithTables.html, boto3.amazonaws.com 경로는 현재 유효한
+      URL 로 리디렉션됩니다.
+    replacement: '.NET 설치는 /sdk-for-net/v4/developer-guide/, CLI 참조는 /cli/latest/reference/, Boto3 는 /boto3/latest/'
+    evidence: https://docs.aws.amazon.com/cli/latest/reference/
+
+  - id: sdk-metrics-owner
+    module: M03
+    state: changed
+    title: SDK 지표·로깅 안내 대상 버전
+    courseware_location: '슬라이드 31 "애플리케이션 파악" 강사 노트의 참고 자료 3건'
+    detail: >-
+      교재가 인용한 세 링크는 모두 응답합니다. 다만 'AWS SDK for Java의 지표
+      활성화'(/sdk-for-java/latest/developer-guide/metrics.html)는 현재 2.x 내용을
+      제공하고, 활성화 방식이 1.x 의 시스템 속성이 아니라 MetricPublisher 구현
+      선택(CloudWatchMetricPublisher 등)으로 바뀌었습니다. '.NET 고급 구성' 링크는
+      여전히 v3 경로입니다.
+    replacement: Java 2.x 는 MetricPublisher 구성. .NET 은 v4 개발자 안내서 참조
+    evidence: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/metrics.html
+
+  - id: sigv4-replay-window
+    module: M03
+    state: changed
+    title: 재전송 공격 방어 설명의 구체성
+    courseware_location: '슬라이드 5 "AWS REST API" 강사 노트'
+    detail: >-
+      교재는 "타임스탬프를 사용하여 도착까지 걸리는 시간이 너무 긴 이벤트를
+      만료"로만 설명합니다. 공식 문서는 '대부분의 경우 요청이 요청에 포함된
+      타임스탬프로부터 5분 이내에 AWS 에 도달해야 한다'고 기준을 제시합니다.
+      또 임시 보안 인증을 쓰면 서명 계산에 보안 토큰이 추가로 필요하고,
+      다중 리전 요청에는 비대칭 서명인 SigV4a 가 쓰입니다.
+    replacement: 5분 허용 창, 임시 자격 증명의 보안 토큰, 다중 리전 요청용 SigV4a
+    evidence: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html

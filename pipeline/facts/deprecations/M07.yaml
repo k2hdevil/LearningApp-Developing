@@ -1,0 +1,237 @@
+# 폐기·변경 레지스트리 (M07 모듈 7: 데이터베이스 시작하기)
+#
+# 교재(Developing on AWS 강사용 덱)에 등장하지만 현재는 종료·비권장·변경된 항목을 기록합니다.
+# 본문에서 조용히 지우지 않고 여기에 근거와 함께 남긴 뒤, 모듈 끝
+# '교재 대비 변경 사항' 장에 delta로 표시합니다. 수강생이 공식 교재를 들고
+# 있으므로 "책에는 있는데 자료에는 없다"는 질문에 답할 수 있어야 합니다.
+#
+# state 값
+#   ended       : 서비스·버전 지원 종료. 본문에서 제거하고 대체안을 제시한다.
+#   discouraged : 동작하지만 권장되지 않음. 본문 주 경로에서 빼고 주의로만 남긴다.
+#   changed     : 동작·기본값·표기가 바뀜. 본문을 새 내용으로 교체한다.
+#   incorrect   : 교재 기술이 사실과 다름. 교정한다.
+#
+# verified_on 은 아래 항목을 공식 문서로 확인한 날짜입니다.
+
+verified_on: 2026-08-30
+
+items:
+  - id: java-sdk-v1-dynamodb-namespaces
+    module: M07
+    state: ended
+    title: AWS SDK for Java 1.x DynamoDB 네임스페이스
+    courseware_location: '슬라이드 33 "SDK 종속성 정의" 표의 Java 열'
+    detail: >-
+      교재 표는 Java 하위 수준을 com.amazonaws.services.dynamodbv2.AmazonDynamoDB,
+      상위 수준을 com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper 로
+      기재합니다. 둘 다 AWS SDK for Java 1.x 네임스페이스이고, 1.x 는
+      2025년 12월 31일 지원이 종료되었습니다. 같은 교재의 슬라이드 35 예제 코드는
+      이미 2.x 문법(DynamoDbClient.builder())을 사용하므로 교재 안에서 세대가 섞여 있습니다.
+    replacement: >-
+      하위 수준은 software.amazon.awssdk.services.dynamodb.DynamoDbClient 와
+      software.amazon.awssdk.services.dynamodb.model.*, 상위 수준은
+      software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient (DynamoDB Enhanced Client)
+    evidence: https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html
+
+  - id: boto3-resource-interface-dynamodb
+    module: M07
+    state: discouraged
+    title: boto3 리소스(resource) 인터페이스
+    courseware_location: '슬라이드 33 Python 열 · 슬라이드 36 "Python 예제: DynamoDB 서비스 클라이언트 생성"'
+    detail: >-
+      AWS Python SDK 팀은 boto3 리소스 인터페이스에 새 기능을 추가할 계획이 없습니다.
+      기존 인터페이스는 boto3 수명 주기 동안 계속 동작하지만 최신 서비스 기능은
+      클라이언트 인터페이스를 통해 제공됩니다. boto3 의 DynamoDB 상위 수준 인터페이스가
+      바로 이 리소스 인터페이스(boto3.resource('dynamodb') 와 dynamodb.Table)이므로,
+      교재 슬라이드 33 의 Python 상위 수준 칸이 비어 있는 이유를 설명할 때 이 점을
+      함께 알려야 합니다. 슬라이드 36 은 boto3.client('dynamodb') 를 만들면서 바로 위
+      주석에 "서비스 리소스 가져오기"라고 적어 두 인터페이스를 혼동시킵니다.
+    replacement: boto3 클라이언트 인터페이스 boto3.client('dynamodb')
+    evidence: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html
+
+  - id: dynamodb-latency-10ms-wording
+    module: M07
+    state: changed
+    title: "'10밀리초 미만' 지연 시간 표기"
+    courseware_location: '슬라이드 10 "애플리케이션 개발에 Amazon DynamoDB를 선택해야 하는 이유" 강사 노트'
+    detail: >-
+      교재는 "규모와 관계없이 10밀리초 미만의 대기 시간", "평균 서비스 지연 시간은 보통
+      10밀리초 미만"으로 기재합니다. 현재 DynamoDB 공식 문서의 표현은
+      "한 자리 밀리초(single-digit millisecond) 성능"입니다.
+    replacement: 규모와 관계없이 한 자리 밀리초 성능
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+
+  - id: elasticache-engine-list
+    module: M07
+    state: changed
+    title: ElastiCache 지원 엔진 목록
+    courseware_location: '슬라이드 6 "AWS 데이터베이스 서비스 비교" 강사 노트'
+    detail: >-
+      교재는 "Amazon ElastiCache - 완전관리형 Redis 또는 Memcached 엔진을 지원하는
+      인 메모리 데이터 캐시"로 기재합니다. 현재 ElastiCache 는 Valkey, Memcached,
+      Redis OSS 세 엔진을 지원하고 서버리스와 노드 기반 배포 옵션을 제공합니다.
+    replacement: 'Valkey, Memcached, Redis OSS'
+    evidence: https://docs.aws.amazon.com/decision-guides/latest/databases-on-aws-how-to-choose/databases-on-aws-how-to-choose.html
+
+  - id: aws-database-service-table
+    module: M07
+    state: changed
+    title: AWS 데이터베이스 서비스 비교 표
+    courseware_location: 슬라이드 6 "AWS 데이터베이스 서비스 비교"
+    detail: >-
+      교재 표는 관계형 행에 Amazon RDS 와 Amazon Redshift 를 함께 넣고, 강사 노트에서
+      Amazon Aurora 를 RDS 가 지원하는 엔진 중 하나로 기재합니다. 현재 AWS 결정 안내서는
+      OLTP 관계형 계열을 Aurora 계열(Aurora PostgreSQL 호환, Aurora MySQL 호환,
+      Aurora DSQL)과 RDS 엔진 6종(PostgreSQL, MySQL, MariaDB, SQL Server, Oracle, Db2)의
+      합계 9개 엔진으로 설명하고, Amazon Redshift 는 OLAP 데이터 웨어하우징 서비스로
+      OLTP 표에서 분리합니다. Amazon MemoryDB, Aurora PostgreSQL Limitless Database,
+      벡터 데이터 모델은 교재에 없습니다. 교재 표에도 "이 표는 AWS 데이터베이스 서비스의
+      전체 목록이 아닙니다"라는 각주가 붙어 있습니다.
+    replacement: >-
+      관계형(Aurora 계열 + RDS 6종) / 키 값(DynamoDB) / 문서(DocumentDB) /
+      인 메모리(ElastiCache, MemoryDB) / 그래프(Neptune) / 시계열(Timestream) /
+      와이드 컬럼(Keyspaces). Redshift 는 OLAP
+    evidence: https://docs.aws.amazon.com/decision-guides/latest/databases-on-aws-how-to-choose/databases-on-aws-how-to-choose.html
+
+  - id: nosql-workbench-three-tools
+    module: M07
+    state: changed
+    title: NoSQL Workbench 세 도구 구성
+    courseware_location: 슬라이드 22 "NoSQL Workbench"
+    detail: >-
+      교재는 도구를 데이터 모델러 / 시각화 프로그램(visualizer) / 작업 빌더 세 가지로
+      소개합니다. 현재 DynamoDB 공식 문서는 데이터 모델러(Data modeler)와
+      작업 빌더(Operation builder) 두 가지만 나열하고 시각화를 별도 도구로 두지 않습니다.
+      데이터 모델러가 샘플 데이터 구성과 액세스 패턴 검증까지 담당합니다. 또 현재
+      NoSQL Workbench 에는 DynamoDB local 이 포함되어 있습니다. Amazon Keyspaces 쪽
+      문서에는 여전히 시각화(visualizer) 항목이 있습니다.
+    replacement: '데이터 모델러, 작업 빌더 (DynamoDB local 포함)'
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html
+
+  - id: dynamodb-quotas-page-split
+    module: M07
+    state: changed
+    title: 'DynamoDB 할당량 문서 경로 Limits.html'
+    courseware_location: '슬라이드 17 "보조 인덱스" 강사 노트의 Limits.html 링크'
+    detail: >-
+      교재가 인용한 Limits.html 은 현재 ServiceQuotas.html 로 리디렉션됩니다.
+      또한 문서가 두 페이지로 나뉘어, 조정 가능한 서비스 할당량은 ServiceQuotas.html
+      (Quotas in Amazon DynamoDB), 항목 크기·키 길이·데이터 형식 같은 고정 제약은
+      Constraints.html (Constraints in Amazon DynamoDB) 에 있습니다.
+    replacement: >-
+      https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+      (할당량) 및
+      https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+      (제약)
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+
+  - id: java-sdk-using-html-path
+    module: M07
+    state: changed
+    title: 'Java SDK 서비스 클라이언트 생성 문서 경로 using.html'
+    courseware_location: '슬라이드 35 "Java 예제: DynamoDB 서비스 클라이언트 생성" 강사 노트 링크'
+    detail: >-
+      교재가 인용한 sdk-for-java/latest/developer-guide/using.html 은 현재
+      "Using the AWS SDK for Java 2.x" 챕터 목차 페이지입니다. 서비스 클라이언트 생성
+      내용은 하위 페이지 work-witih-clients.html 의 "Create a service client" 절에 있습니다.
+    replacement: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/work-witih-clients.html
+    evidence: https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/work-witih-clients.html
+
+  - id: ondemand-pricing-page-path
+    module: M07
+    state: changed
+    title: 온디맨드 용량 요금 페이지 경로
+    courseware_location: '슬라이드 15 "읽기 및 쓰기 작업" 강사 노트 링크'
+    detail: >-
+      교재가 인용한 aws.amazon.com/dynamodb/pricing/on-demand/ 은 현재
+      aws.amazon.com/dynamodb/pricing/ 으로 리디렉션됩니다. 온디맨드 전용 요금 페이지가
+      통합 요금 페이지로 이동했습니다.
+    replacement: https://aws.amazon.com/dynamodb/pricing/
+    evidence: https://aws.amazon.com/dynamodb/pricing/
+
+  - id: rcu-wcu-on-demand-mislabel
+    module: M07
+    state: incorrect
+    title: "RCU·WCU를 '온디맨드 모드의 예약 용량'이라고 기재"
+    courseware_location: '슬라이드 16 "요금 옵션" 강사 노트 마지막 문단'
+    detail: >-
+      교재 원문은 "중요한 차이점은 온디맨드 모드의 RRU와 WRU는 사용된 용량을 나타내는
+      반면 온디맨드 모드의 RCU와 WCU는 예약 용량을 나타낸다는 것입니다"입니다.
+      RCU·WCU 는 프로비저닝된 용량 모드의 단위이므로 두 번째 '온디맨드'는
+      '프로비저닝'의 오기입니다. 같은 노트 앞부분과 슬라이드 본문은
+      "프로비저닝 모드의 처리량은 RCU 및 WCU로 지정됩니다"라고 올바르게 기재해
+      자체 모순입니다.
+    replacement: >-
+      온디맨드 모드의 RRU·WRU 는 사용된 용량, 프로비저닝된 용량 모드의 RCU·WCU 는
+      예약(프로비저닝)된 용량
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+
+  - id: item-collection-10gb-unconditional
+    module: M07
+    state: incorrect
+    title: 항목 컬렉션 10GB 한도를 무조건적 제약으로 기재
+    courseware_location: '슬라이드 18 "예: 로컬 보조 인덱스" 강사 노트'
+    detail: >-
+      교재는 "항목 컬렉션의 총 크기는 10GB를 초과할 수 없습니다"라고 조건 없이
+      기재합니다. 공식 문서는 이 제약이 로컬 보조 인덱스가 하나 이상 있는 테이블에만
+      적용된다고 명시합니다. LSI 가 없으면 DynamoDB 가 항목 컬렉션을 필요한 만큼
+      여러 파티션에 자동 분할합니다. 10GB 는 파티션의 최대 크기입니다.
+    replacement: >-
+      LSI 가 하나 이상 있는 테이블에서만 항목 컬렉션이 10GB 를 초과할 수 없다.
+      LSI 가 없으면 여러 파티션으로 자동 분할된다
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+
+  - id: lsi-sort-key-scalar-wording
+    module: M07
+    state: incorrect
+    title: "LSI 정렬 키가 '스칼라 속성이 될 수 있다'는 서술"
+    courseware_location: '슬라이드 18 "예: 로컬 보조 인덱스" 강사 노트'
+    detail: >-
+      교재는 "이 정렬 키는 스칼라 속성이 될 수 있습니다"라고만 기재합니다. 공식 문서는
+      LSI 의 정렬 키가 문자열·숫자·이진 형식의 키가 아닌(non-key) 기본 테이블 속성이어야
+      한다고 명시합니다. 또 LSI 의 기본 키는 반드시 복합(파티션 키 + 정렬 키)이어야 하고,
+      인덱스 키 스키마의 모든 속성은 최상위 속성이어야 하며 문서·세트 형식은 허용되지
+      않습니다.
+    replacement: >-
+      LSI 정렬 키는 문자열·숫자·이진 형식의 키가 아닌 기본 테이블 최상위 속성.
+      LSI 기본 키는 반드시 복합
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html
+
+  - id: boto3-client-resource-comment
+    module: M07
+    state: incorrect
+    title: "boto3.client 위에 '서비스 리소스 가져오기' 주석"
+    courseware_location: '슬라이드 36 "Python 예제: DynamoDB 서비스 클라이언트 생성" 코드'
+    detail: >-
+      교재 코드는 dynamodb = boto3.client('dynamodb') 바로 위에
+      "# 서비스 리소스 가져오기" 라는 주석을 달고, 슬라이드 설명은
+      "서비스 이름이 포함된 하위 수준 클라이언트를 생성합니다"라고 기재합니다.
+      boto3 에서 client() 와 resource() 는 별개의 인터페이스이므로 주석이 잘못되었습니다.
+      리소스는 boto3.resource('dynamodb') 로 가져옵니다.
+    replacement: '# 하위 수준 클라이언트 생성 (리소스는 boto3.resource(''dynamodb''))'
+    evidence: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html
+
+  - id: dynamodb-stores-data-in-rows-quiz
+    module: M07
+    state: incorrect
+    title: "슬라이드 25 결과 표의 'Notes' 열 이름"
+    courseware_location: '슬라이드 25 "AWS CLI와 상호 작용" 결과 표'
+    detail: >-
+      슬라이드 25 결과 표의 헤더가 `UserId | NoteId | Notes | Favorite` 로 표기되어
+      있습니다. 같은 덱의 다른 모든 슬라이드(8, 12, 13, 14, 18, 19)와 put-item 명령의
+      항목 JSON 은 모두 속성 이름을 `Note` 로 씁니다. `Notes` 는 테이블 이름과 혼동된
+      오기입니다.
+    replacement: 'Note (Notes 는 테이블 이름)'
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+
+  - id: slide13-json-syntax
+    module: M07
+    state: incorrect
+    title: 슬라이드 13 JSON 예제의 문법 오류
+    courseware_location: '슬라이드 13 "항목 및 속성 유형" JSON 예제'
+    detail: >-
+      슬라이드 13 의 JSON 예제에서 "Tags": ["DynamoDB", "NoSQL"] 뒤에 쉼표가 없어
+      그다음 "Meta" 항목과 이어지지 않습니다. 원문 그대로는 유효한 JSON 이 아닙니다.
+      이 자료에서는 쉼표를 넣어 유효한 JSON 으로 고쳐 실었습니다.
+    replacement: '"Tags": ["DynamoDB", "NoSQL"], 로 쉼표 추가'
+    evidence: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html

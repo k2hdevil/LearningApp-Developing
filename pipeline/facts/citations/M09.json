@@ -1,0 +1,540 @@
+{
+  "_note": "M09 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다. fetched_with=link_check 는 'URL 이 살아 있다' 자체가 주장인 항목에만 사용했다.",
+  "module": "M09",
+  "verified_on": "2026-08-30",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / aws.amazon.com·boto3.amazonaws.com·awscli.amazonaws.com web_fetch",
+  "citations": [
+    {
+      "id": "lambda-runtimes-table",
+      "claim": "지원 런타임 표(25행)에는 Node.js 26(nodejs26.x, 퍼블릭 프리뷰)·Node.js 24·Node.js 22, Python 3.15(퍼블릭 프리뷰)·3.14·3.13·3.12·3.11·3.10, Java 25·21·17(java17.al2023)·11(java11.al2023)·8(java8.al2023)·17(java17)·11(java11)·8(java8.al22), .NET 10·.NET 9(컨테이너 전용)·.NET 8, Ruby 4.0·3.4·3.3, OS 전용 런타임(provided.al2023)이 있다. 각 언어의 주요 버전마다 별도 런타임 식별자를 가지며(예: nodejs24.x, python3.14) 주요 버전 변경은 고객이 직접 런타임 식별자를 바꿔야 한다. 지원 런타임은 모두 x86_64 와 arm64 아키텍처를 지원한다. Lambda 는 언어가 LTS(장기 지원) 단계에 도달한 뒤에만 관리형 런타임을 제공한다. Amazon Linux 2 는 2026년 6월 30일 EOL 예정이며 AL2 기반 런타임(java8.al2·java11·java17·python3.10·python3.11·provided.al2)은 표의 지원 종료일까지만 패치된다.",
+      "corrects_courseware": "교재 슬라이드 10 강사 노트는 런타임을 'Node.js, Java, Python, .NET Core, Go, Ruby'로 나열한다. .NET Core 계열 런타임은 모두 지원 종료되었고 현재 이름은 .NET 8·9·10 이다. Go 1.x 런타임도 지원 종료되어 Go 는 OS 전용 런타임으로 실행한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Supported runtimes / New runtime releases"
+    },
+    {
+      "id": "python38-deprecated",
+      "claim": "python3.8 런타임은 폐기된 런타임(Deprecated runtimes) 표에 있으며 운영 체제는 Amazon Linux 2, 지원 종료일은 2024년 10월 14일, 함수 생성 차단은 2027년 2월 1일, 함수 업데이트 차단은 2027년 3월 3일이다.",
+      "corrects_courseware": "교재 슬라이드 34 create-function 예제는 --runtime python3.8 을 사용한다. 이 런타임은 2024년 10월 14일에 지원 종료되었다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Deprecated runtimes"
+    },
+    {
+      "id": "dotnetcore-deprecated",
+      "claim": ".NET Core 3.1(dotnetcore3.1)은 2023년 4월 3일, .NET Core 2.1(dotnetcore2.1)은 2022년 1월 5일, .NET Core 1.0 은 2019년 6월 27일, .NET Core 2.0 은 2019년 5월 30일에 각각 지원 종료되었다. Go 1.x(go1.x)는 2024년 1월 8일에 지원 종료되었고 함수 생성 차단은 2024년 2월 8일이다.",
+      "corrects_courseware": "교재는 슬라이드 10·48 에서 '.NET Core' 라는 이름을 런타임·배포 패키지 구분으로 사용한다. .NET Core 계열 런타임은 전부 지원 종료되었다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Deprecated runtimes"
+    },
+    {
+      "id": "runtime-deprecation-policy",
+      "claim": "Lambda 의 표준 폐기 정책은 런타임의 주요 구성 요소(대개 언어 런타임, 때로는 운영 체제)가 커뮤니티 LTS 종료에 도달해 보안 업데이트를 더 이상 받을 수 없을 때 그 런타임을 폐기하는 것이다. 폐기 이후에도 함수는 무기한 호출할 수 있지만 보안 패치와 기술 지원이 중단된다. 폐기 일정은 폐기 예정일 최소 180일 전 이메일·Health Dashboard 알림 → 폐기일(콘솔에서 생성·업데이트 불가, CLI·SAM·CloudFormation 은 가능) → 폐기 후 최소 30일 뒤 함수 생성 차단 → 폐기 후 최소 60일 뒤 함수 코드·구성 업데이트 차단 순이다. 표의 예상 폐기일은 계획 목적이며 변경될 수 있다. 새 리전에서는 향후 6개월 내 폐기 예정 런타임을 지원하지 않는다.",
+      "corrects_courseware": "교재는 런타임 폐기 정책과 일정 자체를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Runtime deprecation policy / Runtime use after deprecation / Shared responsibility model"
+    },
+    {
+      "id": "runtime-included-sdk",
+      "claim": "Node.js, Python, Ruby 런타임에는 AWS SDK 버전이 포함되어 있다. 다만 문서는 종속성을 완전히 제어하고 자동 런타임 업데이트 중 하위 호환성을 극대화하기 위해 코드가 사용하는 SDK 모듈(및 종속성)을 배포 패키지나 Lambda 레이어에 항상 포함하도록 권장한다. 런타임에 포함된 SDK 버전을 쓰는 것은 배포에 추가 패키지를 포함할 수 없을 때(예: Lambda 콘솔 코드 편집기로 함수를 만들거나 CloudFormation 템플릿에 인라인 코드를 쓰는 경우)에만 권장한다. Lambda 는 이 런타임들에 포함된 AWS SDK 버전을 주기적으로 갱신한다.",
+      "corrects_courseware": "교재 슬라이드 24 강사 노트는 'Python 및 Node.js용 런타임에는 SDK 가 내장되어 있으므로 이러한 SDK 를 코드와 번들링할 필요가 없습니다'라고 기재한다. 현재 문서는 반대로 SDK 모듈을 배포 패키지나 레이어에 항상 포함하도록 권장하며, 런타임 내장 SDK 는 예외적인 경우에만 쓰라고 기술한다. 또한 Ruby 런타임도 SDK 를 포함한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Supported runtimes (AWS SDK 관련 서술)"
+    },
+    {
+      "id": "quota-compute-storage",
+      "claim": "동시 실행(Concurrent executions) 기본 할당량은 1,000 이고 수만 단위까지 증액 요청할 수 있다. Lambda 관리형 스토리지를 쓰는 업로드 함수(.zip)·레이어 스토리지는 300GB(압축 해제 기준)이며 증액 불가이고 그 이상은 자체 관리형 S3 코드 스토리지를 쓴다. VPC 당 탄력적 네트워크 인터페이스는 500(수천까지 증액 가능). 새 AWS 계정은 Lambda 함수·MicroVM 에 대해 동시성·메모리 할당량이 축소되어 시작되며 사용량에 따라 자동으로 상향된다.",
+      "supports_courseware": "교재 슬라이드 45 의 '동시 실행 한도 1,000개' 값은 현재도 기본 할당량으로 일치한다.",
+      "corrects_courseware": "교재는 1,000 을 고정 한도처럼 서술하지만 문서는 증액 가능한 기본 할당량으로 기술하고, 신규 계정은 오히려 더 낮은 값에서 시작한다고 명시한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html",
+      "fetched_with": "mcp",
+      "section": "Compute and storage"
+    },
+    {
+      "id": "quota-function-config",
+      "claim": "함수 구성·배포·실행 할당량: 메모리 할당 128MB~10,240MB(1MB 단위). 함수 시간 제한 900초(15분). 환경 변수 총합 4KB. 리소스 기반 정책 20KB. 레이어 5개. 함수별 동시성 조정 한도(concurrency scaling limit) 10초당 실행 환경 1,000개. 호출 페이로드는 동기식 요청·응답 각각 6MB, 스트리밍 응답 200MB, 비동기식 1MB, 요청 라인+헤더 값 합계 1MB. 스트리밍 응답 대역폭은 첫 6MB 무제한, 이후 2MBps. 실행 환경당 네트워크 대역폭 625Mbps. 배포 패키지(.zip)는 Lambda API·SDK 업로드 시 50MB(압축), 콘솔 업로드 시 50MB, 레이어·사용자 지정 런타임을 포함한 압축 해제 최대 250MB. 컨테이너 이미지 설정 크기 16KB, 컨테이너 이미지 코드 패키지 10GB(모든 레이어를 포함한 최대 비압축 이미지 크기). 콘솔 편집기 테스트 이벤트 10개. /tmp 디렉터리 스토리지 512MB~10,240MB(1MB 단위). 파일 설명자 1,024, 실행 프로세스·스레드 1,024. Lambda 는 구성한 메모리에 비례해 CPU 를 할당하고 1,769MB 에서 1 vCPU 에 상당한다.",
+      "supports_courseware": "교재 슬라이드 50 표의 메모리 128~10,240MB, 시간 제한 15분, 동기식 페이로드 6MB, Zip 50MB·비압축 250MB, 컨테이너 이미지 10GB, 슬라이드 38 의 '함수당 최대 5개 레이어' 는 현재 값과 일치한다.",
+      "corrects_courseware": "교재 슬라이드 50 표(2021년 9월 기준)와 다른 점: 비동기식 호출 페이로드는 256KB 가 아니라 1MB. /tmp 스토리지는 10GB 고정이 아니라 512MB~10,240MB 범위(기본 512MB). '버스트 동시성' 이라는 이름은 현재 '동시성 조정 한도(concurrency scaling limit)' 로 바뀌었다. '콘솔에서 인라인 편집 3MB' 항목은 현재 할당량 표에 없고, 표에는 콘솔 업로드 50MB 가 있다. 교재에 없는 항목: 환경 변수 4KB, 리소스 기반 정책 20KB, 스트리밍 응답 200MB, 스트리밍 대역폭 2MBps, 네트워크 대역폭 625Mbps, 컨테이너 이미지 설정 16KB, 테스트 이벤트 10개, 파일 설명자·스레드 1,024, 1,769MB=1vCPU.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html",
+      "fetched_with": "mcp",
+      "section": "Function configuration, deployment, and execution"
+    },
+    {
+      "id": "quota-api-requests",
+      "claim": "Lambda API 요청 할당량: 동기식 호출은 실행 환경 인스턴스마다 초당 최대 10건을 처리하므로 총 호출 한도는 동시성 한도의 10배다. 비동기식 호출은 인스턴스당 요청 수 제한이 없고 총 호출 한도가 사용 가능한 동시성에만 의존한다. 프로비저닝된 동시성을 쓰는 함수 버전·별칭은 초당 요청이 할당된 프로비저닝된 동시성의 10배다. GetFunction 은 초당 100건, GetPolicy 는 초당 15건, 나머지 제어 영역 API 는 전체 API 를 합쳐 초당 15건이며 모두 증액 불가다.",
+      "corrects_courseware": "교재는 API 요청 할당량을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html",
+      "fetched_with": "mcp",
+      "section": "Lambda API requests"
+    },
+    {
+      "id": "async-invocation-basics",
+      "claim": "비동기식 호출에서 Lambda 는 이벤트를 대기열에 넣고 추가 정보 없는 성공 응답(StatusCode 202)을 반환하며, 별도 프로세스가 대기열에서 이벤트를 읽어 함수에 보낸다. CLI·SDK 로 비동기 호출하려면 InvocationType 을 Event 로 설정한다. AWS CLI 버전 2 에서는 --cli-binary-format raw-in-base64-out 옵션이 필요하다. 출력 파일은 내용이 없지만 명령을 실행하면 생성되고, Lambda 가 이벤트를 대기열에 추가할 수 없으면 오류 메시지가 명령 출력에 나타난다.",
+      "supports_courseware": "교재 슬라이드 12 강사 노트의 '이벤트를 대기열로 전송, 별도 프로세스가 읽어 실행, 추가 정보 없는 성공 응답 또는 대기열 추가 실패 오류' 서술이 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 44 의 invoke 예제는 --payload 에 JSON 문자열을 그대로 전달한다. AWS CLI v2 에서는 --cli-binary-format raw-in-base64-out 이 필요하다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html",
+      "fetched_with": "mcp",
+      "section": "Invoking a Lambda function asynchronously"
+    },
+    {
+      "id": "async-retry-behavior",
+      "claim": "함수가 오류를 반환하면 Lambda 는 기본적으로 두 번 더 재시도하며, 첫 두 시도 사이에 1분, 두 번째와 세 번째 시도 사이에 2분을 기다린다. 함수 오류에는 함수 코드가 반환한 오류와 시간 초과 같은 런타임 오류가 포함된다. 스로틀링 오류(429)와 시스템 오류(500 계열)에서는 이벤트를 대기열로 되돌리고 기본 최대 6시간 동안 재시도하며, 재시도 간격은 첫 시도 후 1초에서 최대 5분까지 지수적으로 늘어난다. 대기열이 매우 길면 새 이벤트가 함수로 전달되기 전에 만료될 수 있고, 만료되거나 모든 처리 시도에 실패한 이벤트는 폐기된다. 대기열 자체가 최종 일관성이므로 함수가 오류를 반환하지 않아도 같은 이벤트를 여러 번 받을 수 있어 코드가 중복 이벤트를 처리할 수 있어야 한다.",
+      "supports_courseware": "교재 슬라이드 13 표의 '비동기식 기본 제공 재시도(2회)' 와 슬라이드 45 강사 노트의 멱등성 권장이 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html",
+      "fetched_with": "mcp",
+      "section": "How Lambda handles errors and retries with asynchronous invocation"
+    },
+    {
+      "id": "async-error-handling-config",
+      "claim": "비동기 호출의 오류 처리 설정은 두 개다. MaximumEventAgeInSeconds 는 Lambda 가 이벤트를 비동기 이벤트 대기열에 보관하는 최대 시간이며 콘솔에서는 '이벤트 최대 수명' 으로 최대 6시간까지 설정한다. MaximumRetryAttempts 는 함수가 오류를 반환할 때 재시도하는 최대 횟수이며 콘솔에서는 0~2 사이로 설정한다. 이 설정은 함수·버전·별칭 단위로 지정하고, put-function-event-invoke-config 는 기존 설정을 덮어쓰므로 일부만 바꾸려면 update-function-event-invoke-config 를 쓴다.",
+      "supports_courseware": "교재 슬라이드 12 강사 노트의 '재시도 횟수 및 재시도 간격은 구성 가능합니다' 서술을 뒷받침한다. 다만 구성 가능한 값은 재시도 횟수(0~2)와 이벤트 최대 수명(최대 6시간)이며 재시도 간격 자체를 지정하는 파라미터는 문서에 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-configuring.html",
+      "fetched_with": "mcp",
+      "section": "Configuring error handling settings for Lambda asynchronous invocations"
+    },
+    {
+      "id": "async-destinations",
+      "claim": "Lambda 는 비동기 호출 레코드를 Amazon SQS 표준 대기열, Amazon SNS 표준 주제, Amazon S3 버킷(실패 시에만), AWS Lambda 함수, Amazon EventBridge 이벤트 버스 다섯 가지 중 하나로 보낼 수 있다. 성공 이벤트와 모든 처리 시도에 실패한 이벤트에 각각 다른 대상을 구성할 수 있다. 대상별로 실행 역할에 sqs:SendMessage, sns:Publish, s3:PutObject·s3:ListBucket, lambda:InvokeFunction, events:PutEvents 권한이 필요하다. DLQ(데드 레터 대기열)는 온-실패 대상의 대안이며 함수 수준에서만 추가·제거할 수 있고 응답 세부 정보 없이 이벤트 내용만 보낸다. 온-실패 대상은 지원 대상이 더 많고 함수 응답 세부 정보를 호출 레코드에 포함한다. DLQ 는 Amazon SQS 표준 대기열 또는 Amazon SNS 표준 주제만 지원하며 FIFO 는 지원하지 않는다. DLQ 메시지 속성은 RequestID, ErrorCode(HTTP 상태 코드), ErrorMessage(오류 메시지의 첫 1KB)다.",
+      "corrects_courseware": "교재 슬라이드 12 강사 노트는 대상을 AWS Lambda·SNS·SQS·EventBridge 네 개로 나열한다. 현재 문서는 Amazon S3(실패 시에만)를 포함해 다섯 개다. 또 교재는 'DLQ 를 생성·사용하는 것이 비동기 호출 모범 사례' 라고 기재하지만, 현재 문서는 DLQ 를 온-실패 대상의 대안으로 제시하고 온-실패 대상이 대상 종류와 정보량에서 더 낫다고 기술한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html",
+      "fetched_with": "mcp",
+      "section": "Capturing records of Lambda asynchronous invocations / Adding a destination / Adding a dead-letter queue"
+    },
+    {
+      "id": "esm-services-and-behavior",
+      "claim": "이벤트 소스 매핑(ESM)은 스트림·대기열 기반 서비스에서 항목을 읽어 레코드 배치와 함께 함수를 호출하는 Lambda 리소스이며, 내부의 이벤트 폴러(event poller)가 새 메시지를 폴링한다. ESM 을 사용해 Lambda 를 호출하는 서비스는 Amazon DocumentDB(MongoDB 호환), Amazon DynamoDB, Amazon Kinesis, Amazon MQ, Amazon MSK, 셀프 매니지드 Apache Kafka, Amazon SQS 일곱 개다. ESM 은 각 이벤트를 최소 한 번 처리하며 중복 처리가 발생할 수 있어 함수 코드를 멱등적으로 만들 것을 강력히 권장한다. 배치는 배치 창(MaximumBatchingWindowInSeconds, 0~300초)·배치 크기(BatchSize)·페이로드 6MB 중 하나가 충족될 때 호출된다. Kinesis·DynamoDB·SQS 의 기본 배치 창은 0초, MSK·셀프 매니지드 Kafka·Amazon MQ·DocumentDB 는 500ms 다. 기본적으로 함수가 오류를 반환하면 ESM 은 배치 전체를 재처리하며 순서 보장을 위해 해당 샤드의 처리를 일시 중지한다. 스트림 소스(DynamoDB·Kinesis)에서는 최대 재시도 횟수를 구성할 수 있고, 배치를 폐기할 때 호출 레코드를 대상으로 보내도록 구성할 수도 있다. 프로비저닝 모드(provisioned mode)는 Amazon MSK·셀프 매니지드 Kafka·Amazon SQS 에서 사용 가능하며 전용 폴링 리소스의 최소·최대치를 지정한다.",
+      "supports_courseware": "교재 슬라이드 12 강사 노트의 ESM 사용 서비스 일곱 개 목록이 현재 문서와 정확히 일치한다. ESM 이 '일반적으로 Lambda 함수를 직접 호출하지 않는 서비스를 위해 설계' 되었다는 서술도 일치한다.",
+      "corrects_courseware": "교재는 배치 창·배치 크기·페이로드 6MB 라는 세 호출 조건과 프로비저닝 모드, 이벤트 폴러 개념을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html",
+      "fetched_with": "mcp",
+      "section": "How Lambda processes records from stream and queue-based event sources / Batching behavior / Provisioned mode"
+    },
+    {
+      "id": "retry-behavior-by-invocation",
+      "claim": "함수를 직접 호출하면 Lambda 는 함수 코드 관련 오류를 자동으로 재시도하지 않으며 재시도 전략은 호출자가 결정한다. 간접 호출에서는 호출자와 경로상의 서비스 재시도 동작을 알아야 한다. 비동기 호출은 함수 오류를 두 번 재시도한다. 스트림을 읽는 ESM 은 항목 배치 전체를 재시도하며 반복 오류는 해당 샤드의 처리를 차단하므로 Iterator Age 지표로 정지된 샤드를 감지한다. 대기열을 읽는 ESM 은 소스 대기열의 표시 시간 제한(visibility timeout)과 리드라이브 정책으로 재시도 간격과 실패 이벤트 대상을 결정한다. 동기식 호출에서는 서비스가 재시도 여부를 결정한다(예: Amazon S3 배치 작업은 TemporaryFailure 응답 코드에 재시도, API Gateway 는 항상 오류 응답을 요청자에게 그대로 전달).",
+      "supports_courseware": "교재 슬라이드 13 표의 세 값(동기식 재시도 안 함·서비스가 재시도할 수 있음 / 비동기식 기본 제공 재시도 2회 / 폴링 기반은 이벤트 소스에 따라 다름)이 모두 현재 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-retries.html",
+      "fetched_with": "mcp",
+      "section": "Understanding retry behavior in Lambda"
+    },
+    {
+      "id": "concurrency-definition",
+      "claim": "동시성은 Lambda 함수가 동시에 처리 중인 진행 중 요청 수이며, 동시 요청마다 Lambda 가 실행 환경 인스턴스를 별도로 프로비저닝한다. 계정의 리전당 총 동시성 한도는 기본 1,000 이고 증액 요청할 수 있다. 동시성 = (초당 평균 요청 수) × (평균 요청 처리 시간(초)) 로 계산한다. 요청이 오면 미리 초기화된 실행 환경 인스턴스가 있으면 재사용하고 없으면 새 인스턴스를 만든다. 동시성 제어는 예약된 동시성과 프로비저닝된 동시성 두 가지다. 예약된 동시성은 함수에 할당할 동시 인스턴스의 최대치와 최소치를 함께 설정해 계정 동시성의 일부를 그 함수에만 예약하며 다른 함수는 그 동시성을 쓸 수 없고, 구성 자체에는 추가 요금이 없다. 프로비저닝된 동시성은 미리 초기화한 실행 환경 인스턴스 수로 콜드 스타트 지연을 줄이며 추가 요금이 발생한다.",
+      "supports_courseware": "교재 슬라이드 15 강사 노트의 '사용 가능한 런타임 환경에서 처리하거나 새 런타임을 생성', 슬라이드 45 의 '동시성 일부를 예약할 수 있다' 서술을 뒷받침한다.",
+      "corrects_courseware": "교재 슬라이드 16 은 프로비저닝된 동시성만 다루고 예약된 동시성은 슬라이드 45 강사 노트에서 '동시성 중 일부를 예약' 이라고만 언급한다. 문서는 두 제어가 목적이 다르며(예약=최대·최소 한도 설정, 프로비저닝=사전 초기화) 예약된 동시성은 무료, 프로비저닝된 동시성은 유료라고 명시한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html",
+      "fetched_with": "mcp",
+      "section": "Understanding and visualizing concurrency / Calculating concurrency / Understanding reserved concurrency and provisioned concurrency"
+    },
+    {
+      "id": "concurrency-scaling-rate",
+      "claim": "각 AWS 리전에서 각 함수의 동시성 조정 속도(concurrency scaling rate)는 10초당 실행 환경 인스턴스 1,000개(또는 10초당 초당 요청 10,000건)다. 이는 계정 수준 동시성 한도와 다른 함수 수준 한도이며 함수마다 독립적으로 조정된다. Lambda 는 이 속도를 10초마다 한 번에 보충하는 대신 시간에 걸쳐 연속적으로 보충하려 시도하고, 쓰지 않은 조정 속도는 누적되지 않는다. 요청이 조정 속도보다 빠르게 들어오거나 함수가 최대 동시성에 도달하면 추가 요청은 스로틀링 오류(429)로 실패한다.",
+      "supports_courseware": "교재 슬라이드 50 표의 '함수당 10초당 최대 1,000회 동시 실행' 이라는 수치가 현재 값과 일치한다.",
+      "corrects_courseware": "교재는 이 항목을 '버스트 동시성' 이라고 부른다. 현재 문서의 이름은 '동시성 조정 속도(concurrency scaling rate)' 이고 할당량 표에서는 '동시성 조정 한도(concurrency scaling limit)' 다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/scaling-behavior.html",
+      "fetched_with": "mcp",
+      "section": "Concurrency scaling rate"
+    },
+    {
+      "id": "provisioned-concurrency-detail",
+      "claim": "프로비저닝된 동시성은 $LATEST 버전에는 쓸 수 없고 게시된 버전 또는 버전을 가리키는 별칭에만 구성한다. 구성 가능한 최대치는 계정의 미예약 동시성에서 100 을 뺀 값이며(예: 한도 1,000, 다른 예약·프로비저닝이 없으면 한 함수에 최대 900), 남는 100 은 예약된 동시성을 쓰지 않는 함수를 위한 몫이다. 한 함수에 예약된 동시성과 프로비저닝된 동시성을 함께 할당할 수 있지만 프로비저닝된 동시성이 예약된 동시성을 초과할 수 없다. 프로비저닝된 동시성을 쓰면 Lambda 가 할당 시점에 초기화 코드를 실행하므로 초기화를 핸들러 밖으로 최대한 옮기는 것이 좋다. 문서는 필요량 추정 시 통상 필요한 동시성에 10% 버퍼를 더할 것을 권장하고, 프로비저닝된 동시성을 쓰는 함수는 실행 환경이 미리 준비되므로 콜드 스타트 동작을 보이지 않는다고 기술한다. 구성 API 는 PutProvisionedConcurrencyConfig·GetProvisionedConcurrencyConfig·ListProvisionedConcurrencyConfigs·DeleteProvisionedConcurrencyConfig 다.",
+      "supports_courseware": "교재 슬라이드 16 의 '지정된 개수 만큼의 Lambda 런타임 환경을 초기화' 서술과 일치한다.",
+      "corrects_courseware": "교재는 프로비저닝된 동시성을 $LATEST 에 적용할 수 없다는 제약, 미예약 동시성 −100 상한, 추가 요금을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html",
+      "fetched_with": "mcp",
+      "section": "Configuring provisioned concurrency / Accurately estimating required provisioned concurrency / Optimizing function code"
+    },
+    {
+      "id": "snapstart-current",
+      "claim": "Lambda SnapStart 는 함수 코드를 대개 변경하지 않고 최대 1초 미만(as low as sub-second) 시작 성능을 제공한다. 함수 버전을 게시할 때 Lambda 가 함수를 초기화하고, 초기화된 실행 환경의 메모리·디스크 상태에 대한 Firecracker MicroVM 스냅샷을 촬영·암호화하고 캐시한다. 처음 호출하거나 호출이 확장될 때 처음부터 초기화하는 대신 캐시된 스냅샷에서 실행 환경을 재개한다. 지원 런타임은 Java 11 이상, Python 3.12 이상, .NET 8 이상이다. 그 밖의 관리형 런타임(예: nodejs24.x, ruby4.0), OS 전용 런타임, 컨테이너 이미지는 지원하지 않는다. SnapStart 는 프로비저닝된 동시성, Amazon EFS, Amazon S3 Files, 512MB 를 초과하는 임시 스토리지를 지원하지 않는다. 게시된 함수 버전과 버전을 가리키는 별칭에만 쓸 수 있고 $LATEST 에는 쓸 수 없다. 요금은 Java 관리형 런타임에는 추가 비용이 없고, 그 밖에는 버전별 스냅샷 캐싱 요금(최소 3시간 과금)과 복원 요금이 발생한다. 상태의 고유성에 의존하는 애플리케이션은 스냅샷 작업에 대한 내성을 검증해야 한다.",
+      "corrects_courseware": "교재 슬라이드 17 은 SnapStart 를 'Java 11 및 Java 17 관리형 런타임에 사용 가능', '시작 성능을 최대 10배까지 향상', '추가 비용 없이' 로 기재한다. 현재 문서는 지원 런타임을 Java 11 이상·Python 3.12 이상·.NET 8 이상으로 확대해 기술하고, 성능 개선을 '10배' 대신 '최대 1초 미만' 으로 표현하며, 추가 비용이 없는 것은 Java 관리형 런타임에 한정한다고 명시한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html",
+      "fetched_with": "mcp",
+      "section": "When to use SnapStart / Supported features and limitations / Compatibility considerations / SnapStart pricing"
+    },
+    {
+      "id": "function-urls",
+      "claim": "함수 URL 은 Lambda 함수 전용 HTTP(S) 엔드포인트다. 생성하면 https://<url-id>.lambda-url.<region>.on.aws 형식의 고유 엔드포인트가 만들어지고 이후 바뀌지 않는다. 듀얼 스택으로 IPv4·IPv6 를 지원하고 퍼블릭 인터넷으로만 액세스할 수 있으며 AWS PrivateLink 는 지원하지 않는다. 보안·액세스 제어에 리소스 기반 정책을 사용하고 CORS 구성을 지원한다. 인증 유형은 AWS_IAM 또는 NONE 이다. 함수 별칭 또는 $LATEST 미게시 버전에만 적용할 수 있고 다른 함수 버전에는 추가할 수 없다. CLI 로는 create-function-url-config, CloudFormation 으로는 AWS::Lambda::Url 리소스를 쓴다. Lambda 를 HTTP 엔드포인트로 호출하는 방법은 함수 URL 과 Amazon API Gateway 두 가지다.",
+      "corrects_courseware": "교재는 함수 URL 을 다루지 않는다. 슬라이드 8·9·36 은 HTTP 요청 경로로 Amazon API Gateway 만 제시한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-urls.html",
+      "fetched_with": "mcp",
+      "section": "Creating and managing Lambda function URLs"
+    },
+    {
+      "id": "response-streaming",
+      "claim": "Lambda 함수는 함수 URL 또는 InvokeWithResponseStream API(SDK·직접 API 호출), Amazon API Gateway 프록시 통합을 통해 응답 페이로드를 클라이언트로 스트리밍할 수 있다. 스트리밍 응답은 최대 200MB 페이로드를 반환할 수 있어 버퍼링 응답의 6MB 상한보다 크다. 첫 6MB 는 대역폭 제한이 없고 그 이후는 최대 2MBps 로 스트리밍된다. 스트리밍은 TTFB(첫 바이트까지의 시간)를 개선하고 함수가 전체 응답을 메모리에 담지 않아도 되게 한다. 관리형 런타임 중에는 Node.js 만 응답 스트리밍을 지원하고, Python 등 다른 언어는 사용자 지정 런타임의 Runtime API 통합 또는 Lambda Web Adapter 를 쓴다. 콘솔에서 테스트하면 응답이 항상 버퍼링된 형태로 보인다. VPC 환경에서는 함수 URL 이 응답 스트리밍을 지원하지 않고 InvokeWithResponseStream API 와 Lambda 인터페이스 VPC 엔드포인트를 써야 한다.",
+      "corrects_courseware": "교재는 응답 스트리밍을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html",
+      "fetched_with": "mcp",
+      "section": "Response streaming for Lambda functions / Bandwidth limits / VPC compatibility"
+    },
+    {
+      "id": "permissions-two-categories",
+      "claim": "Lambda 권한은 두 범주다. 함수가 API 작업을 수행하고 다른 AWS 리소스에 액세스하는 데 필요한 권한은 실행 역할(execution role)이라는 특수한 IAM 역할로 정의하며 모든 Lambda 함수는 실행 역할을 가져야 한다. 최소한 CloudWatch 액세스가 필요하고 AWSLambdaBasicExecutionRole 관리형 정책으로 충족할 수 있다. 다른 AWS 사용자·엔터티가 함수에 액세스하려면 자격 증명 기반 정책, 리소스 기반 정책, 또는 태그를 쓰는 ABAC 를 사용한다. 사용자가 Lambda 리소스에 액세스하려 하면 Lambda 는 사용자의 자격 증명 기반 정책과 리소스의 리소스 기반 정책을 모두 고려하지만, Amazon S3 같은 AWS 서비스가 함수를 호출하면 리소스 기반 정책만 고려한다.",
+      "supports_courseware": "교재 슬라이드 19 의 '호출 권한(리소스 정책) / 실행 권한(실행 역할)' 구분이 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 20 강사 노트는 '사용자 정의 애플리케이션과 Lambda 함수가 같은 AWS 계정에 속한 경우 명시적인 권한을 부여할 필요가 없습니다'라고 기재한다. 현재 문서는 '같은 계정이면 권한이 불필요' 라고 서술하지 않고, IAM 주체 호출에는 자격 증명 기반 정책과 리소스 기반 정책을 모두 평가하며 AWS 서비스 호출에는 리소스 기반 정책만 평가한다고 기술한다. 즉 같은 계정의 IAM 주체도 lambda:InvokeFunction 권한이 자격 증명 기반 정책으로 있어야 한다. 또 ABAC 는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html",
+      "fetched_with": "mcp",
+      "section": "Managing permissions in AWS Lambda"
+    },
+    {
+      "id": "execution-role",
+      "claim": "실행 역할은 함수에 AWS 서비스·리소스 액세스 권한을 부여하는 IAM 역할이다. Lambda 가 함수를 호출할 때 자동으로 실행 역할을 수임하므로 함수 코드에서 sts:AssumeRole 을 직접 호출하지 않아야 한다. 역할의 신뢰 정책은 Lambda 서비스 프린시펄(lambda.amazonaws.com)을 신뢰할 수 있는 서비스로 지정해야 한다. 콘솔에서 함수를 만들면 기본적으로 AWSLambdaBasicExecutionRole 관리형 정책이 포함된 최소 권한 실행 역할이 생성된다. 프로덕션 전에는 최소 권한으로 정책을 조정하고, IAM Access Analyzer 로 CloudTrail 로그를 분석해 필요한 권한만 담은 정책 템플릿을 생성할 수 있다.",
+      "supports_courseware": "교재 슬라이드 19·20·21 의 IAM 실행 역할 서술을 뒷받침한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html",
+      "fetched_with": "mcp",
+      "section": "Defining Lambda function permissions with an execution role"
+    },
+    {
+      "id": "esm-execution-role-policies",
+      "claim": "이벤트 소스 매핑으로 함수를 호출할 때 Lambda 는 실행 역할을 사용해 이벤트 데이터를 읽는다. 관련 AWS 관리형 정책은 AWSLambdaDynamoDBExecutionRole(DynamoDB 스트림 레코드 읽기 + CloudWatch Logs 쓰기), AWSLambdaKinesisExecutionRole(Kinesis 데이터 스트림 이벤트 읽기 + CloudWatch Logs 쓰기), AWSLambdaSQSQueueExecutionRole(SQS 메시지 읽기 + CloudWatch Logs 쓰기), AWSLambdaMSKExecutionRole(MSK 클러스터 레코드 읽기·액세스, ENI 관리, CloudWatch Logs 쓰기), AWSLambdaBasicExecutionRole(CloudWatch 로그 업로드), AWSLambdaVPCAccessExecutionRole(VPC 내 ENI 관리), AWSXRayDaemonWriteAccess(X-Ray 트레이스 데이터 업로드) 등이다.",
+      "supports_courseware": "교재 슬라이드 21 강사 노트의 'AWS Lambda 에 스트림에서 읽을 수 있는 권한을 부여해야 하며 IAM 실행 역할을 업데이트하면 된다' 서술이 문서와 일치한다.",
+      "corrects_courseware": "교재는 필요한 관리형 정책 이름을 제시하지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/permissions-managed-policies.html",
+      "fetched_with": "mcp",
+      "section": "Working with AWS managed policies in the execution role"
+    },
+    {
+      "id": "resource-policy-methods",
+      "claim": "리소스 기반 정책은 Principal·Action·Effect·Resource 를 정의하는 JSON 문서이며 함수 수준 또는 특정 버전·별칭에 적용한다. 권한을 추가하는 방법은 두 가지다. (1) 전체 JSON 정책 — 콘솔, CLI(put-resource-policy), PutResourcePolicy API 를 쓰며 IAM 글로벌 조건 키 전체를 쓸 수 있고 여러 프린시펄의 여러 문장과 명시적 Deny 를 만들 수 있다. 최대 크기 20KB. (2) 개별 권한 — 콘솔 또는 AddPermission API 로 Allow 문장 하나를 추가하며 조건 키는 aws:SourceArn·aws:SourceAccount·aws:PrincipalOrgID 로 제한된다. 문서는 유연성과 세밀한 제어를 위해 전체 JSON 정책 정의를 권장한다. put-resource-policy 는 기존 정책 전체를 대체하므로 add-permission 으로 만든 권한도 덮어쓰며, add-permission 은 기존 정책에 문장을 덧붙인다. AddPermission 으로 만든 기존 정책은 수정 없이 계속 동작한다.",
+      "corrects_courseware": "교재 슬라이드 19·20 은 호출 권한 부여 방법으로 AddPermission API 만 제시한다. 현재 문서는 PutResourcePolicy 로 전체 JSON 정책을 정의하는 방법을 권장 경로로 제시하고 AddPermission 은 개별 권한 추가용으로 위치시킨다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html",
+      "fetched_with": "mcp",
+      "section": "Adding resource-based permissions to a Lambda function / Updating existing policies"
+    },
+    {
+      "id": "add-permission-api",
+      "claim": "AddPermission 은 프린시펄에게 함수 사용 권한을 부여한다. 필수 요청 파라미터는 FunctionName(URI), Action, Principal, StatementId 다. Action 은 lambda:InvokeFunction 이나 lambda:GetFunction 같은 값이고, Principal 은 AWS 서비스·계정·IAM 사용자·역할이다. 선택 파라미터로 Qualifier, SourceArn, SourceAccount, PrincipalOrgID, EventSourceToken, FunctionUrlAuthType, InvokedViaFunctionUrl, RevisionId 가 있다. Lambda 는 $LATEST 버전에 정책을 추가하는 것을 지원하지 않는다. 서비스 프린시펄에 소스를 지정하지 않고 권한을 주면 다른 계정이 자기 계정의 리소스로 함수를 호출하도록 구성할 수 있으므로 SourceArn·SourceAccount 로 제한해야 한다. 성공 시 HTTP 201 과 추가된 정책 문장을 반환하고, 정책이 너무 크면 PolicyLengthExceededException, 퍼블릭 액세스를 허용하는 정책이면 PublicPolicyException 이 발생한다.",
+      "supports_courseware": "교재 슬라이드 19·20 의 'Lambda AddPermission API 를 사용합니다' 서술을 뒷받침한다.",
+      "corrects_courseware": "교재가 인용한 경로 http://docs.aws.amazon.com/lambda/latest/dg/API_AddPermission.html 은 개발자 안내서(dg) 경로다. 현재 AddPermission 문서는 API 참조(api) 경로에 있다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/api/API_AddPermission.html",
+      "fetched_with": "mcp",
+      "section": "AddPermission / Request Body / Errors"
+    },
+    {
+      "id": "courseware-url-redirects",
+      "claim": "교재가 인용한 URL 의 현재 상태를 HTTP 응답으로 확인했다. /lambda/latest/dg/limits.html 은 /lambda/latest/dg/gettingstarted-limits.html 로 리디렉션되고 200 을 반환한다. /lambda/latest/dg/gettingstarted-limits.html 은 200 이다. /lambda/latest/dg/intro-permission-model.html 은 /lambda/latest/dg/lambda-permissions.html 로 리디렉션되고 200 이다. /lambda/latest/dg/API_AddPermission.html 은 /lambda/latest/api/API_AddPermission.html 로, /lambda/latest/dg/API_CreateEventSourceMapping.html 은 /lambda/latest/api/API_CreateEventSourceMapping.html 로 리디렉션되고 각각 200 이다. /eventbridge/latest/userguide/eb-run-lambda-schedule.html 과 /lambda/latest/dg/csharp-handler.html 은 리디렉션 없이 200 이다. /AWSToolkitEclipse/latest/GettingStartedGuide/lambda.html 은 404 다. /lambda/latest/dg/csharp-package-toolkit.html 은 개별 페이지가 아니라 개발자 안내서 루트(/lambda/latest/dg/)로 리디렉션된다. /toolkit-for-eclipse/v1/user-guide/ 와 그 하위 lambda.html 은 AWS Toolkit for JetBrains 사용 설명서(/toolkit-for-jetbrains/latest/userguide/welcome.html)로 리디렉션된다.",
+      "corrects_courseware": "교재가 인용한 AWS Toolkit for Eclipse 사용 설명서 URL 은 404 다. csharp-package-toolkit.html 은 개별 페이지로 남아 있지 않다. 나머지 인용 URL 은 리디렉션으로 살아 있다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html",
+      "fetched_with": "link_check",
+      "section": "URL 도달 가능성 확인(curl -L, HTTP 상태 코드와 최종 URL)"
+    },
+    {
+      "id": "current-dev-tools",
+      "claim": "현재 Lambda 개발 도구 문서는 다음을 제시한다. 로컬 개발 — AWS Toolkit for VS Code 로 로컬 함수 개발·디버깅·테스트와 Lambda 직접 배포. IaC — AWS SAM, AWS CDK, CloudFormation. GitHub Actions — 리포지토리에서 Lambda 배포 자동화(Deploy Lambda function 액션, OIDC 자격 증명). Powertools for AWS Lambda — Python·TypeScript/Node.js·Java·.NET 용 오픈 소스 개발자 툴킷으로 구조화된 로깅·트레이싱·지표, 파라미터 조회, 멱등성 패턴 제공. 워크플로·이벤트 — Lambda durable functions, AWS Step Functions, Amazon EventBridge.",
+      "corrects_courseware": "교재 슬라이드 23 은 개발 도구로 'IDE용 AWS 도구 키트', 'WYSIWYG 편집기 또는 패키징된 .zip 파일 업로드', '서드 파티 플러그인(Eclipse, PyCharm, Visual Studio)' 을 제시하고 슬라이드 54 지식 확인 3번 해설은 'Eclipse 및 Visual Studio 툴키트' 를 든다. 현재 개발 도구 문서는 로컬 개발 도구로 AWS Toolkit for VS Code 를 제시하고 Eclipse 툴킷은 언급하지 않는다. Powertools for AWS Lambda 와 GitHub Actions 는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html",
+      "fetched_with": "mcp",
+      "section": "Development tools for Lambda / Local development tools / Powertools for AWS Lambda"
+    },
+    {
+      "id": "jetbrains-toolkit",
+      "claim": "AWS Toolkit for JetBrains 는 JetBrains IDE 용 오픈 소스 플러그인이며 CLion·GoLand·IntelliJ·WebStorm·Rider·PhpStorm·PyCharm·RubyMine·DataGrip 용 툴킷을 포함한다. AWS Lambda 함수, CloudFormation 스택, Amazon ECS 클러스터를 다룰 수 있고 Lambda 함수를 원격·로컬에서 생성·업데이트·실행·디버그할 수 있다.",
+      "supports_courseware": "교재 슬라이드 23 이 든 'AWS Toolkit for PyCharm' 은 현재 AWS Toolkit for JetBrains 의 일부로 제공된다.",
+      "url": "https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What the AWS Toolkit for JetBrains includes / Working with the AWS Toolkit for JetBrains"
+    },
+    {
+      "id": "layers-detail",
+      "claim": "Lambda 레이어는 보조 코드나 데이터가 담긴 .zip 파일 아카이브이며 보통 라이브러리 종속성, 사용자 지정 런타임, 구성 파일을 담는다. 레이어를 쓰는 이유는 배포 패키지 크기 축소, 핵심 로직과 종속성 분리, 여러 함수 간 종속성 공유, Lambda 콘솔 코드 편집기 사용 가능(패키지가 작아져야 편집기를 쓸 수 있다), 내장 SDK 버전 고정이다. 함수당 최대 5개 레이어를 포함할 수 있고 레이어는 .zip 파일 아카이브로 배포한 함수에만 쓸 수 있다. 컨테이너 이미지로 정의한 함수는 런타임과 모든 종속성을 이미지에 패키지한다. 레이어를 추가하면 Lambda 가 실행 환경의 /opt 디렉터리로 레이어 내용을 추출한다. 레이어 버전은 특정 레이어 버전의 변경 불가능한 스냅샷이며 새 레이어를 만들면 버전 1 이 생성되고 업데이트를 게시할 때마다 번호가 증가한다. 각 레이어 버전은 고유 ARN 으로 식별되고 함수에 추가할 때 정확한 레이어 버전을 지정해야 한다. Go 와 Rust 함수에는 레이어를 권장하지 않는다(실행 파일에 종속성을 함께 넣는 것이 콜드 스타트에 유리).",
+      "supports_courseware": "교재 슬라이드 37·38 의 '.zip 파일 아카이브', '배포된 레이어는 변경 불가능한 버전이며 새 레이어가 게시될 때마다 버전 번호가 증가', '함수당 최대 5개 레이어', '표준 Lambda 배포 크기 제한에 포함' 서술이 모두 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 레이어를 컨테이너 이미지 함수에는 쓸 수 없다는 제약, /opt 추출 위치, Go·Rust 비권장, SDK 버전 고정 용도를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html",
+      "fetched_with": "mcp",
+      "section": "Managing Lambda dependencies with layers / Layers and layer versions"
+    },
+    {
+      "id": "container-image-detail",
+      "claim": "컨테이너 이미지를 빌드하는 방법은 세 가지다. AWS 기본 이미지(언어 런타임, 런타임 인터페이스 클라이언트, 로컬 테스트용 런타임 인터페이스 에뮬레이터가 미리 로드됨), AWS OS 전용 기본 이미지(Amazon Linux 배포와 런타임 인터페이스 에뮬레이터 포함. Go·Rust 같은 컴파일 언어나 Lambda 가 기본 이미지를 제공하지 않는 언어·버전에 사용), AWS 가 아닌 기본 이미지(Alpine·Debian 등. 언어별 런타임 인터페이스 클라이언트를 포함해야 함). Lambda 는 Docker image manifest V2 schema 2(도커 1.10 이상)와 OCI 사양(v1.0.0 이상) 매니페스트 형식을 지원하고, 모든 레이어를 포함한 최대 비압축 이미지 크기는 10GB 다. 이미지는 로컬에서 빌드해 Amazon ECR 리포지토리에 업로드하며 리포지토리는 Lambda 함수와 같은 리전에 있어야 한다. 컨테이너 이미지는 읽기 전용 파일 시스템에서 실행할 수 있어야 하고 함수 코드는 512MB~10,240MB(1MB 단위)의 쓰기 가능한 /tmp 디렉터리에 액세스할 수 있다. Linux 기반 이미지만 지원하고 다중 아키텍처 컨테이너 이미지를 쓰는 함수는 지원하지 않는다. 기존 함수의 배포 패키지 유형(.zip ↔ 컨테이너 이미지)은 변경할 수 없으며 새 함수를 만들어야 한다. Node.js 20, Python 3.12, Java 21, .NET 8, Ruby 3.3 이후 기본 이미지는 Amazon Linux 2023 최소 컨테이너 이미지 기반이고 그 이전은 Amazon Linux 2 기반이다.",
+      "supports_courseware": "교재 슬라이드 49 의 매니페스트 형식 목록(Docker image manifest V2, Schema 2, OCI v1.0.0 이상), 10GB, 'Lambda 런타임 API 를 구현해야 하고 AWS 가 런타임 인터페이스 클라이언트를 제공', '컨테이너 이미지는 레이어를 사용하지 않는다' 서술이 모두 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 기본 이미지 유형을 세 갈래로 구분하지 않고, 배포 패키지 유형을 나중에 바꿀 수 없다는 제약과 AL2023 전환을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/images-create.html",
+      "fetched_with": "mcp",
+      "section": "Create a Lambda function using a container image / Requirements / Using a non-AWS base image"
+    },
+    {
+      "id": "aliases-and-weighted",
+      "claim": "Lambda 별칭은 업데이트할 수 있는 함수 버전 포인터이며 사용자는 별칭 ARN 으로 해당 버전에 액세스한다. 새 버전을 배포하면 별칭이 새 버전을 가리키게 업데이트하거나 두 버전 사이로 트래픽을 분할할 수 있다. CLI 는 create-alias·update-alias·delete-alias, API 는 CreateAlias·UpdateAlias·DeleteAlias 다. 가중치 별칭(weighted alias)으로 같은 함수의 두 버전 사이에 트래픽을 분할해 카나리 배포를 구현한다. 별칭은 최대 두 개의 함수 버전을 가리킬 수 있고, 두 버전은 실행 역할이 같아야 하고 DLQ 구성이 같거나 없어야 하며 둘 다 게시된 버전이어야 한다($LATEST 는 불가). 콘솔에서 추가 버전에 가중치(%)를 지정하면 첫 버전이 나머지 가중치를 받는다. CLI 는 --routing-config AdditionalVersionWeights={\"2\"=0.03} 형식이다. 호출된 버전은 CloudWatch Logs 의 START 로그 항목과 동기 호출 응답의 x-amz-executed-version 헤더로 확인한다. AWS CodeDeploy 와 AWS SAM 의 AutoPublishAlias·DeploymentPreference(예: Linear10PercentEvery2Minutes)로 롤링 배포를 구성할 수 있다.",
+      "supports_courseware": "교재 슬라이드 36 의 별칭 개념, publish-version·create-alias CLI 명령, 별칭 ARN 형식(arn:aws:lambda:region:acct-id:function:name:alias)이 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 별칭의 가중치 기반 트래픽 분할(카나리 배포)과 CodeDeploy·SAM 롤링 배포를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html",
+      "fetched_with": "mcp",
+      "section": "Implement Lambda canary deployments using a weighted alias / Determining which version was invoked"
+    },
+    {
+      "id": "arm64-graviton",
+      "claim": "Lambda 는 arm64(AWS Graviton2 프로세서용 64비트 ARM)와 x86_64 두 명령 세트 아키텍처를 제공한다. arm64 함수는 동등한 x86_64 함수보다 가격·성능이 크게 좋을 수 있고 고성능 컴퓨팅·비디오 인코딩·시뮬레이션 같은 컴퓨팅 집약 워크로드에 적합하다. 마이그레이션 요건은 배포 패키지가 통제 가능한 오픈 소스·자체 코드로 구성되고 서드 파티 종속성마다 arm64 버전이 있어야 한다는 것이다. 레이어·확장·컨테이너 이미지도 대상 아키텍처와 호환되어야 한다. 콘솔 내장 코드 편집기로 코드를 넣었다면 대개 수정 없이 두 아키텍처에서 실행된다. 아키텍처는 콘솔·SDK·CLI·CloudFormation 으로 새 함수와 기존 함수 모두에 구성할 수 있다.",
+      "corrects_courseware": "교재는 명령 세트 아키텍처 선택을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html",
+      "fetched_with": "mcp",
+      "section": "Selecting and configuring an instruction set architecture"
+    },
+    {
+      "id": "env-vars-detail",
+      "claim": "환경 변수는 함수의 버전별 구성에 저장되는 문자열 쌍이며 런타임이 코드에서 쓸 수 있게 제공하고 함수·호출 요청 정보를 담은 추가 환경 변수도 설정한다. 키는 문자로 시작하고 두 글자 이상이며 문자·숫자·밑줄만 쓸 수 있고 Lambda 예약 이름은 쓸 수 없다. 모든 환경 변수의 총 크기는 4KB 를 넘을 수 없다. 미게시 버전에서 정의하고 버전을 게시하면 그 버전에 대해 잠긴다. 환경 변수는 호출 전에 평가되지 않으며 정의한 값은 리터럴 문자열로 취급되므로 변수 평가는 함수 코드에서 수행한다. update-function-configuration 으로 환경 변수를 적용하면 Variables 구조 전체가 대체되므로 새 변수를 추가할 때 기존 값을 모두 요청에 포함해야 한다. 문서는 데이터베이스 자격 증명, API 키, 인증 토큰 같은 민감 정보는 환경 변수 대신 AWS Secrets Manager 를 쓰도록 권장한다.",
+      "supports_courseware": "교재 슬라이드 32 의 '함수의 버전별 구성에 저장되고 함수에 제공됨', update-function-configuration --environment 예제가 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 총 크기 4KB 한도, 키 명명 규칙, update-function-configuration 이 Variables 구조 전체를 대체한다는 점(교재 슬라이드 35 예제처럼 두 변수를 지정하면 기존 TABLE_NAME 이 사라진다), Secrets Manager 권장을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html",
+      "fetched_with": "mcp",
+      "section": "Working with Lambda environment variables / Creating Lambda environment variables"
+    },
+    {
+      "id": "env-vars-encryption",
+      "claim": "Lambda 는 환경 변수에 대해 항상 AWS KMS 키로 저장 중 서버 측 암호화를 제공한다. 기본값은 AWS 관리형 키이며 Lambda 가 계정에 생성하고 권한을 관리하고 사용 요금이 없다. 원할 경우 고객 관리형 키를 제공할 수 있고, 그러면 그 KMS 키에 액세스할 수 있는 계정 사용자만 함수의 환경 변수를 보거나 관리할 수 있다. 고객 관리형 키에는 표준 AWS KMS 요금이 부과된다. 추가로 전송 중 암호화 헬퍼를 활성화해 환경 변수를 클라이언트 측에서 암호화할 수 있으며, 이 경우 함수에 kms:Decrypt 권한이 필요하다.",
+      "supports_courseware": "교재 슬라이드 32 의 '저장 시 암호화' 서술이 문서와 일치한다.",
+      "corrects_courseware": "교재는 기본 AWS 관리형 키와 고객 관리형 키 선택, 전송 중 암호화 헬퍼를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html",
+      "fetched_with": "mcp",
+      "section": "Securing Lambda environment variables"
+    },
+    {
+      "id": "encryption-at-rest",
+      "claim": "AWS Lambda 는 환경 변수, Lambda 에 업로드하는 파일(배포 패키지와 레이어 아카이브 포함), 이벤트 소스 매핑 필터 조건 객체, durable execution 데이터에 대해 항상 저장 중 암호화를 제공한다. 자체 관리형 S3 코드 스토리지를 쓰는 함수·레이어에 대해서는 Lambda 가 소스 코드 사본을 저장하지 않고 코드가 사용자 S3 버킷에 남으며 소스 코드의 저장 중 암호화는 S3 버킷 구성으로 관리된다. 환경 변수, .zip 배포 패키지, 필터 조건 객체, durable execution 데이터에는 선택적으로 고객 관리형 키를 쓸 수 있다.",
+      "corrects_courseware": "교재 슬라이드 14 강사 노트는 'AWS Lambda 는 Amazon S3 에 코드를 저장하고 저장된 데이터를 암호화합니다'라고 기재한다. 저장 중 암호화는 현재도 맞지만 저장 위치 서술은 달라졌다. 현재 문서는 Lambda 관리형 스토리지(계정·리전당 300GB, 압축 해제 기준)를 기본으로 하고, 사용자 S3 버킷을 쓰는 자체 관리형 S3 코드 스토리지를 선택 옵션으로 제시한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/security-encryption-at-rest.html",
+      "fetched_with": "mcp",
+      "section": "Data encryption at rest for AWS Lambda"
+    },
+    {
+      "id": "execution-env-lifecycle",
+      "claim": "실행 환경 수명 주기는 Init, (SnapStart 만) Restore, Invoke, Shutdown 단계다. Init 단계에서 Lambda 는 모든 확장 시작(Extension init), 런타임 부트스트랩(Runtime init), 함수의 정적 코드 실행(Function init), (SnapStart 만) before-checkpoint 런타임 후크 실행을 수행한다. Init 단계는 10초로 제한되며 세 작업이 10초 내에 완료되지 않으면 Lambda 가 첫 호출 시점에 구성된 함수 시간 제한으로 Init 을 재시도한다. 프로비저닝된 동시성, SnapStart, Lambda Managed Instances 를 쓰는 함수에는 10초 제한이 적용되지 않고 초기화 코드가 최대 15분까지 실행될 수 있으며 시간 제한은 130초 또는 구성된 함수 시간 제한(최대 900초) 중 더 큰 값이다. Invoke 단계는 함수의 시간 제한 설정이 전체 길이를 제한하고 런타임과 모든 확장이 Next API 요청을 보내면 끝난다. 함수가 Invoke 단계에서 충돌하거나 시간 초과되면 Lambda 가 실행 환경을 재설정하며 이 재설정은 다음 Init 단계 전에 /tmp 내용을 지우지 않는다. 런타임과 확장이 완료되고 대기 이벤트가 없으면 Lambda 가 실행 환경을 동결(freeze)한다. Init 단계에서 충돌·시간 초과가 발생하면 INIT_REPORT 로그에 오류 정보가 기록된다.",
+      "supports_courseware": "교재 슬라이드 14 다이어그램의 코드 다운로드 → 환경 초기화(확장, 부트스트랩 런타임, 함수 초기화 실행) → 호출(함수 핸들러 실행) → 종료(알림 확장, 환경 제거) 흐름이 현재 문서의 Init·Invoke·Shutdown 단계와 대응한다.",
+      "corrects_courseware": "교재는 Init 단계 10초 제한, SnapStart 의 Restore 단계, 실행 환경 동결(freeze), 재설정 시 /tmp 유지, INIT_REPORT 로그를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html",
+      "fetched_with": "mcp",
+      "section": "Lambda execution environment lifecycle / Init phase / Invoke phase / Failures during the invoke phase"
+    },
+    {
+      "id": "cold-warm-start",
+      "claim": "Lambda 가 요청을 받으면 먼저 실행 환경을 준비한다. 초기화 단계에서 코드를 다운로드하고 환경을 시작하고 핸들러 밖의 초기화 코드를 실행한 뒤 핸들러 코드를 실행한다. 코드 다운로드와 환경 설정 두 단계를 흔히 '콜드 스타트' 라고 부르며 이 시간에 대해서도 과금되고 전체 호출 시간에 지연이 더해진다. 호출이 끝나면 실행 환경이 동결되고 Lambda 는 일정 시간 환경을 유지한다. 그 동안 같은 함수의 다른 요청이 오면 환경을 재사용할 수 있고 이를 '웜 스타트' 라고 한다. 콜드 스타트는 일반적으로 전체 호출의 1% 미만에서 발생하고 지속 시간은 100ms 미만에서 1초 초과까지 다양하다. 콜드 스타트는 호출 빈도가 낮은 개발·테스트 함수에서 프로덕션 워크로드보다 흔하다. 정적 초기화(핸들러 밖 코드) 지연에 영향을 주는 요소는 함수 패키지 크기(임포트한 라이브러리·종속성·레이어), 코드와 초기화 작업의 양, 라이브러리·서비스의 연결 설정 성능이다.",
+      "supports_courseware": "교재 슬라이드 14 의 콜드 스타트·웜 스타트 정의와 슬라이드 31·37 의 '핸들러 외부 초기화', '레이어로 배포 패키지를 작게 유지하면 콜드 스타트 동안 더 빠르게 다운로드' 서술이 문서와 일치한다.",
+      "corrects_courseware": "교재는 콜드 스타트 발생 빈도(1% 미만)와 지속 시간 범위를 제시하지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html",
+      "fetched_with": "mcp",
+      "section": "Cold starts and latency / Optimizing static initialization"
+    },
+    {
+      "id": "memory-cpu-proportional",
+      "claim": "Lambda 는 구성한 메모리 양에 비례해 CPU 파워를 할당한다. 메모리는 128MB~10,240MB 를 1MB 단위로 구성하며 1,769MB 에서 함수가 1 vCPU 에 상당한다(초당 1 vCPU-초 크레딧). 기본 설정은 128MB 이고 이것이 가능한 최솟값이며, 문서는 이벤트를 변환·라우팅하는 단순한 함수에만 128MB 를 쓰도록 권장한다. 메모리를 늘리면 CPU 가 비례해 늘어 전체 연산 능력이 커지므로 CPU·네트워크·메모리 병목이 있는 함수는 성능이 크게 개선될 수 있다. 적절한 값을 찾으려면 CloudWatch 로 모니터링하고 메모리 소비가 구성 최댓값에 가까워질 때 경보를 설정한다. 오픈 소스 AWS Lambda Power Tuning 도구나 AWS Compute Optimizer 의 메모리 권장 사항을 쓸 수 있다(Compute Optimizer 는 x86_64 함수만 지원).",
+      "supports_courseware": "교재 슬라이드 41 강사 노트의 '메모리 크기가 증가하면 이에 상응하여 함수에 사용할 수 있는 CPU 용량이 늘어납니다' 서술이 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 1,769MB=1vCPU 기준값, 1MB 단위 구성, Power Tuning·Compute Optimizer 를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html",
+      "fetched_with": "mcp",
+      "section": "Configure Lambda function memory / Determining the appropriate memory setting"
+    },
+    {
+      "id": "ephemeral-storage",
+      "claim": "Lambda 는 /tmp 디렉터리로 임시 스토리지를 제공하며 이 스토리지는 임시적이고 실행 환경마다 고유하다. 임시 스토리지 설정으로 512MB~10,240MB 를 1MB 단위로 구성할 수 있다. /tmp 에 저장된 모든 데이터는 AWS 가 관리하는 키로 저장 중 암호화된다. 콘솔의 일반 구성, CLI 의 update-function-configuration --ephemeral-storage '{\"Size\": 1024}', AWS SAM 의 EphemeralStorage.Size 로 구성한다. 임시 스토리지를 늘리는 대표 사례는 ETL 작업, 머신 러닝 추론(대용량 모델 다운로드), 데이터 처리(대용량 S3 객체), 그래픽 처리다.",
+      "corrects_courseware": "교재 슬라이드 50 표는 '/tmp 디렉터리 스토리지 10GB' 라고만 기재해 10GB 가 고정값처럼 보인다. 현재 문서는 512MB~10,240MB 범위를 구성하는 설정으로 기술한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-ephemeral-storage.html",
+      "fetched_with": "mcp",
+      "section": "Configure ephemeral storage for Lambda functions"
+    },
+    {
+      "id": "console-code-editor",
+      "claim": ".zip 배포 패키지를 쓰는 일부 함수는 Lambda 콘솔의 내장 코드 편집기로 함수 코드를 직접 업데이트할 수 있다. 조건은 두 가지다. 함수가 인터프리터 언어 런타임(Python, Node.js, Ruby) 중 하나를 쓸 것, 배포 패키지가 압축 해제 기준 50MB 미만일 것. 컨테이너 이미지 배포 패키지를 쓰는 함수의 코드는 콘솔에서 직접 편집할 수 없다. 콘솔은 단일 소스 파일로 함수를 만들고 스크립팅 언어에서는 파일을 편집하고 파일을 추가할 수 있다. 코드를 저장하면 콘솔이 .zip 파일 아카이브 배포 패키지를 만든다. 편집한 코드는 DEPLOY 섹션의 Deploy 로 반영한다. 레이어를 쓰면 패키지 크기가 줄어 코드 편집기를 쓸 수 있게 되기도 한다.",
+      "supports_courseware": "교재 슬라이드 14 강사 노트의 '코드를 Lambda 함수로 업로드하거나 Lambda 의 코드 편집기에서 직접 코딩합니다' 서술을 뒷받침한다.",
+      "corrects_courseware": "교재 슬라이드 50 표는 '콘솔에서 인라인 편집: 3MB' 를 배포 패키지 한도로 기재한다. 현재 문서의 코드 편집기 사용 조건은 인터프리터 언어 런타임(Python·Node.js·Ruby)과 압축 해제 50MB 미만이며, 할당량 표에는 콘솔 업로드 50MB 가 있고 3MB 항목은 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/python-package.html",
+      "fetched_with": "mcp",
+      "section": "Updating .zip file functions using the console code editor / Using the console code editor(configuration-function-zip.html)"
+    },
+    {
+      "id": "zip-deploy-cli",
+      "claim": ".zip 파일로 새 함수를 만들 때 AWS CLI 로 반드시 지정해야 하는 것은 함수 이름(--function-name), 런타임(--runtime), 실행 역할 ARN(--role), 핸들러 메서드 이름(--handler)이고, 여기에 .zip 파일 위치를 함께 준다. 로컬 빌드 머신의 .zip 은 --zip-file fileb://myFunction.zip 으로, Amazon S3 의 .zip 은 --code S3Bucket=...,S3Key=...,S3ObjectVersion=... 으로 지정한다. .zip 파일이 50MB 미만이면 로컬에서 업로드할 수 있고 더 크면 Amazon S3 버킷에서 업로드해야 하며, CLI 로 S3 에서 업로드하는 경우 버킷이 함수와 같은 리전에 있어야 한다. 기존 함수 코드 업데이트는 update-function-code --function-name 과 --zip-file(또는 --s3-bucket·--s3-key·--s3-object-version)을 쓴다. 현재 공식 예제의 런타임은 python3.14 다.",
+      "supports_courseware": "교재 슬라이드 34 의 create-function 예제가 지정하는 --function-name·--handler·--runtime·--role·--zip-file 조합과 fileb:// 표기가 현재 문서와 일치한다.",
+      "corrects_courseware": "교재 예제의 런타임은 python3.8 이고 현재 공식 예제는 python3.14 다. 또 교재는 50MB 초과 시 Amazon S3 경유가 필수라는 점과 --code S3Bucket 형식을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/python-package.html",
+      "fetched_with": "mcp",
+      "section": "Creating and updating functions with .zip files using the AWS CLI"
+    },
+    {
+      "id": "console-test-events",
+      "claim": "콘솔에서 테스트 이벤트(함수에 대한 JSON 입력)로 함수를 테스트할 수 있다. 입력이 필요 없으면 빈 문서({})를 쓴다. 콘솔에서 테스트를 실행하면 Lambda 가 테스트 이벤트로 함수를 동기식으로 호출한다. 테스트 이벤트는 비공개(private)와 공유 가능(shareable) 두 종류다. 비공개 테스트 이벤트는 생성자만 쓸 수 있고 추가 권한이 필요 없으며 함수당 최대 10개를 저장할 수 있다. 공유 가능 테스트 이벤트는 같은 AWS 계정의 다른 사용자와 공유할 수 있고 lambda-testevent-schemas 라는 Amazon EventBridge 스키마 레지스트리에 스키마로 저장되며, EventBridge 스키마 레지스트리 API 작업 권한이 모두 필요하다. 이벤트 JSON 에 템플릿(Template)을 선택할 수 있다. 저장하지 않고 Test 를 누르면 세션 동안만 유지되는 미저장 테스트 이벤트가 만들어진다. Node.js·Python·Ruby 런타임에서는 Code 탭의 TEST EVENTS 섹션에서도 테스트를 만들고 실행할 수 있다. AWS SAM 의 sam remote test-event 로 공유 가능 테스트 이벤트를 호출할 수 있다.",
+      "supports_courseware": "교재 슬라이드 42 강사 노트의 'AWS Management Console — 이벤트 템플릿 / 사용자 지정 페이로드' 서술을 뒷받침한다.",
+      "corrects_courseware": "교재는 공유 가능 테스트 이벤트, 함수당 비공개 테스트 이벤트 10개 한도, sam remote test-event 를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/testing-functions.html",
+      "fetched_with": "mcp",
+      "section": "Testing Lambda functions in the console"
+    },
+    {
+      "id": "sam-local",
+      "claim": "AWS SAM CLI 의 sam local 명령으로 서버리스 애플리케이션을 로컬에서 테스트한다. 하위 명령은 네 개다. sam local generate-event(로컬 테스트용 AWS 서비스 이벤트 생성), sam local invoke(Lambda 함수를 로컬에서 한 번 호출), sam local start-api(로컬 HTTP 서버로 Lambda 함수 실행), sam local start-lambda(AWS CLI·SDK 와 함께 쓸 로컬 HTTP 서버로 Lambda 함수 실행).",
+      "supports_courseware": "교재 슬라이드 42 의 'AWS SAM 을 AWS Toolkit 및 디버거와 함께 사용하여 로컬로 테스트하고 디버그' 서술을 뒷받침한다.",
+      "corrects_courseware": "교재는 sam local 의 하위 명령 이름을 제시하지 않는다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local.html",
+      "fetched_with": "mcp",
+      "section": "Introduction to testing with the sam local command"
+    },
+    {
+      "id": "recursive-loop-detection",
+      "claim": "Lambda 는 재귀 루프를 자동으로 감지한다. 기본적으로 재귀 루프를 감지하면 함수 호출을 중지하고 사용자에게 알린다. 감지는 AWS X-Ray 트레이싱 헤더를 쓰며 X-Ray 활성 트레이싱을 켜지 않아도 동작하고 모든 AWS 고객에게 기본 활성화되어 있으며 무료다. 같은 트리거 이벤트로 발생한 호출 시퀀스를 '요청 체인(chain of requests)' 이라 하고, 함수가 같은 요청 체인에서 약 16회 호출되면 Lambda 가 그 체인의 다음 호출을 자동으로 중지하고 알린다. 현재 Lambda 는 함수 자신, Amazon SQS, Amazon S3, Amazon SNS 사이의 재귀 루프와 Lambda 함수만으로 구성된 루프를 감지하며, Amazon DynamoDB 처럼 다른 서비스가 루프에 포함되면 감지·중지할 수 없다. 감지에는 지원되는 AWS SDK 버전(예: Python boto3 1.24.46·botocore 1.27.46, Node.js SDK v2 2.1147.0·v3 3.105.0 이상)이 필요하다. 온-실패 대상이나 DLQ 를 구성했다면 중지된 호출의 이벤트를 거기로 보낸다. 의도적으로 재귀 패턴을 쓴다면 함수 구성을 바꿔 재귀 호출을 허용할 수 있다. 예상치 못한 요금을 막기 위해 CloudWatch 경보, 청구 경보, AWS Cost Anomaly Detection 을 권장한다.",
+      "corrects_courseware": "교재 슬라이드 25 강사 노트는 '실수로 재귀 코드를 사용하게 된 경우 코드를 업데이트하는 동안 함수 동시 런타임 한도를 즉시 0으로 설정하여 모든 호출을 제한하십시오' 라고만 안내한다. 현재는 Lambda 가 특정 유형의 재귀 루프를 자동 감지해 중지하는 기능을 기본 제공한다(단 DynamoDB 가 포함된 루프는 감지되지 않으므로 교재의 수동 조치도 여전히 유효하다).",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html",
+      "fetched_with": "mcp",
+      "section": "Use Lambda recursive loop detection to prevent infinite loops / Understanding recursive loop detection / Supported AWS services and SDKs"
+    },
+    {
+      "id": "context-python",
+      "claim": "Python 컨텍스트 객체의 메서드는 get_remaining_time_in_millis(시간 초과 전 남은 밀리초를 반환) 하나이고, 속성은 function_name, function_version, invoked_function_arn, memory_limit_in_mb, aws_request_id, log_group_name, log_stream_name, identity(모바일 앱, cognito_identity_id·cognito_identity_pool_id 포함), client_context(모바일 앱, client.installation_id·app_title·app_version_name·app_version_code·app_package_name, custom, env 포함)다.",
+      "supports_courseware": "교재 슬라이드 27 강사 노트의 Python 컨텍스트 목록과 이름이 일치한다.",
+      "corrects_courseware": "교재는 get_remaining_time_in_millis 에 '(기본값 = 3초)' 를 붙이는데 문서에는 그런 서술이 없다. get_remaining_time_in_millis 는 함수에 구성된 시간 제한을 기준으로 남은 시간을 반환할 뿐이며 언어별 기본값이 따로 있는 것이 아니다. 또 교재의 Python 목록에는 identity·client_context 가 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/python-context.html",
+      "fetched_with": "mcp",
+      "section": "Using the Lambda context object to retrieve Python function information"
+    },
+    {
+      "id": "context-java",
+      "claim": "Java 컨텍스트 객체의 메서드는 getRemainingTimeInMillis()(시간 초과 전 남은 밀리초를 반환), getFunctionName(), getFunctionVersion(), getInvokedFunctionArn(), getMemoryLimitInMB(), getAwsRequestId(), getLogGroupName(), getLogStreamName(), getIdentity()(모바일 앱), getClientContext()(모바일 앱), getLogger()다. 컨텍스트 객체 인터페이스는 aws-lambda-java-core 라이브러리에 있고 이 인터페이스를 구현해 테스트용 컨텍스트 클래스를 만들 수 있다. 현재 공식 예제도 com.amazonaws.services.lambda.runtime.Context·RequestHandler·LambdaLogger 를 임포트한다.",
+      "supports_courseware": "교재 슬라이드 27 의 Java 컨텍스트 메서드 11개 목록이 현재 문서와 정확히 일치한다. 슬라이드 29 의 com.amazonaws.services.lambda.runtime.Context·RequestHandler 임포트도 현재 문서 예제와 같다.",
+      "corrects_courseware": "교재는 getRemainingTimeInMillis() 에 '(기본값 = 15분)' 을 붙이는데 문서에는 그런 서술이 없다. 같은 항목의 기본값을 Python 은 3초, Java·.NET 은 15분으로 적은 것은 교재 내부 불일치다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/java-context.html",
+      "fetched_with": "mcp",
+      "section": "Using the Lambda context object to retrieve Java function information"
+    },
+    {
+      "id": "context-dotnet",
+      "claim": ".NET(C#) ILambdaContext 의 속성은 FunctionName, FunctionVersion, InvokedFunctionArn, MemoryLimitInMB, AwsRequestId, LogGroupName, LogStreamName, RemainingTime(TimeSpan, 시간 초과 전 남은 밀리초), Identity(모바일 앱), ClientContext(모바일 앱), Logger 다. 현재 공식 예제도 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))] 를 사용한다.",
+      "supports_courseware": "교재 슬라이드 27 의 .NET 컨텍스트 속성 목록과 슬라이드 30 의 DefaultLambdaJsonSerializer(SystemTextJson) 사용이 현재 문서와 일치한다. 다만 교재는 identity 를 소문자로 적었고 문서는 Identity 다.",
+      "corrects_courseware": "교재는 RemainingTime 에 '(기본값 = 15분)' 을 붙이는데 문서에는 그런 서술이 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/csharp-context.html",
+      "fetched_with": "mcp",
+      "section": "Using the Lambda context object to retrieve C# function information"
+    },
+    {
+      "id": "invoke-api",
+      "claim": "Invoke API 는 기본적으로 함수를 동기식으로 호출한다(InvocationType 이 RequestResponse). 비동기 호출은 InvocationType 을 Event 로 설정한다. InvocationType 유효값은 Event, RequestResponse(기본값), DryRun 이고 DryRun 은 파라미터 값을 검증하고 사용자·역할에 호출 권한이 있는지 확인한다. LogType 유효값은 None 과 Tail 이며 Tail 은 응답에 실행 로그를 포함하고 동기식으로 호출한 함수에만 적용된다. ClientContext 는 호출 클라이언트에 대한 최대 3,583바이트의 base64 인코딩 데이터이며 Lambda 는 동기 호출에만 ClientContext 객체를 함수에 전달한다. Qualifier 로 버전 또는 별칭을 지정한다. Payload 최대 크기는 동기 6MB, 비동기 1MB 이고 --payload '{ \"key\": \"value\" }' 처럼 JSON 을 직접 넣거나 --payload file://payload.json 처럼 파일 경로를 줄 수 있다. 응답 상태 코드는 RequestResponse 200, Event 202, DryRun 204 다. 응답 헤더는 X-Amz-Function-Error(함수 실행 중 오류 발생 표시), X-Amz-Log-Result(실행 로그의 마지막 4KB, base64 인코딩), X-Amz-Executed-Version(실행된 함수 버전) 이다. API 응답의 상태 코드는 함수 오류를 반영하지 않으며 오류 코드는 권한 오류·할당량 오류·코드·구성 문제처럼 함수 실행 자체를 막는 오류에만 예약되어 있다. 이 작업에는 lambda:InvokeFunction 권한이 필요하다.",
+      "supports_courseware": "교재 슬라이드 43 의 invoke 파라미터 목록(function-name, invocation-type, log-type, client-context, payload, qualifier, outfile)과 각 설명, 슬라이드 44 응답의 ExecutedVersion·StatusCode 200 이 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 log-type Tail 을 소문자 헤더 x-amz-log-result 로 적는데 문서 표기는 X-Amz-Log-Result 이고 값은 실행 로그의 마지막 4KB(base64)다. 또 client-context 가 동기 호출에만 전달된다는 제약과 크기 상한(3,583바이트)을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/api/API_Invoke.html",
+      "fetched_with": "mcp",
+      "section": "Invoke / URI Request Parameters / Response Syntax / Response Elements"
+    },
+    {
+      "id": "function-vs-invocation-errors",
+      "claim": "함수 코드나 Lambda 런타임이 오류를 반환하면 Lambda 응답의 상태 코드는 200 OK 이고 응답에 오류가 있다는 사실은 X-Amz-Function-Error 헤더로 표시된다. 400·500 계열 상태 코드는 호출 오류(invocation errors)에 예약되어 있다. 함수를 직접 호출하면 함수 오류가 응답에 보이고, 비동기·이벤트 소스 매핑·다른 서비스를 통해 호출하면 로그, 데드 레터 대기열, 온-실패 대상에서 오류를 찾을 수 있다. 호출 오류는 요청 파라미터, 이벤트 구조, 함수 설정, 사용자 권한, 리소스 권한, 한도 문제로 발생한다. lambda:InvokeFunction 권한이 없으면 'is not authorized to perform: lambda:InvokeFunction' 오류가 발생하며, 사용자 또는 수임하는 역할에 함수 호출 권한이 있어야 하고 이 요구 사항은 함수를 호출하는 Lambda 함수와 다른 컴퓨팅 리소스에도 적용된다.",
+      "supports_courseware": "교재 슬라이드 45 의 '호출 오류 — 응답 오류 코드 400 또는 500 시리즈', '함수 오류 — 응답 헤더 X-Amz-Function-Error' 구분이 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 함수 오류의 경우 HTTP 상태 코드가 200 OK 라는 점을 명시하지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/python-exceptions.html",
+      "fetched_with": "mcp",
+      "section": "Troubleshoot execution issues in Lambda"
+    },
+    {
+      "id": "invoke-permission-required",
+      "claim": "lambda:InvokeFunction 권한이 없으면 'User: ... is not authorized to perform: lambda:InvokeFunction on resource: my-function' 오류가 발생한다. 사용자 또는 수임하는 역할에 함수를 호출할 권한이 있어야 하고, 이 요구 사항은 함수를 호출하는 Lambda 함수와 그 밖의 컴퓨팅 리소스에도 적용된다. AWS 관리형 정책 AWSLambdaRole 을 추가하거나 대상 함수에 대해 lambda:InvokeFunction 을 허용하는 사용자 지정 정책을 추가한다. IAM 작업 이름 lambda:InvokeFunction 은 Lambda API 의 Invoke 작업을 가리킨다. 또 Init 단계가 시간 초과되면 Lambda 가 다음 호출 요청이 올 때 Init 단계를 다시 실행하며(suppressed init) 시간 제한이 3초처럼 짧으면 Init 이 다시 시간 초과되거나 Invoke 단계 시간이 부족해질 수 있다.",
+      "corrects_courseware": "교재 슬라이드 20 강사 노트의 '같은 AWS 계정이면 명시적인 권한을 부여할 필요가 없습니다' 서술과 달리, 현재 문서는 계정 관계와 무관하게 호출 주체에게 lambda:InvokeFunction 권한이 필요하다고 기술한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-invocation.html",
+      "fetched_with": "mcp",
+      "section": "IAM: lambda:InvokeFunction not authorized / Lambda: Function times out during Init phase"
+    },
+    {
+      "id": "versions-immutability",
+      "claim": "함수를 게시할 때마다 Lambda 가 새 버전을 만들며 새 버전은 미게시 버전($LATEST)의 사본이다. 함수 코드를 배포하면 $LATEST 의 현재 코드를 덮어쓴다. 버전을 게시한 뒤에는 그 버전의 코드, 런타임, 아키텍처, 메모리, 레이어와 그 밖의 대부분 구성 설정이 변경 불가능(immutable)하다. 게시된 버전에도 구성할 수 있는 항목은 트리거, 대상(destinations), 프로비저닝된 동시성, 비동기 호출 설정, 데이터베이스 연결·프록시다. Lambda 는 단조 증가하는 시퀀스 번호를 버전에 부여하고 함수를 삭제하고 다시 만들어도 버전 번호를 재사용하지 않는다. 정규화된 ARN(버전 접미사 포함)과 비정규화 ARN(접미사 없음)을 쓸 수 있고, 비정규화 ARN 으로는 별칭을 만들 수 없으며 비정규화 ARN 으로 호출하면 Lambda 가 암시적으로 $LATEST 를 호출한다. 코드가 이전 게시 버전과 같으면 새 버전이 게시되지 않는다. CLI 는 publish-version, API 는 PublishVersion 이다.",
+      "supports_courseware": "교재 슬라이드 33 의 'UpdateFunctionCode — 버전을 생성한 후 이미 배포한 코드는 수정할 수 없습니다', 슬라이드 36 의 '새 버전을 게시하면 버전 번호가 증가하고 이전 버전이 저장됩니다. 각 버전마다 고유한 ARN 이 있습니다' 서술이 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 버전 표기를 '$Latest' 로 적는데 문서 표기는 '$LATEST' 다. 또 게시된 버전에도 트리거·대상·프로비저닝된 동시성 등은 구성할 수 있다는 예외와 버전 번호 재사용 금지를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html",
+      "fetched_with": "mcp",
+      "section": "Manage Lambda function versions / Creating function versions / Using versions"
+    },
+    {
+      "id": "create-function-api",
+      "claim": "CreateFunction 은 배포 패키지와 실행 역할이 필요하다. 배포 패키지가 컨테이너 이미지면 PackageType 을 Image 로 설정하고 Code 에 Amazon ECR 컨테이너 이미지 URI 를 지정하며 handler·runtime 속성은 지정할 필요가 없다. .zip 파일 아카이브면 PackageType 을 Zip 으로 설정하고 Code 에 .zip 위치를 지정하며 handler 와 runtime 을 반드시 지정한다. 배포 패키지의 코드는 함수의 대상 명령 세트 아키텍처(x86_64 또는 arm64)와 호환되어야 하고 Architectures 를 지정하지 않으면 기본값은 x86_64 다. 필수 파라미터는 Code, FunctionName, Role 이다. 선택 파라미터에는 Environment, EphemeralStorage, Layers, MemorySize, Timeout, SnapStart, TracingConfig, VpcConfig, LoggingConfig, CodeSigningConfigArn, DurableConfig, CapacityProviderConfig, TenancyConfig 등이 있다. 함수를 만들면 Lambda 가 인스턴스와 지원 리소스를 프로비저닝하며 VPC 에 연결하는 경우 1분 정도 걸릴 수 있고 그 동안 호출·수정할 수 없다. GetFunctionConfiguration 응답의 State·StateReason·StateReasonCode 로 호출 준비 여부를 확인한다. 버전별 설정은 이후 UpdateFunctionConfiguration 으로 수정하고, 태그와 함수별 동시성 한도 같은 함수 수준 설정은 미게시·게시 버전 모두에 적용된다.",
+      "supports_courseware": "교재 슬라이드 33 의 'CreateFunction — 배포 패키지를 통해 Lambda 함수를 생성합니다. 패키지 유형은 ZIP 또는 컨테이너 이미지일 수 있습니다', 'UpdateFunctionConfiguration — 버전별 설정을 수정합니다' 서술과 슬라이드 34 의 create-function --function-name --handler --runtime --role --environment --zip-file 조합이 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 Architectures 기본값(x86_64), 함수 상태(State) 전이, 코드 서명, DurableConfig·CapacityProviderConfig·TenancyConfig 같은 최신 파라미터를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/api/API_CreateFunction.html",
+      "fetched_with": "mcp",
+      "section": "CreateFunction / Request Syntax / Request Body"
+    },
+    {
+      "id": "s3-event-shape",
+      "claim": "Amazon S3 는 객체가 생성되거나 삭제될 때 Lambda 함수에 이벤트를 보낼 수 있고 호출은 비동기식이다. 현재 문서의 Amazon S3 알림 이벤트 예제는 Records 배열 안에 eventVersion \"2.1\", eventSource \"aws:s3\", awsRegion, eventTime, eventName \"ObjectCreated:Put\", userIdentity.principalId, requestParameters.sourceIPAddress, responseElements(x-amz-request-id·x-amz-id-2), s3(s3SchemaVersion \"1.0\", configurationId, bucket{name, ownerIdentity.principalId, arn}, object{key, size, eTag, sequencer})를 담는다. S3 가 함수를 호출하려면 함수의 리소스 기반 정책에서 권한이 필요하며 Lambda 콘솔에서 S3 트리거를 구성하면 콘솔이 버킷 이름과 계정 ID 가 일치할 때 S3 가 함수를 호출할 수 있도록 리소스 기반 정책을 수정한다. 함수가 SDK 로 S3 리소스를 관리한다면 실행 역할에도 S3 권한이 필요하다. 함수를 트리거한 것과 같은 버킷을 함수가 쓰면 루프가 발생할 수 있으므로 버킷을 두 개 쓰거나 접두사로 트리거 범위를 제한한다.",
+      "supports_courseware": "교재 슬라이드 26 의 S3 이벤트 JSON 은 현재 공식 문서 예제와 필드 구성·값이 일치한다(교재는 값 일부를 …로 줄였다).",
+      "corrects_courseware": "교재는 같은 버킷을 쓰면 루프가 발생할 수 있다는 경고와 리소스 기반 정책 요구 사항을 슬라이드 26 에서 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html",
+      "fetched_with": "mcp",
+      "section": "Process Amazon S3 event notifications with Lambda"
+    },
+    {
+      "id": "lambda-event-sources-table",
+      "claim": "현재 'Lambda 함수를 호출할 수 있는 서비스' 표(28개 항목)는 다음과 같다. 이벤트 소스 매핑: Amazon MSK, 셀프 매니지드 Apache Kafka, Amazon DocumentDB, Amazon DynamoDB, Amazon Kinesis, Amazon MQ, Amazon SQS. 이벤트 기반 동기 호출: Amazon API Gateway, Amazon Cognito, Amazon Connect Customer, Elastic Load Balancing(Application Load Balancer), Amazon Data Firehose, Amazon Lex, Amazon S3 Batch, Amazon VPC Lattice. 이벤트 기반 비동기 호출: AWS CloudFormation, Amazon CloudWatch Logs, AWS CodeCommit, AWS CodePipeline, AWS Config, AWS IoT, Amazon SES, Amazon SNS, Amazon S3, Amazon EventBridge Scheduler(시간 기반). EventBridge 는 이벤트 버스·규칙은 비동기, 파이프는 동기 또는 비동기. AWS Step Functions 는 동기 또는 비동기. 이벤트 기반 호출 외에 Amazon EC2, 셀프 매니지드 Apache Kafka, Kubernetes 와도 Lambda 를 함께 쓸 수 있다. 한 함수에 여러 트리거를 둘 수 있고 각 트리거는 독립적인 클라이언트처럼 동작하며 Lambda 가 함수에 전달하는 각 이벤트에는 하나의 트리거 데이터만 담긴다. 트리거는 Lambda 가 아니라 이벤트를 생성하는 서비스가 저장·관리한다.",
+      "supports_courseware": "교재 슬라이드 9 가 나열한 Amazon S3, DynamoDB, Kinesis, Cognito, API Gateway, AWS IoT, Step Functions, CloudFormation, CodePipeline, EventBridge, SES, SNS 는 현재 표에도 있다. 교재가 '이에 국한되지 않습니다' 라고 단서를 붙인 것도 적절하다.",
+      "corrects_courseware": "교재 슬라이드 9 가 나열한 Amazon Alexa 와 AWS CloudTrail 은 현재 표에 없다(표에 없다는 것이 호출이 불가능하다는 뜻은 아니다). 교재의 'Amazon CloudWatch' 는 표에서 Amazon CloudWatch Logs 로 구체화되었다. 교재 이후 표에 추가된 항목은 Amazon DocumentDB, Amazon MQ, Amazon MSK, 셀프 매니지드 Apache Kafka, Application Load Balancer, Amazon EventBridge Scheduler, Amazon Data Firehose, Amazon Lex, Amazon S3 Batch, Amazon VPC Lattice, Amazon Connect Customer, AWS Config, AWS CodeCommit 이다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html",
+      "fetched_with": "mcp",
+      "section": "Invoking Lambda with events from other AWS services / Services that can invoke Lambda functions"
+    },
+    {
+      "id": "ddb-poll-rate",
+      "claim": "Lambda 는 DynamoDB 스트림의 샤드를 기본 속도(base rate)로 초당 4회 폴링해 레코드를 확인한다. 레코드가 있으면 함수를 호출하고 결과를 기다리며, 처리가 성공하면 폴링을 재개한다. 기본적으로 레코드가 사용 가능해지면 즉시 호출하고, 적은 레코드로 호출되는 것을 피하려면 배치 창(batching window)을 최대 5분까지 구성할 수 있다. 호출 전에 Lambda 는 완전한 배치를 모으거나 배치 창이 만료되거나 배치가 페이로드 한도 6MB 에 도달할 때까지 레코드를 계속 읽는다. ParallelizationFactor(1~10, 기본 1)로 한 샤드를 여러 Lambda 호출로 동시 처리할 수 있고 항목(파티션·정렬 키) 수준의 순서는 유지된다. 이벤트 소스 매핑 생성·업데이트 시 스트림 폴링은 최종 일관성이므로 시작 위치를 LATEST 로 지정하면 이벤트를 놓칠 수 있고, 놓치지 않으려면 TRIM_HORIZON 을 지정한다. 단일 리전 테이블에서는 같은 DynamoDB Streams 샤드를 최대 두 개의 Lambda 함수가 동시에 읽도록 설계할 수 있고 글로벌 테이블에서는 하나로 제한하는 것이 권장된다.",
+      "supports_courseware": "교재 슬라이드 12 강사 노트의 'Lambda 는 새 레코드에 대해 스트림을 1초에 4번 폴링하고, 일치하는 이벤트를 검색하고, 함수를 간접적으로 호출합니다' 수치가 현재 문서와 일치한다(문서는 '기본 속도' 라는 단서를 붙인다). 슬라이드 54 지식 확인 4번의 '스트림 ARN 을 Lambda 함수와 연결' 도 뒷받침된다.",
+      "corrects_courseware": "교재는 ParallelizationFactor, 배치 창, TRIM_HORIZON 권장, 동시 리더 제한을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html",
+      "fetched_with": "mcp",
+      "section": "Polling and batching streams / Polling and stream starting positions / Simultaneous readers of a shard"
+    },
+    {
+      "id": "xray-integration",
+      "claim": "AWS X-Ray 로 애플리케이션 구성 요소를 시각화하고 성능 병목을 찾고 오류를 유발한 요청을 조사할 수 있다. Lambda 는 X-Ray 에 대해 Active 와 PassThrough 두 트레이싱 모드를 지원한다. Active 트레이싱에서는 Lambda 가 함수 호출에 대한 트레이스 세그먼트를 자동으로 만들어 X-Ray 로 보내고, PassThrough 모드는 트레이싱 컨텍스트를 다운스트림 서비스로 전파만 한다. 함수에는 X-Ray 로 트레이스 데이터를 업로드할 권한이 필요하며 콘솔에서 트레이싱을 활성화하면 Lambda 가 실행 역할에 필요한 권한을 추가하고, 그렇지 않으면 AWSXRayDaemonWriteAccess 정책을 실행 역할에 추가한다. X-Ray 는 모든 요청을 추적하지 않고 샘플링 알고리즘을 적용하며 샘플링 비율은 초당 1건 + 추가 요청의 5% 이고 함수별로 이 비율을 구성할 수 없다. Lambda 는 트레이스당 2개 세그먼트(AWS::Lambda 와 AWS::Lambda::Function)를 기록한다. AWS::Lambda 세그먼트에서 오류가 보이면 Lambda 서비스 문제, AWS::Lambda::Function 세그먼트에서 오류가 보이면 함수 문제다. MSK, 셀프 매니지드 Apache Kafka, Amazon MQ(ActiveMQ·RabbitMQ), Amazon DocumentDB 이벤트 소스 매핑을 쓰는 함수는 현재 X-Ray 트레이싱을 지원하지 않는다.",
+      "supports_courseware": "교재 슬라이드 24 의 'AWS X-Ray 통합' 항목을 뒷받침한다.",
+      "corrects_courseware": "교재는 Active·PassThrough 모드 구분, 샘플링 비율, 두 세그먼트 구조, ESM 유형별 미지원을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Visualize Lambda function invocations using AWS X-Ray / Understanding X-Ray traces"
+    },
+    {
+      "id": "python-handler",
+      "claim": "Python 핸들러는 두 개의 인수를 받는다. 첫 번째는 Lambda 이벤트 객체이고 두 번째는 컨텍스트 객체다. 핸들러 이름은 핸들러 함수가 있는 파일 이름과 핸들러 함수 이름에서 파생되며, 파일이 lambda_function.py 이고 함수가 lambda_handler 면 핸들러는 lambda_function.lambda_handler 다. 이것이 Lambda 콘솔로 만든 함수의 기본 핸들러 이름이다. 입력 이벤트가 JSON 객체면 Python 런타임이 딕셔너리로 변환한다(array→list, number→int 또는 float, string→str, Boolean→bool, null→NoneType). 현재 공식 예제도 SDK 클라이언트(boto3.client('s3'))와 로거를 핸들러 밖에서 초기화해 실행 환경 재사용의 이점을 얻는다.",
+      "supports_courseware": "교재 슬라이드 28 의 def handler_name(event, context) 서명과 슬라이드 31 의 '핸들러 외부에서의 초기화' 주석이 현재 문서 예제·권장과 일치한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/python-handler.html",
+      "fetched_with": "mcp",
+      "section": "Define Lambda function handler in Python / Handler naming conventions / Using the Lambda event object"
+    },
+    {
+      "id": "boto3-resource-interface",
+      "claim": "Boto3 공식 문서의 Resources 페이지는 'AWS Python SDK 팀은 boto3 의 resources 인터페이스에 새 기능을 추가할 계획이 없다. 기존 인터페이스는 boto3 수명 주기 동안 계속 동작한다. 새로운 서비스 기능은 client 인터페이스로 이용할 수 있다' 고 명시한다. 또 리소스 인스턴스는 스레드 안전하지 않으며 스레드·프로세스 간에 공유하면 안 되고 스레드·프로세스마다 새 Resource 를 만들 것을 권장한다.",
+      "corrects_courseware": "교재 슬라이드 31 의 실습 코드는 boto3.resource('dynamodb') 로 리소스 인터페이스를 쓴다. 현재는 새 기능이 추가되지 않는 경로이며 새 서비스 기능은 client 인터페이스로만 제공된다.",
+      "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html",
+      "fetched_with": "web_fetch",
+      "section": "Resources / Overview / Multithreading or multiprocessing with resources"
+    },
+    {
+      "id": "lambda-pricing-structure",
+      "claim": "AWS Lambda 요금 페이지는 Lambda Functions 가 처리한 요청 수와 코드가 실행된 기간(GB-초 단위)을 기준으로 과금된다고 기술한다. 함수에 할당할 메모리를 선택하면 CPU 와 리소스가 비례해 주어진다. 프리 티어는 월 100만 요청과 400,000 GB-초를 포함한다. 요금 표는 x86 가격과 Arm 가격으로 나뉘고 각각 월 GB-초 사용량 구간별 계층 요금(x86 은 첫 60억 GB-초 / 다음 90억 / 150억 초과, Arm 은 첫 75억 / 다음 112.5억 / 187.5억 초과)을 적용한다. 임시 스토리지는 512MB 까지 추가 비용이 없고 그 이상은 GB-초로 과금된다. 프로비저닝된 동시성은 구성한 동시성 양과 구성 기간에 대해 별도로 과금되며 활성화된 상태에서 실행되면 요청·기간 요금도 부과된다. SnapStart 는 스냅샷 캐싱을 함수 버전이 활성인 기간(최소 3시간) 동안 과금한다. Lambda MicroVMs 는 인스턴스-초 단위로 과금된다.",
+      "supports_courseware": "교재 슬라이드 6 강사 노트의 'Lambda 요금제 모델은 호출당, 실행 시간 및 메모리 사용량에 따라 비용을 지불합니다' 와 표의 '요청당 지불' 이 현재 요금 구조와 부합한다.",
+      "corrects_courseware": "교재는 아키텍처별(x86·Arm) 요금 구분, GB-초 계층 요금, 임시 스토리지·프로비저닝된 동시성·SnapStart 의 별도 과금을 다루지 않는다.",
+      "url": "https://aws.amazon.com/lambda/pricing/",
+      "fetched_with": "web_fetch",
+      "section": "Overview / Lambda Functions Pricing / Provisioned Concurrency Pricing / SnapStart Pricing"
+    },
+    {
+      "id": "fargate-vs-lambda",
+      "claim": "AWS Fargate 와 AWS Lambda 는 둘 다 서버리스 컴퓨팅 옵션이며 운영 부담 감소, 사용량 기반 과금, 빠른 배포, 내장 고가용성, 단순화된 컴플라이언스, 코드 집중이라는 이점을 공유한다. Fargate 는 컨테이너용 서버리스 컴퓨팅 엔진이며 주로 Amazon ECS 와 함께 쓰고 장기 실행 애플리케이션·마이크로서비스·배치 처리에 적합하다. Lambda 는 이벤트에 응답해 코드를 함수로 실행하는 서버리스 컴퓨팅 서비스이며 호출당 최대 실행 시간이 15분이고, durable functions 로는 체크포인트·재생 실행을 써서 최대 1년까지 실행되는 워크플로를 만들 수 있다. 비교표: 지원 언어는 Fargate 가 컨테이너에서 실행할 수 있는 모든 언어, Lambda 는 Node.js·Python·Java·C#·Go·Ruby·PowerShell 과 사용자 지정 런타임. 실행 시간 제한은 Fargate 하드 제한 없음, Lambda 호출당 15분. 메모리는 Fargate 최대 244GiB, Lambda 최대 10GiB. CPU 는 Fargate 최대 32 vCPU, Lambda 는 메모리에 비례해 최대 6 vCPU. 상태 관리는 Fargate 컨테이너가 실행 중 메모리 상태 유지 가능, Lambda 는 설계상 스테이트리스(외부 저장소 필요). 배포 전략은 Fargate 가 네이티브 블루/그린·카나리·선형, Lambda 는 가중치 별칭. 동시성 한도는 Fargate 는 클러스터 용량 기반, Lambda 는 기본 1,000(증액 가능). 패키지 크기 한도는 Lambda 가 레이어 포함 압축 해제 250MB, 컨테이너 이미지 10GB. 콜드 스타트 완화는 Fargate 가 SOCI 지연 로딩, Lambda 는 프로비저닝된 동시성·SnapStart(Java·Python·.NET)·Lambda Managed Instances.",
+      "supports_courseware": "교재 슬라이드 6 강사 노트의 'AWS Fargate 는 컨테이너를 서버리스 컴퓨팅 모델로 실행하는 ECS 및 EKS 에서 지원됩니다' 서술이 유효하다(Amazon EKS 사용 설명서에도 Fargate 로 Kubernetes 파드를 실행하는 항목이 있다). 슬라이드 24 의 '스테이트리스, 외부 스토리지를 사용하여 데이터 유지' 도 일치한다.",
+      "corrects_courseware": "교재는 Lambda 지원 언어에 PowerShell 을 포함하지 않고, durable functions(최대 1년), Lambda Managed Instances, Lambda MicroVMs, 가중치 별칭 배포 전략을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html",
+      "fetched_with": "mcp",
+      "section": "Introduction / 비교표 / Differences between Fargate and Lambda"
+    },
+    {
+      "id": "compute-service-choice",
+      "claim": "AWS 컴퓨팅 서비스 선택 결정 안내서는 서비스를 다음과 같이 분류한다. Amazon EC2 계열 — 크기 조정 가능한 가상 서버(Graviton4·Trn2·P5eN 인스턴스 포함), EC2 Auto Scaling, EC2 Image Builder, AWS Elastic Beanstalk, Amazon Lightsail. 컨테이너 서비스 — Amazon ECS(완전관리형 컨테이너 오케스트레이션), Amazon ECS Anywhere, Amazon EKS(관리형 Kubernetes), Amazon EKS Anywhere, Amazon ECR, AWS Batch. 서버리스 컴퓨팅 — AWS Fargate(서버나 EC2 인스턴스 클러스터를 관리하지 않고 컨테이너 실행), AWS Lambda(서버 프로비저닝·관리 없이 코드 실행). 컨테이너는 직접 관리하는 EC2 인스턴스에서 실행하거나 AWS 관리형 컴퓨팅인 Fargate 에서 실행할 수 있다.",
+      "supports_courseware": "교재 슬라이드 5 의 세 유형(인스턴스 — Amazon EC2 / 컨테이너 — Amazon ECS·Amazon EKS / 서버리스 — AWS Lambda) 분류와 각 서비스 설명이 현재 문서 분류와 부합한다. ECS·EKS 클러스터를 EC2 인스턴스에서 실행할 수 있다는 서술도 일치한다.",
+      "corrects_courseware": "교재 슬라이드 5·6 은 서버리스 컴퓨팅 열에 Lambda 만 두고 Fargate 를 강사 노트에서만 언급한다. 현재 문서는 Fargate 를 Lambda 와 나란히 서버리스 컴퓨팅으로 분류한다. 또 교재는 AWS Batch, Elastic Beanstalk, ECS/EKS Anywhere, Lightsail 같은 다른 컴퓨팅 선택지를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/decision-guides/latest/compute-on-aws-how-to-choose/choosing-aws-compute-service.html",
+      "fetched_with": "mcp",
+      "section": "Introduction / Understand"
+    },
+    {
+      "id": "eks-fargate",
+      "claim": "Amazon EKS 사용 설명서는 Amazon EKS 로 Kubernetes 파드를 AWS Fargate 에서 실행하는 방법을 다룬다. Fargate 는 컨테이너에 온디맨드로 적정 크기의 컴퓨팅 용량을 제공하는 기술이며 가상 머신 그룹을 직접 프로비저닝·구성·확장하지 않아도 된다. Fargate 프로필로 어떤 파드를 Fargate 에서 시작할지 제어하고, Fargate 프로필은 EKS 클러스터의 일부로 정의된다. Fargate 에서 실행되는 각 파드는 자체 컴퓨팅 경계를 가지며 커널·CPU·메모리·ENI 를 다른 파드와 공유하지 않는다. 제약으로 Daemonset 미지원, 권한 있는 컨테이너 미지원, HostPort·HostNetwork 지정 불가, GPU 미제공, 프라이빗 서브넷만 지원 등이 있다.",
+      "supports_courseware": "교재 슬라이드 6 강사 노트의 'AWS Fargate 는 컨테이너를 서버리스 컴퓨팅 모델로 실행하는 ECS 및 EKS 에서 지원됩니다' 서술을 EKS 쪽에서 확인했다.",
+      "url": "https://docs.aws.amazon.com/eks/latest/userguide/fargate.html",
+      "fetched_with": "mcp",
+      "section": "Simplify compute management with AWS Fargate / AWS Fargate considerations"
+    }
+  ]
+}

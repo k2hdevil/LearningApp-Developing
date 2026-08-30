@@ -1,0 +1,383 @@
+{
+  "_note": "M06 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다. fetched_with=link_check 는 'URL 이 살아 있다/리다이렉트된다' 자체가 주장인 항목에만 사용했다.",
+  "module": "M06",
+  "verified_on": "2026-08-30",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / AWS CLI·Boto3·Java SDK 공식 문서 web_fetch / URL 리다이렉트 확인",
+  "citations": [
+    {
+      "id": "bucket-quota",
+      "claim": "기본적으로 AWS 계정당 최대 10,000개의 범용 버킷을 만들 수 있다. 한도 증가는 Service Quotas 콘솔에서 요청한다. 상업 리전의 범용 버킷 할당량은 US East(N. Virginia)에서만, AWS GovCloud(US)는 AWS GovCloud(US-West)에서만 조회·관리할 수 있다. 버킷 크기 상한이나 버킷 내 객체 수 상한은 없다. 버킷을 만든 후에는 이름과 리전을 변경할 수 없다.",
+      "corrects_courseware": "교재 슬라이드 6 강사 노트는 '기본값으로 최대 100개의 버킷을 생성할 수 있지만 최대 1,000개 버킷으로 서비스 한도 증가를 요청할 수 있습니다'라고 기재. 현재 기본 한도는 10,000개다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/BucketRestrictions.html",
+      "fetched_with": "mcp",
+      "section": "Bucket quotas / Objects and bucket limitations"
+    },
+    {
+      "id": "headbucket",
+      "claim": "HeadBucket은 버킷 존재 여부와 액세스 권한을 확인한다. 버킷이 존재하고 권한이 있으면 200 OK를 반환한다. 버킷이 없거나 권한이 없으면 HEAD 요청이 일반적인 400 Bad Request, 403 Forbidden 또는 404 Not Found를 반환하며, 메시지 본문이 없으므로 이 HTTP 응답 코드 외의 예외는 판별할 수 없다. 파티션 내 어떤 리전의 어떤 버킷 이름으로도 HeadBucket을 호출할 수 있고, 버킷 정책과 무관하게 올바른 버킷 위치를 담은 응답 헤더를 받는다. 범용 버킷에서는 s3:ListBucket 권한이 필요하다. 응답 헤더에는 x-amz-bucket-region, x-amz-bucket-arn, x-amz-access-point-alias 등이 포함된다.",
+      "corrects_courseware": "교재 슬라이드 8 Java 예제는 상태 코드 400을 '버킷이 존재하는 리전이 아닌 다른 리전에서 버킷에 액세스하려고 했음'으로 처리한다. 문서는 400을 버킷 부재·권한 부족 시 반환되는 일반 코드 중 하나로 설명하고, 오히려 리전이 달라도 올바른 위치 헤더를 받는다고 기술한다. 또한 슬라이드 7 강사 노트는 404·403만 언급하고 400을 빠뜨렸다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html",
+      "fetched_with": "mcp",
+      "section": "HeadBucket / Response Syntax"
+    },
+    {
+      "id": "create-bucket-location-constraint",
+      "claim": "CreateBucket의 LocationConstraint는 버킷을 만들 리전을 지정한다. 리전을 지정하지 않으면 버킷은 US East(N. Virginia) 리전(us-east-1)에 생성된다. 값 EU를 쓰면 eu-west-1에 생성된다. LocationConstraint의 유효값 목록에 us-east-1은 포함되어 있지 않다. LocationConstraint는 디렉터리 버킷에서는 지원되지 않는다. CreateBucketConfiguration의 Tags로 버킷 생성 시 태그를 지정할 수 있으며 s3:TagResource 권한이 필요하다.",
+      "supports_courseware": "교재 슬라이드 11 강사 노트의 'us-east-1에서 버킷을 생성하려면 위치 제약 속성을 포함하지 마십시오. 위치 제약을 포함하지 않으면 버킷이 us-east-1에서 생성됩니다'를 뒷받침한다. us-east-1이 유효값에 없다는 점이 근거다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html",
+      "fetched_with": "mcp",
+      "section": "Request Body – LocationConstraint / Tags"
+    },
+    {
+      "id": "bucket-naming-underscore",
+      "claim": "범용 버킷 이름은 3~63자이며 소문자, 숫자, 마침표(.), 하이픈(-)만 사용할 수 있다. 밑줄(_)은 허용되지 않는다. 문자 또는 숫자로 시작·종료해야 한다. 2018년 3월 1일 이전에는 US East(N. Virginia)에서 최대 255자·대문자·밑줄을 포함한 이름이 허용되었으나, 2018년 3월 1일부터 신규 버킷은 다른 모든 리전과 동일한 규칙을 따라야 한다. 최적 호환성을 위해 정적 웹 사이트 호스팅 전용 버킷을 제외하면 마침표를 피하도록 권장한다(마침표가 있으면 HTTPS 가상 호스팅 스타일 주소 지정을 쓸 수 없다).",
+      "corrects_courseware": "교재 슬라이드 11 .NET 예제의 버킷 이름 \"notes_bucket\"에 밑줄이 포함되어 있어 현재 명명 규칙 위반이다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html",
+      "fetched_with": "mcp",
+      "section": "General purpose buckets naming rules / Best practices"
+    },
+    {
+      "id": "versioning-status",
+      "claim": "PutBucketVersioning으로 설정할 수 있는 버전 관리 상태는 Enabled와 Suspended 두 가지뿐이다. Enabled는 버킷에 추가되는 모든 객체에 고유한 버전 ID를 부여하고, Suspended는 버전 관리를 비활성화해 이후 추가되는 객체가 버전 ID null을 받는다. 버킷에 버전 관리 상태를 한 번도 설정하지 않았다면 버전 관리 상태가 없으며, GetBucketVersioning 요청은 버전 관리 상태 값을 반환하지 않는다. MFA Delete를 활성화하려면 버킷 소유자여야 하고 x-amz-mfa 헤더와 함께 Status·MfaDelete 요청 요소를 모두 보내야 한다. 버킷에 버전 관리를 처음 활성화하면 전파에 시간이 걸리므로 15분 대기 후 객체 쓰기(PUT·DELETE)를 권장한다.",
+      "corrects_courseware": "교재 슬라이드 13의 스켈레톤 출력이 \"Status\": \"Disabled\", \"MFADelete\": \"Disabled\"로 표기되어 있다. Disabled는 유효한 버전 관리 상태 값이 아니고, 미설정 상태는 값 자체가 반환되지 않는다. 또한 필드 이름은 MFADelete가 아니라 MfaDelete다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html",
+      "fetched_with": "mcp",
+      "section": "PutBucketVersioning / Request Syntax"
+    },
+    {
+      "id": "generate-cli-skeleton",
+      "claim": "--generate-cli-skeleton은 명령이 지원하는 모든 파라미터가 포함된 템플릿을 생성해 표시한다. 값은 input(기본값, JSON 입력 파라미터), yaml-input(YAML 입력 파라미터), output(JSON 출력 파라미터) 중 하나다. output은 YAML로 요청할 수 없다. aws s3 같은 사용자 지정(custom) AWS CLI 명령은 --generate-cli-skeleton과 --cli-input-json·--cli-input-yaml을 지원하지 않는다. 스켈레톤은 CLI 파라미터 이름이 아니라 기반 API 파라미터 이름을 사용한다.",
+      "supports_courseware": "교재 슬라이드 13의 aws s3api get-bucket-versioning --generate-cli-skeleton output 은 s3api 명령이므로 유효하다. 다만 output 스켈레톤은 값이 채워진 결과가 아니라 빈 템플릿이므로, 교재가 보여 준 Disabled 값은 스켈레톤 출력이 아니다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-skeleton.html",
+      "fetched_with": "mcp",
+      "section": "About AWS CLI skeletons and input files"
+    },
+    {
+      "id": "object-ownership-acl",
+      "claim": "S3 Object Ownership은 버킷 수준 설정이며 기본값은 '버킷 소유자 적용(Bucket owner enforced)'으로 모든 ACL이 비활성화되어 있다. 신규 생성 버킷은 ACL이 기본 비활성화다. 설정은 Bucket owner enforced(기본, ACL 비활성화), Bucket owner preferred(ACL 활성화), Object writer(ACL 활성화) 세 가지다. ACL을 비활성화하면 ACL을 지정하지 않은 PUT 또는 bucket-owner-full-control ACL을 지정한 PUT만 허용되고, 그 외 ACL을 포함한 PUT은 400 오류와 오류 코드 AccessControlListNotSupported로 실패한다. ACL 읽기 요청은 지원된다. AWS는 개별 객체 단위 액세스 제어가 반드시 필요한 경우를 제외하면 ACL을 비활성화 상태로 유지하도록 권장한다.",
+      "corrects_courseware": "교재 슬라이드 5 강사 노트는 권한 구성을 'ACL에서 버킷 정책, Amazon S3 액세스 포인트까지'로 서술해 ACL을 첫 수단으로 제시한다. 슬라이드 11 .NET 예제는 CannedACL = S3CannedACL.PublicRead 를 사용하는데, 기본 설정 버킷에서는 이 요청이 실패한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html",
+      "fetched_with": "mcp",
+      "section": "Controlling ownership of objects and disabling ACLs for your bucket / Object Ownership settings"
+    },
+    {
+      "id": "block-public-access",
+      "claim": "기본적으로 신규 버킷, 액세스 포인트, 객체는 퍼블릭 액세스를 허용하지 않는다. S3 Block Public Access는 네 가지 설정(BlockPublicAcls, IgnorePublicAcls, BlockPublicPolicy, RestrictPublicBuckets)을 제공하며 조직·계정·버킷·액세스 포인트 수준에 적용할 수 있다. 수준별 설정이 다르면 가장 제한적인 조합이 적용된다. AWS는 계정과 각 버킷에 네 설정을 모두 켜도록 권장한다(AWS Security Hub 기본 보안 모범 사례 S3.8). BlockPublicAcls를 TRUE로 하면 퍼블릭 ACL을 지정한 PutBucketAcl·PutObjectAcl·PutObject가 실패하고, 계정 수준에 적용된 경우 퍼블릭 ACL을 포함한 PUT Bucket 요청도 실패한다. 정적 웹 사이트 호스팅처럼 퍼블릭 액세스가 필요하면 개별 설정을 조정한다.",
+      "corrects_courseware": "교재 슬라이드 38은 '웹 사이트에 공개적으로 액세스할 수 있으려면 버킷에 퍼블릭 읽기 액세스가 허용되어야 합니다'라고만 기재하고, 신규 버킷의 퍼블릭 액세스 차단 기본값과 그 상호작용을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html",
+      "fetched_with": "mcp",
+      "section": "Blocking public access to your Amazon S3 storage / Block public access settings"
+    },
+    {
+      "id": "single-put-and-object-size",
+      "claim": "단일 PUT 작업으로는 최대 5GB 크기의 객체 하나를 업로드할 수 있다. Amazon S3 콘솔로는 단일 객체를 최대 160GB까지 업로드할 수 있다. 멀티파트 업로드 API를 사용하면 단일 대용량 객체를 최대 50TB까지 업로드할 수 있고, 5MB~50TB 범위의 객체에 멀티파트 업로드를 쓸 수 있다. 5TB보다 큰 파일을 업로드하려면 Java v1/v2, Python 또는 AWS CLI SDK의 S3 Transfer Manager를 사용한다. 객체를 업로드하면 기본적으로 SSE-S3로 자동 암호화된다.",
+      "corrects_courseware": "교재 슬라이드 16은 멀티파트 업로드 상한을 '< 5 TB'로 표기하고 강사 노트도 '최대 5TB까지 대용량 객체'라고 기재한다. 단일 PUT 5GB는 현재도 맞다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html",
+      "fetched_with": "mcp",
+      "section": "Uploading objects"
+    },
+    {
+      "id": "multipart-limits",
+      "claim": "Amazon S3 멀티파트 업로드 한도: 최대 객체 크기 48.8TiB, 업로드당 최대 파트 수 10,000개, 파트 번호 1~10,000(포함), 파트 크기 5MiB~5GiB(마지막 파트에는 최소 크기 제한이 없음), list parts 요청이 반환하는 최대 파트 수 1,000개, list multipart uploads 요청이 반환하는 최대 멀티파트 업로드 수 1,000개. 일반적으로 객체 크기가 100MB에 도달하면 단일 작업 업로드 대신 멀티파트 업로드를 고려해야 한다.",
+      "corrects_courseware": "교재는 파트 크기·파트 개수 한도를 다루지 않고 최대 객체 크기를 5TB로 기재한다. 또한 슬라이드 17의 1단계 '파일을 5GB 이하로 분할'은 파트 크기 상한 5GiB와는 맞지만 최소 5MiB 조건이 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html",
+      "fetched_with": "mcp",
+      "section": "Amazon S3 multipart upload limits"
+    },
+    {
+      "id": "multipart-best-practice",
+      "claim": "100MB 이상 객체에는 단일 작업 업로드 대신 멀티파트 업로드를 사용하는 것이 모범 사례다. 장점은 파트 병렬 업로드로 처리량 개선, 네트워크 문제로부터 신속 복구, 객체 업로드 일시 중지·재개, 최종 객체 크기를 모르는 상태에서 업로드 시작이다. 멀티파트 업로드를 시작하면 만료 시점이 없으므로 명시적으로 완료하거나 중지해야 한다. 파트 업로드 후 완료 또는 중지를 해야 파트 스토리지 과금이 멈춘다. 각 파트 업로드마다 파트 번호와 ETag 값을 기록해 완료 요청에 포함해야 하며, list parts 결과를 완료 요청에 사용하지 말고 직접 관리한 목록을 사용해야 한다. 멀티파트 업로드가 완료되면 파트가 하나의 ETag(체크섬의 체크섬)로 통합된다.",
+      "supports_courseware": "교재 슬라이드 17의 멀티파트 업로드 절차와 이점 목록을 뒷받침한다. 단, 문서는 list-parts 결과를 완료 요청에 쓰지 말라고 명시하는데 교재 4~5단계는 list-parts로 확인한 뒤 ETag를 컴파일하는 흐름으로 제시한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html",
+      "fetched_with": "mcp",
+      "section": "Uploading and copying objects using multipart upload in Amazon S3 / Multipart upload process"
+    },
+    {
+      "id": "abort-incomplete-mpu",
+      "claim": "AbortIncompleteMultipartUpload 작업을 사용하는 수명 주기 규칙을 구성해 스토리지 비용을 최소화하도록 권장한다. DaysAfterInitiation에 지정한 일수 내에 완료되지 않은 멀티파트 업로드는 중지 대상이 되고, Amazon S3가 업로드를 중지하고 관련 파트를 삭제한다. 이 규칙은 기존 멀티파트 업로드와 이후 생성되는 멀티파트 업로드에 모두 적용된다. 규칙에 지정한 일수 내에 업로드가 완료되면 이 작업은 적용되지 않는다. 이 작업은 객체를 삭제하지 않으며, 불완전한 멀티파트 업로드 파트를 제거할 때 S3 Lifecycle 조기 삭제 요금이 발생하지 않는다.",
+      "supports_courseware": "교재 슬라이드 16·17의 'AbortIncompleteMultipartUpload 수명 주기 규칙을 활성화하는 것이 좋습니다' 서술을 뒷받침하고, 기존 업로드에도 적용된다는 점과 조기 삭제 요금이 없다는 점을 추가한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpu-abort-incomplete-mpu-lifecycle-config.html",
+      "fetched_with": "mcp",
+      "section": "Configuring a bucket lifecycle configuration to delete incomplete multipart uploads"
+    },
+    {
+      "id": "get-object-response-overrides",
+      "claim": "GetObject는 response-cache-control, response-content-disposition, response-content-encoding, response-content-language, response-content-type, response-expires 쿼리 파라미터로 응답 헤더를 재정의할 수 있다. Range 헤더로 지정한 바이트 범위를 다운로드할 수 있고, 한 GET 요청에서 여러 범위를 동시에 가져오는 것은 지원되지 않는다. partNumber는 1~10,000의 양의 정수로, 해당 파트에 대한 범위 GET을 수행한다. 기본적으로 GetObject는 객체의 현재 버전을 반환하며 다른 버전을 반환하려면 versionId 하위 리소스를 사용한다. versionId를 헤더에 포함하면 s3:GetObjectVersion 권한이 필요하다. If-Match·If-None-Match·If-Modified-Since·If-Unmodified-Since로 조건부 읽기를 할 수 있고 각각 412 Precondition Failed 또는 304 Not Modified를 반환한다.",
+      "supports_courseware": "교재 슬라이드 18의 'GetObject는 바이트 범위를 반환하는 데에도 사용할 수 있음', 'versionId 하위 리소스', 슬라이드 21의 응답 헤더 재정의를 뒷받침한다. 버전별 권한(s3:GetObjectVersion)과 partNumber는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html",
+      "fetched_with": "mcp",
+      "section": "URI Request Parameters"
+    },
+    {
+      "id": "java-v2-get-object-builder",
+      "claim": "AWS SDK for Java 2.x의 GetObjectRequest.Builder는 responseCacheControl(String), responseContentDisposition(String), responseContentEncoding(String), responseContentLanguage(String), responseContentType(String), responseExpires, range, versionId, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince, partNumber, checksumMode 메서드를 제공한다. 즉 응답 헤더 재정의는 별도 클래스가 아니라 요청 빌더의 메서드로 지정한다.",
+      "corrects_courseware": "교재 슬라이드 21은 ResponseHeaderOverrides 클래스와 new GetObjectRequest(bucketName, key).withResponseHeaders(...)를 사용하는 AWS SDK for Java 1.x 문법이다. 2.x에서는 GetObjectRequest.builder().responseCacheControl(...).responseContentDisposition(...) 형태로 작성한다.",
+      "url": "https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/model/GetObjectRequest.Builder.html",
+      "fetched_with": "web_fetch",
+      "section": "Method Summary"
+    },
+    {
+      "id": "java-sdk-v1-eos",
+      "claim": "AWS SDK for Java 1.x는 2025년 12월 31일 지원이 종료(end-of-support)되었다. AWS는 새 기능, 가용성 개선, 보안 업데이트를 계속 받기 위해 AWS SDK for Java 2.x로 마이그레이션할 것을 권장한다.",
+      "corrects_courseware": "교재 슬라이드 11(doesBucketExistV2, new CreateBucketRequest(...), new GetBucketLocationRequest(...)), 슬라이드 21(ResponseHeaderOverrides), 슬라이드 33(List<Bucket>, b.getName())의 Java 예제가 1.x 문법이다. 슬라이드 8·12·27·35는 2.x 문법이므로 교재 안에서 두 버전이 섞여 있다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html",
+      "fetched_with": "mcp",
+      "section": "AWS SDK for Java 1.x end-of-support notice"
+    },
+    {
+      "id": "java-v2-s3client-listing",
+      "claim": "AWS SDK for Java 2.x의 S3Client는 listBuckets, listBucketsPaginator, listObjectsV2, listObjectsV2Paginator, listObjectVersions, listObjectVersionsPaginator, listMultipartUploads, listMultipartUploadsPaginator, listParts, listPartsPaginator, headBucket, headObject 등의 메서드를 제공한다. 즉 버킷 나열과 객체 나열 모두에 paginator 변형이 있다.",
+      "supports_courseware": "교재 슬라이드 35의 listObjectsV2Paginator 사용을 뒷받침한다. 슬라이드 33의 List<Bucket> buckets = s3.listBuckets(); 는 1.x 문법이며, 2.x에서는 listBuckets() 응답의 buckets()를 사용하거나 listBucketsPaginator()를 사용한다.",
+      "url": "https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/S3Client.html",
+      "fetched_with": "web_fetch",
+      "section": "Method Summary"
+    },
+    {
+      "id": "s3-transfer-manager",
+      "claim": "Amazon S3 Transfer Manager는 AWS SDK for Java 2.x의 오픈 소스 상위 수준 파일 전송 유틸리티로, 파일과 디렉터리를 Amazon S3로 전송하는 데 사용한다. AWS CRT 기반 S3 클라이언트 또는 멀티파트를 활성화한 표준 Java 기반 S3 비동기 클라이언트 위에 구성하면 멀티파트 업로드 API와 바이트 범위 페치 같은 성능 개선을 활용할 수 있다. 전송 진행 상황을 실시간으로 모니터링하고 나중에 실행하도록 일시 중지할 수 있다. 의존성은 software.amazon.awssdk:s3-transfer-manager이며 CRT를 쓰려면 software.amazon.awssdk.crt:aws-crt를 추가한다. S3TransferManager.create()로 만들면 멀티파트 지원이 자동 활성화된다.",
+      "corrects_courseware": "교재는 상위 수준 전송 수단으로 aws s3 cp 만 제시하고 SDK 쪽 상위 수준 전송 API를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/transfer-manager.html",
+      "fetched_with": "mcp",
+      "section": "Transfer files and directories with the Amazon S3 Transfer Manager"
+    },
+    {
+      "id": "boto3-resource-interface",
+      "claim": "AWS Python SDK 팀은 boto3의 리소스(resources) 인터페이스에 새 기능을 추가할 계획이 없다. 기존 인터페이스는 boto3 수명 주기 동안 계속 동작하며, 최신 서비스 기능은 클라이언트(client) 인터페이스를 통해 사용할 수 있다. 리소스 인스턴스는 스레드 안전하지 않으므로 스레드·프로세스 간에 공유하면 안 되고 각 스레드마다 새로 만들어야 한다. 리소스에는 waiter가 있어 bucket.wait_until_exists() 같은 형태로 상태를 폴링할 수 있다.",
+      "corrects_courseware": "교재 슬라이드 20의 객체 가져오기 예제가 s3.Object(...) 리소스 API를 사용한다. 신규 코드는 클라이언트 인터페이스(boto3.client('s3'))를 기준으로 작성해야 한다.",
+      "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html",
+      "fetched_with": "web_fetch",
+      "section": "Overview / Waiters / Multithreading or multiprocessing with resources"
+    },
+    {
+      "id": "boto3-bucket-exists-waiter",
+      "claim": "boto3의 S3.Waiter.BucketExists는 client.get_waiter('bucket_exists')로 얻는다. 이 waiter는 성공 상태에 도달할 때까지 S3.Client.head_bucket()을 5초마다 폴링하고, 20번 실패하면 오류를 발생시킨다. WaiterConfig의 Delay 기본값은 5초, MaxAttempts 기본값은 20이다.",
+      "corrects_courseware": "교재 슬라이드 12 강사 노트는 '버킷이 종료될 때까지 기다리는 waiter를 사용할 수 있습니다'라고 기재한다. bucket_exists / waitUntilBucketExists 는 버킷이 존재할 때까지(생성 완료까지) 기다리는 waiter이므로 번역 오류다.",
+      "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/waiter/BucketExists.html",
+      "fetched_with": "web_fetch",
+      "section": "S3 / Waiter / BucketExists"
+    },
+    {
+      "id": "boto3-paginator-v2",
+      "claim": "boto3에는 S3.Paginator.ListObjectsV2가 있고 client.get_paginator('list_objects_v2')로 얻는다. paginate()는 Bucket, Delimiter, Prefix, FetchOwner, StartAfter, PaginationConfig(MaxItems, PageSize, StartingToken) 등을 받는다. 응답의 MaxKeys는 기본적으로 최대 1,000개 키를 반환하며 그보다 많이 반환하는 일은 없다. CommonPrefixes는 delimiter를 지정한 경우에만 응답에 포함되고, 공통 접두사로 묶인 키 그룹은 반환 수 계산에서 하나로 계산된다.",
+      "corrects_courseware": "교재 슬라이드 35 Python 예제는 client.get_paginator('list_objects')로 v1 작업의 paginator를 사용한다. list_objects_v2 paginator가 존재하며 ListObjectsV2가 권장 API다.",
+      "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/paginator/ListObjectsV2.html",
+      "fetched_with": "web_fetch",
+      "section": "S3 / Paginator / ListObjectsV2"
+    },
+    {
+      "id": "dotnet-v4-s3-changes",
+      "claim": "AWS SDK for .NET 버전 4의 S3 관련 변경: 사용되지 않는 DoesS3BucketExist와 DoesS3BucketExistAsync 메서드가 AmazonS3Util 클래스에서 제거되었고(항상 HTTP를 사용했기 때문), 대신 DoesS3BucketExistV2와 DoesS3BucketExistV2Async를 사용해야 한다. S3Region 열거형에서 사용되지 않는 AWS 리전 식별자가 제거되었다. SDK는 항상 SigV4로 요청에 서명하며 AWSConfigsS3.UseSignatureVersion4와 ClientConfig.SignatureVersion 속성이 제거되었다. us-east-1 리전으로 구성된 S3 서비스 클라이언트는 더 이상 다른 리전의 버킷에 액세스할 수 없다. AmazonS3Client의 GetACL·PutACL 메서드는 사용되지 않음으로 표시되었고 GetBucketACL·PutBucketACL·GetObjectACL·PutObjectACL을 대신 사용한다.",
+      "supports_courseware": "교재 슬라이드 10·12의 AmazonS3Util.DoesS3BucketExistV2Async 는 현재도 유효한(권장) 메서드임을 확인했다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-v4.html",
+      "fetched_with": "mcp",
+      "section": "Changes specific to S3"
+    },
+    {
+      "id": "dotnet-s3region-fields",
+      "claim": "AWS SDK for .NET 버전 4의 Amazon.S3.S3Region 클래스 필드 목록(47개 행)에는 EUCentral1, EUCentral2, EUIsoeWest1, EUNorth1, EUSouth1, EUSouth2, EUWest1, EUWest2, EUWest3 처럼 리전 코드에 대응하는 필드가 있고, 문자열 EU 하나만으로 된 필드는 없다.",
+      "corrects_courseware": "교재 슬라이드 11 .NET 예제의 BucketRegion = S3Region.EU 는 현재 S3Region 필드 목록에서 찾을 수 없다. S3 API 수준에서 LocationConstraint 값 EU는 여전히 유효하지만(eu-west-1), .NET SDK V4에서는 EUWest1 같은 명시적 리전 필드를 사용해야 한다.",
+      "url": "https://docs.aws.amazon.com/sdkfornet/v4/apidocs/items/S3/TS3Region.html",
+      "fetched_with": "mcp",
+      "section": "Fields"
+    },
+    {
+      "id": "dotnet-async-only",
+      "claim": ".NET Core(.NET Core 3.1, .NET 5, .NET 6 등)에서 AWS 서비스 클라이언트는 비동기 호출 패턴만 지원한다. Amazon S3 TransferUtility 같은 상위 수준 추상화도 .NET Core 환경에서는 비동기 호출만 지원한다. .NET Standard 를 대상으로 하는 애플리케이션에는 AWS SDK for .NET이 비동기 메서드만 제공한다. .NET Framework 4.7.2 대상 빌드에서는 동기·비동기 호출 패턴을 모두 지원한다. Portable Class Library와 Xamarin에서도 비동기 호출만 지원한다.",
+      "corrects_courseware": "교재 슬라이드 11(client.PutBucket), 19(client.GetObject), 33(client.ListBuckets)의 .NET 예제가 동기 메서드를 사용한다. .NET Core·.NET Standard 대상에서는 PutBucketAsync, GetObjectAsync, ListBucketsAsync 같은 비동기 메서드를 써야 한다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-supported-platforms.html",
+      "fetched_with": "mcp",
+      "section": ".NET Core / .NET Standard 2.0 / .NET Framework 4.5"
+    },
+    {
+      "id": "object-lambda-scope",
+      "claim": "S3 Object Lambda로 Amazon S3 GET, LIST, HEAD 요청에 자체 코드를 추가해 애플리케이션에 반환되는 데이터를 수정·처리할 수 있다. GET 응답으로 행 필터링, 동적 이미지 크기 조정·워터마킹, 대외비 데이터 교정 등을 할 수 있고, LIST 출력을 수정해 버킷 객체의 커스텀 뷰를 만들거나 HEAD 요청으로 객체 이름·크기 같은 메타데이터를 수정할 수 있다. Lambda 함수를 구성한 뒤 Object Lambda Access Point에 연결하며, 이 액세스 포인트는 지원 액세스 포인트(supporting access point)를 통해 데이터에 접근한다. Object Lambda Access Point는 디렉터리 버킷에서 지원되지 않는다.",
+      "supports_courseware": "교재 슬라이드 23 강사 노트의 'GET, HEAD 및 LIST 요청'을 뒷받침한다. 슬라이드 본문은 'S3 GET 요청'만 언급한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/transforming-objects.html",
+      "fetched_with": "mcp",
+      "section": "Transforming objects with S3 Object Lambda"
+    },
+    {
+      "id": "object-lambda-availability",
+      "claim": "2025년 11월 7일부터 S3 Object Lambda는 현재 이 서비스를 사용 중인 기존 고객과 일부 선정된 AWS Partner Network(APN) 파트너에게만 제공된다. 기존 고객과 APN 파트너 솔루션을 사용·배포하는 고객은 계속 사용할 수 있다. AWS는 S3 Object Lambda의 보안·가용성 개선은 우선적으로 처리하지만 새 기능을 도입할 계획이 없다. 대안으로 Dynamic Image Transformation for Amazon CloudFront 솔루션, CloudFront·API Gateway·함수 URL 등 다른 방법으로 AWS Lambda를 호출하는 방식, 클라이언트 애플리케이션에서 데이터를 처리하는 방식이 제시된다. 모든 대안이 계속 Amazon S3를 기반 스토리지로 사용하므로 데이터 마이그레이션은 필요하지 않다.",
+      "corrects_courseware": "교재 슬라이드 23·24는 S3 Object Lambda를 누구나 쓸 수 있는 일반 기능으로 소개한다. 현재는 신규 고객이 시작할 수 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/amazons3-ol-change.html",
+      "fetched_with": "mcp",
+      "section": "Amazon S3 Object Lambda availability change"
+    },
+    {
+      "id": "presigned-url-basics",
+      "claim": "미리 서명된 URL은 버킷 정책을 변경하지 않고 객체에 시간 제한 액세스를 부여한다. 미리 서명된 URL이 사용하는 보안 인증은 그 URL을 생성한 IAM 주체의 것이다. 유효한 보안 인증을 가진 누구나 미리 서명된 URL을 만들 수 있지만, 실제로 액세스가 성공하려면 그 URL이 기반한 작업을 수행할 권한이 있는 사람이 만들어야 한다. 즉 미리 서명된 URL의 기능은 그것을 만든 사용자의 권한으로 제한된다. 생성 시 버킷, 객체 키, HTTP 메서드(다운로드는 GET, 업로드는 PUT, 메타데이터 읽기는 HEAD 등), 만료 시간 간격을 지정한다. 만료 기간은 Amazon S3 콘솔에서 1분~12시간, AWS CLI·SDK에서는 최대 7일까지 설정할 수 있다. IAM 사용자 자격 증명은 SigV4 사용 시 최대 7일까지 유효하고, 임시 보안 인증으로 만든 URL은 그 자격 증명이 만료될 때 함께 만료된다(예: STS AssumeRole 세션 기본 1시간, EC2 인스턴스 프로파일 메타데이터 자격 증명 최대 약 6시간). 미리 서명된 URL은 만료 전까지 여러 번 사용할 수 있고, S3는 HTTP 요청 시점에 만료 시각을 확인한다. s3:signatureAge 조건 키로 서명 사용을 제한할 수 있다.",
+      "corrects_courseware": "교재 슬라이드 26은 '만료 날짜 및 시간'만 언급하고 만료 상한, 자격 증명 유형에 따른 조기 만료, 서명자 권한 상속을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html",
+      "fetched_with": "mcp",
+      "section": "Who can create a presigned URL / Expiration time for presigned URLs / Limiting presigned URL capabilities"
+    },
+    {
+      "id": "cli-presign",
+      "claim": "aws s3 presign은 Amazon S3 객체에 대한 미리 서명된 URL을 생성하며, 이 URL을 받은 누구나 HTTP GET 요청으로 해당 S3 객체를 가져올 수 있다. 모든 미리 서명된 URL이 이제 sigv4를 사용하므로 리전을 명시적으로 구성해야 한다. --expires-in은 미리 서명된 URL이 만료되기까지의 초 수로 기본값은 3600초, 최대는 604800초다. 생성되는 URL의 쿼리 파라미터는 X-Amz-Algorithm=AWS4-HMAC-SHA256, X-Amz-Credential, X-Amz-Date, X-Amz-Expires, X-Amz-SignedHeaders, X-Amz-Signature 형태다.",
+      "corrects_courseware": "교재 슬라이드 26의 반환 URL 예시는 AWSAccessKeyId, Signature, Expires 쿼리 파라미터를 사용하는 서명 버전 2 형태다. 현재 CLI가 만드는 URL은 SigV4 파라미터를 사용한다. 또한 aws s3 presign 은 GET 용 URL만 생성하므로, PUT 업로드 URL은 SDK(예: boto3 generate_presigned_url(ClientMethod='put_object'))로 만들어야 한다.",
+      "url": "https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/presign.html",
+      "fetched_with": "web_fetch",
+      "section": "Description / Options / Examples"
+    },
+    {
+      "id": "list-objects-v2",
+      "claim": "ListObjectsV2는 요청마다 버킷의 객체를 일부 또는 전부(최대 1,000개) 반환한다. max-keys는 응답에 반환되는 최대 키 수를 설정하며 기본적으로 최대 1,000개 키 이름을 반환하고 그보다 많이 반환하지 않는다. 요청 파라미터는 list-type=2, continuation-token, delimiter, encoding-type, fetch-owner, max-keys, prefix, start-after 다. ContinuationToken은 난독화된 값이며 실제 키가 아니고 목록 결과의 페이지 매김에 사용한다. 범용 버킷에서 ListObjectsV2는 키 이름 기준 사전순으로 객체를 반환한다(디렉터리 버킷은 사전순이 아니다). 범용 버킷에서는 진행 중인 멀티파트 업로드에만 관련된 접두사를 반환하지 않는다. AWS는 애플리케이션 개발에 이 개정된 API를 사용할 것을 권장하며, 이전 버전 ListObjects는 하위 호환을 위해 계속 지원한다.",
+      "supports_courseware": "교재 슬라이드 34의 최대 1,000개, MaxKeys, IsTruncated, ContinuationToken, NextContinuationToken, start-after 설명을 뒷받침한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html",
+      "fetched_with": "mcp",
+      "section": "ListObjectsV2 / URI Request Parameters"
+    },
+    {
+      "id": "list-objects-v1-legacy",
+      "claim": "ListObjects는 개정된 작업이며, AWS는 애플리케이션 개발 시 최신 버전인 ListObjectsV2를 사용할 것을 권장한다. 하위 호환성을 위해 ListObjects를 계속 지원한다. ListObjects는 디렉터리 버킷에서 지원되지 않는다. 페이지 매김에 continuation-token 대신 marker를 사용한다.",
+      "corrects_courseware": "교재 슬라이드 35 Python 예제가 list_objects(v1) paginator를 사용한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjects.html",
+      "fetched_with": "mcp",
+      "section": "ListObjects"
+    },
+    {
+      "id": "list-buckets-pagination",
+      "claim": "ListBuckets는 요청을 보낸 인증된 발신자가 소유한 모든 버킷의 목록을 반환하며 s3:ListAllMyBuckets 정책 작업이 필요하다. AWS는 페이지 매김된 ListBuckets 요청만 사용하도록 강력히 권장한다. 페이지 매김되지 않은 ListBuckets 요청은 범용 버킷 기본 할당량 10,000으로 설정된 AWS 계정에서만 지원되며, 승인된 할당량이 10,000을 초과하는 계정에서는 페이지 매김되지 않은 모든 요청이 거부된다. 요청 파라미터는 bucket-region, continuation-token, max-buckets, prefix 다. max-buckets의 유효 범위는 1~10000이다. bucket-region, prefix, continuation-token을 max-buckets 없이 지정하면 기본 페이지 크기 10,000이 적용되고 버킷이 더 있으면 연속 토큰을 제공한다. 응답의 Bucket 요소에는 BucketArn, BucketRegion, CreationDate, Name이 포함된다. ListBuckets는 디렉터리 버킷에서 지원되지 않는다.",
+      "corrects_courseware": "교재 슬라이드 33은 ListBuckets가 소유한 모든 버킷 목록을 한 번에 반환하는 것처럼 서술하고 반복자로 순회하는 예제만 제시한다. 현재는 페이지 매김이 있고 그 사용이 권장된다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html",
+      "fetched_with": "mcp",
+      "section": "ListBuckets / URI Request Parameters / Examples"
+    },
+    {
+      "id": "delete-objects-limit",
+      "claim": "DeleteObjects는 단일 HTTP 요청으로 버킷에서 여러 객체를 삭제한다. 요청에는 삭제할 키를 최대 1,000개까지 담을 수 있다. XML로 객체 키 이름을 제공하고, 버전 관리가 활성화된 버킷에서 특정 버전을 삭제하려면 버전 ID를 함께 제공한다. 각 키마다 삭제 결과(성공 또는 실패)가 응답에 포함된다. 요청에 지정한 객체가 없으면 S3는 삭제된 것으로 결과를 반환한다. 응답 모드는 verbose(기본)와 quiet 두 가지이며 quiet는 오류가 발생한 키만 반환한다. MFA Delete가 활성화된 버킷에서 버전 관리된 객체를 삭제하려면 MFA 토큰을 포함해야 하고, 없거나 잘못되면 요청 전체가 실패한다.",
+      "corrects_courseware": "교재는 다중 객체 삭제와 그 한도를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html",
+      "fetched_with": "mcp",
+      "section": "DeleteObjects"
+    },
+    {
+      "id": "batch-ops-operations",
+      "claim": "S3 배치 작업이 지원하는 작업은 다음 11가지다: 객체 복사(Copy objects), 체크섬 계산(Compute checksums), 모든 객체 태그 삭제(Delete all object tags), AWS Lambda 함수 호출(Invoke AWS Lambda function), 모든 객체 태그 교체(Replace all object tags), 액세스 제어 목록(ACL) 교체(Replace access control list), 객체 복원(Restore objects), 객체 암호화 업데이트(Update object encryption), 기존 객체 복제(Batch Replication), S3 Object Lock 보존(retention), S3 Object Lock 법적 보존(legal hold). 단일 작업(job)은 지정한 Amazon S3 객체 목록에 단일 작업을 수행하며, 하나의 작업으로 엑사바이트 규모 데이터의 수십억 개 객체를 처리할 수 있다. 콘솔, AWS CLI, AWS SDK, Amazon S3 REST API로 사용할 수 있다.",
+      "corrects_courseware": "교재 슬라이드 36은 7가지(PUT 객체 복사, 객체 복원 시작, PUT 객체 ACL, PUT 객체 태깅, 객체 잠금 보존 날짜 관리, 객체 잠금 법적 보존 관리, 사용자 지정 Lambda 작업 실행)만 기재한다. 체크섬 계산, 모든 객체 태그 삭제, 객체 암호화 업데이트, Batch Replication이 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops-operations.html",
+      "fetched_with": "mcp",
+      "section": "Operations supported by S3 Batch Operations"
+    },
+    {
+      "id": "batch-ops-manifest",
+      "claim": "S3 배치 작업의 매니페스트를 지정하는 방법은 네 가지다: (1) 지정한 메타데이터를 기준으로 배치 작업이 객체 목록을 생성하게 하고 이를 매니페스트 파일로 저장, (2) 기존 복제 구성을 기준으로 객체 목록을 자동 생성, (3) 새 매니페스트 파일을 직접 작성, (4) 기존 매니페스트 사용. 지정 방식과 무관하게 매니페스트 자체는 범용 버킷에 저장해야 하며 배치 작업은 디렉터리 버킷에서 매니페스트를 가져오거나 저장할 수 없다(매니페스트에 기술된 객체는 디렉터리 버킷에 있어도 된다). 매니페스트에 버전 ID 필드를 포함하면 모든 객체에 버전 ID를 제공해야 한다. 작업 생성 시 Operation, Manifest, Priority, RoleArn, Report가 필요하고 Tags는 선택이다. 완료 보고서도 범용 버킷에 저장해야 하며 항상 SSE-S3로 암호화된다.",
+      "corrects_courseware": "교재 슬라이드 36은 'Amazon S3 인벤토리 보고서 또는 사용자 지정 CSV 파일' 두 가지만 제시한다. 현재는 메타데이터 기반 자동 생성과 복제 구성 기반 자동 생성이 추가되었다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops-create-job.html",
+      "fetched_with": "mcp",
+      "section": "Batch Operations job request elements"
+    },
+    {
+      "id": "website-endpoints",
+      "claim": "버킷을 정적 웹 사이트로 구성하면 리전별 웹 사이트 엔드포인트에서 사이트를 사용할 수 있고, 이 엔드포인트는 REST API 요청을 보내는 엔드포인트와 다르다. 리전에 따라 두 형식 중 하나를 따른다: http://bucket-name.s3-website-Region.amazonaws.com(하이픈) 또는 http://bucket-name.s3-website.Region.amazonaws.com(마침표). Amazon S3 웹 사이트 엔드포인트는 HTTPS와 액세스 포인트를 지원하지 않는다. HTTPS가 필요하면 (권장) AWS Amplify Hosting을 사용하거나 Amazon CloudFront로 S3에 호스팅된 정적 웹 사이트를 제공한다. Requester Pays 버킷은 웹 사이트 엔드포인트를 통한 액세스를 허용하지 않고 403 Access Denied를 반환한다. 보안 강화를 위해 S3 웹 사이트 엔드포인트 도메인은 Public Suffix List에 등록되어 있으며, 민감한 쿠키를 설정해야 하면 __Host- 접두사 쿠키를 사용해 CSRF를 방어하도록 권장한다. 웹 사이트 엔드포인트는 퍼블릭으로 읽을 수 있는 콘텐츠만 지원하고, 객체에 대한 GET·HEAD 요청만 지원하며, 오류를 HTML 문서로 반환하고, 객체·버킷 수준 리디렉션을 지원하며, SSL 연결을 지원하지 않는다.",
+      "corrects_courseware": "교재 슬라이드 38 표는 엔드포인트를 https://[bucketname].s3-website-[Region].amazonaws.com 로 표기하지만 같은 슬라이드 강사 노트는 HTTPS 미지원이라고 서술하고 슬라이드 39는 http:// 로 표기해 자체 모순이다. 공식 문서 기준 스킴은 http 다. 또한 교재는 하이픈 형식만 다루고 마침표 형식, Requester Pays 제약, GET·HEAD 한정을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html",
+      "fetched_with": "mcp",
+      "section": "Website endpoints / Key differences between a website endpoint and a REST API endpoint"
+    },
+    {
+      "id": "website-hosting-amplify",
+      "claim": "AWS는 S3에 저장된 정적 웹 사이트 콘텐츠를 호스팅하는 데 AWS Amplify Hosting을 사용하도록 권장한다. Amplify Hosting은 Amazon CloudFront 기반의 전역 CDN에 웹 사이트를 배포하는 완전 관리형 서비스로, 안전한 정적 웹 사이트 호스팅을 제공하고 범용 버킷 내 객체 위치를 선택해 관리형 CDN에 배포하며 공개 HTTPS URL을 생성한다. 정적 웹 사이트 호스팅에 사용하는 버킷이 SSE-KMS로 암호화되어 있으면 SSE-KMS가 익명 사용자를 지원하지 않으므로 CloudFront 배포를 만들어야 하고, 오리진 보호에는 OAI가 아니라 OAC(origin access control)를 사용해야 한다.",
+      "corrects_courseware": "교재 슬라이드 38 강사 노트는 HTTPS 대안으로 CloudFront만 제시한다. 현재 문서의 1순위 권장은 AWS Amplify Hosting이며, SSE-KMS 버킷은 CloudFront + OAC가 필수라는 조건도 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html",
+      "fetched_with": "mcp",
+      "section": "Hosting a static website using Amazon S3"
+    },
+    {
+      "id": "cli-s3-website",
+      "claim": "website는 AWS CLI의 aws s3 명령 집합(상위 수준)에 속하며 버킷의 웹 사이트 구성을 설정한다. 구문은 aws s3 website <S3Uri> [--index-document <value>] [--error-document <value>] 다. --index-document는 웹 사이트 엔드포인트에서 디렉터리 요청에 덧붙여지는 접미사로 비어 있으면 안 되고 슬래시를 포함할 수 없다. --error-document는 4XX 계열 오류 발생 시 사용할 객체 키 이름이다. 문서의 예제는 us-west-2 버킷의 결과 주소를 http://amzn-s3-demo-bucket.s3-website-us-west-2.amazonaws.com 으로 제시하고, 정적 사이트에 노출되는 모든 파일은 방문자가 열 수 있도록 별도로 구성해야 한다고 명시한다.",
+      "corrects_courseware": "교재 슬라이드 39 강사 노트는 'API 수준 s3api 명령 website'라고 서술하지만, website는 aws s3api가 아니라 aws s3 명령이다. 예제 명령 자체(aws s3 website ...)는 맞다.",
+      "url": "https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/website.html",
+      "fetched_with": "web_fetch",
+      "section": "Description / Options / Examples"
+    },
+    {
+      "id": "cors-overview",
+      "claim": "CORS는 한 도메인에서 로드된 클라이언트 웹 애플리케이션이 다른 도메인의 리소스와 상호 작용하는 방법을 정의한다. Amazon S3는 CORS를 지원하므로 S3로 리치 클라이언트 측 웹 애플리케이션을 만들고 S3 리소스에 대한 교차 오리진 액세스를 선택적으로 허용할 수 있다. 브라우저에서 사전 요청(preflight)을 받으면 S3는 버킷의 CORS 구성을 평가하고, 들어온 요청과 일치하는 첫 번째 CORSRule을 사용해 교차 오리진 요청을 허용한다. 일치 조건은 요청의 Origin 헤더가 AllowedOrigins와 일치하고, Access-Control-Request-Method가 AllowedMethods와 일치하며, Access-Control-Request-Headers의 헤더가 AllowedHeaders와 일치하는 것이다. 버킷에 CORS를 활성화해도 ACL과 정책은 계속 적용된다. S3 Object Lambda는 브라우저에서 온 요청이거나 Origin 헤더가 포함된 요청에 항상 \"AllowedOrigins\":\"*\" 헤더 필드를 추가한다.",
+      "supports_courseware": "교재 슬라이드 40의 CORS 정의와 웹 글꼴·대체 도메인 예시를 뒷받침한다. 첫 번째 일치 규칙만 적용된다는 점과 ACL·정책이 그대로 적용된다는 점은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html",
+      "fetched_with": "mcp",
+      "section": "Using cross-origin resource sharing (CORS)"
+    },
+    {
+      "id": "cors-elements",
+      "claim": "CORS 구성 하나에 최대 100개의 규칙을 추가할 수 있고 버킷의 cors 하위 리소스로 추가한다. S3 콘솔에서 CORS를 구성하려면 JSON을 사용해야 하며, 새 S3 콘솔은 JSON CORS 구성만 지원한다. REST API·SDK용으로는 JSON과 XML 예제가 모두 제공된다. AllowedMethods에 지정할 수 있는 값은 GET, PUT, POST, DELETE, HEAD 다. AllowedOrigins의 오리진 문자열에는 와일드카드 * 를 하나만 넣을 수 있고(예: http://*.example.com), * 하나로 모든 오리진을 허용할 수 있다. AllowedHeaders 문자열도 와일드카드를 최대 하나 포함할 수 있다(예: x-amz-*). 선택 요소로 ExposeHeaders(애플리케이션에서 접근 가능하게 노출할 응답 헤더)와 MaxAgeSeconds(브라우저가 사전 요청 응답을 캐시하는 초)가 있다.",
+      "corrects_courseware": "교재 슬라이드 40은 XML 구성만 제시하고 'CORS 구성 XML 파일을 생성하십시오'라고 지시한다. 현재 콘솔은 JSON만 지원한다. 규칙 100개 상한은 교재 기재와 일치한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/ManageCorsUsing.html",
+      "fetched_with": "mcp",
+      "section": "Elements of a CORS configuration"
+    },
+    {
+      "id": "rrs-not-recommended",
+      "claim": "Reduced Redundancy Storage(REDUCED_REDUNDANCY)는 S3 Standard보다 낮은 중복성으로 저장할 수 있는 비중요·재생성 가능 데이터용 클래스다. AWS는 이 스토리지 클래스를 사용하지 않도록 권장하며 S3 Standard가 더 비용 효율적이라고 명시한다. RRS 객체의 내구성은 연간 평균 객체 0.01% 손실 예상이며, RRS 객체가 손실된 뒤 그 객체를 요청하면 Amazon S3가 405 오류를 반환한다. 스토리지 클래스를 지정하지 않고 객체를 업로드하면 S3 Standard가 적용된다.",
+      "corrects_courseware": "교재 슬라이드 32 강사 노트는 '복사 작업을 통해 객체의 스토리지 클래스를 Standard에서 Reduced Redundancy로 변경하거나 그 반대로 변경할 수 있습니다'를 대표 예시로 제시한다. RRS로의 전환은 현재 권장되지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+      "fetched_with": "mcp",
+      "section": "Storage classes for frequently accessed objects"
+    },
+    {
+      "id": "cli-sync",
+      "claim": "aws s3 sync는 디렉터리와 S3 접두사를 동기화하며, 소스 디렉터리에서 새 파일과 갱신된 파일을 대상으로 재귀적으로 복사한다. 대상에는 하나 이상의 파일이 포함된 경우에만 폴더를 만든다. 다운로드 시 S3 객체 크기가 로컬 파일과 다르거나, S3 객체의 마지막 수정 시각이 로컬 파일보다 최신이거나, 로컬 디렉터리에 객체가 없으면 다운로드 대상이 된다. --exclude는 지정한 패턴과 일치하는 모든 파일·객체를 제외하고, --include는 일치하는 항목을 제외 대상에서 되돌린다. --delete를 주면 대상에만 있고 소스에 없는 파일이 삭제된다. --storage-class의 유효값은 STANDARD | REDUCED_REDUNDANCY | STANDARD_IA | ONEZONE_IA | INTELLIGENT_TIERING | GLACIER | DEEP_ARCHIVE | GLACIER_IR 이며 기본값은 STANDARD 다.",
+      "supports_courseware": "교재 슬라이드 32의 'aws s3 sync 명령을 사용하면 기본적으로 전체 디렉터리가 복사되고 이후로는 새 파일 또는 수정된 파일이 복사된다'와 --exclude \"*another/*\" 예제를 뒷받침한다.",
+      "url": "https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/sync.html",
+      "fetched_with": "web_fetch",
+      "section": "Description / Options / Examples"
+    },
+    {
+      "id": "event-notification-types",
+      "claim": "Amazon S3 이벤트 알림을 게시할 수 있는 대상은 Amazon SNS 주제, Amazon SQS 대기열, AWS Lambda, Amazon EventBridge 이며 이벤트 알림 하나에는 대상 유형 하나만 지정할 수 있다. SQS·SNS·Lambda 대상으로 게시할 수 있는 이벤트 유형은 s3:TestEvent, s3:ObjectCreated:*(Put/Post/Copy/CompleteMultipartUpload), s3:ObjectRemoved:*(Delete/DeleteMarkerCreated), s3:ObjectRestore:*(Post/Completed/Delete), s3:ReducedRedundancyLostObject, s3:Replication:*(OperationFailedReplication/OperationMissedThreshold/OperationReplicatedAfterThreshold/OperationNotTracked), s3:LifecycleExpiration:*(Delete/DeleteMarkerCreated), s3:LifecycleTransition, s3:IntelligentTiering 등이다. ObjectRemoved 이벤트 알림은 수명 주기 구성에 의한 자동 삭제나 실패한 작업에 대해서는 알리지 않는다. SNS FIFO와 SQS FIFO 대기열은 S3 이벤트 알림 대상으로 지원되지 않으며, SQS FIFO로 보내려면 EventBridge를 사용한다. 이벤트 알림 메시지는 최대 64KB이므로 SQS 대기열의 MaximumMessageSize를 최소 64KB로 설정하도록 권장한다. EventBridge는 버킷 단위로 활성화·비활성화만 가능하고 활성화하면 모든 이벤트가 전송된다.",
+      "corrects_courseware": "교재 슬라이드 42 지식 확인 5번 해설은 'PUT, POST, COPY 또는 DELETE와 같은 Amazon S3 작업에 대한 응답으로 이벤트 알림을 보내도록 버킷을 구성할 수 있습니다'로만 서술한다. 수명 주기, Intelligent-Tiering, 복제, 복원 등 API 호출이 아닌 트리거도 있고, 반대로 수명 주기 삭제는 ObjectRemoved로 알림이 오지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/notification-how-to-event-types-and-destinations.html",
+      "fetched_with": "mcp",
+      "section": "Supported event destinations / Supported event types for SQS, SNS, and Lambda"
+    },
+    {
+      "id": "docs-dev-path-redirects",
+      "claim": "교재가 인용한 구버전 개발자 안내서(dev) 경로 세 개가 현재 사용자 안내서(userguide) 경로로 리다이렉트된다. /AmazonS3/latest/dev/ChgStoClsOfObj.html -> /AmazonS3/latest/userguide/storage-class-intro.html, /AmazonS3/latest/dev/cors.html -> /AmazonS3/latest/userguide/cors.html, /AmazonS3/latest/dev/ManageCorsUsing.html -> /AmazonS3/latest/userguide/ManageCorsUsing.html. 세 요청 모두 최종 HTTP 200을 반환했다.",
+      "corrects_courseware": "교재 슬라이드 32·40이 /AmazonS3/latest/dev/ 경로를 인용한다. 본문에서는 리다이렉트 후의 userguide 경로를 직접 인용한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+      "fetched_with": "link_check",
+      "section": "리다이렉트 대상 확인 (curl -L, url_effective)"
+    },
+    {
+      "id": "courseware-links-reachable",
+      "claim": "교재 강사 노트가 인용한 다음 URL 네 개가 현재도 HTTP 200으로 응답한다. 멀티파트 업로드 지식 센터 문서 https://aws.amazon.com/premiumsupport/knowledge-center/s3-multipart-upload-cli/ , S3 Object Lambda 발표 블로그 https://aws.amazon.com/blogs/aws/introducing-amazon-s3-object-lambda-use-your-code-to-process-data-as-it-is-being-retrieved-from-s3/ , CloudFront 정적 웹 사이트 제공 지식 센터 문서 https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/ , AWS SDK for Java 미리 서명된 URL 예제 https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/examples-s3-presign.html .",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/examples-s3-presign.html",
+      "fetched_with": "link_check",
+      "section": "URL 생존 확인만 수행 (내용은 읽지 않음)"
+    }
+  ],
+  "unverified": [
+    {
+      "id": "java-switch-fallthrough",
+      "reason": "슬라이드 8 Java 예제의 switch 문에 break 가 없어 404 분기에서 400·403 분기까지 연달아 실행되는 fall-through 가 발생한다. 이는 Java 언어 동작이며 AWS 공식 문서로 확인할 성질의 사실이 아니다.",
+      "action": "본문 예제에는 break 를 넣어 교정하고, 교정했다는 사실을 7장에 남긴다. AWS 문서를 근거로 인용하지 않는다."
+    },
+    {
+      "id": "python-example-var-mismatch",
+      "reason": "슬라이드 20 Python 예제가 함수 인자 bucket 을 받으면서 본문에서 bucketname(정의되지 않음)과 bucket.name 을 혼용한다. 교재 코드 자체의 불일치이므로 외부 문서로 검증할 대상이 아니다.",
+      "action": "본문 예제를 클라이언트 인터페이스 기준으로 다시 쓰고 변수 사용을 일치시킨다. 7장에 교정 사실을 남긴다."
+    },
+    {
+      "id": "object-lambda-var-mismatch",
+      "reason": "슬라이드 24 Python 예제가 route·token 으로 변수를 선언한 뒤 RequestRoute=request_route, RequestToken=request_token 을 사용한다. 정의되지 않은 이름을 참조하므로 교재 코드 자체의 오류다.",
+      "action": "본문 예제에서 변수 이름을 일치시킨다. 7장에 교정 사실을 남긴다."
+    },
+    {
+      "id": "get-bucket-location-null",
+      "reason": "M05에서와 마찬가지로, us-east-1 버킷에 대해 get-bucket-location 이 LocationConstraint 를 null 로 반환하는 동작 자체는 공식 문서로 확인하지 못했다. 확인한 것은 LocationConstraint 유효값에 us-east-1 이 없고, 미지정 시 us-east-1 에 생성된다는 점이다.",
+      "action": "본문에서는 확인한 범위(유효값·기본 리전)만 서술하고 null 반환 동작은 단정하지 않는다."
+    },
+    {
+      "id": "max-object-size-two-figures",
+      "reason": "최대 객체 크기가 두 공식 페이지에서 서로 다른 단위·값으로 기재된다. 멀티파트 업로드 한도 페이지(qfacts.html)는 48.8TiB, 객체 업로드 페이지(upload-objects.html)는 최대 50TB 및 '5MB~50TB 범위'로 기재한다. 어느 쪽이 정본인지는 문서로 판별하지 못했다.",
+      "action": "본문에 두 값을 각각의 출처와 함께 그대로 제시하고, 교재의 5TB 가 현재와 다르다는 점만 단정한다."
+    },
+    {
+      "id": "mfa-delete-object-protection",
+      "reason": "슬라이드 13 강사 노트의 'MFA로 버킷을 보호해 객체가 실수로 또는 의도적으로 삭제되는 것을 방지한다'는 서술 중, MFA Delete 의 정확한 보호 범위(버전 관리 상태 변경과 버전 영구 삭제)를 MultiFactorAuthenticationDelete 전용 페이지로 따로 확인하지는 않았다. PutBucketVersioning 문서에서 확인한 것은 MFA Delete 활성화에 버킷 소유자 권한과 x-amz-mfa 헤더가 필요하다는 점, DeleteObjects 문서에서 확인한 것은 MFA Delete 버킷에서 버전 객체를 삭제할 때 MFA 토큰이 필요하다는 점이다.",
+      "action": "확인한 두 가지만 본문에 쓰고 보호 범위 전체는 단정하지 않는다."
+    }
+  ]
+}

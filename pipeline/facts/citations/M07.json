@@ -1,0 +1,415 @@
+{
+  "_note": "M07 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다. fetched_with 는 어떤 도구로 조회했는지이며 link_check 는 'URL 이 살아 있다' 자체가 주장인 경우에만 쓴다.",
+  "module": "M07",
+  "verified_on": "2026-08-30",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / boto3 공식 문서(boto3.amazonaws.com) / URL 생존 확인",
+  "citations": [
+    {
+      "id": "aws-database-lineup",
+      "claim": "AWS는 15개 이상의 데이터베이스 옵션을 제공하며 데이터 모델은 관계형, 키 값, 문서, 인 메모리, 그래프, 시계열, 벡터, 와이드 컬럼을 포함한다. OLTP 관계형 계열은 Amazon Aurora와 Amazon RDS의 9개 엔진으로 구성된다. Aurora 엔진은 Aurora PostgreSQL 호환 에디션, Aurora MySQL 호환 에디션, Aurora DSQL이고 RDS 엔진은 PostgreSQL, MySQL, MariaDB, SQL Server, Oracle, Db2다. 비관계형 옵션의 데이터 모델은 키 값(DynamoDB), 문서(DocumentDB), 캐싱·인 메모리(ElastiCache, MemoryDB), 그래프(Neptune), 시계열(Timestream), 와이드 컬럼(Keyspaces)이다. Amazon Redshift는 OLAP(데이터 웨어하우징) 서비스로 이 OLTP 표에 포함되지 않는다. 이 결정 안내서는 2026년 6월 2일에 갱신되었다.",
+      "corrects_courseware": "교재 슬라이드 6은 Amazon Aurora를 RDS가 지원하는 엔진 중 하나로 기재하고 Db2를 누락한다. 또한 Amazon Redshift를 '관계형' 행에 DynamoDB와 동급으로 넣어 OLAP 성격을 드러내지 않는다. Amazon MemoryDB, Aurora DSQL, Aurora PostgreSQL Limitless Database, 벡터 데이터 모델은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/decision-guides/latest/databases-on-aws-how-to-choose/databases-on-aws-how-to-choose.html",
+      "fetched_with": "mcp",
+      "section": "Introduction / Understand / Choose"
+    },
+    {
+      "id": "elasticache-engines",
+      "claim": "Amazon ElastiCache는 Valkey, Memcached, Redis OSS 엔진을 지원하며 서버리스와 노드 기반 배포 옵션을 제공한다. 마이크로초 읽기와 1밀리초 미만 쓰기를 지원하는 임시(ephemeral) 캐시로 최적화되어 있다. 완전한 데이터 지속성과 1밀리초 미만 읽기 지연이 필요하면 Amazon MemoryDB를 쓴다.",
+      "corrects_courseware": "교재는 'ElastiCache - 완전관리형 Redis 또는 Memcached 엔진을 지원하는 인 메모리 데이터 캐시'로 기재한다. 현재는 Valkey가 추가되었고 Redis는 Redis OSS로 표기된다.",
+      "url": "https://docs.aws.amazon.com/decision-guides/latest/databases-on-aws-how-to-choose/databases-on-aws-how-to-choose.html",
+      "fetched_with": "mcp",
+      "section": "Choose"
+    },
+    {
+      "id": "dynamodb-single-digit-ms",
+      "claim": "Amazon DynamoDB는 서버리스, 완전관리형 분산 NoSQL 데이터베이스로 규모와 관계없이 한 자리 밀리초(single-digit millisecond) 성능을 제공한다. 키 값 모델과 문서 모델을 모두 지원한다. 관계형 데이터베이스와 달리 JOIN 연산자를 지원하지 않으므로 데이터 모델을 비정규화하도록 권장한다. 강력한 읽기 일관성과 ACID 트랜잭션을 제공한다.",
+      "corrects_courseware": "교재는 '규모와 관계없이 10밀리초 미만의 대기 시간', '평균 서비스 지연 시간은 보통 10밀리초 미만'으로 기재한다. 현재 공식 표현은 '한 자리 밀리초'다. JOIN 미지원은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "fetched_with": "mcp",
+      "section": "Characteristics of DynamoDB"
+    },
+    {
+      "id": "dynamodb-acid-transactions",
+      "claim": "DynamoDB 트랜잭션은 여러 테이블 내부와 테이블 간에 조정된 all-or-nothing 변경을 제공하며 ACID(원자성, 일관성, 격리, 내구성)를 보장한다. TransactWriteItems는 최대 100개의 쓰기 작업을 하나의 all-or-nothing 연산으로 묶고, TransactGetItems는 최대 100개의 Get 작업을 묶는다. 트랜잭션 하나의 항목 합계 크기는 4MB를 넘을 수 없다. 트랜잭션 활성화에 추가 비용은 없고 읽기·쓰기 비용만 지불한다. DynamoDB는 트랜잭션의 각 항목에 대해 준비와 커밋 두 번의 읽기·쓰기를 수행한다. 트랜잭션은 인덱스로는 수행할 수 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transactions.html",
+      "fetched_with": "mcp",
+      "section": "Managing complex workflows with DynamoDB transactions"
+    },
+    {
+      "id": "dynamodb-resilience-pitr",
+      "claim": "DynamoDB는 기본적으로 데이터를 3개의 가용 영역에 자동 복제해 높은 내구성과 99.99% 가용성 SLA를 제공한다. 연속 백업(continuous backups)은 초 단위 세분성을 제공하며 시점 복구(PITR)로 최근 35일 이내의 임의 시점(초 단위)으로 테이블을 복원할 수 있다. 복구 기간은 1일에서 35일 사이의 값으로 설정할 수 있다. 연속 백업과 시점 복원은 프로비저닝된 용량을 사용하지 않고 애플리케이션 성능·가용성에 영향을 주지 않는다. 온디맨드 백업 및 복원은 장기 보존·아카이브용 전체 백업을 만들며 AWS Backup과 통합된다. 글로벌 테이블은 99.999% 가용성 SLA를 제공한다.",
+      "corrects_courseware": "교재는 '모든 테이블에 대해 시점 복구, 백업 및 복원을 제공'이라고만 기재한다. PITR 보존 기간(최근 35일, 1~35일 설정 가능)과 3 AZ 복제·99.99% SLA는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      "fetched_with": "mcp",
+      "section": "Resilience"
+    },
+    {
+      "id": "partition-replication",
+      "claim": "파티션은 SSD로 백업되는 테이블용 스토리지 할당이며 한 AWS 리전 내의 여러 가용 영역에 자동으로 복제된다. 파티션 관리는 전적으로 DynamoDB가 처리하므로 사용자가 직접 관리할 필요가 없다. 테이블을 만들면 초기 상태는 CREATING이며 이 단계에서 DynamoDB가 프로비저닝된 처리량 요구를 처리할 만큼의 파티션을 할당한다. 상태가 ACTIVE로 바뀐 뒤 읽기·쓰기가 가능하다. 프로비저닝된 처리량을 기존 파티션이 지원하지 못할 만큼 늘리거나 기존 파티션이 가득 차면 파티션을 추가 할당한다. 글로벌 보조 인덱스도 파티션으로 구성되며 인덱스 데이터는 기본 테이블과 별도로 저장된다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html",
+      "fetched_with": "mcp",
+      "section": "Partitions and data distribution in DynamoDB"
+    },
+    {
+      "id": "hash-range-naming",
+      "claim": "항목의 파티션 키는 해시 속성(hash attribute)이라고도 하며, 이 용어는 DynamoDB가 내부 해시 함수로 파티션 키 값에 따라 데이터 항목을 파티션에 균등 분산하는 방식에서 유래한다. 항목의 정렬 키는 범위 속성(range attribute)이라고도 하며, 파티션 키가 같은 항목을 정렬 키 값 순서로 물리적으로 가까이 저장하는 방식에서 유래한다. 모든 기본 키 속성은 스칼라여야 하고 허용되는 데이터 형식은 문자열, 숫자, 이진뿐이다. 키가 아닌 속성에는 이런 제약이 없다. DynamoDB는 중첩 속성을 32단계까지 지원한다.",
+      "corrects_courseware": "교재는 Hash 속성·Range 속성이라는 별칭만 언급하고 기본 키 속성이 스칼라(문자열·숫자·이진)여야 한다는 제약과 중첩 32단계 한도는 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html",
+      "fetched_with": "mcp",
+      "section": "Primary key"
+    },
+    {
+      "id": "primary-key-types",
+      "claim": "DynamoDB는 두 종류의 기본 키를 지원한다. 파티션 키(단순 기본 키)는 파티션 키 속성 하나로 구성되며 DynamoDB가 그 값을 내부 해시 함수 입력으로 사용해 항목이 저장될 파티션을 결정한다. 파티션 키만 있는 테이블에서는 두 항목이 같은 파티션 키 값을 가질 수 없다. 파티션 키와 정렬 키(복합 기본 키)는 두 속성으로 구성되며 파티션 키 값이 같은 모든 항목은 정렬 키 값 순서로 함께 저장된다. 이 경우 여러 항목이 같은 파티션 키 값을 가질 수 있지만 정렬 키 값은 달라야 한다. 테이블에 저장할 수 있는 항목 수에는 제한이 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html",
+      "fetched_with": "mcp",
+      "section": "Tables, items, and attributes / Primary key"
+    },
+    {
+      "id": "attribute-data-types",
+      "claim": "DynamoDB 데이터 형식은 세 범주로 분류된다. 스칼라 형식은 숫자, 문자열, 이진, 부울, Null이다. 문서 형식은 목록(list)과 맵(map)이며 중첩 속성을 가진 복잡한 구조를 32단계까지 표현할 수 있다. 세트 형식은 문자열 세트, 숫자 세트, 이진 세트이며 한 세트의 모든 요소는 같은 형식이어야 하고 값은 고유해야 하며 순서는 보존되지 않는다. 하위 수준 API 프로토콜은 데이터 형식 설명자를 요구하며 전체 목록은 S(문자열), N(숫자), B(이진), BOOL(부울), NULL(Null), M(맵), L(목록), SS(문자열 세트), NS(숫자 세트), BS(이진 세트)다. 숫자는 정밀도 보존을 위해 네트워크 전송 시 문자열로 표현된다. 빈 세트는 허용되지 않지만 빈 목록과 빈 맵은 허용된다.",
+      "corrects_courseware": "교재는 '다중 값 형식 - 문자열 세트, 숫자 세트, 이진 세트'라고 표기한다. 공식 문서의 범주 이름은 '세트 형식(Set Types)'이다. 데이터 형식 설명자 전체 목록과 숫자를 문자열로 전송하는 이유는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html",
+      "fetched_with": "mcp",
+      "section": "Data types / Data type descriptors"
+    },
+    {
+      "id": "item-size-limit",
+      "claim": "DynamoDB의 최대 항목 크기는 400KB이며 여기에는 속성 이름의 이진 길이(UTF-8 길이)와 속성 값의 이진 길이가 모두 포함된다. 속성 이름도 크기 한도에 포함된다. 예를 들어 이름이 shirt-color 값이 R인 속성과 이름이 shirt-size 값이 M인 속성 두 개를 가진 항목의 총 크기는 23바이트다. 목록·맵·세트의 값 개수에는 제한이 없고 항목이 400KB 한도에 들어가기만 하면 된다. DynamoDB의 모든 크기 측정은 이진 단위를 사용하며 1KB = 1024바이트다. 테이블 크기에는 실질적인 제한이 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html",
+      "fetched_with": "mcp",
+      "section": "Items / Attributes"
+    },
+    {
+      "id": "attribute-name-limits",
+      "claim": "속성 이름은 일반적으로 최소 1자 이상이며 64KB를 넘을 수 없다. 예외로 보조 인덱스의 파티션 키 이름, 보조 인덱스의 정렬 키 이름, 사용자가 지정한 프로젝션 속성 이름(로컬 보조 인덱스에만 해당)은 255자를 넘을 수 없고 UTF-8로 인코딩한 각 이름의 총 크기가 255바이트를 넘을 수 없다. 테이블 이름과 보조 인덱스 이름은 3자 이상 255자 이하이며 A-Z, a-z, 0-9, 밑줄(_), 하이픈(-), 마침표(.)만 사용할 수 있다. 모든 이름은 UTF-8로 인코딩되고 대소문자를 구분한다. 속성 이름은 읽기 요청 단위 소비와 스토리지·처리량 사용량 측정에 포함되므로 가능한 짧게 유지하는 것이 모범 사례다.",
+      "corrects_courseware": "교재는 '항목 크기는 속성 이름 길이와 값의 길이를 더하여 결정됩니다'라고만 기재하고 속성 이름 자체의 길이 제한과 명명 규칙은 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html",
+      "fetched_with": "mcp",
+      "section": "Naming rules"
+    },
+    {
+      "id": "key-length-limits",
+      "claim": "파티션 키 값의 최소 길이는 1바이트, 최대 길이는 2048바이트다. 정렬 키 값의 최소 길이는 1바이트, 최대 길이는 1024바이트다. 테이블과 보조 인덱스의 고유한 파티션 키 값 개수에는 실질적인 제한이 없고, 파티션 키 값당 고유한 정렬 키 값 개수에도 일반적으로 실질적인 제한이 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html",
+      "fetched_with": "mcp",
+      "section": "Partition keys and sort keys"
+    },
+    {
+      "id": "rcu-wcu-rru-wru",
+      "claim": "프로비저닝된 테이블: 1 읽기 용량 단위(RCU) = 최대 4KB 항목에 대한 초당 강력한 일관성 읽기 1회 또는 초당 최종 일관성 읽기 2회. 1 쓰기 용량 단위(WCU) = 최대 1KB 항목에 대한 초당 쓰기 1회. 온디맨드 테이블: 1 읽기 요청 단위(RRU) = 최대 4KB 항목에 대한 초당 강력한 일관성 읽기 1회 또는 초당 최종 일관성 읽기 2회. 1 쓰기 요청 단위(WRU) = 최대 1KB 항목에 대한 초당 쓰기 1회. 트랜잭션 읽기 요청은 최대 4KB 항목에 대해 초당 1회 읽기를 수행하는 데 2 단위가, 트랜잭션 쓰기 요청은 최대 1KB 항목에 대해 초당 1회 쓰기를 수행하는 데 2 단위가 필요하다.",
+      "corrects_courseware": "교재의 RRU·WRU·RCU·WCU 정의는 정확하다(최종 일관성 읽기 0.5 단위 = 1 단위로 읽기 2회와 동일). 다만 트랜잭션 요청이 2배 단위를 소비한다는 내용이 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html",
+      "fetched_with": "mcp",
+      "section": "Read/write capacity mode"
+    },
+    {
+      "id": "capacity-mode-default",
+      "claim": "온디맨드 모드는 기본값이자 권장 처리량 옵션이며, 소규모로 시작해 초당 수백만 개의 요청까지 확장할 수 있는 최신 서버리스 애플리케이션 구축을 단순화한다. 요청당 요금이므로 유휴 용량을 걱정할 필요가 없고 읽기·쓰기 요청 단위로 과금된다. 새 온디맨드 테이블은 초당 4,000회 쓰기와 초당 12,000회 읽기까지 지속할 수 있고, 온디맨드 모드는 테이블의 이전 최대 트래픽의 두 배까지 즉시 수용한다. 이전 최대치의 두 배를 30분 안에 초과하면 스로틀링이 발생할 수 있다. 온디맨드 테이블은 프로비저닝 모드와 동일한 한 자리 밀리초 지연 시간, SLA, 보안을 제공한다. 트래픽이 없으면 처리량 요금이 부과되지 않는다.",
+      "corrects_courseware": "교재는 '온디맨드 모드가 기본값이며 대부분의 사용 사례에 권장됩니다'까지는 맞게 기재했지만, 신규 온디맨드 테이블의 초기 처리량(초당 4,000 쓰기·12,000 읽기)과 이전 피크 2배 즉시 수용, 30분 스로틀링 조건은 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html",
+      "fetched_with": "mcp",
+      "section": "DynamoDB on-demand capacity mode / Initial throughput and scaling properties"
+    },
+    {
+      "id": "per-table-max-throughput",
+      "claim": "온디맨드 테이블에서는 개별 테이블과 그에 연결된 글로벌 보조 인덱스에 대해 초당 최대 읽기 처리량과 최대 쓰기 처리량을 선택적으로 지정할 수 있다. 기본적으로 최대 처리량 설정은 적용되지 않고 계정의 모든 테이블에 대한 40,000 테이블 수준 읽기·쓰기 처리량 서비스 할당량으로 제한된다. 최대 처리량을 초과하는 요청은 스로틀링되며 ThrottlingException이 반환된다. 지정 가능한 최소 최대 처리량은 초당 1 요청 단위이고, 지정하는 값은 해당 테이블 또는 GSI에 사용 가능한 기본 처리량 할당량보다 작아야 한다. 최대 처리량은 최선 노력(best-effort) 기준으로 적용되며 버스트 용량 때문에 일시적으로 초과할 수 있다. CloudWatch 지표 OnDemandMaxReadRequestUnits와 OnDemandMaxWriteRequestUnits로 모니터링한다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode-max-throughput.html",
+      "fetched_with": "mcp",
+      "section": "DynamoDB maximum throughput for on-demand tables"
+    },
+    {
+      "id": "throughput-default-quotas",
+      "claim": "기본 처리량 할당량은 온디맨드 테이블당 40,000 읽기 요청 단위와 40,000 쓰기 요청 단위, 프로비저닝 테이블당 40,000 읽기 용량 단위와 40,000 쓰기 용량 단위이며 모두 조정 가능하다. 계정 수준 할당량은 프로비저닝 모드에만 적용되며 80,000 RCU와 80,000 WCU다. 온디맨드 모드 테이블에는 계정 수준 처리량 할당량이 적용되지 않는다. 프로비저닝 테이블·GSI의 최소 처리량은 1 RCU와 1 WCU다. 프로비저닝된 용량 감소는 하루에 4회로 시작해 매시간 1회가 추가되며(최대 동시 보유 4회), 24시간 동안 최대 27회까지 감소할 수 있다. 계정·리전당 테이블 수는 기본 2,500개다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html",
+      "fetched_with": "mcp",
+      "section": "Read/write throughput / Tables"
+    },
+    {
+      "id": "capacity-mode-switching",
+      "claim": "프로비저닝된 용량 모드에서 온디맨드 모드로는 24시간 롤링 윈도우 안에서 최대 4회까지 전환할 수 있다. 온디맨드 모드에서 프로비저닝된 용량 모드로는 언제든 전환할 수 있다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html",
+      "fetched_with": "mcp",
+      "section": "Read/write capacity mode"
+    },
+    {
+      "id": "provisioned-autoscaling",
+      "claim": "프로비저닝된 테이블을 만들 때는 프로비저닝된 처리량 용량을 지정해야 하고, 실제 소비량이 아니라 시간당 프로비저닝한 읽기·쓰기 용량을 기준으로 과금된다. Auto Scaling으로 트래픽 변화에 따라 용량을 자동 조정할 수 있으며 이는 Application Auto Scaling의 조정 정책을 사용한다. 최소·최대 읽기·쓰기 용량과 목표 사용률(target utilization)을 설정하면 Application Auto Scaling이 CloudWatch 경보를 만들어 관리한다. 소비 용량이 목표 사용률을 2분 연속 초과하면 조정이 트리거된다. AWS Management Console로 테이블이나 GSI를 만들면 Auto Scaling이 기본으로 활성화된다. AWS는 목표 사용률을 70%로 설정하도록 권장한다.",
+      "corrects_courseware": "교재는 프로비저닝 모드가 '오토 스케일링 기능을 제공'한다고만 기재한다. 목표 사용률 70% 권장, 콘솔 생성 시 기본 활성화, 2분 연속 초과 시 트리거 같은 동작은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html",
+      "fetched_with": "mcp",
+      "section": "Read capacity units and write capacity units / DynamoDB auto scaling"
+    },
+    {
+      "id": "index-quotas",
+      "claim": "테이블당 로컬 보조 인덱스는 최대 5개를 정의할 수 있고, 글로벌 보조 인덱스의 기본 할당량은 테이블당 20개다. 테이블의 로컬·글로벌 보조 인덱스 전체에 대해 사용자가 지정한 프로젝션 속성은 합산 100개까지 프로젝션할 수 있다. 이 할당량은 ProjectionType이 INCLUDE인 경우에만 적용되고 KEYS_ONLY 또는 ALL에는 적용되지 않는다. 같은 속성 이름을 두 인덱스에 프로젝션하면 2개로 계산된다.",
+      "corrects_courseware": "교재는 GSI 20개(기본 할당량)와 LSI 5개까지 맞게 기재했다. 프로젝션 속성 합산 100개 한도는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html",
+      "fetched_with": "mcp",
+      "section": "Secondary indexes / Projected secondary index attributes"
+    },
+    {
+      "id": "lsi-gsi-comparison",
+      "claim": "글로벌 보조 인덱스(GSI)와 로컬 보조 인덱스(LSI)의 차이. 키 스키마: GSI의 기본 키는 단순(파티션 키) 또는 복합(파티션 키와 정렬 키) 모두 가능하고, LSI의 기본 키는 반드시 복합이어야 한다. 키 속성: GSI의 인덱스 파티션 키와 정렬 키는 문자열·숫자·이진 형식의 임의의 기본 테이블 속성이 될 수 있고, LSI의 파티션 키는 기본 테이블의 파티션 키와 같은 속성이며 정렬 키는 문자열·숫자·이진 형식의 키가 아닌 기본 테이블 속성이어야 한다. 파티션 키 값당 크기 제약: GSI에는 없고, LSI는 파티션 키 값마다 인덱싱된 모든 항목의 총 크기가 10GB 이하여야 한다. 온라인 인덱스 작업: GSI는 테이블 생성 시 함께 만들 수도 있고 기존 테이블에 추가하거나 삭제할 수도 있으며, LSI는 테이블 생성 시에만 만들 수 있고 기존 테이블에 추가하거나 삭제할 수 없다. 쿼리 범위: GSI는 모든 파티션에 걸쳐 전체 테이블을 쿼리하고, LSI는 쿼리의 파티션 키 값으로 지정된 단일 파티션만 쿼리한다. 읽기 일관성: GSI 쿼리는 최종 일관성만 지원하고, LSI 쿼리는 최종 일관성과 강력한 일관성 중 선택할 수 있다. 프로비저닝된 처리량: GSI는 읽기·쓰기 활동에 대한 자체 프로비저닝된 처리량 설정을 가지며 GSI 쿼리·스캔은 인덱스의 용량 단위를 소비하고, LSI 쿼리·스캔은 기본 테이블의 읽기 용량 단위를 소비하며 테이블 쓰기 시 LSI 갱신도 기본 테이블의 쓰기 용량 단위를 소비한다. 프로젝션 속성: GSI 쿼리·스캔은 인덱스에 프로젝션된 속성만 요청할 수 있고 DynamoDB가 테이블에서 속성을 가져오지 않는다. LSI 쿼리·스캔은 인덱스에 프로젝션되지 않은 속성도 요청할 수 있고 DynamoDB가 테이블에서 자동으로 가져온다. 인덱스 키 스키마의 모든 속성은 String, Number, Binary 형식의 최상위 속성이어야 하며 문서·세트 형식은 허용되지 않는다. 각 보조 인덱스는 기본 테이블과 같은 테이블 클래스와 용량 모드를 사용한다. 테이블을 삭제하면 연결된 모든 인덱스도 삭제된다. 보조 인덱스가 있는 테이블을 여러 개 만들 때는 순차적으로 만들어야 하고 동시에 만들면 LimitExceededException이 반환된다.",
+      "corrects_courseware": "교재는 LSI 정렬 키를 '스칼라 속성이 될 수 있습니다'라고만 기재한다. 정확히는 문자열·숫자·이진 형식의 키가 아닌 기본 테이블 속성이어야 한다. 또 GSI 기본 키가 단순(파티션 키만)일 수도 있다는 점과 LSI 기본 키가 반드시 복합이어야 한다는 점, 인덱스 키 스키마에 문서·세트 형식을 쓸 수 없다는 점, 보조 인덱스가 기본 테이블의 테이블 클래스·용량 모드를 상속한다는 점이 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html",
+      "fetched_with": "mcp",
+      "section": "Improving data access with secondary indexes in DynamoDB"
+    },
+    {
+      "id": "item-collection-size-limit",
+      "claim": "항목 컬렉션은 파티션 키 속성 값이 같은 항목들의 집합이다. 글로벌 보조 인덱스의 항목 컬렉션은 기본 테이블과 독립적이지만, 로컬 보조 인덱스는 인덱싱된 뷰가 테이블 항목과 같은 파티션에 함께 배치되고 같은 파티션 키 속성을 공유한다. 이 지역성 때문에 테이블에 LSI가 하나 이상 있으면 항목 컬렉션을 여러 파티션에 분산할 수 없다. LSI가 하나 이상 있는 테이블에서 항목 컬렉션은 10GB를 초과할 수 없으며, 여기에는 파티션 키 속성 값이 같은 모든 기본 테이블 항목과 프로젝션된 LSI 뷰가 모두 포함된다. 10GB는 파티션의 최대 크기다. LSI가 없으면 DynamoDB가 항목 컬렉션을 필요한 만큼 여러 파티션에 자동 분할한다. 이 한도를 넘으면 ItemCollectionSizeLimitExceededException(HTTP 400, 재시도 가능)이 반환된다. 또한 LSI가 있는 테이블에서는 테이블 항목 데이터 크기와 모든 LSI의 해당 항목 항목(키 값과 프로젝션 속성 포함) 크기의 합에 400KB 한도가 적용된다.",
+      "corrects_courseware": "교재는 '항목 컬렉션의 총 크기는 10GB를 초과할 수 없습니다'라고 무조건적으로 기재한다. 정확히는 LSI가 하나 이상 있는 테이블에만 적용되는 제약이며, LSI가 없으면 항목 컬렉션이 여러 파티션에 자동 분할된다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html",
+      "fetched_with": "mcp",
+      "section": "Sort key values / Items"
+    },
+    {
+      "id": "read-consistency-default",
+      "claim": "최종 일관성(eventually consistent)이 모든 읽기 작업의 기본 읽기 일관성 모델이다. 테이블과 로컬 보조 인덱스는 최종 일관성과 강력한 일관성 두 옵션을 제공하고, 글로벌 보조 인덱스와 스트림의 모든 읽기는 최종 일관성이다. GetItem, Query, Scan은 선택적 ConsistentRead 파라미터를 제공하며 true로 설정하면 강력한 일관성 읽기가 된다. 글로벌 보조 인덱스나 DynamoDB 스트림에서 강력한 일관성 읽기는 지원되지 않는다. 최종 일관성 읽기는 강력한 일관성 읽기의 절반 비용이다. DynamoDB는 read-committed 격리를 제공해 읽기 작업이 항상 커밋된 값을 반환한다.",
+      "corrects_courseware": "교재는 관계형·NoSQL 비교 표에서 NoSQL 일관성을 '최종 및 강력'으로만 기재하고, DynamoDB에서 최종 일관성이 기본값이라는 점과 GSI·스트림에서는 강력한 일관성을 쓸 수 없다는 점을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html",
+      "fetched_with": "mcp",
+      "section": "DynamoDB read consistency"
+    },
+    {
+      "id": "vector-indexes",
+      "claim": "DynamoDB는 두 계열의 인덱스를 지원한다. 보조 인덱스는 기본 테이블 기본 키 외의 대체 키로 쿼리하며 Query와 Scan으로 읽는다. 벡터 인덱스는 항목에 저장된 벡터 임베딩에 대한 유사도 검색을 가능하게 하며 대체 키가 아니고 Query나 Scan이 아닌 SearchVectors로 읽는다. 벡터 인덱스 할당량은 테이블당 5개(조정 가능), 벡터 인덱스당 최대 차원 4,096, SearchVectors 요청당 최대 TopK 100, 벡터 인덱스당 최대 파티션 키(HASH) 1개, 파티션 키당 벡터 검색 속도 1GBps, 파티션 키당 벡터 인덱스 쓰기 속도 10MBps다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html",
+      "fetched_with": "mcp",
+      "section": "Improving data access with secondary indexes in DynamoDB"
+    },
+    {
+      "id": "nosql-workbench",
+      "claim": "NoSQL Workbench for Amazon DynamoDB는 최신 데이터베이스 개발 및 운영을 위한 플랫폼 간(cross-platform) 클라이언트 측 GUI 애플리케이션이며 Windows, macOS, Linux용으로 제공된다. DynamoDB 데이터 모델을 설계하고, 액세스 패턴을 실제 DynamoDB 작업으로 정의하고, 샘플 데이터로 검증할 수 있으며 데이터 모델을 프로젝트로 구성할 수 있다. NoSQL Workbench에는 DynamoDB local이 포함되어 있어 데이터 모델을 클라우드에 커밋하기 전에 테이블과 인덱스를 테스트할 수 있다. 현재 공식 문서는 도구를 두 가지로 소개한다. 데이터 모델러(Data modeler)는 테이블과 글로벌 보조 인덱스를 설계하고 속성을 정의하고 샘플 데이터를 구성하며, 액세스 패턴을 PutItem·UpdateItem·Query 같은 실제 DynamoDB 작업으로 시각화하고 실행해 검증한 뒤 DynamoDB local 또는 AWS 계정에 모델을 커밋한다. 데이터 모델은 가져오기·내보내기가 가능하다. 작업 빌더(Operation builder)는 라이브 데이터 세트를 보고 탐색하고 쿼리하며, 프로젝션 표현식과 조건 표현식을 지원하고 여러 언어로 샘플 코드를 생성한다. 다른 리전의 AWS 계정 간, 또는 DynamoDB local과 AWS 계정 간에 테이블을 직접 복제할 수 있다.",
+      "corrects_courseware": "교재는 도구를 데이터 모델러·시각화 프로그램(visualizer)·작업 빌더 세 가지로 소개한다. 현재 DynamoDB 문서는 데이터 모델러와 작업 빌더 두 가지만 나열하며 시각화를 별도 도구로 두지 않는다. 또 NoSQL Workbench에 DynamoDB local이 포함된다는 점은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html",
+      "fetched_with": "mcp",
+      "section": "NoSQL Workbench for DynamoDB"
+    },
+    {
+      "id": "nosql-workbench-keyspaces",
+      "claim": "NoSQL Workbench는 Amazon Keyspaces(Apache Cassandra용)의 비관계형 데이터 모델 설계와 시각화도 지원하며 Windows, macOS, Linux용 클라이언트가 제공된다. 키스페이스·테이블·열을 정의해 데이터 모델을 새로 만들거나 기존 모델을 가져와 수정할 수 있고, 데이터 모델을 Amazon Keyspaces 또는 Apache Cassandra에 커밋해 키스페이스와 테이블을 자동으로 만들 수 있다. 데이터 모델을 시각화해 애플리케이션의 쿼리와 액세스 패턴을 지원하는지 확인할 수 있다.",
+      "url": "https://docs.aws.amazon.com/keyspaces/latest/devguide/workbench.html",
+      "fetched_with": "mcp",
+      "section": "Using NoSQL Workbench with Amazon Keyspaces (for Apache Cassandra)"
+    },
+    {
+      "id": "nosql-workbench-release-history",
+      "claim": "NoSQL Workbench 릴리스 기록. 3.20.0(2026년 2월 16일): DynamoDB용 데이터 모델러의 사용자 경험이 갱신되고 액세스 패턴을 지원하게 되었다. 3.20.1(2026년 2월 17일): 유지 관리 릴리스. 3.20.2(2026년 4월 6일): DynamoDB local 시작 실패·취소 시 오류 처리 개선과 DynamoDB 액세스 패턴용 데이터 모델러 수정. 3.13.5(2025년 2월 24일): 기본 테이블 설정의 용량 모드가 온디맨드로 변경되어, 기본 설정으로 테이블을 만들면 프로비저닝된 용량 모드가 아니라 온디맨드 용량 모드 테이블이 생성된다. 3.13.0(2024년 4월 24일): 다크 모드 네이티브 지원과 작업 빌더 개선.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkbenchDocumentHistory.html",
+      "fetched_with": "mcp",
+      "section": "Release history for NoSQL Workbench"
+    },
+    {
+      "id": "dynamodb-local",
+      "claim": "Amazon DynamoDB의 다운로드 가능한 버전(DynamoDB local)을 사용하면 DynamoDB 웹 서비스에 액세스하지 않고 애플리케이션을 개발·테스트할 수 있으며 데이터베이스는 컴퓨터에서 독립적(self-contained)이다. 프로덕션 배포 준비가 되면 코드에서 로컬 엔드포인트를 제거하면 애플리케이션이 DynamoDB 웹 서비스를 가리킨다. 로컬 버전으로 처리량, 데이터 스토리지, 데이터 전송 요금을 절약할 수 있고 개발 중 인터넷 연결이 필요하지 않다. DynamoDB local은 다운로드(JRE 필요), Apache Maven 종속성, 도커 이미지로 제공된다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html",
+      "fetched_with": "mcp",
+      "section": "Setting up DynamoDB local (downloadable version)"
+    },
+    {
+      "id": "dynamodb-local-endpoint",
+      "claim": "AWS SDK와 도구는 기본적으로 DynamoDB 웹 서비스 엔드포인트를 사용하므로 DynamoDB local을 쓰려면 로컬 엔드포인트 http://localhost:8000 을 지정해야 한다. AWS CLI에서는 --endpoint-url 파라미터를 사용하며, 예시는 `aws dynamodb list-tables --endpoint-url http://localhost:8000` 이다. AWS CLI는 DynamoDB local을 기본 엔드포인트로 사용할 수 없으므로 모든 명령에 --endpoint-url 을 지정해야 한다. 기본 포트는 8000이며 -port 옵션으로 변경할 수 있다. 주요 명령줄 옵션은 -sharedDb(단일 데이터베이스 파일 사용), -inMemory(파일을 쓰지 않고 메모리에만 저장), -dbPath, -cors, -delayTransientStatuses, -disableTelemetry 등이다. DynamoDB local은 시점 복구(PITR)를 지원하지 않고 billingModeSummary 는 항상 null을 반환한다. 프로비저닝된 처리량 설정은 무시되고 병렬 스캔은 지원되지 않으며, 읽기는 최종 일관성이지만 속도 때문에 대부분 강력한 일관성처럼 보인다. 항목 컬렉션 지표와 크기는 추적되지 않는다. DynamoDB local은 개발·테스트 목적 전용이다. DynamoDB local은 AWS SDK for Java 1.x와 2.x를 모두 지원한다.",
+      "corrects_courseware": "교재는 로컬 엔드포인트와 절감 효과만 기재하고, 모든 CLI 명령에 --endpoint-url 이 필요하다는 점, PITR 미지원, 웹 서비스와의 차이 목록은 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html",
+      "fetched_with": "mcp",
+      "section": "Setting the local endpoint / Differences between downloadable DynamoDB and the DynamoDB web service"
+    },
+    {
+      "id": "partiql",
+      "claim": "Amazon DynamoDB는 PartiQL을 지원하며 이는 DynamoDB의 데이터를 선택·삽입·업데이트·삭제하는 데 사용되는 SQL 호환 쿼리 언어다. PartiQL로 DynamoDB 테이블과 상호 작용하고 임시(ad hoc) 쿼리를 실행할 수 있으며, AWS Management Console, NoSQL Workbench, AWS Command Line Interface, PartiQL용 DynamoDB API에서 사용할 수 있다. PartiQL 작업은 다른 DynamoDB 데이터 영역 작업과 동일한 가용성, 지연 시간, 성능을 제공한다. DynamoDB는 PartiQL 쿼리 언어의 하위 집합(subset)만 지원하며 Amazon Ion 데이터 형식과 Ion 리터럴은 지원하지 않는다.",
+      "corrects_courseware": "교재는 PartiQL 사용 위치 4곳을 맞게 기재했다. 다만 DynamoDB가 PartiQL의 하위 집합만 지원하고 Amazon Ion을 지원하지 않는다는 제약은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html",
+      "fetched_with": "mcp",
+      "section": "PartiQL - a SQL-compatible query language for Amazon DynamoDB"
+    },
+    {
+      "id": "sdk-support-flow",
+      "claim": "AWS SDK를 사용한 DynamoDB 애플리케이션 프로그래밍 흐름은 6단계다. (1) 프로그래밍 언어에 맞는 AWS SDK로 애플리케이션을 작성한다. (2) 각 AWS SDK는 DynamoDB 작업을 위한 하나 이상의 프로그래밍 인터페이스를 제공하며 사용 가능한 인터페이스는 언어와 SDK에 따라 다르다. 옵션은 하위 수준 인터페이스, 문서 인터페이스, 객체 지속성 인터페이스, 상위 수준 인터페이스다. (3) AWS SDK가 하위 수준 DynamoDB API용 HTTP(S) 요청을 구성한다. (4) AWS SDK가 요청을 DynamoDB 엔드포인트로 전송한다. (5) DynamoDB가 요청을 실행하고, 성공하면 HTTP 200 응답 코드(OK)를, 실패하면 HTTP 오류 코드와 오류 메시지를 반환한다. (6) AWS SDK가 응답을 처리해 애플리케이션에 전파한다. 각 AWS SDK는 HTTP(S) 요청 서식 지정과 요청 파라미터 직렬화, 각 요청에 대한 암호 서명 생성, DynamoDB 엔드포인트로 요청 전달 및 응답 수신, 응답에서 결과 추출, 오류 발생 시 기본 재시도 로직 구현을 제공하며 이런 작업에 코드를 작성할 필요가 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKOverview.html",
+      "fetched_with": "mcp",
+      "section": "Overview of AWS SDK support for DynamoDB"
+    },
+    {
+      "id": "account-based-endpoints",
+      "claim": "AWS는 DynamoDB용 AWS 계정 기반 엔드포인트에 대한 SDK 지원을 배포하고 있으며 AWS SDK for Java V1부터 2024년 9월 4일에 시작했다. 새 엔드포인트는 https://(account-id).ddb.(region).amazonaws.com 형식이다. 갱신된 SDK는 새 엔드포인트를 자동으로 사용한다. 하나의 SDK 클라이언트 인스턴스로 여러 계정에 요청을 보내면 연결 재사용 기회가 줄어들므로 SDK 클라이언트 인스턴스당 연결 계정 수를 줄이도록 권장한다. 대안으로 ACCOUNT_ID_ENDPOINT_MODE 설정으로 리전 엔드포인트를 계속 사용할 수 있다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKOverview.html",
+      "fetched_with": "mcp",
+      "section": "SDK support of AWS account-based endpoints"
+    },
+    {
+      "id": "programming-interfaces",
+      "claim": "하위 수준 인터페이스는 모든 언어별 AWS SDK에서 제공되며 하위 수준 DynamoDB API 요청과 거의 같은 메서드를 갖는다. 경우에 따라 S(문자열), N(숫자) 같은 데이터 형식 설명자로 속성의 데이터 형식을 식별해야 한다. 문서 인터페이스는 테이블·인덱스에서 데이터 영역 작업(생성·읽기·업데이트·삭제)을 수행하며 데이터 형식 설명자를 지정할 필요가 없고 데이터 형식은 데이터 자체의 의미 체계에 내포된다. JSON 문서를 네이티브 DynamoDB 데이터 형식으로 상호 변환하는 방법도 제공한다. 문서 인터페이스는 Java, .NET, Node.js, JavaScript SDK용 AWS SDK에서 제공된다. 객체 지속성 인터페이스는 데이터 영역 작업을 직접 수행하지 않고 DynamoDB 테이블·인덱스의 항목을 나타내는 객체를 만들어 그 객체만 다루므로 데이터베이스 중심이 아닌 객체 중심 코드를 작성할 수 있다. 객체 지속성 인터페이스는 Java와 .NET용 AWS SDK에서 제공된다.",
+      "corrects_courseware": "교재는 문서 인터페이스 지원 대상을 'Java, .NET, Node.js, AWS SDK for JavaScript in the Browser'로 기재한다. 현재 문서는 'JavaScript SDK'로 표기하며 AWS SDK for JavaScript v3 문서를 가리킨다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKs.Interfaces.html",
+      "fetched_with": "mcp",
+      "section": "Programmatic interfaces that work with DynamoDB"
+    },
+    {
+      "id": "java-higher-level-interfaces",
+      "claim": "DynamoDB의 상위 수준 프로그래밍 인터페이스는 Java와 .NET용 AWS SDK에서 제공된다. Java의 상위 수준 인터페이스는 두 가지로 나뉜다. Java 1.x는 DynamoDBMapper이고 Java 2.x는 DynamoDB Enhanced Client다. .NET은 문서 모델과 객체 지속성 모델이 있다. 상위 수준 인터페이스로 프로그램의 객체와 그 데이터를 저장하는 데이터베이스 테이블 사이의 관계를 정의하면 save, load, delete 같은 단순한 객체 메서드 호출로 하위 수준 DynamoDB 작업이 자동으로 실행된다.",
+      "corrects_courseware": "교재 슬라이드 33의 Java 상위 수준 항목은 com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper 로, 이는 AWS SDK for Java 1.x 전용이다. 2.x의 상위 수준 인터페이스는 DynamoDB Enhanced Client다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HigherLevelInterfaces.html",
+      "fetched_with": "mcp",
+      "section": "Higher-level programming interfaces for DynamoDB"
+    },
+    {
+      "id": "java-v2-namespaces",
+      "claim": "AWS SDK for Java 2.x의 DynamoDB 하위 수준 인터페이스 예제는 software.amazon.awssdk.services.dynamodb.DynamoDbClient, software.amazon.awssdk.services.dynamodb.model.GetItemRequest, software.amazon.awssdk.services.dynamodb.model.AttributeValue, software.amazon.awssdk.services.dynamodb.model.DynamoDbException, software.amazon.awssdk.regions.Region 을 임포트한다. 객체 지속성(상위 수준) 예제는 software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient, software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable, software.amazon.awssdk.enhanced.dynamodb.Key, software.amazon.awssdk.enhanced.dynamodb.TableSchema, software.amazon.awssdk.enhanced.dynamodb.model.GetItemEnhancedRequest 를 임포트하며 DynamoDbEnhancedClient.builder().dynamoDbClient(ddb).build() 로 만든다. 공식 예제는 항목을 가져올 때 Enhanced Client 사용이 더 나은 방식이라고 안내한다.",
+      "corrects_courseware": "교재 슬라이드 33의 Java 종속성은 com.amazonaws.services.dynamodbv2.AmazonDynamoDB(하위 수준)와 com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper(상위 수준)로 모두 AWS SDK for Java 1.x 네임스페이스다. 반면 슬라이드 35의 예제 코드는 2.x의 DynamoDbClient.builder()를 쓴다. 교재 안에서 SDK 세대가 섞여 있다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKs.Interfaces.html",
+      "fetched_with": "mcp",
+      "section": "Low-level interfaces / Object persistence interfaces"
+    },
+    {
+      "id": "dotnet-namespaces",
+      "claim": ".NET용 AWS SDK의 DynamoDB 네임스페이스. 하위 수준 API 예제는 using Amazon.DynamoDBv2; using Amazon.DynamoDBv2.Model; 을 사용하고 AmazonDynamoDBClient 인스턴스와 PutItemRequest·GetItemRequest 같은 요청 객체로 작업한다. 문서 모델 클래스는 Amazon.DynamoDBv2.DocumentModel 네임스페이스에 있으며 주요 클래스는 Table과 Document다. 문서 모델 클래스로는 테이블을 생성·업데이트·삭제할 수 없지만 대부분의 일반적인 데이터 작업은 지원한다. 객체 지속성 모델 예제는 using Amazon.DynamoDBv2.DataModel; 을 사용한다.",
+      "corrects_courseware": "교재 슬라이드 33은 .NET을 Amazon.DynamoDBv2.Model(하위 수준)과 Amazon.DynamoDBv2.DataModel(상위 수준) 두 줄로만 기재하고, 문서 인터페이스에 해당하는 Amazon.DynamoDBv2.DocumentModel 네임스페이스를 누락한다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKMidLevel.html",
+      "fetched_with": "mcp",
+      "section": "Working with the .NET document model in DynamoDB"
+    },
+    {
+      "id": "dotnet-object-persistence",
+      "claim": ".NET용 AWS SDK는 클라이언트 측 클래스를 DynamoDB 테이블에 매핑하는 객체 지속성 모델을 제공하며 각 객체 인스턴스가 해당 테이블의 항목에 매핑된다. 클라이언트 측 객체를 테이블에 저장하기 위해 객체 지속성 모델은 DynamoDBContext 클래스를 DynamoDB에 대한 진입점으로 제공하고, 이 클래스가 DynamoDB에 대한 연결을 제공해 테이블에 액세스하고 다양한 CRUD 작업을 수행하고 쿼리를 실행할 수 있게 한다. 객체 지속성 모델은 테이블을 생성·업데이트·삭제하는 API를 제공하지 않고 데이터 작업만 제공하므로 테이블 생성·업데이트·삭제는 .NET 하위 수준 API를 써야 한다. 필수 속성(attribute)은 DynamoDBTable과 DynamoDBHashKey뿐이다. 객체 지속성 모델은 낙관적 잠금(optimistic locking)을 지원한다.",
+      "corrects_courseware": "교재는 DynamoDBContext가 진입점이라고 맞게 기재했다. 다만 객체 지속성 모델로 테이블을 생성·업데이트·삭제할 수 없다는 제약은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html",
+      "fetched_with": "mcp",
+      "section": "Working with the .NET object persistence model and DynamoDB"
+    },
+    {
+      "id": "java-sdk-v1-eos",
+      "claim": "AWS SDK for Java 1.x는 2025년 12월 31일 지원이 종료(end-of-support)되었다. AWS는 새 기능, 가용성 개선, 보안 업데이트를 계속 받으려면 AWS SDK for Java 2.x로 마이그레이션할 것을 권장한다.",
+      "corrects_courseware": "교재 슬라이드 33의 Java 종속성 표는 지원이 종료된 1.x 네임스페이스(com.amazonaws.services.dynamodbv2.*)를 기재한다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html",
+      "fetched_with": "mcp",
+      "section": "AWS SDK for Java 1.x end-of-support"
+    },
+    {
+      "id": "java-client-creation",
+      "claim": "AWS 서비스에 요청을 보내려면 먼저 정적 팩토리 메서드 builder() 로 서비스 클라이언트를 인스턴스화해야 한다. builder() 는 클라이언트를 커스터마이징할 수 있는 빌더 객체를 반환하고, 플루언트 세터 메서드가 빌더 객체를 반환하므로 메서드 호출을 연결할 수 있다. 원하는 속성을 구성한 뒤 build() 를 호출해 클라이언트를 만든다. 빌더에는 create() 라는 또 다른 팩토리 메서드가 있으며 이는 기본 구성으로 서비스 클라이언트를 만들고 기본 공급자 체인으로 자격 증명을, 기본 AWS 리전 공급자 체인으로 리전을 로드한다. 환경에서 자격 증명이나 리전을 확인할 수 없으면 create 호출이 실패한다. 예: DynamoDbClient dynamoDbClient = DynamoDbClient.create(); SDK의 서비스 클라이언트는 스레드 안전하며 성능을 위해 오래 사는 객체로 취급해야 한다. 각 클라이언트는 자체 연결 풀 리소스를 가지며 가비지 컬렉션될 때 해제된다. 서비스 클라이언트 객체는 불변이므로 요청할 서비스마다, 또는 같은 서비스에 다른 구성을 쓰려면 새 클라이언트를 만들어야 한다. 서비스 클라이언트 빌더에서 Region 지정은 모든 AWS 서비스에 필수는 아니지만 애플리케이션에서 리전을 설정하는 것이 모범 사례다. 클라이언트가 더 필요하지 않으면 close() 를 호출해 리소스를 해제한다. 서비스 클라이언트는 Autoclosable 을 구현하므로 try-with-resources 문에서 자동으로 닫힌다.",
+      "corrects_courseware": "교재 슬라이드 35는 빌더 사용과 기본 클라이언트 생성을 맞게 기재했다. 다만 클라이언트가 스레드 안전하고 불변이며 오래 사는 객체로 재사용해야 한다는 점, close()·try-with-resources 로 정리한다는 점은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/work-witih-clients.html",
+      "fetched_with": "mcp",
+      "section": "Create a service client / Default client configuration / Close the service client"
+    },
+    {
+      "id": "boto3-resource-interface",
+      "claim": "AWS Python SDK 팀은 boto3의 리소스(resources) 인터페이스에 새 기능을 추가할 계획이 없다. 기존 인터페이스는 boto3의 수명 주기 동안 계속 동작한다. 최신 서비스 기능은 클라이언트(client) 인터페이스를 통해 사용할 수 있다. 리소스는 서비스 클라이언트의 원시 하위 수준 호출보다 높은 수준의 추상화를 제공하는 객체 지향 인터페이스이며 Session 의 resource() 메서드에 서비스 이름을 넘겨 사용한다. 리소스 인스턴스는 스레드 안전하지 않으므로 스레드나 프로세스 간에 공유해서는 안 되고 스레드·프로세스마다 새로 만들어야 한다.",
+      "corrects_courseware": "교재 슬라이드 36의 Python 예제는 boto3.client('dynamodb') 를 만들면서 바로 위 주석에 '서비스 리소스 가져오기'라고 적어 클라이언트와 리소스를 혼동시킨다. 또 슬라이드 33의 Python 상위 수준 칸이 비어 있는데, boto3에서 상위 수준에 해당하는 것은 리소스 인터페이스이며 신규 기능이 추가되지 않는다.",
+      "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html",
+      "fetched_with": "web_fetch",
+      "section": "Overview / Multithreading or multiprocessing with resources"
+    },
+    {
+      "id": "boto3-dynamodb-customizations",
+      "claim": "boto3의 DynamoDB 커스터마이제이션은 Table 리소스(dynamodb.Table)와 함께 사용된다. boto3.dynamodb.types.Binary 는 DynamoDB의 Binary(B) 형식을 표현하는 클래스다. boto3.dynamodb.conditions.Key 는 항목의 키에 대한 조건에, boto3.dynamodb.conditions.Attr 은 항목의 속성에 대한 조건에 사용하며 from boto3.dynamodb.conditions import Key, Attr 로 임포트한다. Table.query() 의 KeyConditionExpression 과 Table.scan() 의 FilterExpression 에 넘긴다. Key 와 Attr 조건은 논리 연산자 &(and), |(or), ~(not) 로 연결할 수 있다. Python 형식과 DynamoDB 형식의 매핑은 string→S, integer·decimal.Decimal→N, boto3.dynamodb.types.Binary→B, boolean→BOOL, None→NULL, string set→SS, integer·decimal.Decimal set→NS, Binary set→BS, list→L, dict→M 이다.",
+      "corrects_courseware": "교재 슬라이드 33은 boto3.dynamodb.conditions 와 boto3.dynamodb.types 를 Python의 '하위 수준' 칸에 넣는다. 공식 문서는 이들을 Table 리소스(dynamodb.Table)와 함께 쓰는 DynamoDB 커스터마이제이션으로 설명한다.",
+      "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/reference/customizations/dynamodb.html",
+      "fetched_with": "web_fetch",
+      "section": "Valid DynamoDB types / Custom Boto3 types / DynamoDB conditions"
+    },
+    {
+      "id": "create-table-billingmode",
+      "claim": "CreateTable 의 BillingMode 는 읽기·쓰기 처리량 과금 방식과 용량 관리 방식을 제어하고 나중에 변경할 수 있다. 유효 값은 PROVISIONED 와 PAY_PER_REQUEST 다. AWS는 대부분의 DynamoDB 워크로드에 PAY_PER_REQUEST 사용을 권장하며 이는 과금 모드를 온디맨드 용량 모드로 설정한다. PROVISIONED 는 용량 요구를 안정적으로 예측할 수 있는 꾸준한 워크로드에 권장되며 프로비저닝된 용량 모드로 설정한다. BillingMode 를 PROVISIONED 로 설정하면 ProvisionedThroughput 을 지정해야 하고 PAY_PER_REQUEST 로 설정하면 지정할 수 없다. 필수 파라미터는 TableName 하나이며 KeySchema 의 KeyType 은 HASH(파티션 키) 또는 RANGE(정렬 키)다. 단순 기본 키는 HASH 요소 하나, 복합 기본 키는 HASH 다음 RANGE 순으로 정확히 두 요소를 제공한다. CreateTable 은 비동기 작업으로 즉시 TableStatus CREATING 을 반환하고 생성이 끝나면 ACTIVE 가 된다. 읽기·쓰기 작업은 ACTIVE 테이블에서만 가능하다. AWS 계정 안에서 테이블 이름은 리전별로 고유해야 하므로 다른 리전이라면 같은 이름의 테이블 두 개를 만들 수 있다. GSI는 최대 20개, LSI는 최대 5개를 생성 시 정의할 수 있고 각 글로벌 보조 인덱스는 최대 4개의 파티션 키와 최대 4개의 정렬 키를 지원한다. 이 외에 DeletionProtectionEnabled, OnDemandThroughput(MaxReadRequestUnits·MaxWriteRequestUnits), WarmThroughput, ResourcePolicy, SSESpecification, StreamSpecification, TableClass, Tags, VectorIndexes 파라미터가 있다.",
+      "corrects_courseware": "교재 슬라이드 36은 create_table 에 BillingMode='PAY_PER_REQUEST' 를 쓰는데 이는 현재도 유효하고 권장 값이다. 다만 DeletionProtectionEnabled, OnDemandThroughput, WarmThroughput, ResourcePolicy, TableClass, Tags, VectorIndexes 파라미터와 GSI의 다중 파티션 키·정렬 키 지원은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html",
+      "fetched_with": "mcp",
+      "section": "Request Syntax / Request Parameters"
+    },
+    {
+      "id": "lowlevel-request-response",
+      "claim": "DynamoDB 하위 수준 API는 DynamoDB의 프로토콜 수준 인터페이스이며 이 수준에서 모든 HTTP(S) 요청은 올바른 형식이어야 하고 유효한 디지털 서명을 가져야 한다. AWS SDK가 사용자를 대신해 하위 수준 요청을 구성하고 응답을 처리한다. 하위 수준 API는 HTTP(S) POST 요청만 입력으로 받고 JSON을 와이어 프로토콜 형식으로 사용한다. DynamoDB는 JSON을 전송 프로토콜로만 쓰고 스토리지 형식으로는 쓰지 않는다. GetItem 요청 예시의 헤더는 Host: dynamodb.<region>.<domain>;, Accept-Encoding: identity, Content-Length, User-Agent, Content-Type: application/x-amz-json-1.0, Authorization: AWS4-HMAC-SHA256 Credential=..., SignedHeaders=..., Signature=..., X-Amz-Date, X-Amz-Target: DynamoDB_20120810.GetItem 이다. Authorization 헤더는 DynamoDB가 요청을 인증하는 데 필요한 정보를 담고, X-Amz-Target 헤더는 DynamoDB 작업 이름과 하위 수준 API 버전(20120810)을 담는다. 요청 페이로드(본문)는 JSON 형식으로 작업의 파라미터를 담으며 GetItem 의 파라미터는 TableName 과 Key 다. 응답 예시는 HTTP/1.1 200 OK 와 x-amzn-RequestId, x-amz-crc32, Content-Type: application/x-amz-json-1.0, Content-Length, Date 헤더, 그리고 작업 결과를 담은 JSON 페이로드다. DynamoDB가 요청을 처리할 수 없으면 HTTP 오류 코드와 메시지를 반환하고 AWS SDK가 이를 예외 형태로 애플리케이션에 전파한다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.LowLevelAPI.html",
+      "fetched_with": "mcp",
+      "section": "Request format / Response format"
+    },
+    {
+      "id": "getitem-api",
+      "claim": "GetItem 작업은 지정된 기본 키를 가진 항목의 속성 집합을 반환한다. 일치하는 항목이 없으면 GetItem 은 데이터를 반환하지 않고 응답에 Item 요소가 없다. GetItem 은 기본적으로 최종 일관성 읽기를 제공하며, 애플리케이션에 강력한 일관성 읽기가 필요하면 ConsistentRead 를 true 로 설정한다. 강력한 일관성 읽기는 최종 일관성 읽기보다 시간이 더 걸릴 수 있지만 항상 마지막으로 갱신된 값을 반환한다. 필수 파라미터는 Key 와 TableName 이다. 기본 키는 모든 속성을 제공해야 하며 단순 기본 키는 파티션 키 값만, 복합 기본 키는 파티션 키와 정렬 키 값을 모두 제공한다. AttributesToGet 은 레거시 파라미터이며 ProjectionExpression 을 사용해야 한다. ReturnConsumedCapacity 의 유효 값은 INDEXES, TOTAL, NONE 이다.",
+      "corrects_courseware": "교재 슬라이드 39는 GetItem 의 파라미터가 TableName 과 Key 라고 맞게 기재했다. 다만 GetItem 이 기본적으로 최종 일관성 읽기이며 ConsistentRead 로 강력한 일관성을 선택한다는 점은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GetItem.html",
+      "fetched_with": "mcp",
+      "section": "GetItem / Request Parameters"
+    },
+    {
+      "id": "describetable-shape",
+      "claim": "DescribeTable 은 테이블의 현재 상태, 생성 시점, 기본 키 스키마, 테이블의 모든 인덱스에 대한 정보를 반환한다. 필수 파라미터는 TableName 하나다. CreateTable 요청 직후에 DescribeTable 을 호출하면 DynamoDB가 ResourceNotFoundException 을 반환할 수 있다. DescribeTable 이 최종 일관성 쿼리를 사용하므로 그 시점에 테이블 메타데이터를 아직 사용할 수 없기 때문이며, 몇 초 기다린 뒤 다시 요청해야 한다. 요청 예시의 헤더는 GetItem 과 같은 형식이며 X-Amz-Target: DynamoDB_20120810.DescribeTable 이고 본문은 {\"TableName\":\"Thread\"} 다. 응답은 HTTP/1.1 200 OK 와 x-amzn-RequestId, x-amz-crc32, Content-Type: application/x-amz-json-1.0 헤더, 그리고 TableDescription 객체를 담은 Table 요소다. 응답에는 AttributeDefinitions, BillingModeSummary, CreationDateTime, DeletionProtectionEnabled, GlobalSecondaryIndexes, ItemCount, KeySchema, LocalSecondaryIndexes, OnDemandThroughput, ProvisionedThroughput, Replicas, SSEDescription, StreamSpecification, TableArn, TableClassSummary, TableId, TableName, TableSizeBytes, TableStatus, VectorIndexes, WarmThroughput 등이 포함된다. 오류는 InternalServerError(HTTP 500)와 ResourceNotFoundException(HTTP 400)이다. DescribeTable 은 테이블의 각 보조 인덱스에 대한 이름, 스토리지 크기, 항목 수를 반환하며 이 값들은 실시간으로 갱신되지 않고 약 6시간마다 새로 고쳐진다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html",
+      "fetched_with": "mcp",
+      "section": "Request Syntax / Response Syntax / Examples"
+    },
+    {
+      "id": "error-components",
+      "claim": "요청이 성공하면 DynamoDB는 요청된 작업의 결과와 함께 HTTP 성공 상태 코드(200 OK)를 반환한다. 요청이 실패하면 오류를 반환하며 각 오류에는 세 가지 구성 요소가 있다. HTTP 상태 코드(예: 400), 예외 이름(예: ResourceNotFoundException), 오류 메시지(예: Requested resource not found: Table: tablename not found). AWS SDK가 오류를 애플리케이션에 전파하므로 try-catch 로직으로 처리할 수 있다. HTTP 400은 인증 실패, 필수 파라미터 누락, 테이블의 프로비저닝된 처리량 초과 같은 요청 문제를 나타내며 요청을 다시 제출하기 전에 애플리케이션에서 문제를 해결해야 한다. HTTP 400 예외에는 AccessDeniedException, ConditionalCheckFailedException, IncompleteSignatureException, ItemCollectionSizeLimitExceededException, LimitExceededException, MissingAuthenticationTokenException, ProvisionedThroughputExceededException, ReplicatedWriteConflictException, RequestLimitExceeded, ResourceInUseException, ResourceNotFoundException, ThrottlingException, UnrecognizedClientException, ValidationException 이 있고 각각 재시도 가능 여부가 다르다. ResourceNotFoundException 은 재시도 불가이며 예시는 요청된 테이블이 존재하지 않거나 CREATING 상태로 너무 이른 경우다. HTTP 5xx는 AWS가 해결해야 하는 문제를 나타내며 일시적인 오류일 수 있어 성공할 때까지 재시도할 수 있다. InternalServerError(HTTP 500)와 ServiceUnavailable(HTTP 503, DynamoDB is currently unavailable)이 있으며 둘 다 재시도 가능하다. 응답에는 문제 진단 시 AWS Support에 전달할 수 있는 Request ID가 포함된다. 각 AWS SDK는 재시도 로직과 지수 백오프 알고리즘을 자동으로 구현한다. AWS SDK를 쓰지 않는 경우 서버 오류(5xx)는 재시도하고 클라이언트 오류(4xx, ThrottlingException·ProvisionedThroughputExceededException 제외)는 요청 자체를 수정해야 한다. ProvisionedThroughputExceededException·RequestLimitExceeded·ThrottlingException 에는 스로틀링 원인을 알려주는 ThrottlingReason 필드 목록이 포함된다.",
+      "corrects_courseware": "교재 슬라이드 41은 오류 3구성 요소, 400·5xx 분류, ResourceNotFoundException, 503 예시를 맞게 기재했다. 다만 HTTP 400 예외 전체 목록과 각 예외의 재시도 가능 여부, 지수 백오프, ThrottlingReason 필드는 교재에 없다. 또 교재의 예시 메시지 'Table: UserNote not found' 는 공식 문서 예시에서 'Table: tablename not found' 로 표기된다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html",
+      "fetched_with": "mcp",
+      "section": "Error components / Error messages and codes / Error retries and exponential backoff"
+    },
+    {
+      "id": "courseware-link-limits",
+      "claim": "교재가 인용한 URL https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html 은 현재 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html 로 리디렉션되며 최종 응답은 HTTP 200이다.",
+      "corrects_courseware": "교재는 이 URL을 'Amazon DynamoDB의 서비스, 계정 및 테이블 할당량'으로 인용한다. 현재 문서는 할당량(ServiceQuotas.html)과 제약(Constraints.html) 두 페이지로 나뉘어 있다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html",
+      "fetched_with": "link_check",
+      "section": "(URL 생존 및 리디렉션 대상 확인만 수행)"
+    },
+    {
+      "id": "courseware-link-ondemand-pricing",
+      "claim": "교재가 인용한 URL https://aws.amazon.com/dynamodb/pricing/on-demand/ 은 현재 https://aws.amazon.com/dynamodb/pricing/ 로 리디렉션되며 최종 응답은 HTTP 200이다.",
+      "corrects_courseware": "교재는 이 URL을 '온디맨드 용량 요금' 페이지로 인용한다. 온디맨드 전용 요금 페이지는 통합 요금 페이지로 이동했다.",
+      "url": "https://aws.amazon.com/dynamodb/pricing/on-demand/",
+      "fetched_with": "link_check",
+      "section": "(URL 생존 및 리디렉션 대상 확인만 수행)"
+    },
+    {
+      "id": "courseware-link-java-using",
+      "claim": "교재가 인용한 URL https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/using.html 은 현재 'Using the AWS SDK for Java 2.x' 챕터 목차 페이지다. 서비스 클라이언트 생성 내용은 하위 페이지인 work-witih-clients.html('Making AWS service requests using the AWS SDK for Java 2.x')의 'Create a service client' 절에 있다.",
+      "corrects_courseware": "교재는 이 URL을 '서비스 클라이언트 생성' 항목으로 직접 인용한다. 현재는 챕터 목차이므로 하위 페이지를 인용해야 한다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/using.html",
+      "fetched_with": "mcp",
+      "section": "Using the AWS SDK for Java 2.x (Contents)"
+    },
+    {
+      "id": "courseware-link-workingwithtables",
+      "claim": "교재가 인용한 URL https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html 은 리디렉션 없이 HTTP 200으로 응답한다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html",
+      "fetched_with": "link_check",
+      "section": "(URL 생존 확인만 수행)"
+    }
+  ],
+  "unverified": [
+    {
+      "id": "timestream-subproducts",
+      "reason": "AWS 데이터베이스 결정 안내서는 시계열 서비스를 'Amazon Timestream'으로 표기하면서 서버리스 목록에서는 'Amazon Timestream for LiveAnalytics'로 표기한다. Timestream 하위 제품 구성(LiveAnalytics / InfluxDB)과 각각의 현재 상태를 Timestream 문서로 직접 확인하지 못했다.",
+      "action": "본문에서는 결정 안내서가 기재한 대로 서비스명과 데이터 모델(시계열)만 남기고 하위 제품 구성은 서술하지 않는다. 향후 Timestream 개발자 안내서로 별도 검증."
+    },
+    {
+      "id": "courseware-latency-10ms",
+      "reason": "교재의 '10밀리초 미만'이라는 구체적 수치가 과거 공식 표현이었는지 확인하지 못했다. 현재 공식 표현이 '한 자리 밀리초'라는 것만 확인했다.",
+      "action": "본문에 현재 표현('한 자리 밀리초')을 쓰고 교재 표현과의 차이를 변경 사항 장에 남긴다. '10밀리초 미만이 과거에 맞았다'고는 쓰지 않는다."
+    },
+    {
+      "id": "nosql-workbench-visualizer-removal",
+      "reason": "현재 DynamoDB NoSQL Workbench 문서가 도구를 데이터 모델러·작업 빌더 두 개로만 소개하는 것은 확인했다. 그러나 시각화 프로그램(visualizer)이 어느 릴리스에서 데이터 모델러로 통합되었는지는 릴리스 기록 23행 중 일부만 조회해 확정하지 못했다.",
+      "action": "본문에는 '현재 문서가 두 도구로 소개한다'는 확인된 사실만 쓴다. 통합 시점은 서술하지 않는다."
+    },
+    {
+      "id": "dynamodb-ssd-auto-partitioning-claim",
+      "reason": "교재의 '자동 파티셔닝 및 SSD 기술을 사용해 처리량 요구를 충족한다'는 서술 중 파티션이 SSD 기반이고 DynamoDB가 파티션을 자동 관리·추가 할당한다는 부분은 확인했다. 그러나 '데이터 볼륨과 성능 요구가 증가함에 따라'라는 인과 서술을 그대로 뒷받침하는 문서 서술은 찾지 못했다.",
+      "action": "본문에는 문서가 실제로 기술한 파티션 추가 할당 조건(프로비저닝된 처리량 증가, 기존 파티션이 가득 찬 경우)을 쓴다."
+    },
+    {
+      "id": "cli-put-item-example",
+      "reason": "교재 슬라이드 25의 `aws dynamodb put-item --table-name Notes --item '{...}'` 명령 자체를 AWS CLI 문서로 직접 조회해 확인하지 않았다. DynamoDB local 문서에서 `aws dynamodb list-tables --endpoint-url http://localhost:8000` 형태는 확인했다.",
+      "action": "본문에서 put-item 예제는 '교재 기재' 표시와 함께 남기고, 확인한 list-tables 예제로 CLI 사용 패턴을 설명한다."
+    }
+  ]
+}

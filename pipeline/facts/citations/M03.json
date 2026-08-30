@@ -1,0 +1,334 @@
+{
+  "_note": "M03 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다.",
+  "module": "M03",
+  "verified_on": "2026-08-25",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / web_fetch (aws.amazon.com 블로그, boto3.amazonaws.com) / curl 링크 확인",
+  "citations": [
+    {
+      "id": "sigv4",
+      "claim": "AWS Signature Version 4(SigV4)는 현재 대부분의 AWS 서비스 작업에 대한 기본 서명 방식이다. 서명은 요청자의 신원 확인, 전송 중 데이터 보호(요청 요소로 해시를 계산해 요청에 포함), 재전송 공격 방어를 수행한다. 재전송 방어의 구체적 기준은 '대부분의 경우 요청이 요청에 포함된 타임스탬프로부터 5분 이내에 AWS에 도달해야 한다'이다. 임시 보안 인증(temporary security credentials)을 사용하면 서명 계산에 보안 토큰(security token)도 필요하다. SigV4는 HTTP Authorization 헤더 또는 URL 쿼리 문자열로 표현할 수 있다. 직접 코드를 작성해 API 요청을 보낼 때는 서명 코드를 포함해야 하지만, AWS SDK와 AWS CLI는 제공된 액세스 키로 요청을 대신 인증한다. 별도로 SigV4a가 있으며, ECDSA 기반 비대칭 서명으로 다중 리전 API 요청(예: Amazon S3 다중 리전 액세스 포인트)에 필요하고 SDK가 글로벌 엔드포인트 호출에 자동으로 사용한다.",
+      "corrects_courseware": "교재는 재전송 공격 방어를 '도착까지 걸리는 시간이 너무 긴 이벤트를 만료'로만 설명하고 구체적 시간(5분)을 제시하지 않는다. 또 임시 자격 증명의 보안 토큰과 SigV4a는 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html",
+      "fetched_with": "mcp",
+      "section": "How AWS SigV4 works / How AWS SigV4a works / When to sign requests / Why requests are signed"
+    },
+    {
+      "id": "sdk-version-lifecycle",
+      "claim": "AWS SDK·도구 메이저 버전의 현재 수명 주기 단계. General Availability: AWS CLI 2.x(2020-02-10), SDK for C++ 1.x, SDK for Go V2 1.x, SDK for Java 2.x, SDK for JavaScript 3.x, SDK for Kotlin 1.x, SDK for .NET 4.x(2025-04-28), SDK for PHP 3.x, SDK for Python(Boto3) 1.x, SDK for Python(Botocore) 1.x, SDK for Ruby 3.x, SDK for Rust 1.x, SDK for Swift 1.x, Tools for PowerShell 5.x. Maintenance Announcement: AWS CLI 1.x. End-of-Support: SDK for Go 1.x, SDK for Java 1.x, SDK for JavaScript 1.x·2.x, SDK for .NET 1.x·2.x·3.x, SDK for PHP 2.x, SDK for Python(Boto2) 1.x, SDK for Ruby 1.x·2.x, Tools for PowerShell 2.x·3.x·4.x. 이 문서에 등재된 공식 SDK 언어는 C++, Go, Java, JavaScript, Kotlin, .NET, PHP, Python, Ruby, Rust, Swift 이다.",
+      "corrects_courseware": "교재 강사 노트의 SDK 목록(Android, iOS, Go, Java, JavaScript, .NET, Node.js, PHP, Python, Ruby)과 슬라이드 13 그래픽 목록(Python, .NET, Java, C++, Ruby, JavaScript, Go, Node.js, PHP, Rust, Kotlin, Swift)이 서로 불일치하고, 두 목록 모두 버전별 지원 상태를 다루지 않는다. Node.js는 별도 SDK가 아니라 JavaScript SDK로 지원되고, Android·iOS는 이 문서 범위(Mobile SDK 제외)에 없다.",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/version-support-matrix.html",
+      "fetched_with": "mcp",
+      "section": "AWS SDKs and Tools version lifecycle"
+    },
+    {
+      "id": "sdk-maint-policy",
+      "claim": "AWS SDK·도구 메이저 버전 수명 주기는 5단계다. Developer Preview(Phase 0, 지원되지 않음, 프로덕션 사용 금지), General Availability(Phase 1, 완전 지원, 최소 24개월), Maintenance Announcement(Phase 2, 유지 관리 모드 진입 최소 6개월 전 공개 발표, 이 기간에도 완전 지원), Maintenance(Phase 3, 중요 버그 수정과 보안 문제만 릴리스, 기본 12개월), End-of-Support(Phase 4, 업데이트·릴리스 중단, 기존 릴리스는 패키지 관리자에 계속 제공되고 코드는 GitHub에 남으며 리포지토리는 아카이브될 수 있음). 종속성(OS, 언어 런타임, 서드 파티 라이브러리)은 커뮤니티·벤더가 지원을 종료한 뒤 최소 6개월 더 지원한다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/maint-policy.html",
+      "fetched_with": "mcp",
+      "section": "SDK major version lifecycle / Dependency lifecycle"
+    },
+    {
+      "id": "js-sdk-v2-eos",
+      "claim": "AWS SDK for JavaScript v2는 지원이 종료(end-of-support)되었으며 AWS는 v3으로 마이그레이션할 것을 권장한다. v3은 v2를 전면 재작성한 메이저 버전이다.",
+      "corrects_courseware": "교재는 JavaScript SDK 참조로 https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/ (v2 API 참조)를 인용한다. 이 URL 자체는 아직 응답하지만 지원이 종료된 버전의 문서다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/migrate.html",
+      "fetched_with": "mcp",
+      "section": "Migrate to v3 of the AWS SDK for JavaScript (end-of-support 안내 배너)"
+    },
+    {
+      "id": "java-sdk-v1-eos",
+      "claim": "AWS SDK for Java 1.x는 2025년 12월 31일 지원이 종료되었으며, AWS는 새 기능·가용성 개선·보안 업데이트를 계속 받으려면 AWS SDK for Java 2.x로 마이그레이션할 것을 권장한다.",
+      "corrects_courseware": "교재 API 참조 목록이 인용한 https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/overview-summary.html 는 Java SDK 1.x javadoc이다. 또 슬라이드 30의 예외 클래스명(com.amazonaws.AmazonServiceException 등)이 1.x 패키지다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "Developer Guide - AWS SDK for Java 1.x (end-of-support 안내 배너)"
+    },
+    {
+      "id": "go-sdk-v1-eos",
+      "claim": "AWS SDK for Go V1은 지원이 종료(end-of-support)되었으며 AWS는 AWS SDK for Go V2로 마이그레이션할 것을 권장한다.",
+      "corrects_courseware": "교재는 Go SDK 참조로 https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/welcome.html (V1 개발자 안내서)를 인용한다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is the AWS SDK for Go (end-of-support 안내 배너)"
+    },
+    {
+      "id": "cli-v1-maintenance",
+      "claim": "AWS CLI v1은 2026년 7월 15일 유지 관리 모드(maintenance mode)에 진입하고 2027년 7월 15일 지원이 종료된다. 유지 관리 모드 기간에는 중요 버그 수정과 보안 업데이트만 제공되고, AWS CLI v1 자체 변경·신규 서비스·기존 서비스 API 업데이트·리전 및 엔드포인트 확장은 추가되지 않는다. AWS는 v2로 마이그레이션할 것을 권장한다. v2는 Python을 내장하므로 시스템 전역 Python을 요구하지 않고, 서버 측 명령 완성·자동 프롬프트·위저드 같은 대화형 기능, aws login, AWS IAM Identity Center 인증, aws configure 하위의 프로파일·자격 증명 관리 명령을 제공한다. v1으로 백포트되지 않은 v2 기능으로는 고수준 DynamoDB 명령, SSH 클라이언트를 사용하는 EC2 Instance Connect, CloudWatch Logs Live Tail 대화형 모드가 있다.",
+      "corrects_courseware": "교재는 AWS CLI를 단일 제품으로만 다루고 v1·v2를 구분하지 않는다. 다운로드 안내도 http://aws.amazon.com/cli/ 만 제시한다.",
+      "url": "https://aws.amazon.com/blogs/developer/cli-v1-maintenance-mode-announcement/",
+      "fetched_with": "web_fetch",
+      "section": "CLI v1 Maintenance Mode Announcement / Additional features of AWS CLI v2"
+    },
+    {
+      "id": "cliv2-features",
+      "claim": "AWS CLI v2의 신규 기능: Python 인터프리터 별도 설치 불필요(내장 버전 포함), 위저드, IAM Identity Center 인증, 자동 프롬프트(auto-prompt), 공식 Docker 이미지 실행, 클라이언트 측 페이저(기본 활성화), aws configure import, aws configure list-profiles, yaml·yaml-stream 출력 형식, DynamoDB 고수준 ddb put·ddb select 명령, aws logs tail, 고수준 s3 명령의 --copy-props 메타데이터 지원, AWS SDK 호환 AWS_REGION 환경 변수(AWS_DEFAULT_REGION 재정의).",
+      "corrects_courseware": "교재는 리전 환경 변수와 aws configure 만 언급하고 v2 기능을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cliv2-migration-changes.html",
+      "fetched_with": "mcp",
+      "section": "AWS CLI version 2 new features"
+    },
+    {
+      "id": "cli-command-structure",
+      "claim": "AWS CLI 명령은 다음 순서의 다중 파트 구조를 따른다: (1) aws 프로그램 기본 호출, (2) 최상위 command(일반적으로 AWS 서비스에 대응), (3) 수행할 작업을 지정하는 subcommand, (4) 일반 AWS CLI 옵션 또는 작업에 필요한 파라미터. 형식은 `aws <command> <subcommand> [options and parameters]` 이다. 파라미터는 앞의 세 부분 뒤에 오는 한 순서가 자유롭고, 배타적 파라미터가 여러 번 지정되면 마지막 값이 적용된다. wait 명령은 `aws <command> wait <subcommand> [options and parameters]` 구조를 따르며 모든 서비스가 wait 명령을 지원하지는 않는다.",
+      "corrects_courseware": "교재 슬라이드 20은 `aws s3 ls s3://mybucket --recursive` 에서 s3://mybucket 에도 '하위 명령' 레이블을 붙이고 강사 노트도 '하위 명령은 s3://mybuket이 대상인 ls'라고 서술한다. 공식 구조에서 하위 명령은 ls 하나이고 s3://mybucket 은 파라미터(인수)다. 또 강사 노트는 같은 하위 명령을 'list'로도 표기한다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-commandstructure.html",
+      "fetched_with": "mcp",
+      "section": "Command structure / Wait commands"
+    },
+    {
+      "id": "sdk-retry-behavior",
+      "claim": "AWS CLI의 재시도 모드는 3가지다. standard(AWS CLI v2 기본): 최대 재시도 2회로 총 3회 호출, max_attempts 로 재정의 가능, 지수 백오프 기본 계수 2에 최대 백오프 20초, HTTP 500·502·503·504 및 확장된 전송 오류·스로틀링 예외 목록에 재시도. legacy(AWS CLI v1 기본): 최대 재시도 4회로 총 5회 호출, DynamoDB는 최대 재시도 9회로 총 10회, 제한된 오류 목록과 HTTP 429·500·502·503·504·509 에 재시도, 지수 백오프 기본 계수 2. adaptive: 실험적 모드로 standard의 모든 기능에 토큰 버킷 기반 클라이언트 측 속도 제한을 추가. 환경 변수 AWS_RETRY_MODE·AWS_MAX_ATTEMPTS 또는 config 파일의 retry_mode·max_attempts 로 구성한다. AWS CLI는 Boto3의 재시도 방법론과 로깅을 사용한다.",
+      "corrects_courseware": "교재는 '각 AWS SDK는 자동 재시도 로직을 구현합니다. 최대 재시도 횟수를 구성할 수 있습니다'와 지식 확인 3번 해설의 '지수 백오프와 함께'까지만 기재하고 재시도 모드와 기본값을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-retries.html",
+      "fetched_with": "mcp",
+      "section": "Available retry modes / Configuring a retry mode"
+    },
+    {
+      "id": "cli-authentication-order",
+      "claim": "AWS CLI 자격 증명 구성 방법은 권장 순서대로 다음과 같다: (1) AWS Management Console 자격 증명으로 로그인해 단기 자격 증명 사용(권장), (2) IAM Identity Center 워크포스 사용자 단기 자격 증명, (3) IAM 사용자 단기 자격 증명, (4) Amazon EC2 인스턴스 메타데이터로 인스턴스에 할당된 역할의 임시 자격 증명 조회, (5) 다른 자격 증명 방법과 함께 역할 수임, (6) IAM 사용자 장기 자격 증명(권장하지 않음), (7) 외부 위치에 자격 증명 저장(권장하지 않음). 자격 증명·구성 설정의 우선순위는 명령줄 옵션 > 환경 변수 > 역할 수임 > 웹 자격 증명 역할 수임 > AWS IAM Identity Center > credentials 파일 > 사용자 지정 프로세스 > config 파일 > 컨테이너 자격 증명(Amazon ECS 작업 IAM 역할) > Amazon EC2 인스턴스 프로파일 자격 증명 순이다.",
+      "corrects_courseware": "교재 슬라이드 19는 '기본적으로 액세스 키 ID와 secret 액세스 키는 IAM 계정에 연결됩니다'로만 설명하고, 슬라이드 41은 'IAM 사용자를 사용하여 액세스 보안 인증 정보를 제공하는 것이 좋습니다'라고 기재한다. 현재 권장 순서에서 IAM 사용자 장기 자격 증명은 '권장하지 않음'이다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html",
+      "fetched_with": "mcp",
+      "section": "Authentication and access credentials for the AWS CLI / Configuration and credential precedence"
+    },
+    {
+      "id": "cli-configure-commands",
+      "claim": "AWS CLI의 config·credentials 파일은 profile, sso-session, services 세 가지 섹션 유형으로 구성된다. config 파일의 프로파일 섹션 이름은 [default]·[profile user1] 형식이고 credentials 파일은 [default]·[user1] 형식으로 profile 키워드를 쓰지 않는다. aws configure 계열 명령: aws configure(대화형 기본 설정), aws configure set, aws configure get, aws configure import(IAM 웹 콘솔에서 생성한 CSV 자격 증명 가져오기, IAM Identity Center용은 아님), aws configure list, aws configure list-profiles, aws configure mfa-login, aws configure sso, aws configure sso-session, aws configure export-credentials. 공유 프로파일이 IAM 역할을 지정하면 AWS CLI가 AWS STS AssumeRole 을 호출해 임시 자격 증명을 받고 ~/.aws/cli/cache 에 캐시하며 만료 시 자동으로 갱신한다. IAM Identity Center 인증 토큰은 ~/.aws/sso/cache 에 캐시된다. AWS_CONFIG_FILE·AWS_SHARED_CREDENTIALS_FILE 환경 변수로 파일 위치를 바꿀 수 있다. services 섹션으로 서비스별 사용자 지정 엔드포인트를 구성할 수 있다.",
+      "corrects_courseware": "교재는 aws configure 한 가지만 소개하고 하위 명령과 sso-session·services 섹션을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html",
+      "fetched_with": "mcp",
+      "section": "Format of the configuration and credential files / Where are configuration settings stored? / Set and view configuration settings using commands"
+    },
+    {
+      "id": "iam-programmatic-access",
+      "claim": "AWS는 프로그래밍 방식 호출에 가능하면 단기(short-term) 액세스 키를 사용할 것을 권장한다. AKIA 로 시작하는 액세스 키 ID는 IAM 사용자 또는 루트 사용자의 장기 액세스 키이고, ASIA 로 시작하는 것은 AWS STS 작업으로 생성한 임시 자격 증명 액세스 키다. 임시 보안 인증에는 액세스 키 ID와 secret 액세스 키 외에 만료 시점을 나타내는 보안 토큰이 포함된다. 프로그래밍 방식 액세스 부여 방법은 (권장) 콘솔 자격 증명을 임시 자격 증명으로 사용, IAM Identity Center 워크포스 자격 증명의 임시 자격 증명 사용, IAM 임시 자격 증명 사용, (권장하지 않음) 장기 자격 증명 사용 순이다. 장기 액세스 키의 대안: 코드나 리포지토리에 키를 넣지 말고 AWS Secrets Manager 등을 사용, 가능하면 IAM 역할로 임시 보안 인증 발급, AWS 외부에서 실행되는 머신은 AWS IAM Roles Anywhere, AWS CLI v2의 aws login 명령으로 콘솔 자격 증명 기반 단기 자격 증명 생성, 브라우저 기반 사전 인증 셸인 AWS CloudShell 사용.",
+      "corrects_courseware": "교재 슬라이드 41은 'AWS 계정의 보안을 강화하려면 IAM 사용자를 사용하여 액세스 보안 인증 정보를 제공하는 것이 좋습니다'라고 기재한다. 루트 사용자보다 IAM 사용자가 낫다는 점은 맞지만, 현재 권장은 IAM 사용자 장기 액세스 키가 아니라 임시 자격 증명이다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html",
+      "fetched_with": "mcp",
+      "section": "Programmatic access with AWS security credentials / Alternatives to long-term access keys"
+    },
+    {
+      "id": "boto3-resource-interface",
+      "claim": "AWS Python SDK 팀은 boto3의 리소스(resources) 인터페이스에 새 기능을 추가할 계획이 없다. 기존 인터페이스는 boto3의 수명 주기 동안 계속 동작한다. 최신 서비스 기능은 클라이언트(client) 인터페이스를 통해 사용할 수 있다. 리소스 인스턴스는 스레드 안전하지 않으므로 스레드·프로세스 간에 공유하면 안 되고 각 스레드마다 새 세션과 리소스를 만들어야 한다.",
+      "corrects_courseware": "교재 슬라이드 15는 '일반적으로 상위 수준 API가 작업 수행에 필요한 메서드를 제공하는 경우 간편성 때문에 상위 수준 API를 사용하는 것이 좋습니다'라고 권장하고, 슬라이드 16·28 예제도 리소스 API를 사용한다. 신규 코드는 클라이언트 인터페이스를 기준으로 작성해야 한다.",
+      "url": "https://docs.aws.amazon.com/boto3/latest/guide/resources.html",
+      "fetched_with": "mcp",
+      "section": "Overview / Multithreading or multiprocessing with resources"
+    },
+    {
+      "id": "boto3-error-handling",
+      "claim": "Boto3에서 만나는 예외는 botocore 또는 클라이언트가 호출하는 AWS 서비스, 두 곳에서 온다. botocore 예외는 botocore 패키지에 정적으로 정의되어 있고 클라이언트 측 동작·구성·검증 문제와 관련된다(예: ClientError, NoCredentialsError, ParamValidationError, ProfileNotFound, WaiterError). AWS 서비스 예외는 하위 botocore 예외인 ClientError 로 잡고, 잡은 뒤 응답을 파싱해 서비스별 예외를 포함한 세부 정보를 확인한다.",
+      "supports_courseware": "교재의 'Boto3 SDK는 오류 발생 시 botocore.exceptions.ClientError를 throw합니다'를 뒷받침한다. 다만 botocore 자체 예외(자격 증명·파라미터 검증 등)가 별도로 존재한다는 점은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/boto3/latest/guide/error-handling.html",
+      "fetched_with": "mcp",
+      "section": "Determining what exceptions to catch / Botocore exceptions / AWS service exceptions"
+    },
+    {
+      "id": "boto3-configuration",
+      "claim": "Boto3는 구성 값을 찾을 때 다음 순서로 조회한다: 클라이언트 생성 시 config 파라미터로 전달한 Config 객체, 환경 변수, ~/.aws/config 파일. 구성은 완전히 원자적이지 않아 config 파일에 설정한 값을 특정 환경 변수나 Config 객체로 개별 재정의할 수 있다. Config 객체의 signature_version 기본값은 Signature Version 4다. retries 딕셔너리로 재시도 모드와 최대 시도 횟수를 지정한다.",
+      "corrects_courseware": "교재 슬라이드 17의 구성 예시는 공유 config 파일에 api_versions 항목을 두는 방식이다. 현재 Boto3 구성 안내서의 조회 순서 설명에는 api_versions 가 등장하지 않는다.",
+      "url": "https://docs.aws.amazon.com/boto3/latest/guide/configuration.html",
+      "fetched_with": "mcp",
+      "section": "Overview / Using the Config object"
+    },
+    {
+      "id": "java-exceptions-v2",
+      "claim": "AWS SDK for Java 2.x는 확인된(checked) 예외 대신 런타임(unchecked) 예외를 사용한다. AwsServiceException 은 가장 흔한 예외로 SdkServiceException 의 하위 클래스이며 AWS 서비스의 오류 응답을 나타낸다. 요청은 서비스에 성공적으로 전달되었으나 처리되지 못한 상황이고, 반환된 HTTP 상태 코드, AWS 오류 코드, AwsErrorDetails 클래스에 담긴 상세 오류 메시지, 실패한 요청의 AWS 요청 ID를 제공한다. 대부분의 경우 서비스별 하위 클래스(S3Exception, DynamoDbException, SqsException 등)가 발생한다. SdkClientException 은 요청 전송 또는 응답 파싱 중 Java 클라이언트 코드 내부에서 발생한 문제를 나타내며 SdkServiceException 보다 일반적으로 더 심각하다(예: 네트워크 연결이 없는 경우).",
+      "corrects_courseware": "교재 슬라이드 30은 예외 클래스명을 com.amazonaws.AmazonServiceException / com.amazonaws.AmazonClientException 으로 기재하면서 인용 링크는 AWS SDK for Java 2.x 개발자 안내서를 가리킨다. com.amazonaws.* 는 지원이 종료된 1.x 패키지이고 2.x 계층은 AwsServiceException / SdkServiceException / SdkClientException 이다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/handling-exceptions.html",
+      "fetched_with": "mcp",
+      "section": "Why unchecked exceptions? / AwsServiceException (and subclasses) / SdkClientException"
+    },
+    {
+      "id": "java-waiters-migration",
+      "claim": "Java SDK waiter의 v1과 v2 차이. 패키지: v1 com.amazonaws.services.dynamodbv2.waiters → v2 software.amazon.awssdk.services.dynamodb.waiters. 클래스: v1 AmazonDynamoDBWaiters → v2 동기 DynamoDbWaiter, 비동기 DynamoDbAsyncWaiter. 생성: v1 client.waiters() → v2 client.waiter() (비동기는 asyncClient.waiter()). 대기: v1 waiter.tableExists().run(new WaiterParameters<>(new DescribeTableRequest(tableName))) → v2 WaiterResponse<DescribeTableResponse> waiterResponse = waiter.waitUntilTableExists(r -> r.tableName(\"myTable\")). 폴링 구성: v1 PollingStrategy(MaxAttemptsRetryStrategy, FixedDelayStrategy) → v2 waitUntilTableExists(..., c -> c.maxAttempts(10).backoffStrategy(FixedDelayBackoffStrategy.create(Duration.ofSeconds(3)))). Waiter 클래스는 서비스와 같은 Maven 아티팩트에 포함된다.",
+      "corrects_courseware": "교재 슬라이드 29의 Java waiter 예제는 client.waiters().tableExists(), WaiterParameters, WaiterUnrecoverableException, WaiterTimedOutException 을 사용하는 v1 문법이다. 예제 코드의 waiter.run(new WaiterParameters<>(new DescribeTableRequest(tableName)); 줄은 닫는 괄호도 하나 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/migration-waiters.html",
+      "fetched_with": "mcp",
+      "section": "High-level changes / API changes / Configuration changes"
+    },
+    {
+      "id": "dynamodb-createtable-async",
+      "claim": "DynamoDB CreateTable 은 비동기 작업이다. CreateTable 요청을 받으면 DynamoDB는 TableStatus 가 CREATING 인 응답을 즉시 반환하고, 테이블 생성이 끝나면 TableStatus 를 ACTIVE 로 설정한다. 읽기·쓰기 작업은 ACTIVE 상태의 테이블에서만 수행할 수 있다. 테이블 상태는 DescribeTable 작업으로 확인한다. 보조 인덱스가 있는 테이블을 여러 개 만들 때는 순차적으로 만들어야 하며, 보조 인덱스를 가진 테이블은 한 번에 하나만 CREATING 상태일 수 있다.",
+      "supports_courseware": "교재 슬라이드 25의 'DynamoDB의 CreateTable 작업은 비동기식 작업입니다'와 슬라이드 27 예제의 CREATING → ACTIVE 폴링을 뒷받침한다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html",
+      "fetched_with": "mcp",
+      "section": "CreateTable"
+    },
+    {
+      "id": "s3-invokes-lambda-async",
+      "claim": "Amazon S3는 객체 세부 정보를 담은 이벤트로 Lambda 함수를 비동기식으로 호출한다. 버킷에 알림 설정을 구성하고 함수의 리소스 기반 권한 정책에서 Amazon S3가 함수를 호출할 권한을 부여한다. Lambda 함수가 자신을 트리거하는 버킷에 객체를 업로드하면 루프가 발생할 수 있으므로 버킷을 두 개 쓰거나 수신 객체용 접두사에만 트리거를 적용한다.",
+      "supports_courseware": "교재 슬라이드 25의 'Amazon S3는 함수를 비동기식으로 호출합니다'를 뒷받침한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html",
+      "fetched_with": "mcp",
+      "section": "Process Amazon S3 event notifications with Lambda"
+    },
+    {
+      "id": "lambda-nodejs-runtimes",
+      "claim": "Lambda 런타임 nodejs12.x(Amazon Linux 2)는 2023년 3월 31일 지원 중단(deprecated)되었고, 함수 생성 차단도 2023년 3월 31일, 함수 업데이트 차단은 2023년 4월 30일이다. 지원 중단 목록에 있는 그 밖의 Node.js 런타임: nodejs20.x(2026-04-30), nodejs18.x(2025-09-01), nodejs16.x(2024-06-12), nodejs14.x(2023-12-04), nodejs10.x(2021-07-30) 등. 현재 지원 런타임 표의 Node.js 항목은 nodejs26.x(지원 중단 예정 없음), nodejs24.x(2028-04-30 예정), nodejs22.x(2027-04-30 예정)다. AWS는 주요 구성 요소가 커뮤니티 장기 지원을 종료해 보안 업데이트를 받을 수 없게 되면 런타임을 지원 중단한다.",
+      "corrects_courseware": "교재 슬라이드 21의 create-function 예제가 --runtime nodejs12.x 를 사용한다. 이 런타임으로는 함수를 생성할 수 없으므로 예제가 실패한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Supported runtimes / Deprecated runtimes / Runtime deprecation policy"
+    },
+    {
+      "id": "cloud9-new-customers",
+      "claim": "AWS Cloud9은 신규 고객에게 더 이상 제공되지 않는다(no longer available to new customers). 기존 AWS Cloud9 고객은 서비스를 계속 정상적으로 사용할 수 있다. AWS Cloud9 사용자 안내서는 마이그레이션 안내로 AWS IDE 도구 키트 또는 AWS CloudShell 로 이전하는 방법을 링크한다.",
+      "corrects_courseware": "교재 슬라이드 23 강사 노트는 '현재 실습 버전(2026년 9월 24일 기준)에서는 여전히 Python 실습이 Cloud9에 배포되어 있습니다'라고 기재한다. 실습 환경은 그대로일 수 있으나 수강생이 자기 계정에서 Cloud9을 새로 만들지는 못한다.",
+      "url": "https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS Cloud9? (신규 고객 제공 중단 안내 배너)"
+    },
+    {
+      "id": "aws-ide-toolkits",
+      "claim": "AWS가 제공하는 IDE 도구 키트는 AWS Toolkit for JetBrains, AWS Toolkit for Visual Studio Code, Toolkit for Visual Studio 세 가지다. JetBrains 도구 키트는 JetBrains Marketplace에서 설치한다.",
+      "corrects_courseware": "교재 슬라이드 33 그래픽에는 Eclipse, Rider, WebStorm, Visual Studio, PyCharm, IntelliJ, Visual Studio Code, Azure DevOps 레이블이 있다. 공식 '그 밖의 AWS IDE 도구 키트' 안내는 JetBrains·VS Code·Visual Studio 세 가지만 나열한다.",
+      "url": "https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/downloads.html",
+      "fetched_with": "mcp",
+      "section": "Additional IDE Toolkits from AWS"
+    },
+    {
+      "id": "jetbrains-toolkit-ides",
+      "claim": "AWS Toolkit for JetBrains는 JetBrains IDE용 오픈 소스 플러그인이며 다음 개별 도구 키트를 포함한다: CLion(C·C++), GoLand(Go), IntelliJ(Java), WebStorm(Node.js), Rider(.NET), PhpStorm(PHP), PyCharm(Python), RubyMine(Ruby), DataGrip(데이터베이스 관리). 이 도구 키트로 AWS Lambda 함수, AWS CloudFormation 스택, Amazon ECS 클러스터를 다룰 수 있고 AWS 자격 증명 관리와 리전 관리 기능을 제공한다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What the AWS Toolkit for JetBrains includes / Working with the AWS Toolkit for JetBrains"
+    },
+    {
+      "id": "vscode-toolkit",
+      "claim": "AWS Toolkit for VS Code는 Visual Studio Code 편집기용 오픈 소스 확장으로, AWS를 사용하는 서버리스 애플리케이션의 개발·로컬 디버깅·배포를 쉽게 한다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is the AWS Toolkit for Visual Studio Code"
+    },
+    {
+      "id": "q-developer-ide-eos",
+      "claim": "2027년 4월 30일 AWS는 Amazon Q Developer IDE 플러그인 지원을 중단한다. AWS는 Amazon Q Developer IDE 플러그인과 유사한 기능(에이전틱 코딩, 채팅, MCP 지원을 포함한 최신 모델과 기능)을 위해 Kiro를 살펴보도록 안내한다. IDE에서 Amazon Q Developer를 사용해 왔다면 인라인 제안, 채팅, 코드 생성 등 지금 의존하는 기능이 모두 Kiro에서 제공된다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-developer-ide-end-of-support.html",
+      "fetched_with": "mcp",
+      "section": "Amazon Q Developer IDE plugins end of support / Migrating from Amazon Q Developer to Kiro"
+    },
+    {
+      "id": "q-developer-supported-ides",
+      "claim": "Amazon Q Developer가 지원하는 IDE는 VS Code, JetBrains, Eclipse, Visual Studio다. 채팅, 에이전틱 코딩, MCP 서버, 채팅 컨텍스트, 워크스페이스 컨텍스트, 인라인 제안은 네 IDE 모두 지원한다. 인라인 채팅은 Visual Studio에서 지원되지 않고, 변환(Transformations)은 Eclipse에서 지원되지 않는다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-in-IDE.html",
+      "fetched_with": "mcp",
+      "section": "Supported IDEs and available features"
+    },
+    {
+      "id": "kiro",
+      "claim": "Kiro는 AWS의 에이전틱 개발 시스템(agentic development system)으로, 의도(intent)를 관리하고 대규모 코드베이스에서 장시간 실행되는 작업을 완료하며 모든 세션에서 학습하는 고급 에이전트로 코드 정확성을 검증해 개발자와 팀이 AI 코딩에서 엔지니어링으로 넘어가는 격차를 메우도록 돕는다. Kiro는 IDE, CLI, 자율 웹 에이전트(autonomous web agent) 형태로 제공된다.",
+      "corrects_courseware": "교재 슬라이드 34·35는 Kiro를 'Code OSS를 기반으로 구축된 AI 기반의 통합 개발 환경'으로만 소개한다. IDE 외에 CLI와 자율 웹 에이전트 형태가 있다는 점이 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/machine-learning.html",
+      "fetched_with": "mcp",
+      "section": "Kiro"
+    },
+    {
+      "id": "spec-driven-development",
+      "claim": "AWS Well-Architected Agentic AI Lens는 Kiro 같은 스펙 기반 개발(spec-driven development) 도구를 권장한다. 사양(specification)은 에이전트의 동작을 작성자로부터 분리하므로, 원래 개발자가 떠나도 다음 담당자가 리버스 엔지니어링이 아니라 사양을 통해 시스템을 파악한다. 사양이 사후 작업이 아니라 출발점이 되면 문서는 개발의 부산물로 생성되고, 사양 작성에 들인 초기 투자는 코드 검토·테스트·이후 진화 과정에서 회수된다. 모든 후속 변경이 명확한 기준선에 대해 이루어지기 때문이다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp03.html",
+      "fetched_with": "mcp",
+      "section": "Implementation guidance / Implementation steps"
+    },
+    {
+      "id": "mcp",
+      "claim": "Model Context Protocol(MCP)은 Anthropic이 도입한 오픈 프로토콜로, LLM 애플리케이션과 외부 데이터 소스·도구를 통합해 실시간 정보에 액세스할 수 있게 한다. AI 기반 IDE를 만들 때든 채팅 인터페이스를 개선할 때든 LLM을 필요한 컨텍스트에 연결하는 표준화된 방법을 제공한다. 세 가지 핵심 프리미티브는 Resources(파일·데이터베이스·API 같은 데이터와 콘텐츠를 노출), Tools(티켓 생성, 쿼리 실행, API 호출 같은 작업 실행), Prompts(동적 컨텍스트를 담은 재사용 가능한 프롬프트 템플릿)다. 이점은 표준화, 검색 가능성, 프로토콜 수준의 중앙 집중식 인증·인가로 인한 보안 강화, 유지 관리성, 확장성이다.",
+      "corrects_courseware": "교재는 MCP를 'AI 모델을 외부 데이터 소스, 도구 및 시스템에 안전하게 연결할 수 있는 범용 플러그 앤 플레이 방식을 제공하는 오픈 소스 표준'으로 설명한다. 방향은 맞지만 프로토콜을 도입한 주체(Anthropic)와 세 가지 프리미티브 구조가 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/mcp-deployment-patterns-on-aws/what-is-the-model-context-protocol-mcp.html",
+      "fetched_with": "mcp",
+      "section": "Overview / Why MCP Matters / Key Benefits"
+    },
+    {
+      "id": "java-sdk-metrics",
+      "claim": "AWS SDK for Java 2.x에서 지표 수집은 MetricPublisher 구현을 선택해 구성하면 활성화된다. CloudWatchMetricPublisher 는 지표를 CloudWatch로 직접 전송하며, 데이터 손실 가능성 때문에 수명이 짧은 Lambda 함수에는 적합하지 않다. 지표는 특정 요청 단위 또는 특정 서비스 클라이언트 단위로 활성화할 수 있고 cloudwatch-metric-publisher 아티팩트 종속성이 필요하다. 콘솔로 지표를 출력하는 로깅 퍼블리셔도 있다. 교재가 인용한 URL(/sdk-for-java/latest/developer-guide/metrics.html)은 현재 2.x 내용을 제공한다.",
+      "supports_courseware": "교재 슬라이드 31의 'AWS SDK for Java의 지표 활성화' 링크가 현재도 유효하며 2.x 문서를 가리킨다는 점을 확인했다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/metrics.html",
+      "fetched_with": "mcp",
+      "section": "Getting started with SDK metrics"
+    },
+    {
+      "id": "courseware-url-net-install",
+      "claim": "교재가 인용한 .NET SDK 설치 문서 URL(https://docs.aws.amazon.com/AWSSdkDocsNET/latest/V3/DeveloperGuide/net-dg-install-assemblies.html)은 HTTP 404를 반환한다. 현재 유효한 경로는 https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-install-assemblies.html 이며 HTTP 200을 반환한다.",
+      "corrects_courseware": "교재 링크가 끊어져 있고 버전 표기도 V3 이다. AWS SDK for .NET 3.x 는 현재 End-of-Support 단계다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-install-assemblies.html",
+      "fetched_with": "link_check",
+      "section": "Install AWSSDK packages with NuGet"
+    },
+    {
+      "id": "courseware-url-cli-reference",
+      "claim": "교재가 인용한 AWS CLI API 참조 URL(https://docs.aws.amazon.com/pt_br/cli/latest/index.html)은 HTTP 404를 반환한다. 로케일이 pt_br 로 고정되어 있다. 교재의 다른 슬라이드가 인용한 http://docs.aws.amazon.com/cli/latest/reference/ 는 https://docs.aws.amazon.com/cli/latest/reference/ 로 리디렉션되어 HTTP 200을 반환한다.",
+      "corrects_courseware": "교재 슬라이드 13의 AWS CLI API 참조 링크가 끊어져 있다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/reference/",
+      "fetched_with": "link_check",
+      "section": "AWS CLI Command Reference"
+    },
+    {
+      "id": "courseware-url-boto3-quickstart",
+      "claim": "교재가 인용한 Boto3 빠른 시작 URL(https://boto3.readthedocs.org/en/latest/guide/quickstart.html)은 https://docs.aws.amazon.com/boto3/latest/guide/quickstart.html 로 리디렉션되어 HTTP 200을 반환한다. Boto3 문서는 docs.aws.amazon.com 으로 이전되었다.",
+      "corrects_courseware": "교재는 AWS 소유가 아닌 readthedocs.org 도메인을 인용한다. 현재 정본은 docs.aws.amazon.com/boto3/latest/ 경로다.",
+      "url": "https://docs.aws.amazon.com/boto3/latest/guide/quickstart.html",
+      "fetched_with": "link_check",
+      "section": "Quickstart"
+    },
+    {
+      "id": "courseware-url-dynamodb-errors",
+      "claim": "교재가 인용한 DynamoDB 오류 처리 URL(http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ErrorHandling.html#APIRetries)은 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html 로 리디렉션되어 HTTP 200을 반환한다.",
+      "corrects_courseware": "교재 링크는 http 스킴이고 구버전 파일명이며 앵커(#APIRetries)는 새 페이지에 존재하지 않을 수 있다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html",
+      "fetched_with": "link_check",
+      "section": "Error handling with DynamoDB"
+    },
+    {
+      "id": "courseware-url-boto3-dynamodb",
+      "claim": "교재가 인용한 Boto3 DynamoDB 안내서 URL(https://boto3.amazonaws.com/v1/documentation/api/latest/guide/dynamodb.html)은 https://docs.aws.amazon.com/boto3/latest/guide/dynamodb.html 로 리디렉션되어 HTTP 200을 반환한다.",
+      "corrects_courseware": "교재 링크는 이전 boto3.amazonaws.com 경로다. 현재 정본 경로로 교체했다.",
+      "url": "https://docs.aws.amazon.com/boto3/latest/guide/dynamodb.html",
+      "fetched_with": "link_check",
+      "section": "Amazon DynamoDB"
+    },
+    {
+      "id": "courseware-url-dotnet-tables",
+      "claim": "교재가 인용한 '.NET에서 DynamoDB 테이블 작업' URL(https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LowLevelDotNetWorkingWithTables.html)은 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/service_code_examples.html 로 리디렉션되어 HTTP 200을 반환한다. 즉 하위 수준 .NET 테이블 작업 전용 페이지는 더 이상 존재하지 않고 코드 예제 모음으로 대체되었다.",
+      "corrects_courseware": "교재가 예제 출처로 제시한 특정 페이지가 사라졌다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/service_code_examples.html",
+      "fetched_with": "link_check",
+      "section": "Code examples for DynamoDB using AWS SDKs"
+    },
+    {
+      "id": "courseware-url-java-api-ref",
+      "claim": "교재가 인용한 Java SDK API 참조 URL(https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/overview-summary.html)은 HTTP 200을 반환하지만 지원이 종료된 Java SDK 1.x javadoc이다. 2.x API 참조는 https://sdk.amazonaws.com/java/api/latest/ 이며 https://docs.aws.amazon.com/java/api/latest/ 로 리디렉션되어 HTTP 200을 반환한다.",
+      "corrects_courseware": "교재 API 참조 링크가 지원 종료 버전을 가리킨다.",
+      "url": "https://docs.aws.amazon.com/java/api/latest/",
+      "fetched_with": "link_check",
+      "section": "AWS SDK for Java 2.x API Reference"
+    }
+  ],
+  "unverified": [
+    {
+      "id": "api-versions-config-setting",
+      "reason": "교재 슬라이드 17이 제시한 공유 config 파일의 api_versions 항목(ec2 = 2015-03-01 형태)을 현재 Boto3 구성 안내서(guide/configuration.html)와 AWS CLI 구성·자격 증명 파일 설정 문서에서 찾지 못했다. 검색에서 확인된 API 버전 잠금 문서는 AWS SDK for JavaScript v2의 locking-api-versions 페이지였고, 그 버전은 지원이 종료되었다.",
+      "action": "본문에는 '교재 기재'로 표시하고, 현재 문서에서 확인하지 못했다는 점을 8.5절에 남김. 실행 검증 또는 botocore 구성 참조로 재확인 필요."
+    },
+    {
+      "id": "eclipse-and-azure-devops-toolkits",
+      "reason": "교재 슬라이드 33 그래픽의 Eclipse와 Azure DevOps 도구 키트 상태를 확인하지 못했다. 공식 '그 밖의 AWS IDE 도구 키트' 안내는 JetBrains·VS Code·Visual Studio 세 가지만 나열하지만, Eclipse 또는 Azure DevOps 도구 키트의 명시적 지원 종료 발표는 찾지 못했다. docs.aws.amazon.com/toolkit-for-eclipse/v1/user-guide/welcome.html 을 열었을 때 AWS Toolkit for JetBrains 안내서 내용이 반환된 점은 리디렉션을 시사하지만 명시적 서술은 아니다.",
+      "action": "본문에서는 공식 목록(JetBrains·VS Code·Visual Studio)만 제시하고, Eclipse는 Amazon Q Developer 지원 IDE 목록에 포함된다는 확인된 사실만 별도로 기재. 도구 키트 자체 상태는 8.5절에 남김."
+    },
+    {
+      "id": "createbucket-http-example",
+      "reason": "교재 슬라이드 6의 CreateBucket HTTP 요청 예제(Date 헤더와 'Authorization: authorization string' 사용)가 현재 Amazon S3 API 참조의 요청 예제와 일치하는지 확인하지 못했다. CreateBucket API 참조를 읽었으나 교재 예제와 대조할 수 있는 동일 형태의 예제 블록을 찾지 못했다.",
+      "action": "교재 예제를 그대로 유지하고 '교재 기재'로 표시. 헤더 구조 설명 자체는 SigV4 문서(Authorization 헤더 또는 쿼리 문자열)로 뒷받침."
+    },
+    {
+      "id": "dynamodb-query-response-example",
+      "reason": "교재 슬라이드 7의 DynamoDB 쿼리 응답 예제(x-amzn-RequestId, x-amz-crc32, Content-Type: application/x-amz-json-1.0)를 공식 문서로 대조하지 못했다.",
+      "action": "교재 예제를 그대로 유지. HTTP 상태 코드 클래스 설명은 교재 기재를 유지하되 상태 코드 위치 오류만 교정."
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "_note": "M05 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다.",
+  "module": "M05",
+  "verified_on": "2026-08-25",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / boto3 공식 문서",
+  "citations": [
+    {
+      "id": "bucket-naming",
+      "claim": "범용 버킷 이름은 3~63자, 소문자·숫자·마침표(.)·하이픈(-)만 사용 가능하고 문자 또는 숫자로 시작·종료해야 한다. 인접한 두 마침표 금지, IP 주소 형식 금지, xn-- / sthree- / amzn-s3-demo- 접두사 금지. -s3alias(액세스 포인트 별칭), --ol-s3(Object Lambda 액세스 포인트), .mrap(다중 리전 액세스 포인트), --x-s3(디렉터리 버킷), --table-s3(S3 Tables 버킷), -an(계정 리전 네임스페이스) 접미사는 예약됨. Transfer Acceleration을 사용하는 버킷은 이름에 마침표를 쓸 수 없다.",
+      "corrects_courseware": "교재는 '소문자, 숫자, 하이픈(-)만 사용해야 합니다'라고 기재. 마침표(.)도 허용되므로 부정확하다. 예약 접두사·접미사 규칙은 교재에 없음.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html",
+      "fetched_with": "mcp",
+      "section": "General purpose buckets naming rules"
+    },
+    {
+      "id": "bucket-namespace-partitions",
+      "claim": "범용 버킷은 기본적으로 전역 네임스페이스에 존재하며, 이름은 한 파티션 내 모든 AWS 계정·모든 리전에서 고유해야 한다. AWS 파티션은 현재 4개다: aws(표준 리전), aws-cn(중국 리전), aws-us-gov(AWS GovCloud US), aws-eusc(European Sovereign Cloud).",
+      "corrects_courseware": "교재는 '버킷 이름은 Amazon S3 전체에서 고유해야 합니다'로만 기재. 고유성 범위가 파티션 단위라는 점이 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/gpbucketnamespaces.html",
+      "fetched_with": "mcp",
+      "section": "Namespaces for general purpose buckets"
+    },
+    {
+      "id": "account-regional-namespace",
+      "claim": "계정 리전 네임스페이스(account regional namespace)는 전역 버킷 네임스페이스의 예약된 하위 구획으로, 해당 계정만 이 네임스페이스에 범용 버킷을 만들 수 있다. AWS는 이 네임스페이스에 버킷을 만드는 것을 권장한다.",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/gpbucketnamespaces.html",
+      "fetched_with": "mcp",
+      "section": "Account regional namespace general purpose buckets"
+    },
+    {
+      "id": "storage-classes",
+      "claim": "현재 범용 버킷 스토리지 클래스: S3 Standard(STANDARD, 기본값), S3 Intelligent-Tiering(INTELLIGENT_TIERING), S3 Standard-IA(STANDARD_IA), S3 One Zone-IA(ONEZONE_IA), S3 Glacier Instant Retrieval(GLACIER_IR), S3 Glacier Flexible Retrieval(GLACIER), S3 Glacier Deep Archive(DEEP_ARCHIVE), Reduced Redundancy Storage(REDUCED_REDUNDANCY, 사용 비권장), S3 Outposts(OUTPOSTS). 디렉터리 버킷 전용으로 S3 Express One Zone(EXPRESS_ONEZONE)이 있다.",
+      "corrects_courseware": "교재 목록에 S3 Glacier Instant Retrieval과 S3 Express One Zone이 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+      "fetched_with": "mcp",
+      "section": "Understanding and managing Amazon S3 storage classes"
+    },
+    {
+      "id": "storage-class-comparison",
+      "claim": "설계 기준 내구성은 모든 클래스가 99.999999999%. 설계 기준 가용성과 AZ 수는 다르다. S3 Standard 99.99%/AZ>=3, S3 Standard-IA 99.9%/AZ>=3, S3 Intelligent-Tiering 99.9%/AZ>=3, S3 One Zone-IA 99.5%/AZ 1, S3 Express One Zone 99.95%/AZ 1, S3 Glacier Instant Retrieval 99.9%/AZ>=3, S3 Glacier Flexible Retrieval 99.99%(복원 후)/AZ>=3, S3 Glacier Deep Archive 99.99%(복원 후)/AZ>=3. 최소 스토리지 기간: Standard·Intelligent-Tiering·Express One Zone 없음, Standard-IA·One Zone-IA 30일, Glacier IR·Glacier Flexible 90일, Deep Archive 180일. 최소 과금 객체 크기: Standard-IA·One Zone-IA·Glacier IR 128KB.",
+      "corrects_courseware": "교재는 내구성 99.999999999%, 가용성 99.99%를 S3 전체 값처럼 단일 표기. 실제로는 가용성이 클래스별로 다르다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+      "fetched_with": "mcp",
+      "section": "Comparing the Amazon S3 storage classes"
+    },
+    {
+      "id": "consistency-model",
+      "claim": "Amazon S3는 모든 AWS 리전에서 객체의 PUT 및 DELETE 요청에 대해 강력한 읽기 후 쓰기 일관성(strong read-after-write consistency)을 제공한다. 신규 객체 쓰기, 기존 객체를 덮어쓰는 PUT, DELETE 모두 해당된다. S3 Select, ACL, 객체 태그, 객체 메타데이터 읽기도 강력한 일관성을 갖는다. 단일 키에 대한 업데이트는 원자적이다. 반면 버킷 구성(bucket configuration)은 최종 일관성 모델을 따른다. S3는 동시 쓰기에 대한 객체 잠금을 지원하지 않으며, 동일 키에 동시 PUT이 발생하면 최신 타임스탬프 요청이 이긴다(last-writer-wins).",
+      "corrects_courseware": "교재는 성능 항목에 '생성 후 읽기의 일관성(read-after-write consistency)'으로만 기재. 2020년 12월 이후 강력한 일관성으로 강화된 내용이 반영되지 않았다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+      "fetched_with": "mcp",
+      "section": "Amazon S3 data consistency model"
+    },
+    {
+      "id": "object-ownership-acl-default",
+      "claim": "S3 Object Ownership은 버킷 수준 설정으로, 기본값은 '버킷 소유자 적용(Bucket owner enforced)'이며 모든 ACL이 비활성화되어 있다. ACL이 비활성화되면 버킷 소유자가 버킷의 모든 객체를 소유하고 액세스 관리 정책으로만 액세스를 관리한다. 설정은 3가지: Bucket owner enforced(기본, ACL 비활성화), Bucket owner preferred(ACL 활성화), Object writer(ACL 활성화). AWS는 개별 객체 단위 액세스 제어가 반드시 필요한 경우를 제외하면 ACL을 비활성화 상태로 유지하도록 권장한다. ACL 비활성화 후에는 ACL을 지정하지 않은 PUT 또는 bucket-owner-full-control ACL을 지정한 PUT만 허용되고, 그 외 ACL을 포함한 PUT은 400 AccessControlListNotSupported 오류로 실패한다.",
+      "corrects_courseware": "교재는 ACL을 '레거시 리소스 기반 정책'으로만 설명. 신규 버킷에서 ACL이 기본 비활성화라는 사실과 3가지 Object Ownership 설정이 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html",
+      "fetched_with": "mcp",
+      "section": "Controlling ownership of objects and disabling ACLs for your bucket"
+    },
+    {
+      "id": "default-encryption",
+      "claim": "Amazon S3는 모든 버킷에 대해 Amazon S3 관리형 키를 사용한 서버 측 암호화(SSE-S3)를 기본 암호화 수준으로 적용한다. 2023년 1월 5일부터 Amazon S3에 업로드되는 모든 신규 객체는 추가 비용 없이, 성능 영향 없이 자동으로 암호화된다. SSE-S3는 256비트 AES(AES-256)를 사용하며 모든 신규 버킷과 기본 암호화가 구성되지 않은 기존 버킷에 자동 적용된다. 기존 미암호화 버킷에 이미 들어 있던 객체는 자동으로 암호화되지 않는다.",
+      "corrects_courseware": "교재는 보안 항목에 '기본 암호화'만 나열. 자동 적용 시점과 알고리즘, 기존 객체 미적용이라는 조건이 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html",
+      "fetched_with": "mcp",
+      "section": "Default encryption FAQ"
+    },
+    {
+      "id": "virtual-hosted-style",
+      "claim": "가상 호스팅 스타일 URL 형식은 https://bucket-name.s3.region-code.amazonaws.com/key-name 이다. SSL과 함께 가상 호스팅 스타일을 사용할 때 SSL 와일드카드 인증서는 마침표(.)를 포함하지 않는 버킷 이름만 매칭한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html",
+      "fetched_with": "mcp",
+      "section": "Virtual-hosted-style requests"
+    },
+    {
+      "id": "path-style-deprecation",
+      "claim": "Amazon S3는 현재 모든 AWS 리전에서 가상 호스팅 스타일과 경로 스타일(path-style) URL 액세스를 모두 지원한다. 그러나 경로 스타일 URL은 향후 중단될 예정이다. 2020년 9월 23일 업데이트로 경로 스타일 URL 폐기 시점이 연기되었다. 웹 브라우저에서 접근하는 웹사이트 콘텐츠를 호스팅할 때는 브라우저 동일 출처 보안 모델과 충돌할 수 있으므로 경로 스타일 URL 사용을 피하고 S3 웹사이트 엔드포인트 또는 CloudFront 배포를 사용하도록 권장한다.",
+      "corrects_courseware": "교재의 ~/.aws/config 예시가 addressing_style = path 를 포함한다. 신규 코드에는 권장되지 않는 설정이다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html",
+      "fetched_with": "mcp",
+      "section": "Path-style requests"
+    },
+    {
+      "id": "website-endpoints",
+      "claim": "S3 웹사이트 엔드포인트는 리전에 따라 두 형식 중 하나를 따른다: 하이픈 형식 http://bucket-name.s3-website-Region.amazonaws.com, 마침표 형식 http://bucket-name.s3-website.Region.amazonaws.com. 웹사이트 엔드포인트는 REST API 요청을 보내는 엔드포인트와 다르다. S3 웹사이트 엔드포인트는 HTTPS와 액세스 포인트를 지원하지 않는다. HTTPS가 필요하면 AWS Amplify Hosting(권장) 또는 Amazon CloudFront를 사용한다. Requester Pays 버킷은 웹사이트 엔드포인트를 통한 액세스를 허용하지 않고 403 Access Denied를 반환한다.",
+      "corrects_courseware": "교재는 하이픈 형식만 기재. 리전별로 마침표 형식이 있다는 점과 HTTPS 미지원이 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html",
+      "fetched_with": "mcp",
+      "section": "Website endpoints"
+    },
+    {
+      "id": "access-points",
+      "claim": "Amazon S3 액세스 포인트는 데이터 소스에 연결(attached)되는 명명된 네트워크 엔드포인트다. 연결 대상은 버킷, Amazon FSx for NetApp ONTAP 볼륨, Amazon FSx for OpenZFS 볼륨, AWS Backup의 Amazon S3 복구 지점이다. 각 액세스 포인트는 고유한 권한과 네트워크 제어를 가지며, 액세스 포인트 정책이 기본 버킷 정책과 함께 동작한다. VPC에서만 요청을 허용하도록 구성할 수 있고 액세스 포인트별 퍼블릭 액세스 차단 설정도 가능하다. 액세스 포인트로는 GetObject, PutObject 같은 객체 작업만 수행할 수 있고, 버킷 삭제나 S3 복제 구성 같은 다른 S3 작업은 수행할 수 없다.",
+      "corrects_courseware": "교재 강사 노트에 '버킷에 연결되지 않습니다'라는 서술이 있으나 같은 노트 뒷부분과 지식 확인 6번 정답(참)은 연결된다고 기재. 공식 문서 기준으로 연결(attached)이 맞으므로 앞의 서술은 오류다. 또한 연결 대상이 버킷 외 FSx 볼륨·AWS Backup 복구 지점으로 확장되었고, 객체 작업만 가능하다는 제약이 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html",
+      "fetched_with": "mcp",
+      "section": "Managing access to shared datasets with access points"
+    },
+    {
+      "id": "event-notification-types",
+      "claim": "SQS·SNS·Lambda 대상으로 게시할 수 있는 이벤트 유형: s3:TestEvent, s3:ObjectCreated:*(Put/Post/Copy/CompleteMultipartUpload), s3:ObjectRemoved:*(Delete/DeleteMarkerCreated), s3:ObjectRestore:*(Post/Completed/Delete), s3:ReducedRedundancyLostObject, s3:Replication:*(OperationFailedReplication/OperationMissedThreshold/OperationReplicatedAfterThreshold/OperationNotTracked), s3:LifecycleExpiration:*(Delete/DeleteMarkerCreated), s3:LifecycleTransition, s3:IntelligentTiering, s3:ObjectTagging:*(Put/Delete), s3:ObjectAnnotation:*(Put/Delete), s3:ObjectAcl:Put. ObjectRemoved 이벤트는 수명 주기 구성에 의한 자동 삭제나 실패한 작업에 대해서는 알림을 보내지 않는다.",
+      "corrects_courseware": "교재는 객체 새로 만들기·제거·복원·복제 4종만 기재. 수명 주기, Intelligent-Tiering, 객체 태그, 주석, ACL 관련 이벤트가 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/notification-how-to-event-types-and-destinations.html",
+      "fetched_with": "mcp",
+      "section": "Supported event types for SQS, SNS, and Lambda"
+    },
+    {
+      "id": "conditional-requests",
+      "claim": "조건부 요청으로 S3 작업에 전제 조건을 추가할 수 있다. 조건부 읽기는 GET, HEAD, COPY 요청에서 지원되며 ETag 또는 마지막 수정 날짜를 기준으로 한다. 조건부 쓰기는 PutObject, CompleteMultipartUpload, CopyObject에서 사용할 수 있고, 동일한 키 이름의 기존 객체가 없음을 보장하거나 객체의 ETag가 변경되지 않았는지 확인할 수 있다. 조건부 삭제는 범용 버킷과 디렉터리 버킷에서 DeleteObject 또는 DeleteObjects API로 수행한다. 조건부 읽기·쓰기·삭제에 추가 요금은 없고 기존 요청 요율만 적용된다(실패한 요청도 포함).",
+      "status": "new",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-requests.html",
+      "fetched_with": "mcp",
+      "section": "Add preconditions to S3 operations with conditional requests"
+    },
+    {
+      "id": "credential-provider-chain",
+      "claim": "모든 AWS SDK는 유효한 자격 증명을 찾기 위해 정해진 순서로 소스를 확인하며, 이를 자격 증명 공급자 체인이라 한다. 유효한 자격 증명을 찾으면 탐색을 멈춘다. 체인은 SDK별로 다르지만 일반적으로 다음을 포함한다: AWS 액세스 키, 웹 자격 증명/OpenID Connect 페더레이션(역할 수임), 로그인 자격 증명 공급자, IAM Identity Center 자격 증명 공급자, 역할 수임 자격 증명 공급자, 컨테이너 자격 증명 공급자(Amazon ECS·Amazon EKS), 프로세스 자격 증명 공급자(IAM Roles Anywhere 포함), IMDS 자격 증명 공급자(Amazon EC2 인스턴스 프로파일). 각 단계에서 설정 값을 지정하는 방법이 여러 가지이며 코드에서 지정한 값이 항상 우선하고, 그 밖에 환경 변수와 공유 config·credentials 파일이 있다. 표준화된 자격 증명 공급자를 사용하면 SDK가 만료 시 자격 증명을 자동으로 갱신한다.",
+      "corrects_courseware": "교재는 '작업별 파라미터 > 환경 변수 > 공유 자격 증명 파일 > 구성 파일' 4단계로만 제시. 이는 설정 값 지정 방법의 우선순위에 가깝고, 실제 자격 증명 공급자 체인에는 IAM Identity Center, 컨테이너(ECS/EKS), IMDS(EC2 인스턴스 프로파일) 등이 포함된다.",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/standardized-credentials.html",
+      "fetched_with": "mcp",
+      "section": "Understand the credential provider chain"
+    },
+    {
+      "id": "boto3-resource-interface",
+      "claim": "AWS Python SDK 팀은 boto3의 리소스(resources) 인터페이스에 새 기능을 추가할 계획이 없다. 기존 인터페이스는 boto3의 수명 주기 동안 계속 동작한다. 최신 서비스 기능은 클라이언트(client) 인터페이스를 통해 사용할 수 있다.",
+      "corrects_courseware": "교재는 하위 수준(클라이언트)과 상위 수준(리소스) API를 동등한 선택지로 제시하고 예제도 리소스 API를 사용한다. 신규 코드는 클라이언트 인터페이스를 기준으로 작성해야 한다.",
+      "url": "https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html",
+      "fetched_with": "web_fetch",
+      "section": "Overview"
+    },
+    {
+      "id": "create-bucket-api",
+      "claim": "CreateBucket의 LocationConstraint는 버킷을 만들 리전을 지정한다. 리전을 지정하지 않으면 버킷은 기본적으로 US East(N. Virginia) 리전(us-east-1)에 생성된다. 값 EU를 사용하면 eu-west-1에 생성된다. LocationConstraint는 디렉터리 버킷에서는 지원되지 않는다. 버킷 생성 시 CreateBucketConfiguration의 Tags로 태그를 지정할 수 있으며, 범용 버킷은 s3:TagResource 권한이 필요하고 태그 기반 조건 키(aws:ResourceTag, s3:BucketTag)는 해당 버킷에서 ABAC를 활성화한 뒤에만 적용된다. x-amz-object-ownership 헤더로 생성 시점에 Object Ownership 설정을 지정할 수 있다. 계정 리전 네임스페이스에 버킷을 만들 때는 x-amz-bucket-namespace: account-regional 헤더를 사용하고 이름은 -an 으로 끝난다(예: amzn-s3-demo-bucket-012345678910-us-west-2-an).",
+      "supports_courseware": "교재가 LocationConstraint 값 null을 us-east-1로 설명하는 근거가 된다(리전 미지정 시 us-east-1에 생성). 버킷 태그 지정과 계정 리전 네임스페이스 헤더는 교재에 없는 내용이다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html",
+      "fetched_with": "mcp",
+      "section": "Request Body / Examples"
+    },
+    {
+      "id": "url-replacements",
+      "claim": "교재가 인용한 두 링크를 현재 유효한 URL로 교체했다. 접두사를 사용한 객체 구성은 https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-prefixes.html, AWS 태깅 모범 사례는 https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html 이다. 두 URL 모두 pipeline/validate.py 링크 검사에서 HTTP 200을 확인했다.",
+      "corrects_courseware": "교재는 ListingKeysUsingAPIs.html 과 d1.awsstatic.com 의 PDF 백서를 인용한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-prefixes.html",
+      "fetched_with": "link_check",
+      "section": "Organizing objects using prefixes"
+    },
+    {
+      "id": "java-sdk-v1-eos",
+      "claim": "AWS SDK for Java 1.x는 2025년 12월 31일 지원이 종료(end-of-support)되었으며, AWS는 2.x로 마이그레이션할 것을 권장한다. AWS SDK for Java 2.x는 Java 8+ 기반으로 1.x 코드베이스를 전면 재작성한 버전이며 일관성, 사용 편의성, 강제된 불변성이 개선되었다.",
+      "corrects_courseware": "교재 Java 예제가 v1과 v2 문법을 혼용한다. S3Client.builder()는 v2 문법이고 createBucket(new CreateBucketRequest(...))는 v1 문법이다. 또한 변수를 s3로 선언한 뒤 s3Client를 호출하는 오류가 있다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html",
+      "fetched_with": "mcp",
+      "section": "AWS SDK for Java 1.x end-of-support"
+    }
+  ],
+  "unverified": [
+    {
+      "id": "file-storage-list",
+      "reason": "M05 본문에서 비중이 낮아 이번 검증 범위에서 제외. 교재 슬라이드 5의 목록(EFS Standard/EFS Infrequent Access/FSx for Lustre/FSx for NetApp ONTAP/FSx for OpenZFS)과 다이어그램 레이블(EFS/FSx for Windows File Server/FSx for Lustre)이 서로 불일치하는 상태로 남아 있다.",
+      "action": "본문에서는 서비스명만 나열하고 스토리지 클래스 세부 목록은 제외. 향후 EFS/FSx 문서로 별도 검증."
+    },
+    {
+      "id": "location-constraint-null",
+      "reason": "us-east-1에서 get-bucket-location이 LocationConstraint를 null로 반환하는 동작을 공식 문서로 확인하지 못했다.",
+      "action": "교재 기재 내용을 유지하되 본문에 '교재 기재' 표시. 실행 검증으로 확인 후 확정 필요."
+    }
+  ]
+}

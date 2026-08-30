@@ -1,0 +1,55 @@
+# 인용 가능한 출처 도메인 목록
+#
+# pipeline/validate.py 가 이 파일을 읽어 본문 링크의 도메인을 검사합니다.
+# 규칙 자체는 .kiro/steering/content-rules.md 2장에 있습니다.
+#
+# 판단 기준: AWS 가 직접 운영하고 저작권을 보유한 도메인을 공식 문서로 봅니다.
+# docs.aws.amazon.com 밖에도 공식 문서가 있기 때문입니다(예: Boto3 문서).
+#
+# tier1  AWS Documentation. AWS Documentation MCP 로 조회합니다.
+#        가능하면 항상 이쪽을 1순위로 씁니다.
+# tier2  AWS 가 운영하는 그 외 공식 도메인. MCP 로는 못 가져오므로 web_fetch 로 조회합니다.
+# informational
+#        AWS 소유가 아니지만 본문에서 참고용으로 링크해도 되는 곳.
+#        출처 인용(`> — 출처:` / `> — Source:`)에는 쓸 수 없습니다.
+#
+# 목록에 없는 도메인은
+#   - 출처 인용에 쓰이면 게이트 실패
+#   - 그 밖의 본문 링크로 쓰이면 게이트 경고
+#
+# reachable_checked: 아래 도메인들이 응답하는지 확인한 날짜입니다.
+reachable_checked: 2026-08-25
+
+tier1:
+  - domain: docs.aws.amazon.com
+    note: AWS 공식 문서. 사용자 안내서·API 참조·개발자 안내서. MCP 로 조회
+
+tier2:
+  - domain: aws.amazon.com
+    note: >-
+      AWS 블로그, 요금 페이지, 서비스 페이지, What's New 공지.
+      기술적 사실은 docs 쪽을 먼저 찾고, docs 에 없는 발표·요금·사례에만 씁니다.
+  - domain: boto3.amazonaws.com
+    note: >-
+      Boto3(Python SDK) 공식 문서. AWS 가 운영하며 저작권도 AWS 입니다.
+      리소스 인터페이스 지원 상태처럼 docs.aws.amazon.com 에 없는 내용의 유일한 근거입니다.
+  - domain: botocore.amazonaws.com
+    note: Botocore 공식 문서
+  - domain: awscli.amazonaws.com
+    note: AWS CLI 공식 문서
+  - domain: sdk.amazonaws.com
+    note: >-
+      AWS SDK API 레퍼런스(예: Java javadoc, /java/api/latest/).
+      루트 경로는 403 을 반환하므로 문서 경로까지 포함해 인용합니다.
+  - domain: docs.amazonaws.cn
+    note: 중국 리전(aws-cn 파티션) 문서. 리전별 차이를 다룰 때만 씁니다
+
+informational:
+  - domain: publicsuffix.org
+    note: >-
+      Public Suffix List. S3 웹사이트 엔드포인트 도메인이 여기에 등재되어 있다는
+      AWS 문서 서술을 따라가는 참고 링크입니다. 사실의 근거는 AWS 문서 쪽입니다
+  - domain: www.w3.org
+    note: W3C 표준 문서(WCAG, HTTP 관련 명세 등)
+  - domain: developer.mozilla.org
+    note: MDN. 웹 표준 동작을 설명할 때만

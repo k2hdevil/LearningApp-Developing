@@ -1,0 +1,45 @@
+/*
+ * 전역 레이아웃 CSS.
+ *
+ * 색상은 Cloudscape 디자인 토큰으로만 지정합니다. body 에 색을 직접 주지 않습니다.
+ */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * body 에 overflow-x: hidden 을 주면 sticky 포지셔닝이 무효화됩니다.
+ * 가로 스크롤이 생기더라도 여기서 숨기지 마세요. 표는
+ * .markdown-table-scroll 컨테이너가 개별적으로 처리합니다.
+ */
+
+/*
+ * 상단 내비게이션 고정.
+ *
+ * position: fixed 를 쓰면 Cloudscape AppLayout 의 headerSelector 자동 오프셋
+ * 계산이 깨집니다. 반드시 sticky 를 사용합니다.
+ */
+#top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1002;
+}
+
+/* ── 하단 면책 문구 ── */
+
+.app-footer {
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--doa-divider);
+  background: var(--doa-surface);
+}
+
+.app-footer-text {
+  margin: 0;
+  max-width: 900px;
+  color: var(--doa-text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}

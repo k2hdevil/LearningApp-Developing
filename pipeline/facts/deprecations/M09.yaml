@@ -1,0 +1,399 @@
+# 폐기·변경 레지스트리 (M09 · 모듈 9 애플리케이션 로직 처리)
+#
+# 교재(Developing on AWS 강사용 덱)에 등장하지만 현재는 종료·비권장·변경된 항목을 기록합니다.
+# 본문에서 조용히 지우지 않고 여기에 근거와 함께 남긴 뒤, 모듈 문서의
+# '교재 대비 변경 사항' 장에 delta로 표시합니다. 수강생이 공식 교재를 들고
+# 있으므로 "책에는 있는데 자료에는 없다"는 질문에 답할 수 있어야 합니다.
+#
+# state 값
+#   ended       : 서비스·버전 지원 종료. 본문에서 제거하고 대체안을 제시한다.
+#   discouraged : 동작하지만 권장되지 않음. 본문 주 경로에서 빼고 주의로만 남긴다.
+#   changed     : 동작·기본값·표기가 바뀜. 본문을 새 내용으로 교체한다.
+#   incorrect   : 교재 기술이 사실과 다름. 교정한다.
+#
+# verified_on 은 아래 항목을 공식 문서로 확인한 날짜입니다.
+
+verified_on: 2026-08-30
+
+items:
+  - id: python38-runtime
+    module: M09
+    state: ended
+    title: python3.8 런타임
+    courseware_location: '슬라이드 34 "Lambda 함수 생성(AWS CLI)" 의 --runtime python3.8'
+    detail: >-
+      교재 슬라이드 34 의 create-function 예제는 --runtime python3.8 을 사용하고 강사 노트도
+      "python3.8용 Lambda 함수를 생성" 이라고 기재합니다. python3.8 은 폐기된 런타임 표에
+      있으며 지원 종료일은 2024년 10월 14일, 함수 생성 차단은 2027년 2월 1일, 함수 업데이트
+      차단은 2027년 3월 3일입니다. 운영 체제는 Amazon Linux 2 였습니다.
+    replacement: 현재 지원 런타임 표의 Python 런타임(python3.12·python3.13·python3.14 등). 표의 예상 폐기일은 계획 목적이며 변경될 수 있으므로 실제 채택 전에 표를 다시 확인합니다
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
+  - id: dotnet-core-runtimes
+    module: M09
+    state: ended
+    title: .NET Core 런타임(dotnetcore1.0 / 2.0 / 2.1 / 3.1)
+    courseware_location: '슬라이드 10 강사 노트의 런타임 목록 ".NET Core" 와 슬라이드 48 ".zip 파일 아카이브 배포" 표의 ".NET Core" 열'
+    detail: >-
+      교재는 런타임 이름과 배포 패키지 구분에 ".NET Core" 를 씁니다. .NET Core 계열 런타임은
+      모두 지원 종료되었습니다. dotnetcore3.1 은 2023년 4월 3일, dotnetcore2.1 은
+      2022년 1월 5일, dotnetcore1.0 은 2019년 6월 27일, dotnetcore2.0 은 2019년 5월 30일에
+      각각 지원 종료되었습니다. 현재 지원되는 .NET 런타임 이름은 .NET 8(dotnet8),
+      .NET 9(dotnet9, 컨테이너 전용), .NET 10(dotnet10) 입니다.
+    replacement: .NET 8·.NET 10 관리형 런타임(dotnet8 / dotnet10). 컨테이너 전용으로는 dotnet9
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
+  - id: go1x-runtime
+    module: M09
+    state: ended
+    title: Go 1.x 런타임(go1.x)
+    courseware_location: '슬라이드 10 강사 노트의 런타임 목록 "Go"'
+    detail: >-
+      교재는 지원 런타임 목록에 Go 를 포함합니다. go1.x 관리형 런타임은 2024년 1월 8일에
+      지원 종료되었고 함수 생성 차단은 2024년 2월 8일입니다. Lambda 는 go1.x 폐기 이후에도
+      Go 언어를 계속 지원하지만 관리형 Go 런타임이 아니라 OS 전용 런타임(provided.al2023)으로
+      실행합니다.
+    replacement: OS 전용 런타임(provided.al2023)에 Go 실행 파일을 배포. 컨테이너 이미지의 경우 AWS OS 전용 기본 이미지 사용
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
+  - id: aws-toolkit-eclipse-doc
+    module: M09
+    state: ended
+    title: AWS Toolkit for Eclipse 사용 설명서 링크와 Eclipse 툴킷 권장
+    courseware_location: '슬라이드 23 강사 노트의 http://docs.aws.amazon.com/AWSToolkitEclipse/latest/GettingStartedGuide/lambda.html 와 슬라이드 54 지식 확인 3번 해설의 "Eclipse 및 Visual Studio 툴키트"'
+    detail: >-
+      교재가 인용한 AWS Toolkit for Eclipse 사용 설명서 URL 은 HTTP 404 를 반환합니다.
+      후속 경로인 /toolkit-for-eclipse/v1/user-guide/ 와 그 하위 lambda.html 은 AWS Toolkit
+      for JetBrains 사용 설명서로 리디렉션됩니다. 현재 Lambda 개발 도구 문서는 로컬 개발
+      도구로 AWS Toolkit for VS Code 를 제시하며 Eclipse 툴킷을 언급하지 않습니다. 관련해
+      AWS SDK for Java 1.x 는 2025년 12월 31일 지원 종료되었습니다.
+    replacement: AWS Toolkit for VS Code(로컬 개발·디버깅·테스트·배포), JetBrains IDE 사용자는 AWS Toolkit for JetBrains, Visual Studio 사용자는 AWS Toolkit for Visual Studio
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html
+
+  - id: csharp-package-toolkit-page
+    module: M09
+    state: ended
+    title: 'csharp-package-toolkit.html (AWS Toolkit for Visual Studio 항목)'
+    courseware_location: '슬라이드 23 강사 노트의 https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-toolkit.html'
+    detail: >-
+      교재가 인용한 이 URL 은 개별 페이지로 남아 있지 않고 Lambda 개발자 안내서
+      루트(/lambda/latest/dg/)로 리디렉션됩니다. HTTP 상태는 200 이지만 도착 지점이
+      원래 다루던 항목이 아닙니다.
+    replacement: 'Lambda 개발 도구 문서(tools-to-develop-deploy-manage.html) 또는 AWS Toolkit for Visual Studio 사용 설명서'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html
+
+  - id: boto3-resource-interface
+    module: M09
+    state: discouraged
+    title: "boto3 리소스 인터페이스 boto3.resource('dynamodb')"
+    courseware_location: '슬라이드 31 "예제: Lambda 함수(Python)" 의 dynamoDBResource = boto3.resource(''dynamodb'')'
+    detail: >-
+      교재 슬라이드 31 의 실습 코드는 DynamoDB 액세스에 boto3 리소스 인터페이스를 씁니다.
+      Boto3 공식 문서는 AWS Python SDK 팀이 resources 인터페이스에 새 기능을 추가할 계획이
+      없고, 기존 인터페이스는 boto3 수명 주기 동안 계속 동작하며, 새로운 서비스 기능은 client
+      인터페이스로 이용할 수 있다고 명시합니다. 또 리소스 인스턴스는 스레드 안전하지 않아
+      스레드·프로세스마다 새로 만들어야 합니다.
+    replacement: "boto3.client('dynamodb'). 리소스 인터페이스 코드는 계속 동작하므로 실습 진행에는 문제가 없습니다"
+    evidence: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html
+
+  - id: dlq-as-best-practice
+    module: M09
+    state: discouraged
+    title: 'DLQ(Dead Letter Queue) 를 비동기 호출 모범 사례로 제시'
+    courseware_location: '슬라이드 12 강사 노트의 "비동기식 호출에 대한 모범 사례는 DLQ(Dead Letter Queue)를 생성 및 사용하여 메시지 오류를 더 효과적으로 처리하는 것입니다"'
+    detail: >-
+      현재 문서는 DLQ 를 온-실패 대상(on-failure destination)의 대안으로 제시하고, 온-실패
+      대상이 지원 대상이 더 많고 함수 응답 세부 정보를 호출 레코드에 포함한다고 기술합니다.
+      DLQ 는 함수 수준에서만 추가·제거할 수 있고 응답 세부 정보 없이 이벤트 내용만 보냅니다.
+      온-실패 대상은 함수·버전·별칭 단위로 구성할 수 있습니다. DLQ 자체는 여전히 지원되며
+      Amazon SQS 표준 대기열 또는 Amazon SNS 표준 주제를 쓸 수 있습니다(FIFO 미지원).
+    replacement: 온-실패 대상(on-failure destination). 대상은 SQS 표준 대기열, SNS 표준 주제, S3 버킷(실패 시에만), Lambda 함수, EventBridge 이벤트 버스
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html
+
+  - id: runtime-bundled-sdk-no-bundling
+    module: M09
+    state: discouraged
+    title: '"Python·Node.js 런타임에 SDK 가 내장되어 있으므로 번들링할 필요가 없다"'
+    courseware_location: '슬라이드 24 강사 노트의 "Python 및 Node.js용 런타임에는 SDK가 내장되어 있으므로 이러한 SDK를 코드와 번들링할 필요가 없습니다"'
+    detail: >-
+      Node.js·Python·Ruby 런타임에 AWS SDK 버전이 포함된다는 사실 자체는 맞지만, 현재 문서는
+      종속성을 완전히 제어하고 자동 런타임 업데이트 중 하위 호환성을 극대화하기 위해 코드가
+      사용하는 SDK 모듈과 그 종속성을 배포 패키지나 Lambda 레이어에 항상 포함하도록
+      권장합니다. 런타임 내장 SDK 는 배포에 추가 패키지를 포함할 수 없을 때(Lambda 콘솔 코드
+      편집기, CloudFormation 인라인 코드)에만 쓰라고 기술합니다. 또 재귀 루프 감지에는 최소
+      SDK 버전이 필요해, 런타임 내장 버전이 그보다 낮으면 감지가 동작하지 않습니다.
+    replacement: 배포 패키지 또는 Lambda 레이어에 필요한 SDK 모듈을 명시적으로 포함
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
+  - id: quota-async-payload-256kb
+    module: M09
+    state: changed
+    title: 비동기식 호출 페이로드 256KB
+    courseware_location: '슬라이드 50 "Lambda 함수 한도" 표(2021년 9월 현재) 의 "호출 페이로드 — 동기식: 6MB, 비동기식: 256KB"'
+    detail: >-
+      현재 할당량 표의 호출 페이로드는 동기식 요청·응답 각각 6MB, 스트리밍 응답 200MB,
+      비동기식 1MB 이며 요청 라인과 헤더 값 합계가 1MB 입니다. Invoke API 문서도 동기 6MB,
+      비동기 1MB 로 기술합니다. 동기식 6MB 는 교재와 같습니다.
+    replacement: 비동기식 호출 페이로드 1MB
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+
+  - id: quota-tmp-10gb-fixed
+    module: M09
+    state: changed
+    title: '/tmp 디렉터리 스토리지 10GB (고정값 표기)'
+    courseware_location: '슬라이드 50 "Lambda 함수 한도" 표의 "/tmp 디렉터리 스토리지 — 10 GB"'
+    detail: >-
+      교재 표는 10GB 를 고정값처럼 제시합니다. 현재 문서는 /tmp 임시 스토리지를 512MB~10,240MB
+      범위에서 1MB 단위로 구성하는 설정으로 기술하며, 512MB 까지는 추가 비용이 없고 그 이상은
+      GB-초로 과금됩니다. SnapStart 는 512MB 를 초과하는 임시 스토리지를 지원하지 않습니다.
+    replacement: 512MB~10,240MB(1MB 단위) 구성. update-function-configuration --ephemeral-storage 또는 콘솔 일반 구성에서 설정
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/configuration-ephemeral-storage.html
+
+  - id: quota-console-inline-3mb
+    module: M09
+    state: changed
+    title: '배포 패키지 "콘솔에서 인라인 편집: 3MB"'
+    courseware_location: '슬라이드 50 "Lambda 함수 한도" 표의 "배포 패키지 — Zip: 50MB, 비압축: 250MB, 콘솔에서 인라인 편집: 3MB; 컨테이너 이미지: 10GB"'
+    detail: >-
+      현재 할당량 표의 배포 패키지 항목은 Lambda API·SDK 업로드 시 50MB(압축), 콘솔 업로드 시
+      50MB, 레이어·사용자 지정 런타임을 포함한 압축 해제 250MB 입니다. "콘솔에서 인라인 편집
+      3MB" 항목은 표에 없습니다. 콘솔 코드 편집기 사용 조건은 인터프리터 언어
+      런타임(Python·Node.js·Ruby)과 배포 패키지가 압축 해제 기준 50MB 미만이라는 것이고,
+      컨테이너 이미지 함수의 코드는 콘솔에서 직접 편집할 수 없습니다. Zip 50MB·비압축 250MB·
+      컨테이너 10GB 는 교재와 같습니다.
+    replacement: 콘솔 코드 편집기 사용 조건은 인터프리터 언어 런타임 + 압축 해제 50MB 미만
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+
+  - id: burst-concurrency-name
+    module: M09
+    state: changed
+    title: '"버스트 동시성" 이라는 항목 이름'
+    courseware_location: '슬라이드 50 "Lambda 함수 한도" 표의 "버스트 동시성 — 함수당 10초당 최대 1,000회 동시 실행" 과 강사 노트의 버스트 설명'
+    detail: >-
+      수치(함수·리전당 10초당 실행 환경 1,000개)는 현재와 같습니다. 이름이 바뀌었습니다.
+      현재 문서는 이를 동시성 조정 속도(concurrency scaling rate)라 부르고 할당량 표에서는
+      동시성 조정 한도(concurrency scaling limit)로 표기하며, 10초당 실행 환경 1,000개 또는
+      10초당 초당 요청 10,000건으로 기술합니다. 쓰지 않은 조정 속도는 누적되지 않습니다.
+    replacement: 동시성 조정 속도(concurrency scaling rate) / 동시성 조정 한도(concurrency scaling limit)
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/scaling-behavior.html
+
+  - id: snapstart-java-only
+    module: M09
+    state: changed
+    title: 'SnapStart 지원 런타임 "Java 11 및 Java 17 관리형 런타임"'
+    courseware_location: '슬라이드 17 "콜드 스타트 최소화하기 1/2" 본문의 "Java 11 및 Java 17 관리형 런타임에 사용 가능" 과 강사 노트의 "SnapStart는 Java 11 및 Java 17 관리형 런타임을 지원합니다"'
+    detail: >-
+      현재 SnapStart 지원 런타임은 Java 11 이상, Python 3.12 이상, .NET 8 이상입니다. 그 밖의
+      관리형 런타임(예: nodejs24.x, ruby4.0), OS 전용 런타임, 컨테이너 이미지는 지원하지
+      않습니다. SnapStart 는 프로비저닝된 동시성, Amazon EFS, Amazon S3 Files, 512MB 를 초과하는
+      임시 스토리지를 지원하지 않고 게시된 버전과 버전을 가리키는 별칭에만 쓸 수 있습니다.
+    replacement: Java 11 이상 / Python 3.12 이상 / .NET 8 이상
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html
+
+  - id: snapstart-no-additional-cost
+    module: M09
+    state: changed
+    title: 'SnapStart "추가 비용 없이"'
+    courseware_location: '슬라이드 17 강사 노트의 "Java용 SnapStart는 일반적으로 함수 코드를 변경하지 않고도 추가 비용 없이 ... 시작 성능을 최대 10배까지 향상시킬 수 있습니다"'
+    detail: >-
+      추가 비용이 없는 것은 Java 관리형 런타임에 한정됩니다. 그 밖에는 SnapStart 를 켜고 게시한
+      함수 버전마다 스냅샷 캐싱 요금(최소 3시간 과금)과 함수 인스턴스를 스냅샷에서 복원할 때마다
+      복원 요금이 발생하며, 두 요금은 함수에 할당한 메모리 양에 따라 달라집니다. 교재가 Java 만
+      다루던 시점에는 이 서술이 맞았지만 지원 런타임이 Python·.NET 으로 확대되면서 조건부가
+      되었습니다.
+    replacement: 'Java 관리형 런타임은 추가 비용 없음. Python·.NET 은 캐싱 요금(최소 3시간)과 복원 요금이 발생'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html
+
+  - id: snapstart-10x
+    module: M09
+    state: changed
+    title: 'SnapStart "시작 성능을 최대 10배까지 향상"'
+    courseware_location: '슬라이드 17 본문의 "시작 성능을 최대 10배까지 향상"'
+    detail: >-
+      현재 SnapStart 문서는 성능 개선을 배수로 표현하지 않고 "최대 1초 미만(as low as
+      sub-second) 시작 성능" 으로 기술하며, 초기화 지연을 몇 초에서 최적의 경우 1초 미만까지
+      줄이는 것을 목적으로 한다고 설명합니다. 또 SnapStart 는 대규모 호출에서 가장 효과적이고
+      호출 빈도가 낮은 함수는 같은 개선을 보지 못할 수 있다고 명시합니다. 10배라는 수치가
+      틀렸다고 단정할 근거는 찾지 못했고, 현재 문서에 그 표현이 없다는 것만 확인했습니다.
+    replacement: '"최대 1초 미만(as low as sub-second) 시작 성능"'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html
+
+  - id: async-destinations-four
+    module: M09
+    state: changed
+    title: 비동기 호출 레코드 대상 네 가지
+    courseware_location: '슬라이드 12 강사 노트의 "AWS Lambda / Amazon SNS / Amazon SQS / Amazon EventBridge"'
+    detail: >-
+      현재 문서는 비동기 호출 레코드 대상을 다섯 가지로 기술합니다. Amazon SQS 표준 대기열,
+      Amazon SNS 표준 주제, Amazon S3 버킷(실패 시에만), AWS Lambda 함수, Amazon EventBridge
+      이벤트 버스입니다. 대상별로 실행 역할에 sqs:SendMessage, sns:Publish,
+      s3:PutObject·s3:ListBucket, lambda:InvokeFunction, events:PutEvents 권한이 필요합니다.
+    replacement: 위 네 가지 + Amazon S3 버킷(실패 시에만)
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html
+
+  - id: runtime-list-dotnet-core
+    module: M09
+    state: changed
+    title: '런타임 목록 "Node.js, Java, Python, .NET Core, Go, Ruby"'
+    courseware_location: '슬라이드 10 강사 노트의 "Lambda는 언어별 환경(Node.js, Java, Python, .NET Core, Go, Ruby)에 대한 런타임을 지원하며, 직접 사용자 지정 런타임을 생성할 수도 있습니다" 와 슬라이드 10 도형의 "런타임(Java, .Net, Node.js, Python…)"'
+    detail: >-
+      현재 지원 런타임 표는 Node.js(22·24·26 프리뷰), Python(3.10~3.15 프리뷰), Java(8·11·17·21·25),
+      .NET(8·9 컨테이너 전용·10), Ruby(3.3·3.4·4.0), OS 전용 런타임(provided.al2023)으로
+      구성됩니다. ".NET Core" 계열과 go1.x 는 지원 종료되었고 Go·Rust 는 OS 전용 런타임으로
+      실행합니다. Fargate·Lambda 결정 안내서는 Lambda 가 네이티브로 지원하는 언어를
+      Node.js·Python·Java·Go·Ruby·C#·PowerShell 로 기술합니다. 사용자 지정 런타임 생성은
+      현재도 가능합니다.
+    replacement: 'Node.js / Python / Java / .NET / Ruby 관리형 런타임 + OS 전용 런타임(provided.al2023)으로 실행하는 Go·Rust 등'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
+  - id: code-stored-in-s3
+    module: M09
+    state: changed
+    title: '"AWS Lambda 는 Amazon S3 에 코드를 저장하고 저장된 데이터를 암호화합니다"'
+    courseware_location: '슬라이드 14 "AWS Lambda 런타임 수명 주기" 강사 노트의 코드 항목'
+    detail: >-
+      저장 중 암호화 부분은 현재도 맞습니다. Lambda 는 환경 변수, 업로드한 파일(배포 패키지와
+      레이어 아카이브 포함), 이벤트 소스 매핑 필터 조건 객체, durable execution 데이터에 대해
+      항상 저장 중 암호화를 제공합니다. 다만 저장 위치 서술이 달라졌습니다. 현재 문서는
+      Lambda 관리형 스토리지(계정·리전당 300GB, 압축 해제 기준)를 기본으로 하고 사용자 S3
+      버킷을 쓰는 자체 관리형 S3 코드 스토리지를 선택 옵션으로 제시합니다. 자체 관리형 S3
+      코드 스토리지를 쓰면 Lambda 가 소스 코드 사본을 저장하지 않고 저장 중 암호화는 S3
+      버킷 구성으로 관리됩니다.
+    replacement: 'Lambda 관리형 스토리지(기본, 300GB) 또는 자체 관리형 S3 코드 스토리지. 두 경우 모두 저장 중 암호화 제공'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/security-encryption-at-rest.html
+
+  - id: same-account-no-permission
+    module: M09
+    state: incorrect
+    title: '"같은 AWS 계정이면 명시적인 권한을 부여할 필요가 없습니다"'
+    courseware_location: '슬라이드 20 "푸시 또는 직접 호출 모델" 강사 노트의 "참고: 사용자 정의 애플리케이션과 이 애플리케이션이 호출하는 Lambda 함수가 같은 AWS 계정에 속한 경우 명시적인 권한을 부여할 필요가 없습니다"'
+    detail: >-
+      현재 문서는 사용자가 Lambda 리소스에 액세스하려 하면 사용자의 자격 증명 기반 정책과
+      리소스의 리소스 기반 정책을 모두 고려하고, Amazon S3 같은 AWS 서비스가 함수를 호출하면
+      리소스 기반 정책만 고려한다고 기술합니다. 즉 같은 계정의 IAM 주체가 함수를 호출하려면
+      자격 증명 기반 정책에 lambda:InvokeFunction 권한이 있어야 합니다. 호출 문제 해결 문서는
+      "사용자 또는 수임하는 역할에 함수를 호출할 권한이 있어야 하며, 이 요구 사항은 함수를
+      호출하는 Lambda 함수와 그 밖의 컴퓨팅 리소스에도 적용된다" 고 명시합니다. 같은 계정이면
+      리소스 기반 정책을 별도로 추가하지 않아도 되는 경우가 있다는 정도는 맞지만, 어떤 권한도
+      필요 없다는 서술은 사실과 다릅니다.
+    replacement: '같은 계정의 IAM 주체도 lambda:InvokeFunction 권한이 필요하다(AWSLambdaRole 관리형 정책 또는 사용자 지정 정책). AWS 서비스 호출에는 리소스 기반 정책이 필요하다'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html
+
+  - id: context-remaining-time-defaults
+    module: M09
+    state: incorrect
+    title: '컨텍스트 "남은 시간" 의 기본값을 언어별로 다르게 기재'
+    courseware_location: '슬라이드 27 "컨텍스트" 강사 노트 — Python get_remaining_time_in_millis "(기본값 = 3초)", Java getRemainingTimeInMillis() "(기본값 = 15분)", .NET RemainingTime "(기본값 = 15분)"'
+    detail: >-
+      같은 항목의 기본값을 언어별로 다르게 적은 교재 내부 불일치입니다. 세 언어의 컨텍스트
+      문서는 모두 "시간 초과 전에 남은 밀리초 수를 반환한다" 고만 기술하고 기본값을 명시하지
+      않습니다. 이 값은 함수에 구성된 시간 제한을 기준으로 계산되므로 언어별 기본값이 따로
+      있는 것이 아닙니다. 함수 시간 제한 자체의 기본값은 3초이고 최대는 900초(15분)이므로,
+      Python 의 3초는 함수 시간 제한 기본값을, Java·.NET 의 15분은 최대값을 잘못 옮긴 것으로
+      보입니다.
+    replacement: '세 언어 모두 "함수 시간 초과 전 남은 시간(밀리초)". 기준은 함수에 구성된 시간 제한이며 기본 3초, 최대 900초'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/python-context.html
+
+  - id: en-dash-role-flag
+    module: M09
+    state: incorrect
+    title: 'CLI 플래그 -–role (하이픈 + en dash)'
+    courseware_location: '슬라이드 34 "Lambda 함수 생성(AWS CLI)" 코드의 -–role arn:aws:iam::563926481938:role/lambdaPollyRole'
+    detail: >-
+      교재 코드의 --role 플래그가 하이픈 두 개가 아니라 하이픈 하나 + en dash(–) 로 조판되어
+      있어 그대로 붙여 쓰면 셸이 인식하지 못합니다. 같은 슬라이드의 다른 플래그는 모두
+      하이픈 두 개입니다. 교재 자체의 조판 오류이므로 AWS 문서 근거 없이 표기만 교정했습니다.
+      같은 슬라이드의 출력 JSON 에도 '"State": "Active", -n:dictate-function",' 처럼 잘린
+      조각이 섞여 있습니다.
+    replacement: '--role'
+    evidence: null
+
+  - id: duplicate-slide-title-1of2
+    module: M09
+    state: incorrect
+    title: '슬라이드 16 과 17 의 제목이 둘 다 "콜드 스타트 최소화하기 1/2"'
+    courseware_location: '슬라이드 16 과 슬라이드 17 의 제목'
+    detail: >-
+      두 슬라이드가 같은 "1/2" 제목을 갖고 있습니다. 슬라이드 16 은 예약 트리거와 프로비저닝된
+      동시성, 슬라이드 17 은 Lambda SnapStart 를 다루므로 슬라이드 17 이 "2/2" 여야 합니다.
+      교재 자체의 표기 오류이므로 AWS 문서 검증 대상이 아니며 이 문서에서는 두 절을 각각
+      1/2·2/2 로 구분했습니다.
+    replacement: '슬라이드 17 은 "콜드 스타트 최소화하기 2/2"'
+    evidence: null
+
+  - id: outdated-doc-urls
+    module: M09
+    state: changed
+    title: '교재가 인용한 옛 문서 경로 (limits.html / gettingstarted-limits.html / intro-permission-model.html / dg 의 API 참조 경로)'
+    courseware_location: '슬라이드 41 강사 노트의 limits.html, 슬라이드 50 강사 노트의 gettingstarted-limits.html, 슬라이드 20 강사 노트의 intro-permission-model.html 과 dg/API_AddPermission.html, 슬라이드 21 강사 노트의 dg/API_CreateEventSourceMapping.html'
+    detail: >-
+      HTTP 응답으로 확인한 결과 이 URL 들은 모두 리디렉션으로 살아 있습니다.
+      /lambda/latest/dg/limits.html → /lambda/latest/dg/gettingstarted-limits.html,
+      /lambda/latest/dg/intro-permission-model.html → /lambda/latest/dg/lambda-permissions.html,
+      /lambda/latest/dg/API_AddPermission.html → /lambda/latest/api/API_AddPermission.html,
+      /lambda/latest/dg/API_CreateEventSourceMapping.html →
+      /lambda/latest/api/API_CreateEventSourceMapping.html 로 각각 이동합니다. API 참조가
+      개발자 안내서(dg)에서 별도 문서(api)로 분리되었으므로 새 경로를 직접 인용하는 것이
+      정확합니다.
+    replacement: '할당량은 /lambda/latest/dg/gettingstarted-limits.html, 권한은 /lambda/latest/dg/lambda-permissions.html, API 참조는 /lambda/latest/api/ 경로'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+
+  - id: concurrency-limit-1000-fixed
+    module: M09
+    state: changed
+    title: '"동시 실행 한도 1,000개" 를 고정 한도로 제시'
+    courseware_location: '슬라이드 45 "오류 처리" 본문의 "요청이 너무 많음 (동시 실행 한도 1,000개)" 과 강사 노트의 "계정의 동시 실행 한도 1,000개로 인한 오류를 방지하고"'
+    detail: >-
+      1,000 이라는 값은 현재도 기본 할당량으로 유효합니다. 다만 현재 문서는 이를 증액 요청할 수
+      있는(수만 단위까지) 기본 할당량으로 기술하고, 새 AWS 계정은 Lambda 함수·MicroVM 에 대해
+      동시성·메모리 할당량이 축소된 상태로 시작해 사용량에 따라 자동으로 상향된다고 명시합니다.
+      또 동시성 제어에는 예약된 동시성과 프로비저닝된 동시성 두 가지가 있고, 예약된 동시성은
+      최대치와 최소치를 함께 설정하며 구성 자체에는 요금이 없습니다.
+    replacement: '기본 할당량 1,000(리전당, 증액 가능). 신규 계정은 더 낮은 값에서 시작'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+
+  - id: recursive-code-manual-only
+    module: M09
+    state: changed
+    title: '재귀 코드 대응을 "동시 런타임 한도를 0으로 설정" 으로만 안내'
+    courseware_location: '슬라이드 25 "Lambda 함수: 핸들러" 강사 노트의 "실수로 재귀 코드를 사용하게 된 경우 코드를 업데이트하는 동안 함수 동시 런타임 한도를 즉시 0으로 설정하여 해당 함수에 대한 모든 호출을 제한하십시오"'
+    detail: >-
+      현재 Lambda 는 특정 유형의 재귀 루프를 자동으로 감지해 중지하는 기능을 기본 제공합니다.
+      X-Ray 트레이싱 헤더로 요청 체인을 추적해 같은 체인에서 함수가 약 16회 호출되면 다음
+      호출을 중지하고 Health Dashboard·이메일로 알립니다. 활성 트레이싱을 켜지 않아도
+      동작하고 무료입니다. 다만 감지 대상은 함수 자신, Amazon SQS, Amazon S3, Amazon SNS 사이의
+      루프와 Lambda 함수만으로 구성된 루프이며 Amazon DynamoDB 처럼 다른 서비스가 포함된 루프는
+      감지하지 못하므로 교재의 수동 조치(예약된 동시성 0)도 여전히 유효한 대응입니다.
+    replacement: '재귀 루프 감지가 기본 동작. 감지되지 않는 조합에서는 예약된 동시성을 0으로 설정하는 수동 조치를 병행'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html
+
+  - id: cli-payload-binary-format
+    module: M09
+    state: changed
+    title: 'invoke --payload 에 JSON 문자열을 그대로 전달'
+    courseware_location: '슬라이드 44 "예제: 함수 호출" 의 aws lambda invoke --function-name dictate-function --payload ''{"UserId": "newbie","NoteId": "2","VoiceId": "Joey"}'' response.txt'
+    detail: >-
+      AWS CLI 버전 2 에서는 --payload 에 JSON 문자열을 그대로 넘길 때
+      --cli-binary-format raw-in-base64-out 옵션이 필요합니다. 기본값으로 만들려면
+      aws configure set cli-binary-format raw-in-base64-out 을 실행합니다. Invoke API 문서는
+      --payload '{ "key": "value" }' 처럼 JSON 을 직접 넣거나 --payload file://payload.json
+      처럼 파일 경로를 줄 수 있다고 기술합니다.
+    replacement: 'aws lambda invoke ... --cli-binary-format raw-in-base64-out --payload ''{...}'' response.json'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html
+
+  - id: event-source-list-alexa-cloudtrail
+    module: M09
+    state: changed
+    title: '이벤트 소스 목록의 Amazon Alexa 와 AWS CloudTrail'
+    courseware_location: '슬라이드 9 "AWS Lambda를 간접적으로 호출하는 이벤트 소스" 의 엔드포인트 열 "Amazon Alexa" 와 개발 및 관리 도구 열 "AWS CloudTrail", "Amazon CloudWatch"'
+    detail: >-
+      현재 "Lambda 함수를 호출할 수 있는 서비스" 표(28개 항목)에는 Amazon Alexa 와
+      AWS CloudTrail 이 없습니다. 표에 없다는 것이 호출이 불가능하다는 뜻은 아니므로
+      단정하지 않습니다. 교재의 "Amazon CloudWatch" 는 표에서 Amazon CloudWatch Logs 로
+      구체화되었습니다. 교재는 목록에 "다음을 포함하지만 이에 국한되지 않습니다" 라는 단서를
+      붙였으므로 목록 자체가 틀린 것은 아닙니다. 교재 이후 표에 추가된 항목은 Amazon DocumentDB,
+      Amazon MQ, Amazon MSK, 셀프 매니지드 Apache Kafka, Application Load Balancer,
+      Amazon EventBridge Scheduler, Amazon Data Firehose, Amazon Lex, Amazon S3 Batch,
+      Amazon VPC Lattice, Amazon Connect Customer, AWS Config, AWS CodeCommit 입니다.
+    replacement: '현재 표의 28개 항목. AddPermission 의 EventSourceToken 파라미터는 여전히 "Alexa Smart Home 함수용" 으로 문서화되어 있습니다'
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html
