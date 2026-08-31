@@ -1,0 +1,393 @@
+# 폐기·변경 레지스트리 (M10 · 모듈 10 API 관리)
+#
+# 교재(Developing on AWS 강사용 덱)에 등장하지만 현재는 종료·비권장·변경된 항목을 기록합니다.
+# 본문에서 조용히 지우지 않고 여기에 근거와 함께 남긴 뒤, 모듈 문서의
+# '교재 대비 변경 사항' 장에 delta로 표시합니다. 수강생이 공식 교재를 들고
+# 있으므로 "책에는 있는데 자료에는 없다"는 질문에 답할 수 있어야 합니다.
+#
+# state 값
+#   ended       : 서비스·버전 지원 종료. 본문에서 제거하고 대체안을 제시한다.
+#   discouraged : 동작하지만 권장되지 않음. 본문 주 경로에서 빼고 주의로만 남긴다.
+#   changed     : 동작·기본값·표기가 바뀜. 본문을 새 내용으로 교체한다.
+#   incorrect   : 교재 기술이 사실과 다름. 교정한다.
+#
+# verified_on 은 아래 항목을 공식 문서로 확인한 날짜입니다.
+
+verified_on: 2026-08-30
+
+items:
+  - id: endpoint-type-default-regional
+    module: M10
+    state: incorrect
+    title: 엔드포인트 유형에서 리전 API 엔드포인트가 기본적으로 선택된다
+    courseware_location: '슬라이드 13 "REST API의 핵심 구성 요소" 강사 노트의 엔드포인트 유형 설명'
+    detail: >-
+      교재는 "엔드포인트 유형에서는 리전API 엔드포인트가 기본적으로 선택됩니다"라고
+      기재합니다. 현재 엔드포인트 유형 문서는 엣지 최적화 API 엔드포인트를 설명하면서
+      "This is the default endpoint type for API Gateway REST APIs"라고 명시하고,
+      개념 문서도 엣지 최적화 엔드포인트를 "API Gateway API의 기본 호스트 이름"으로
+      정의합니다. 세 유형(엣지 최적화·리전·프라이빗)의 이름과 각 특성에 대한 교재 서술은
+      문서와 일치합니다.
+    replacement: REST API의 기본 엔드포인트 유형은 엣지 최적화. 같은 리전 클라이언트가 대부분이면 리전을 명시적으로 선택
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html
+
+  - id: method-authorization-two-values
+    module: M10
+    state: incorrect
+    title: '메서드 권한 부여 기본값은 none 또는 AWS_IAM'
+    courseware_location: '슬라이드 13 "REST API의 핵심 구성 요소" 본문 주석과 강사 노트의 권한 부여 유효값 목록'
+    detail: >-
+      교재는 "권한 부여를 통해 메서드 액세스를 제어합니다. 기본값은 none 또는
+      AWS_IAM으로 설정됩니다"라고 적고 유효값을 NONE 과 AWS_IAM 두 개로만 나열합니다.
+      PutMethod API 참조에서 authorizationType 은 필수 파라미터이고 유효값은
+      개방 액세스용 NONE, AWS IAM 권한용 AWS_IAM, 사용자 지정 권한 부여자용 CUSTOM,
+      Cognito 사용자 풀용 COGNITO_USER_POOLS 네 개입니다. 두 값 중 하나가 '기본값'이라는
+      서술도 문서에 없습니다. 교재 자체도 슬라이드 10 노트에서 Lambda 권한 부여자를,
+      슬라이드 22 YAML 에서 Cognito 사용자 풀(PollyNotesPool)을 쓰고 있어 목록과 어긋납니다.
+    replacement: 'NONE · AWS_IAM · CUSTOM(Lambda 권한 부여자) · COGNITO_USER_POOLS. authorizationType 은 필수'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/api/API_PutMethod.html
+
+  - id: request-validator-string-booleans
+    module: M10
+    state: incorrect
+    title: 'validateRequestBody / validateRequestParameters 를 문자열로 표기'
+    courseware_location: '슬라이드 18 "요청 검증(Validation)" 의 구성 JSON'
+    detail: >-
+      교재 구성 JSON 은 "validateRequestBody": "false", "validateRequestParameters":
+      "true" 로 두 값을 문자열로 적습니다. RequestValidator API 참조에서 두 필드는 모두
+      Boolean 플래그입니다. 따옴표로 감싼 문자열 "false" 는 JSON 에서 참으로 취급될 수
+      있는 값이므로 의도와 다르게 동작할 위험이 있습니다.
+    replacement: '{"name": "params-only", "validateRequestBody": false, "validateRequestParameters": true}'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/api/API_RequestValidator.html
+
+  - id: canary-settings-string-values
+    module: M10
+    state: incorrect
+    title: 'canarySettings·methodSettings 값을 문자열로 표기하고 JSON 이 닫히지 않음'
+    courseware_location: '슬라이드 34 "Canary 릴리스 단계(1/3)" 강사 노트의 코드 예'
+    detail: >-
+      교재 코드 예는 "percentTraffic" : "10", "useStageCache" : "False“,
+      "metricsEnabled" : "true" 로 세 값을 모두 문자열로 적고, useStageCache 값의 닫는
+      따옴표가 여는 큰따옴표(U+201C)로 깨져 있으며 마지막 줄에 닫는 중괄호가 없습니다.
+      CanarySettings 에서 percentTraffic 은 Double(0~100), useStageCache 는 Boolean 이고
+      MethodSetting 의 metricsEnabled 도 Boolean 입니다.
+    replacement: '"percentTraffic": 10, "useStageCache": false, "metricsEnabled": true'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/api/API_CanarySettings.html
+
+  - id: canary-on-new-stage
+    module: M10
+    state: incorrect
+    title: Canary 를 새 스테이지에 배포하고 새 스테이지에서 활성화한다
+    courseware_location: '슬라이드 34~36 "Canary 릴리스 단계" 본문과 다이어그램("안정적 스테이지" / "새 canary 스테이지")'
+    detail: >-
+      교재 슬라이드 34 는 "새 스테이지에 배포합니다", "새 스테이지에서 Canary를
+      활성화합니다"라고 적고 슬라이드 35 다이어그램은 "안정적 스테이지"와 "새 canary
+      스테이지"를 별개 스테이지로 그립니다. 카나리 릴리스 배포 문서에서 카나리는 별도
+      스테이지가 아니라 프로덕션 릴리스가 배포된 같은 스테이지에 붙는 canarySettings
+      입니다. 스테이지는 최초 배포와, 카나리는 이후 배포와 연결되고 처음에는 둘이 같은
+      API 버전을 가리킵니다. 카나리를 활성화하면 카나리를 비활성화하고 canarySettings 를
+      제거할 때까지 그 스테이지를 다른 비카나리 배포에 연결할 수 없습니다. 같은 교재
+      슬라이드 32 강사 노트가 "동일한 스테이지에서"라고 적고 있어 교재 안에서도 어긋납니다.
+    replacement: 같은 스테이지에 canarySettings 를 추가하고 percentTraffic 으로 비율을 정한 뒤 그 스테이지에 재배포
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/canary-release.html
+
+  - id: http-api-mock-integration
+    module: M10
+    state: incorrect
+    title: HTTP API 가 Mock 통합을 지원한다
+    courseware_location: '슬라이드 14 "통합 유형" 강사 참고 사항의 "HTTP API는 다음을 지원합니다" 목록'
+    detail: >-
+      교재는 HTTP API 가 지원하는 통합으로 "Lambda 프록시 / AWS 서비스 / VPC에 있는
+      프라이빗 리소스 / Mock 및 HTTP 프록시 통합"을 나열합니다. REST·HTTP 비교 문서의
+      통합 표는 Mock 통합을 REST API 만 Yes, HTTP API 는 No 로 표시합니다. 같은 표에서
+      퍼블릭 HTTP 엔드포인트·AWS 서비스·Lambda 함수·NLB·ALB 프라이빗 통합은 둘 다
+      지원하므로 교재 목록의 나머지 항목은 맞습니다.
+    replacement: 'HTTP API 통합은 Lambda 프록시 · AWS 서비스 · HTTP 프록시 · 프라이빗(NLB·ALB·Cloud Map). Mock 통합은 REST API 전용'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html
+
+  - id: mapping-template-elem-undefined
+    module: M10
+    state: incorrect
+    title: '매핑 템플릿에서 $inputRoot 를 선언하고 쓰지 않으며 $elem 을 반복 지시자 없이 참조'
+    courseware_location: '슬라이드 19~20 "매핑 템플릿(1/2)·(2/2)" 의 매핑 템플릿 코드'
+    detail: >-
+      교재 두 템플릿은 #set 으로 $inputRoot 를 선언한 뒤 쓰지 않고, $elem 을 #foreach
+      같은 반복 지시자 없이 참조합니다. 공식 매핑 템플릿 예제에서 컬렉션 순회는 항상
+      #foreach 로 시작하고 #end 로 닫으며 $foreach.hasNext 로 구분자를 넣습니다.
+      정의되지 않은 참조는 값이 채워지지 않으므로 교재 템플릿을 그대로 붙여 넣으면
+      기대한 출력이 나오지 않습니다. 다만 AWS 문서의 models-mappings 예제에도 #foreach
+      없이 $elem 을 쓰는 표기가 있어, 문서가 이 패턴을 명시적으로 오류라고 서술한 문장은
+      찾지 못했습니다.
+    replacement: '#set($inputRoot = $input.path(''$'')) 뒤에 #foreach($elem in $inputRoot.Notes) ... #end 로 순회하고 $inputRoot 를 실제로 참조'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-variable-examples.html
+
+  - id: stage-variable-lambda-alias-syntax
+    module: M10
+    state: incorrect
+    title: 'list_function:{$stageVariables.environment} 표기'
+    courseware_location: '슬라이드 31 "스테이지 변수 사용" 강사 노트'
+    detail: >-
+      교재는 다이어그램의 /notes 가 "list_function:{$stageVariables.environment}" 를
+      호출한다고 적습니다. 스테이지 변수 참조 문서의 Lambda 버전·별칭 치환 표기는
+      function:<function_name>:${stageVariables.<version_variable_name>} 이므로
+      중괄호가 달러 기호 뒤에 와야 합니다. 이 예제에서는
+      list_function:${stageVariables.environment} 가 맞습니다. 스테이지 변수로 Lambda
+      함수를 참조하려면 함수가 API 와 같은 계정에 있어야 하며 교차 계정 함수는 지원되지
+      않습니다.
+    replacement: 'list_function:${stageVariables.environment}'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html
+
+  - id: slide13-resource-list-mismatch
+    module: M10
+    state: incorrect
+    title: '강사 노트의 리소스 목록에 /notes/list 가 있으나 도형에는 없다'
+    courseware_location: '슬라이드 13 "REST API의 핵심 구성 요소" 강사 노트 vs 같은 슬라이드 도형·슬라이드 9 메서드 목록'
+    detail: >-
+      슬라이드 13 강사 노트는 "이 예에서 API 리소스는 /notes, /notes/search와
+      /notes/list로 나열됩니다"라고 적지만 같은 슬라이드 도형에는 리소스 1(/notes)과
+      리소스 2(/notes/search)만 있습니다. 슬라이드 9 의 메서드 목록(/notes GET,
+      /notes POST, /notes/search GET, /notes/(id) DELETE, /notes/(id) POST)에도
+      /notes/list 는 없습니다. 교재 내부의 자기 모순이며 어느 쪽이 이 애플리케이션의
+      올바른 설계인지는 AWS 문서로 판별할 수 없습니다.
+    replacement: '도형·슬라이드 9 와 일치하는 /notes 와 /notes/search 두 리소스로 통일'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html
+
+  - id: slide14-mock-passthrough-cell
+    module: M10
+    state: incorrect
+    title: '슬라이드 14 표 Mock 행의 패스스루 칸에 MOCK 이 들어 있다'
+    courseware_location: '슬라이드 14 "통합 유형" 표의 Mock 행'
+    detail: >-
+      프록시 행과 비프록시 행은 "패스스루" 칸에 각각 "패스스루 동작을 수정하는 옵션은
+      없습니다", "패스스루 동작을 선택할 수 있습니다"라는 서술이 들어 있습니다. Mock 행은
+      같은 칸과 "통합 유형" 칸에 모두 MOCK 을 넣어 열 의미가 어긋납니다. 교재 자체의
+      표기 오류이며 AWS 문서로 검증할 성질의 사실이 아닙니다.
+    replacement: 'Mock 행 패스스루 칸은 "해당 없음(백엔드를 호출하지 않음)", 통합 유형 칸은 MOCK'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/integration-passthrough-behaviors.html
+
+  - id: slide18-payload-key-mismatch
+    module: M10
+    state: incorrect
+    title: '슬라이드 18 페이로드의 배열 요소 키가 Note 가 아니라 Notes'
+    courseware_location: '슬라이드 18 "요청 검증(Validation)" 의 메서드 요청 페이로드 vs 슬라이드 17 요청 모델'
+    detail: >-
+      슬라이드 17 의 NotesInputModel 은 Notes 배열 요소에 NoteId 와 Note 를 필수로
+      요구합니다. 슬라이드 18 의 페이로드는 같은 자리에 "Notes": "Hello World!" 를 써서
+      필수 속성 Note 가 없습니다. 이 페이로드를 슬라이드 17 모델로 검증하면 400 으로
+      실패합니다. 교재 내부의 자기 모순입니다.
+    replacement: '"Note": "Hello World!" (슬라이드 17 모델과 일치)'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings-models.html
+
+  - id: courseware-doc-link-spaces
+    module: M10
+    state: incorrect
+    title: 강사 노트 인용 URL 중간에 공백이 들어가 열 수 없다
+    courseware_location: 슬라이드 10·14·27·31 강사 노트의 개발자 안내서 인용 링크
+    detail: >-
+      슬라이드 10·14·27·31 강사 노트가 인용한 URL 중 여러 개가
+      https://docs.aws.amazon.com/ko_kr/ 와 apigateway 사이에 공백이 들어가 있어
+      그대로 복사해서는 열 수 없습니다(api-gateway-request-throttling,
+      apigateway-control-access-to-api, rest-api-data-transformations,
+      how-to-generate-sdk, how-to-mock-integration, api-gateway-caching, security,
+      integration-passthrough-behaviors, stage-variables 인용문). 공백을 제거하면
+      11개 링크 모두 현재도 유효한 페이지를 가리킵니다.
+    replacement: 공백을 제거한 URL. 언어 코드 없는 경로로도 같은 페이지에 접근할 수 있다
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-stages.html
+
+  - id: swagger-to-openapi
+    module: M10
+    state: changed
+    title: 'Swagger 를 사용한 API 설계 / swagger: "2.0"'
+    courseware_location: '슬라이드 22 "Swagger를 사용한 API 설계" 제목·본문·YAML 첫 줄·강사 노트'
+    detail: >-
+      교재는 규격 이름을 Swagger 로만 부르고 YAML 첫 줄이 swagger: "2.0" 이며 기능
+      목록도 "Swagger 기능"입니다. 현재 문서는 이 기능을 "Develop REST APIs using
+      OpenAPI in API Gateway" 로 부르고 OpenAPI v2.0(Swagger 2.0 에 해당)과
+      OpenAPI v3.0 두 규격을 지원한다고 기술합니다. 확장 목록 페이지 제목도 "OpenAPI
+      extensions for API Gateway" 입니다(URL 경로에는 여전히 swagger-extensions 가
+      남아 있습니다). 내보내기 경로도 OpenAPI 3.0 은 exports/oas30,
+      OpenAPI 2.0 은 exports/swagger 로 나뉩니다.
+    replacement: 'OpenAPI(v2.0 또는 v3.0). 새로 작성하면 OpenAPI 3.0 을 쓰고, 내보내기는 oas30·swagger 중 선택'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html
+
+  - id: custom-authorizer-renamed
+    module: M10
+    state: changed
+    title: 사용자 지정 권한 부여자(custom authorizer) 명칭
+    courseware_location: 슬라이드 10 강사 노트의 액세스 제어 항목 (교재는 이미 "Lambda 권한 부여자"로 표기)
+    detail: >-
+      Lambda 권한 부여자는 이전에 사용자 지정 권한 부여자(custom authorizer)라고
+      불렸으며 현재 문서는 "Lambda authorizer (formerly known as a custom authorizer)"
+      로 표기합니다. 교재는 이미 현재 이름을 쓰고 있어 이 부분은 최신입니다. 다만 교재는
+      권한 부여자 유형이 REQUEST 와 TOKEN 두 가지이고 문서가 REQUEST 를 권장한다는 점,
+      메서드 권한 부여 유형 값이 CUSTOM 이라는 점을 다루지 않습니다. 오래된 자료나
+      콘솔·API 응답에서 custom authorizer 라는 표기를 만날 수 있습니다.
+    replacement: 'Lambda 권한 부여자. 유형은 REQUEST(권장)와 TOKEN, 메서드 권한 부여 유형 값은 CUSTOM'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html
+
+  - id: throttling-two-basic-types
+    module: M10
+    state: changed
+    title: 제한에 관한 두 가지 기본적인 유형의 설정
+    courseware_location: '슬라이드 10 "API Gateway 개발자 기능" 강사 노트의 제한 항목'
+    detail: >-
+      교재는 "API Gateway에서는 제한에 관한 두 가지 기본적인 유형의 설정을
+      제공합니다"라고 하고 서버 측 제한 한도와 클라이언트당 제한 한도를 나열합니다.
+      현재 문서는 네 가지 기본 유형을 제시합니다: AWS 제한 한도(리전의 모든 계정·클라이언트,
+      고객 변경 불가), 계정별 한도(리전의 계정 내 모든 API, 상향 요청 가능),
+      API별·스테이지별 한도(스테이지의 메서드 수준), 클라이언트별 한도(사용량 계획의
+      API 키 기준). 적용 순서도 명시되어 있습니다. 또 스로틀과 할당량은 모두 best-effort
+      로 적용되며 보장된 상한이 아니라 목표입니다.
+    replacement: 'AWS 제한 한도 → 계정별 한도 → API별·스테이지별 한도 → 클라이언트별 한도 네 가지. 적용 순서는 역순(클라이언트별 → 메서드별 → 계정 → AWS)'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html
+
+  - id: console-method-execution-test
+    module: M10
+    state: changed
+    title: 'Method Execution 창의 Client 상자에서 TEST 를 선택'
+    courseware_location: '슬라이드 25 "API Gateway 콘솔을 사용한 테스트(1/2)" 강사 노트'
+    detail: >-
+      교재는 "API Gateway 콘솔에서 REST API를 호출하려면 Method Execution 창의 Client
+      상자에서 TEST를 선택합니다"라고 콘솔 경로를 기재합니다. 현재 콘솔 절차는 REST API
+      선택 → Resources 창에서 테스트할 메서드 선택 → Test 탭 선택(탭이 보이지 않으면
+      오른쪽 화살표 버튼을 눌러 표시) → 값 입력 → Test 입니다. Method Execution 창과
+      Client 상자는 이전 콘솔의 UI 입니다.
+    replacement: 'Resources 창에서 메서드 선택 → Test 탭 → Test'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-test-method.html
+
+  - id: stage-editor-window
+    module: M10
+    state: changed
+    title: Stage Editor 창
+    courseware_location: '슬라이드 30 "API Gateway 스테이지" 강사 노트'
+    detail: >-
+      교재는 "배포 프로세스가 완료되면 Stage Editor 창이 표시됩니다"라고 하고 Stage
+      Editor 로 캐싱·요청 제한·로깅·스테이지 변수를 설정한다고 서술합니다. 현재 콘솔에서
+      스테이지 설정은 Stages 창에서 스테이지를 고른 뒤 Stage details 의 Edit(캐시 설정,
+      제한 설정, 방화벽·인증서 설정)과 Logs and tracing 의 Edit(실행 로깅 수준,
+      Data tracing, Detailed metrics, 사용자 지정 액세스 로깅, X-Ray)으로 나뉘어
+      있습니다. 스테이지가 배포에 대한 명명된 참조라는 정의와 스테이지로 할 수 있는
+      다섯 가지는 그대로입니다. 스테이지 설정을 바꾼 뒤에는 API 를 다시 배포해야 새 설정이
+      적용됩니다(로그·스테이지 변수 업데이트는 재배포가 필요하지 않습니다).
+    replacement: 'Stages → 스테이지 → Stage details / Logs and tracing 의 Edit. 호출 URL 은 스테이지 상세의 Invoke URL'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-stages.html
+
+  - id: passthrough-two-conditions
+    module: M10
+    state: changed
+    title: 통합 패스스루 조건 두 가지
+    courseware_location: '슬라이드 14 "통합 유형" 강사 노트의 통합 패스스루 설명'
+    detail: >-
+      교재는 비프록시 통합에서 변환 없이 전달되는 조건을 두 가지로 나열합니다
+      (① Content-Type 헤더가 지정된 매핑 템플릿과 일치하지 않음 ② 매핑 템플릿이 정의되지
+      않음). 현재 문서는 이것을 세 가지 선택지가 있는 설정으로 기술합니다:
+      WHEN_NO_MATCH(교재 ①에 해당), WHEN_NO_TEMPLATES(교재 ②에 해당, 문서가 권장),
+      NEVER(전달하지 않고 매핑되지 않은 콘텐츠 유형은 HTTP 415 로 거부).
+      Content-Type 헤더가 없으면 API Gateway 는 application/json 으로 기본 처리합니다.
+      프록시 통합에서 패스스루 동작을 수정할 수 없다는 교재 서술은 맞습니다.
+    replacement: 'passthroughBehavior = WHEN_NO_MATCH / WHEN_NO_TEMPLATES(권장) / NEVER'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/integration-passthrough-behaviors.html
+
+  - id: canary-promote-mechanism
+    module: M10
+    state: changed
+    title: Canary 를 승격하면 트래픽 100% 가 새 버전으로 간다
+    courseware_location: '슬라이드 33·36 "Canary 릴리스 2/2"·"Canary 릴리스 단계(3/3)"'
+    detail: >-
+      교재는 "canary 버전을 홍보하고 트래픽을 100% 이 API 버전으로 보낼 수 있습니다"라고
+      결과만 서술합니다. 실제 승격 메커니즘은 ① 스테이지의 deploymentId 를 카나리의
+      deploymentId 로 재설정하고 ② 카나리 스테이지 변수를 스테이지 변수로 복사하고
+      ③ 카나리 트래픽 비율을 0.0% 로 내리는 것입니다. 결과적으로 프로덕션이 새 버전을
+      서비스하지만 승격만으로는 카나리가 비활성화되지 않으며, 일반 프로덕션 배포로
+      되돌리려면 canarySettings 를 제거해야 합니다.
+    replacement: 'deploymentId 복사 + stageVariableOverrides 복사 + percentTraffic 0.0. 카나리 해제는 canarySettings 제거'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/promote-canary-deployment.html
+
+  - id: http-integration-vpc-wording
+    module: M10
+    state: changed
+    title: 'HTTP·HTTP_PROXY 를 "VPC 에 있는 프라이빗 HTTP 엔드포인트를 포함한 HTTP 엔드포인트" 로 정의'
+    courseware_location: '슬라이드 14 "통합 유형" 강사 노트의 HTTP·HTTP_PROXY 정의'
+    detail: >-
+      교재는 HTTP 와 HTTP_PROXY 를 모두 "VPC에 있는 프라이빗 HTTP 엔드포인트를 포함한
+      HTTP 엔드포인트와 통합"으로 설명합니다. 현재 통합 유형 문서는 두 유형을 백엔드
+      HTTP 엔드포인트 통합으로만 기술하고, 프라이빗 통합은 HTTP 프록시 통합에
+      connectionType=VPC_LINK 와 VPC 링크 V2 의 connectionId 를 지정하는 별도 설정으로
+      다룹니다. VPC 링크 V2 는 NLB 뿐 아니라 ALB 도 대상으로 삼을 수 있고,
+      connectionId 를 스테이지 변수로 넘길 수 있습니다.
+    replacement: 'HTTP·HTTP_PROXY 는 백엔드 HTTP 엔드포인트 통합. 프라이빗 통합은 HTTP_PROXY + connectionType=VPC_LINK + VPC 링크 V2'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-private-integration.html
+
+  - id: mapping-templates-over-proxy
+    module: M10
+    state: discouraged
+    title: 데이터 변환의 주 경로로 매핑 템플릿을 쓰기
+    courseware_location: '슬라이드 16~20 "요청 및 응답 처리" 전체와 슬라이드 10 의 데이터 변환 항목'
+    detail: >-
+      교재는 요청·응답 처리를 매핑 템플릿 중심으로 다섯 슬라이드에 걸쳐 설명합니다.
+      현재 문서는 데이터 변환 절 첫머리에서 "가능하면 REST API 에 프록시 통합을
+      쓰라"고 권장하고, 변환이 필요한 경우에도 "가능하면 파라미터 매핑을 쓰라"고 하며
+      본문을 바꿔야 하거나 조건부 재정의가 필요하고 프록시 통합을 쓸 수 없을 때만
+      매핑 템플릿 변환을 쓰라고 안내합니다. 매핑 템플릿 문서에도 같은 권고가 있습니다.
+      매핑 템플릿은 계속 동작하며 교재 내용이 틀린 것은 아니지만 현재 권장 순서와
+      우선순위가 다릅니다.
+    replacement: '① 프록시 통합 → ② 파라미터 매핑(VTL 불필요) → ③ 매핑 템플릿 변환'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html
+
+  - id: api-keys-for-access-control
+    module: M10
+    state: discouraged
+    title: API 키로 API 액세스를 통제한다
+    courseware_location: '슬라이드 10 "API Gateway 개발자 기능" 의 "API 키 구성" 과 슬라이드 13 강사 노트의 API Key Required'
+    detail: >-
+      교재는 API 키를 개발자 기능으로 제시하고 "API 키가 메서드를 호출하게 하려면
+      API Key Required를 true로 설정하십시오"라고 안내합니다. 사용량 계획 문서의 모범
+      사례는 "API 액세스를 제어하는 인증·권한 부여에 API 키를 쓰지 말라"고 명시합니다.
+      한 사용량 계획에 여러 API 가 있으면 그중 한 API 의 유효한 API 키를 가진 사용자가
+      그 계획의 모든 API 에 액세스할 수 있기 때문입니다. 또 API 키에 기밀 정보를 넣지
+      말고 API Gateway 가 생성한 키를 쓰라고 안내합니다. API 키 자체는 계속 동작하며
+      클라이언트 식별·사용량 추적·클라이언트별 제한에는 여전히 정당한 용도입니다.
+    replacement: '액세스 제어는 IAM 역할 · Lambda 권한 부여자 · Amazon Cognito 사용자 풀. API 키는 클라이언트 식별과 사용량 계획 연결에만'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html
+
+  - id: usage-plan-quota-for-cost-control
+    module: M10
+    state: discouraged
+    title: 사용량 계획 할당량으로 비용과 액세스를 통제한다
+    courseware_location: '슬라이드 10 "API Gateway 개발자 기능" 강사 노트의 API 키·제한 항목 (교재는 한도의 성격을 서술하지 않음)'
+    detail: >-
+      교재는 "고객은 합의된 요청 속도와 할당량을 바탕으로 이러한 API에 액세스할 수
+      있습니다"라고만 서술합니다. 현재 문서는 사용량 계획의 제한과 할당량이 하드 한도가
+      아니라 best-effort 로 적용되므로 클라이언트가 초과할 수 있다고 명시하고, 비용
+      통제나 API 액세스 차단에 의존하지 말라고 경고합니다. 비용 모니터링에는 AWS Budgets,
+      요청 관리에는 AWS WAF 를 고려하라고 안내합니다. 스테이지 수준 제한 설정에도 같은
+      경고가 붙어 있습니다.
+    replacement: '비용은 AWS Budgets 로 모니터링, 요청 차단은 AWS WAF. 사용량 계획은 사용량 관리 목표치로만'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html
+
+  - id: stage-variables-for-sensitive-data
+    module: M10
+    state: discouraged
+    title: 스테이지 변수로 구성을 Lambda 함수에 전달한다
+    courseware_location: '슬라이드 31 "스테이지 변수 사용" 본문의 용례 "구성을 Lambda 함수로 전달"'
+    detail: >-
+      교재는 스테이지 변수의 용례로 "구성을 Lambda 함수로 전달"을 제시합니다. 현재 문서는
+      스테이지 변수가 자격 증명 같은 민감한 데이터에 쓰도록 의도된 것이 아니라고 명시하고,
+      통합에 민감한 데이터를 넘겨야 하면 Lambda 권한 부여자의 출력을 쓰라고 안내합니다.
+      민감하지 않은 구성 전달은 여전히 정당한 용도이며 문서도 사용 사례로 제시합니다.
+    replacement: 민감하지 않은 구성만 스테이지 변수로 전달. 자격 증명은 Lambda 권한 부여자 출력 사용
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/stage-variables.html
+
+  - id: data-tracing-in-production
+    module: M10
+    state: discouraged
+    title: 스테이지 로깅에서 Data tracing 활성화
+    courseware_location: '슬라이드 34 "Canary 릴리스 단계(1/3)" 의 "CloudWatch를 이용한 로깅을 활성화합니다" (교재는 로깅 수준을 구분하지 않음)'
+    detail: >-
+      교재는 canary 스테이지에서 "CloudWatch를 이용한 로깅을 활성화합니다"라고만
+      서술하고 로깅 수준이나 Data tracing 을 구분하지 않습니다. 현재 문서는 Data tracing
+      이 문제 해결에 유용하지만 민감한 데이터가 로깅될 수 있어 프로덕션 API 에는 쓰지
+      않도록 권장하고, 실행 로깅은 ERROR 또는 INFO 수준으로 쓰라고 안내합니다.
+      메서드 수준 CloudWatch 지표(Detailed metrics)에는 요금이 부과됩니다.
+    replacement: '실행 로깅은 Errors only 또는 Errors and info logs. Data tracing 은 문제 해결 중에만 임시로'
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html

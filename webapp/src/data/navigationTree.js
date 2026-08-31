@@ -25,6 +25,8 @@ export const navigationTree = [
         id: 'M01-Intro_Summary',
         title: { ko: '모듈 1: 과정 개요', en: 'Module 1: Course Overview' },
         type: 'item',
+        contentFile: 'M01-Intro_Summary.md',
+        tags: [{ label: 'Pollynotes', category: 'concept' }],
       },
       {
         id: 'M02-WebApp_Summary',
@@ -33,6 +35,12 @@ export const navigationTree = [
           en: 'Module 2: Building a Web Application on AWS',
         },
         type: 'item',
+        contentFile: 'M02-WebApp_Summary.md',
+        tags: [
+          { label: 'Pollynotes', category: 'concept' },
+          { label: 'Architecture', category: 'concept' },
+          { label: 'Serverless', category: 'concept' },
+        ],
       },
       {
         id: 'M03-Environment_Summary',
@@ -132,7 +140,12 @@ export const navigationTree = [
         id: 'M10-Gateway_Summary',
         title: { ko: '모듈 10: API 관리', en: 'Module 10: Managing the APIs' },
         type: 'item',
-        tags: [{ label: 'API Gateway', category: 'service' }],
+        contentFile: 'M10-Gateway_Summary.md',
+        tags: [
+          { label: 'API Gateway', category: 'service' },
+          { label: 'OpenAPI', category: 'tool' },
+          { label: 'REST', category: 'concept' },
+        ],
       },
       {
         id: 'M11-Microservices_Summary',
@@ -141,8 +154,10 @@ export const navigationTree = [
           en: 'Module 11: Building a Modern Application',
         },
         type: 'item',
+        contentFile: 'M11-Microservices_Summary.md',
         tags: [
           { label: 'Step Functions', category: 'service' },
+          { label: 'Microservices', category: 'concept' },
           { label: 'Serverless', category: 'concept' },
         ],
       },

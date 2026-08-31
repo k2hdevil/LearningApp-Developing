@@ -1,0 +1,462 @@
+{
+  "_note": "M10 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다. fetched_with=link_check 는 'URL 이 살아 있다' 자체가 주장인 항목에만 사용했다. courseware_internal=true 는 교재 내부 자기 모순으로 외부 문서 근거가 없는 항목이다.",
+  "module": "M10",
+  "verified_on": "2026-08-30",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / aws.amazon.com 블로그 web_fetch",
+  "citations": [
+    {
+      "id": "apigateway-three-api-types",
+      "claim": "Amazon API Gateway 는 어떤 규모에서도 REST, HTTP, WebSocket API 를 생성·게시·유지 관리·모니터링·보호하는 AWS 서비스다. API Gateway 가 만드는 RESTful API 는 HTTP 기반이고 무상태 클라이언트-서버 통신을 가능하게 하며 GET·POST·PUT·PATCH·DELETE 같은 표준 HTTP 메서드를 구현한다. WebSocket API 는 WebSocket 프로토콜을 따라 상태 저장 양방향 통신을 가능하게 하고 메시지 내용에 따라 들어오는 메시지를 라우팅한다. API Gateway 는 애플리케이션이 백엔드 서비스(Amazon EC2 에서 실행되는 워크로드, AWS Lambda 에서 실행되는 코드, 웹 애플리케이션, 실시간 통신 애플리케이션)의 데이터·비즈니스 로직·기능에 액세스하는 '프런트 도어(front door)' 역할을 한다. 기능 목록에는 상태 저장(WebSocket)·무상태(HTTP·REST) API 지원, IAM 정책·Lambda 권한 부여자 함수·Amazon Cognito 사용자 풀을 쓰는 인증, 카나리 릴리스 배포, CloudTrail 로깅과 API 사용·변경 모니터링, 경보 설정을 포함한 CloudWatch 액세스 로깅·실행 로깅, CloudFormation 템플릿으로 API 생성, 사용자 지정 도메인 이름, AWS WAF 통합, 성능 지연 파악·분류를 위한 AWS X-Ray 통합이 있다. API Gateway 는 AWS Lambda 와 함께 AWS 서버리스 인프라의 앱 대면 부분을 이룬다.",
+      "supports_courseware": "교재 슬라이드 6 본문의 'REST, HTTP 또는 WebSocket API' 와 강사 노트의 'REST, HTTP 및 WebSocket API 를 생성·게시·유지 관리·모니터링·보호하는 AWS 서비스', '정문 역할', '트래픽 관리·권한 부여 및 액세스 제어·모니터링·API 버전 관리' 서술을 모두 뒷받침한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is Amazon API Gateway? / Architecture of API Gateway / Features of API Gateway / Part of AWS serverless infrastructure",
+      "cross_module": "M02 7.2·7.3 절이 같은 페이지를 근거로 같은 내용을 서술한다(M02.json apigateway-three-api-types)."
+    },
+    {
+      "id": "apigateway-rest-vs-http",
+      "claim": "REST API 와 HTTP API 는 모두 RESTful API 제품이다. REST API 가 HTTP API 보다 많은 기능을 지원하고, HTTP API 는 더 낮은 가격으로 제공하기 위해 최소 기능으로 설계되었다. 문서의 선택 기준은 'API 키, 클라이언트별 스로틀링, 요청 검증, AWS WAF 통합, 프라이빗 API 엔드포인트 같은 기능이 필요하면 REST API 를 선택하고, REST API 에 포함된 기능이 필요하지 않으면 HTTP API 를 선택하라' 다. 엔드포인트 유형은 REST API 가 edge-optimized·regional·private 을, HTTP API 는 regional 만 지원한다. 보안에서 상호 TLS 인증은 둘 다, 백엔드 인증용 인증서와 AWS WAF 는 REST API 만 지원한다. 권한 부여에서 IAM·Lambda 권한 부여자는 둘 다, 리소스 정책은 REST API 만, JWT 권한 부여자는 HTTP API 만 지원하고 Amazon Cognito 는 REST API 에서 직접, HTTP API 에서는 JWT 권한 부여자를 통해 쓴다(REST API 에서 JWT 검증은 Lambda 권한 부여자로 할 수 있다). API 관리에서 API 키·클라이언트별 요청 속도 제한·클라이언트별 사용량 스로틀링·개발자 포털은 REST API 만 지원한다. 개발에서 테스트 호출·캐싱·사용자 지정 게이트웨이 응답·카나리 릴리스 배포·요청 검증·요청 본문 변환은 REST API 만, 자동 배포는 HTTP API 만 지원하고 사용자 제어 배포·CORS 구성·요청 파라미터 변환은 둘 다 지원한다. 모니터링에서 CloudWatch 지표와 CloudWatch Logs 액세스 로그는 둘 다, Amazon Data Firehose 액세스 로그·실행 로그·AWS X-Ray 추적은 REST API 만 지원한다. 통합에서 퍼블릭 HTTP 엔드포인트·AWS 서비스·Lambda 함수·NLB·ALB 프라이빗 통합은 둘 다, Mock 통합과 응답 스트리밍은 REST API 만, AWS Cloud Map 프라이빗 통합은 HTTP API 만 지원한다.",
+      "supports_courseware": "교재 슬라이드 7 강사 노트의 'HTTP API 를 사용하여 REST API 보다 비용이 저렴한 RESTful API 를 만든다' 중 비용 부분과, 이 과정이 REST API 를 쓰는 선택을 뒷받침한다.",
+      "corrects_courseware": "① 교재는 HTTP API 가 '대기 시간이 짧다'고 단정하지만 이 비교 문서는 대기 시간을 비교 항목으로 제시하지 않는다. 문서가 제시하는 축은 기능 수와 가격이다. ② 교재 슬라이드 7 강사 노트는 '애플리케이션은 REST API 를 사용합니다' 로 끝나 선택 자체를 다루지 않는다. 문서는 필요한 기능 유무로 고르라고 안내하며 한쪽을 일률적으로 권장하지 않는다. ③ 교재 슬라이드 14 강사 노트는 HTTP API 가 'Mock 및 HTTP 프록시 통합' 을 지원한다고 기재하지만 이 문서의 통합 표는 Mock 통합을 REST API 만 지원하는 기능으로 표시한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html",
+      "fetched_with": "mcp",
+      "section": "Choose between REST APIs and HTTP APIs / Endpoint type / Security / Authorization / API management / Development / Monitoring / Integrations",
+      "cross_module": "M02 7.2 절이 같은 페이지를 근거로 같은 선택 기준을 서술한다(M02.json apigateway-rest-vs-http)."
+    },
+    {
+      "id": "websocket-routes",
+      "claim": "WebSocket API 에서 들어오는 JSON 메시지는 구성한 경로에 따라 백엔드 통합으로 전달되고, JSON 이 아닌 메시지는 구성한 $default 경로로 전달된다. 경로에는 경로 선택 표현식이 평가된 뒤 기대되는 값인 경로 키(route key)가 포함된다. routeSelectionExpression 은 API 수준에서 정의되는 속성이며 메시지 페이로드에 존재해야 하는 JSON 속성을 지정한다. 사전 정의된 경로는 $connect, $disconnect, $default 세 개이고 사용자 지정 경로도 만들 수 있다. API Gateway 는 클라이언트와 WebSocket API 사이의 영구 연결이 시작될 때 $connect 를, 클라이언트나 서버가 연결을 끊을 때 $disconnect 를, 경로 선택 표현식 평가 후 일치하는 경로를 찾으면 사용자 지정 경로를, 표현식을 평가할 수 없거나 일치하는 경로가 없으면 $default 를 호출한다. 서비스는 routeKey 가 평가된 값과 정확히 일치하는 경로를 사용하고, 일치하는 것이 없고 $default 경로가 있으면 그 경로를, $default 도 없으면 오류를 반환한다. WebSocket 기반 API 의 표현식은 $request.body.{path_to_body_element} 형태여야 한다. 사용자 지정 경로 키에는 $ 접두사를 쓸 수 없다($ 는 사전 정의 경로 예약). $connect 경로의 권한 부여 값은 NONE, AWS_IAM, CUSTOM 이며 이 설정은 $connect 경로만이 아니라 API 전체에 적용된다.",
+      "supports_courseware": "교재 슬라이드 8 강사 노트의 사전 정의 경로 3개, routeSelectionExpression 이 API 수준 속성이라는 서술, routeKey 정확 일치, 네 경로의 호출 조건이 모두 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/websocket-api-develop-routes.html",
+      "fetched_with": "mcp",
+      "section": "Create routes for WebSocket APIs in API Gateway / Route selection expressions / Specify route request settings for $connect"
+    },
+    {
+      "id": "websocket-connect-disconnect",
+      "claim": "WebSocket 연결은 상태 저장 연결이므로 권한 부여는 $connect 경로에만 구성할 수 있고 인증·권한 부여는 연결 시점에만 수행된다. $connect 경로에 연결된 통합의 실행이 끝날 때까지 업그레이드 요청은 보류 상태이고 실제 연결은 수립되지 않는다. $connect 요청이 실패하면 연결이 만들어지지 않고 클라이언트는 401 또는 403 응답을 받는다. $connect 통합 설정은 선택 사항이다. $disconnect 경로는 연결이 닫힌 뒤에 실행되므로 best-effort 이벤트이고 API Gateway 가 전달을 보장하지 않는다. 연결은 서버 또는 클라이언트가 닫을 수 있고 백엔드는 @connections API 로 연결 해제를 시작할 수 있다. 프록시 통합에서는 Lambda 이벤트의 requestContext 로 connectionId·domainName·stage 를, 비프록시 통합에서는 $context.connectionId·$context.domainName·$context.stage·$input.params() 를 쓰는 VTL 매핑 템플릿으로 연결 정보를 전달한다.",
+      "corrects_courseware": "교재 슬라이드 8 강사 노트는 네 경로의 호출 조건만 나열하고, 권한 부여를 $connect 에만 붙일 수 있다는 점과 $disconnect 가 전달을 보장하지 않는 best-effort 이벤트라는 점은 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-route-keys-connect-disconnect.html",
+      "fetched_with": "mcp",
+      "section": "The $connect route / Passing connection information from the $connect route / The $disconnect route"
+    },
+    {
+      "id": "integration-types",
+      "claim": "통합 유형은 작업하는 통합 엔드포인트 유형과 데이터를 통합 엔드포인트로 주고받는 방식에 따라 선택한다. Lambda 함수는 Lambda 프록시 통합 또는 Lambda 사용자 지정 통합, HTTP 엔드포인트는 HTTP 프록시 통합 또는 HTTP 사용자 지정 통합을 쓸 수 있고, AWS 서비스 작업은 비프록시 유형인 AWS 통합만 있다. Mock 통합에서는 API Gateway 자체가 통합 엔드포인트가 되어 메서드 요청에 응답한다. Lambda 사용자 지정 통합은 통합 엔드포인트가 Lambda 서비스의 함수 호출 작업에 대응하는 AWS 통합의 특수한 경우다. 프로그래밍 방식으로는 Integration 리소스의 type 속성으로 지정하며 값은 AWS_PROXY(Lambda 프록시), AWS(Lambda 사용자 지정 및 그 밖의 모든 AWS 통합), HTTP_PROXY, HTTP, MOCK 이다. Lambda 프록시 통합은 단일 Lambda 함수로 통합 설정을 간소화하고 기존 설정을 해체하지 않고도 백엔드와 함께 발전할 수 있어 문서가 Lambda 함수 통합에 강력히 권장한다. AWS 통합에서는 통합 요청과 통합 응답을 모두 구성하고 메서드 요청→통합 요청, 통합 응답→메서드 응답 데이터 매핑을 설정해야 한다. AWS_PROXY 에서는 통합 요청도 통합 응답도 설정하지 않고 API Gateway 가 클라이언트 요청을 그대로 백엔드 Lambda 함수 입력으로 전달하며, 함수는 정해진 입력 형식을 받아 요청 헤더·URL 경로 변수·쿼리 문자열 파라미터·본문을 파싱하고 정해진 출력 형식으로 결과를 반환한다. AWS_PROXY 는 함수 호출 작업 외의 다른 AWS 서비스 작업이나 다른 Lambda 작업에는 쓸 수 없다. HTTP 는 통합 요청·응답을 모두 구성해야 하고, HTTP_PROXY 는 설정하지 않으며 API Gateway 가 요청과 응답을 그대로 전달한다. MOCK 은 요청을 백엔드로 보내지 않고 API Gateway 가 응답을 반환하는 유형으로, 백엔드 사용 비용 없이 통합 설정을 테스트하고 협업 개발을 가능하게 한다. 다른 팀이 소유한 API 구성 요소의 시뮬레이션을 MOCK 통합으로 만들어 개발을 분리할 수 있고, CORS 관련 헤더를 반환하는 데도 쓰인다. API Gateway 콘솔은 CORS 지원을 위해 OPTIONS 메서드를 Mock 통합으로 통합하며 게이트웨이 응답도 Mock 통합의 예다.",
+      "supports_courseware": "교재 슬라이드 14 표와 강사 노트의 다섯 통합 유형 정의, 프록시는 통합 요청·응답을 설정하지 않는다는 점, 비프록시는 둘 다 구성해야 한다는 점, MOCK 이 백엔드를 호출하지 않는 '루프백' 엔드포인트라는 점이 문서와 일치한다.",
+      "corrects_courseware": "① 교재는 HTTP·HTTP_PROXY 를 'VPC 에 있는 프라이빗 HTTP 엔드포인트를 포함한 HTTP 엔드포인트' 로 설명하는데 이 문서는 두 유형을 백엔드 HTTP 엔드포인트로만 기술한다(프라이빗 통합은 VPC 링크와 connectionType 으로 구성하는 별도 주제다). ② 교재는 Lambda 프록시와 Lambda 사용자 지정을 대등하게 나열하지만 문서는 Lambda 프록시를 'Lambda 함수를 호출하는 데 선호되는 통합 유형' 으로 강력히 권장한다. ③ 교재는 Mock 통합의 용도를 '테스트' 로만 제시하지만 문서는 CORS 헤더 반환과 게이트웨이 응답도 Mock 통합의 사례로 든다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html",
+      "fetched_with": "mcp",
+      "section": "Choose an API Gateway API integration type"
+    },
+    {
+      "id": "lambda-proxy-input-output",
+      "claim": "Lambda 프록시 통합은 API 메서드 하나로 API 를 구성하는 메커니즘이며 클라이언트가 백엔드의 Lambda 함수 하나를 호출한다. 클라이언트가 요청을 제출하면 API Gateway 는 통합된 Lambda 함수에 이벤트 객체를 전달하는데 요청 파라미터의 순서는 보존되지 않는다. 전달되는 요청 데이터에는 요청 헤더, 쿼리 문자열 파라미터, URL 경로 변수, 페이로드, API 구성 데이터(현재 배포 스테이지 이름, 스테이지 변수, 사용자 자격 증명, 권한 부여 컨텍스트)가 포함된다. 입력 이벤트의 최상위 키는 resource, path, httpMethod, headers, multiValueHeaders, queryStringParameters, multiValueQueryStringParameters, requestContext, pathParameters, stageVariables, body, isBase64Encoded 다. headers 는 단일 값 헤더만, multiValueHeaders 는 다중 값 헤더와 단일 값 헤더를 모두 담을 수 있고 둘을 함께 지정하면 병합되며 같은 키-값 쌍이 둘에 다 있으면 multiValueHeaders 의 값만 남는다. requestContext 는 $context 변수 속성 이름을 키로 하는 맵이고 API Gateway 가 새 키를 추가할 수 있다. 권한 부여 유형에 따라 전달되는 정보가 달라진다: AWS_IAM 은 $context.identity.*, COGNITO_USER_POOLS 는 $context.identity.cognito* 와 $context.authorizer.claims.*, CUSTOM(Lambda 권한 부여자)은 $context.authorizer.principalId 와 그 밖의 $context.authorizer.* 다. 출력은 isBase64Encoded, statusCode, headers, multiValueHeaders, body 형식이어야 하며 형식이 다르면 API Gateway 가 502 Bad Gateway 를 반환한다. CORS 를 활성화하려면 출력 headers 에 Access-Control-Allow-Origin 을 넣어야 한다. 프록시 통합은 클라이언트가 백엔드 요구 사항을 더 자세히 알아야 하므로 백엔드 개발자가 요구 사항을 명확히 전달하고 견고한 오류 피드백을 제공해야 한다. 일반 프록시 리소스는 {proxy+} 템플릿 경로 변수와 catch-all ANY 메서드로 표현하며, {proxy+} 는 경로 계층의 어떤 리소스든 가리키는 반면 {custom} 은 특정 경로 세그먼트만 가리킨다.",
+      "corrects_courseware": "교재 슬라이드 14 는 AWS_PROXY 를 '원 상태 그대로 전달된 클라이언트 요청을 사용하여 Lambda 함수 호출 작업과 통합' 이라고만 서술하고, 프록시 통합이 요구하는 고정된 입력·출력 형식과 형식 위반 시 502 를 반환한다는 점, {proxy+}·ANY 조합을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html",
+      "fetched_with": "mcp",
+      "section": "Understand API Gateway Lambda proxy integration / Support for multi-value headers and query string parameters / Input format of a Lambda function for proxy integration / Output format of a Lambda function for proxy integration"
+    },
+    {
+      "id": "integration-passthrough-three-options",
+      "claim": "메서드 요청에 페이로드가 있고 Content-Type 헤더에 대한 매핑 템플릿이 정의되어 있지 않으면 클라이언트가 제공한 요청 페이로드를 변환 없이 백엔드로 전달할 수 있으며 이 과정을 통합 패스스루라고 한다. 실제 패스스루 동작은 설정으로 결정되고 선택지는 세 가지다. ① 'When no template matches the request Content-Type header'(API 에서 passthroughBehavior=WHEN_NO_MATCH) — 메서드 요청 콘텐츠 유형이 매핑 템플릿에 연결된 어떤 콘텐츠 유형과도 일치하지 않을 때 본문을 변환 없이 전달한다. ② 'When there are no templates defined (recommended)'(WHEN_NO_TEMPLATES) — 통합 요청에 매핑 템플릿이 정의되지 않았을 때만 변환 없이 전달하고, 템플릿이 정의되어 있는데 콘텐츠 유형이 일치하지 않으면 HTTP 415 Unsupported Media Type 으로 거부한다. ③ 'Never'(NEVER) — 매핑 템플릿이 정의되지 않아도 전달하지 않고, 매핑되지 않은 콘텐츠 유형의 요청은 415 로 거부한다. Content-Type 헤더가 없으면 API Gateway 는 application/json 으로 기본 처리한다.",
+      "supports_courseware": "교재 슬라이드 14 강사 노트가 제시한 두 조건(① 페이로드의 Content-Type 이 지정된 매핑 템플릿과 일치하지 않음 ② 매핑 템플릿이 정의되지 않음)은 각각 WHEN_NO_MATCH 와 WHEN_NO_TEMPLATES 에 대응한다.",
+      "corrects_courseware": "교재는 패스스루를 '조건 두 가지' 로 서술하지만 현재 문서는 세 가지 선택지가 있는 설정으로 기술하고 WHEN_NO_TEMPLATES 를 권장 값으로 표시한다. 교재에는 NEVER 와 415 응답이 없다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/integration-passthrough-behaviors.html",
+      "fetched_with": "mcp",
+      "section": "Method request behavior for payloads without mapping templates for REST APIs in API Gateway"
+    },
+    {
+      "id": "endpoint-types",
+      "claim": "API 엔드포인트 유형은 API 의 호스트 이름을 가리키며 트래픽 대부분이 어디에서 발생하는지에 따라 edge-optimized, Regional, private 중 하나가 된다. 엣지 최적화 API 엔드포인트는 보통 가장 가까운 CloudFront POP 로 요청을 라우팅하며 클라이언트가 지리적으로 분산된 경우에 도움이 된다. 문서는 엣지 최적화가 API Gateway REST API 의 기본 엔드포인트 유형이라고 명시한다. 엣지 최적화 API 는 HTTP 헤더 이름을 대문자로 바꾸고(예: Cookie), CloudFront 가 오리진으로 요청을 전달하기 전에 쿠키를 이름 순으로 정렬한다. 엣지 최적화 API 의 사용자 지정 도메인 이름은 모든 리전에 적용된다. 리전 API 엔드포인트는 같은 리전의 클라이언트를 위한 것으로, EC2 인스턴스에서 실행되는 클라이언트가 같은 리전의 API 를 호출하거나 요구가 큰 소수 클라이언트를 대상으로 할 때 연결 오버헤드를 줄인다. 리전 API 의 사용자 지정 도메인 이름은 배포된 리전에 한정되고 여러 리전에 배포하면 모든 리전에서 같은 이름을 쓸 수 있으며 Route 53 과 함께 지연 시간 기반 라우팅 등에 쓸 수 있다. 리전 엔드포인트와 프라이빗 엔드포인트는 헤더 이름을 그대로 전달한다. 프라이빗 API 엔드포인트는 VPC 안에 만든 인터페이스 VPC 엔드포인트(ENI)를 통해 사용자의 Amazon VPC 에서만 액세스할 수 있다.",
+      "supports_courseware": "교재 슬라이드 13 강사 노트의 세 엔드포인트 유형 이름과 각 특성(리전은 같은 리전 EC2 호출 시 연결 대기 시간 감소, 엣지 최적화는 CloudFront 네트워크 배포, 프라이빗은 인터페이스 VPC 엔드포인트로만 액세스)이 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 13 강사 노트는 '엔드포인트 유형에서는 리전 API 엔드포인트가 기본적으로 선택됩니다' 라고 기재한다. 이 문서는 엣지 최적화를 REST API 의 기본 엔드포인트 유형으로 명시한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html",
+      "fetched_with": "mcp",
+      "section": "Edge-optimized API endpoints / Regional API endpoints / Private API endpoints"
+    },
+    {
+      "id": "apigateway-concepts",
+      "claim": "API 엔드포인트는 특정 리전에 배포된 API Gateway 의 API 호스트 이름이며 형식은 {api-id}.execute-api.{region}.amazonaws.com 이다. API 배포는 API Gateway API 의 특정 시점 스냅샷이고 클라이언트가 사용하려면 하나 이상의 API 스테이지에 연결되어야 한다. API 스테이지는 API 수명 주기 상태에 대한 논리적 참조(예: dev, prod, beta, v2)이며 API ID 와 스테이지 이름으로 식별된다. REST API 는 백엔드 HTTP 엔드포인트·Lambda 함수·기타 AWS 서비스와 통합된 HTTP 리소스와 메서드의 모음이고 하나 이상의 스테이지에 배포할 수 있으며, 일반적으로 애플리케이션 로직에 따라 리소스 트리로 구성되고 각 API 리소스는 API Gateway 가 지원하는 고유 HTTP 동사를 가진 하나 이상의 API 메서드를 노출한다. 엣지 최적화 API 엔드포인트는 'API Gateway API 의 기본 호스트 이름' 으로 정의된다. 매핑 템플릿은 요청 본문을 프런트엔드 데이터 형식에서 백엔드 데이터 형식으로, 또는 응답 본문을 백엔드에서 프런트엔드 형식으로 변환하는 VTL 스크립트이며 통합 요청 또는 통합 응답에 지정하고 런타임에 사용 가능한 컨텍스트·스테이지 변수를 참조할 수 있다. 모델은 요청 또는 응답 페이로드의 데이터 구조를 지정하는 데이터 스키마이며 강력한 유형의 SDK 생성에는 필수이고 페이로드 검증에도 쓰이며 매핑 템플릿 초안 생성에 편리하지만 매핑 템플릿 작성에 필수는 아니다. Mock 통합에서는 통합 백엔드 없이 API Gateway 가 직접 응답을 생성하며 API 개발자가 통합 요청·통합 응답을 구성해 특정 상태 코드에 응답을 연결한다. 프라이빗 통합은 퍼블릭 인터넷에 노출하지 않고 프라이빗 REST API 엔드포인트를 통해 고객 VPC 내부 리소스에 액세스하는 통합 유형이다. 프록시 통합은 단순화된 통합 구성이며 HTTP 프록시 또는 Lambda 프록시로 설정하고 REST API 에서는 greedy 경로 변수({proxy+})와 catch-all ANY 메서드를 결합한 프록시 리소스와 함께 가장 흔히 쓰인다. API 키는 REST 또는 WebSocket API 를 쓰는 앱 개발자를 식별하는 데 사용하는 영숫자 문자열이다.",
+      "supports_courseware": "교재 슬라이드 13 강사 노트의 API 엔드포인트 호스트 이름 형식, 리소스·메서드 정의, 슬라이드 30 강사 노트의 '스테이지는 API 수명 주기 상태에 대한 논리적 참조(예: dev, prod, beta, v2)', 슬라이드 17 강사 노트의 모델 용도 세 가지가 모두 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html",
+      "fetched_with": "mcp",
+      "section": "Amazon API Gateway concepts (API endpoint / API deployment / API stage / API Gateway REST API / Edge-optimized API endpoint / Mapping template / Model / Mock integration / Private integration / Proxy integration / API key)"
+    },
+    {
+      "id": "method-authorization-types",
+      "claim": "PutMethod 의 authorizationType 은 필수 파라미터이고 유효값은 개방 액세스용 NONE, AWS IAM 권한용 AWS_IAM, 사용자 지정 권한 부여자용 CUSTOM, Cognito 사용자 풀용 COGNITO_USER_POOLS 다. authorizerId 는 유형이 CUSTOM 또는 COGNITO_USER_POOLS 일 때 사용할 Authorizer 식별자를 지정한다. authorizationScopes 는 COGNITO_USER_POOLS 권한 부여자와 함께 쓰는 권한 부여 범위 목록이고, 메서드 범위가 구성되면 클라이언트는 자격 증명 토큰이 아니라 액세스 토큰을 제공해야 한다. apiKeyRequired 는 Boolean 이며 메서드에 유효한 API 키가 필요한지를 지정한다. requestParameters 는 method.request.{location}.{name} 패턴의 키(location 은 querystring·path·header)와 필수 여부를 나타내는 Boolean 값의 맵이다. requestModels 는 콘텐츠 유형을 키, 모델 이름을 값으로 하는 맵이고 requestValidatorId 는 메서드 요청을 검증할 RequestValidator 식별자다. 통합 응답의 selectionPattern 으로 통합 응답을 메서드 응답 상태 코드에 연결한다.",
+      "corrects_courseware": "교재 슬라이드 13 본문과 강사 노트는 권한 부여 유효값을 NONE 과 AWS_IAM 두 개로만 제시하고 '기본값은 none 또는 AWS_IAM 으로 설정됩니다' 라고 기재한다. 현재 API 참조의 유효값은 NONE·AWS_IAM·CUSTOM·COGNITO_USER_POOLS 네 개이며 authorizationType 은 기본값이 있는 선택 파라미터가 아니라 필수 파라미터다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/api/API_PutMethod.html",
+      "fetched_with": "mcp",
+      "section": "Request Body / Response Syntax"
+    },
+    {
+      "id": "access-control-mechanisms",
+      "claim": "API Gateway 는 REST API 액세스를 제어·관리하는 여러 메커니즘을 지원한다. 인증·권한 부여용으로 리소스 정책(지정된 소스 IP 주소 또는 VPC 엔드포인트에서의 액세스를 허용·거부), 표준 AWS IAM 역할 및 정책(API 전체 또는 개별 메서드에 적용하며 API 생성·관리 권한과 호출 권한 모두 제어), IAM 태그(IAM 정책과 함께 사용), 인터페이스 VPC 엔드포인트용 엔드포인트 정책(프라이빗 API 보안 강화), Lambda 권한 부여자(전달자 토큰 인증과 헤더·경로·쿼리 문자열·스테이지 변수·컨텍스트 변수 요청 파라미터로 기술되는 정보를 사용), Amazon Cognito 사용자 풀(REST API 용 사용자 지정 인증·권한 부여 솔루션)이 있다. 액세스 제어와 관련된 다른 작업용으로 교차 오리진 리소스 공유(CORS), 클라이언트 측 SSL 인증서(백엔드 시스템에 대한 HTTP 요청이 API Gateway 에서 온 것인지 확인), AWS WAF(일반적인 웹 공격으로부터 API 보호)가 있다. 부여한 액세스를 추적·제한하는 메커니즘으로 사용량 계획이 있으며 고객에게 API 키를 제공하고 API 키별로 API 스테이지·메서드 사용량을 추적·제한한다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 '표준 IAM 역할 및 정책, 리소스 정책, 교차 오리진 리소스 공유(CORS)와 Lambda 권한 부여자' 네 항목이 모두 문서의 목록에 들어 있다.",
+      "corrects_courseware": "교재는 대표 솔루션 네 개만 나열한다. 현재 문서 목록에는 Amazon Cognito 사용자 풀, IAM 태그, VPC 엔드포인트 정책, 클라이언트 측 SSL 인증서, AWS WAF, 사용량 계획이 함께 있다. 특히 Amazon Cognito 사용자 풀 권한 부여자는 교재 슬라이드 13 의 권한 부여 유효값 목록(NONE·AWS_IAM)에서 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-to-api.html",
+      "fetched_with": "mcp",
+      "section": "Control and manage access to REST APIs in API Gateway"
+    },
+    {
+      "id": "lambda-authorizer-renamed",
+      "claim": "Lambda 권한 부여자(Lambda authorizer)는 이전에 사용자 지정 권한 부여자(custom authorizer)라고 불렸다. 클라이언트가 API 메서드에 요청하면 API Gateway 가 Lambda 권한 부여자를 호출하고, 권한 부여자는 호출자의 자격 증명을 입력으로 받아 IAM 정책을 출력으로 반환한다. OAuth·SAML 같은 전달자 토큰 인증 전략이나 요청 파라미터로 호출자 신원을 판별하는 사용자 지정 권한 부여 체계를 구현할 수 있고 REST API 콘솔·AWS CLI·AWS SDK 로 만든다. 워크플로는 ① 클라이언트가 전달자 토큰 또는 요청 파라미터를 넘겨 메서드를 호출 ② API Gateway 가 메서드 요청에 Lambda 권한 부여자가 구성되어 있는지 확인하고 구성되어 있으면 함수를 호출 ③ 함수가 OAuth 공급자 호출·SAML 어설션 획득·요청 파라미터 기반 IAM 정책 생성·데이터베이스 자격 증명 조회 중 한 방법으로 호출자를 인증 ④ 함수가 IAM 정책과 프린시펄 식별자를 반환(반환하지 않으면 호출 실패) ⑤ API Gateway 가 IAM 정책을 평가해 거부면 403 ACCESS_DENIED 같은 상태 코드를 반환하고 허용이면 메서드를 호출한다. 권한 부여 캐싱을 켜면 정책이 캐시되어 권한 부여자 함수가 다시 호출되지 않는다. Lambda 권한 부여자 유형은 두 가지다. REQUEST 권한 부여자는 헤더·쿼리 문자열 파라미터·stageVariables·$context 변수 조합으로 호출자 자격 증명을 받고 여러 자격 증명 소스로 세분화된 정책을 만들 수 있으며, 캐싱을 켜면 지정된 자격 증명 소스가 모두 있는지 확인하고 없거나 null 이거나 비어 있으면 함수를 호출하지 않고 401 Unauthorized 를 반환한다. TOKEN 권한 부여자는 JWT·OAuth 토큰 같은 전달자 토큰으로 자격 증명을 받고, 캐싱을 켜면 토큰 소스에 지정한 헤더 이름이 캐시 키가 되며 정규식(IdentityValidationExpression, TOKEN 전용)으로 토큰을 미리 검증할 수 있다. 문서는 여러 자격 증명 소스를 쓸 수 있고 캐시 키를 분리할 수 있다는 이유로 REQUEST 권한 부여자를 권장한다.",
+      "corrects_courseware": "교재 슬라이드 10 강사 노트는 'Lambda 권한 부여자' 라는 현재 이름을 쓰지만 유형 구분(REQUEST·TOKEN)과 REQUEST 권장, 이전 명칭이 'custom authorizer' 였다는 사실은 다루지 않는다. 교재 슬라이드 13 의 권한 부여 유효값 목록에도 Lambda 권한 부여자(CUSTOM)가 빠져 있다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html",
+      "fetched_with": "mcp",
+      "section": "Use API Gateway Lambda authorizers / Lambda authorizer authorization workflow / Choosing a type of Lambda authorizer"
+    },
+    {
+      "id": "cognito-user-pool-authorizer",
+      "claim": "IAM 역할·정책 또는 Lambda 권한 부여자(이전 명칭 사용자 지정 권한 부여자)의 대안으로 Amazon Cognito 사용자 풀을 써서 API Gateway API 액세스를 제어할 수 있다. 먼저 COGNITO_USER_POOLS 유형의 권한 부여자를 만들고 API 메서드가 그 권한 부여자를 쓰도록 구성한다. API 를 배포한 뒤 클라이언트는 사용자를 사용자 풀에 로그인시켜 자격 증명 토큰 또는 액세스 토큰을 얻고, 보통 요청의 Authorization 헤더에 그 토큰을 넣어 메서드를 호출한다. 필요한 토큰이 제공되고 유효할 때만 호출이 성공한다. 자격 증명 토큰은 로그인한 사용자의 자격 증명 클레임을 기준으로, 액세스 토큰은 액세스 보호 리소스의 사용자 지정 범위를 기준으로 API 호출을 승인한다. 다른 AWS 계정이 소유한 사용자 풀도 쓸 수 있다. API 개발자는 클라이언트 개발자에게 사용자 풀 ID, 클라이언트 ID, 필요하면 관련 클라이언트 보안 암호를 제공해야 한다. Amazon Cognito 자격 증명으로 로그인하면서 IAM 역할 권한을 쓰는 임시 자격 증명도 얻으려면 Amazon Cognito 연동 자격 증명을 쓰고 각 메서드의 권한 부여 유형을 AWS_IAM 으로 설정한다.",
+      "corrects_courseware": "교재는 슬라이드 3·9 다이어그램과 슬라이드 22 YAML(security: PollyNotesPool)에서 Amazon Cognito 를 쓰지만 본문·강사 노트의 권한 부여 유효값 목록에는 COGNITO_USER_POOLS 가 없다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html",
+      "fetched_with": "mcp",
+      "section": "Control access to REST APIs using Amazon Cognito user pools as an authorizer"
+    },
+    {
+      "id": "throttling-four-settings",
+      "claim": "스로틀과 할당량은 모두 best-effort 로 적용되며 보장된 요청 상한이 아니라 목표로 이해해야 한다. API Gateway 는 토큰 버킷 알고리즘으로 요청을 제한하며 토큰 하나가 요청 하나에 해당하고, 계정의 리전별 모든 API 에 대한 속도와 버스트를 함께 검사한다. 정상 상태 요청 속도와 버스트 한도를 넘으면 제한이 시작되고 클라이언트는 429 Too Many Requests 오류 응답을 받을 수 있다. API Gateway 는 네 가지 기본 유형의 제한 설정을 제공한다. ① AWS 제한 한도는 리전의 모든 계정·클라이언트에 적용되며 AWS 가 설정하고 고객이 바꿀 수 없다. ② 계정별 한도는 지정된 리전의 계정 내 모든 API 에 적용되고 요청 시 상향 가능하지만 AWS 제한 한도보다 높을 수는 없다. ③ API별·스테이지별 제한 한도는 스테이지의 API 메서드 수준에서 적용되며 모든 메서드에 같은 설정을 하거나 메서드마다 다르게 구성할 수 있고 AWS 제한 한도보다 높을 수 없다. ④ 클라이언트별 제한 한도는 사용량 계획과 연결된 API 키를 클라이언트 식별자로 쓰는 클라이언트에 적용되며 계정별 한도보다 높을 수 없다. 적용 순서는 사용량 계획에서 설정한 클라이언트별·메서드별 한도 → API 스테이지에 설정한 메서드별 한도 → 리전별 계정 수준 제한 → AWS 리전 제한이다. 사용량 계획에서는 토큰 버킷에 토큰이 추가되는 초당 속도인 제한 속도(throttling rate)와 토큰 버킷의 용량인 제한 버스트(throttling burst)를 지정한다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 '서버 측 제한 한도는 모든 클라이언트에 적용' 과 '클라이언트당 제한 한도는 사용량 정책과 관련된 API 키를 클라이언트 식별자로 사용' 이라는 두 서술은 각각 문서의 계정별·API별 한도와 클라이언트별 한도에 대응한다.",
+      "corrects_courseware": "교재는 제한 설정을 '두 가지 기본적인 유형' 으로 제시한다. 현재 문서는 AWS 제한 한도 · 계정별 한도 · API별·스테이지별 한도 · 클라이언트별 한도 네 가지로 제시하고 적용 순서까지 명시한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html",
+      "fetched_with": "mcp",
+      "section": "How throttling limit settings are applied in API Gateway / Account-level throttling per Region / Configuring API-level and stage-level throttling targets in a usage plan / Configuring method-level throttling targets in a usage plan"
+    },
+    {
+      "id": "usage-plans-api-keys",
+      "claim": "API 를 생성·테스트·배포한 뒤 API Gateway 사용량 계획으로 API 를 고객용 제품으로 제공할 수 있다. 사용량 계획은 배포된 하나 이상의 API 스테이지·메서드에 누가 액세스할 수 있는지 지정하고 선택적으로 요청 제한을 시작할 목표 요청 속도를 설정한다. 사용량 계획은 API 키로 API 클라이언트를 식별한다. API 키는 API 액세스를 부여하려고 애플리케이션 개발자 고객에게 배포하는 영숫자 문자열 값이며 Lambda 권한 부여자·IAM 역할·Amazon Cognito 와 함께 액세스 제어에 쓸 수 있다. API Gateway 가 API 키를 생성해 주거나 CSV 파일에서 가져올 수 있다. API 키에는 이름과 값이 있고 이름은 1,024자를 넘을 수 없으며 값은 20~128자의 영숫자 문자열이다. API 키 값은 고유해야 하며 이름이 달라도 값이 같으면 같은 키로 취급된다. 하나의 API 키를 여러 사용량 계획에 연결할 수 있고 하나의 사용량 계획을 여러 스테이지에 연결할 수 있지만, 특정 API 키는 API 의 각 스테이지에 대해 하나의 사용량 계획에만 연결될 수 있다. 제한 한도는 요청 제한을 시작할 목표 지점을, 할당량 한도는 지정된 시간 간격 안에 특정 API 키로 제출할 수 있는 목표 최대 요청 수를 설정한다. 제한과 할당량은 사용량 계획 안의 모든 API 스테이지에 걸쳐 집계된 개별 API 키 요청에 적용된다. 사용량 계획의 제한과 할당량은 하드 한도가 아니라 best-effort 로 적용되므로 클라이언트가 초과할 수 있고, 비용 통제나 API 액세스 차단에 의존해서는 안 되며 비용 모니터링에는 AWS Budgets, 요청 관리에는 AWS WAF 를 고려하라고 안내한다. 모범 사례로 문서는 'API 액세스를 제어하는 인증·권한 부여에 API 키를 쓰지 말라' 고 명시한다. 한 사용량 계획에 여러 API 가 있으면 그중 한 API 의 유효한 API 키를 가진 사용자가 그 사용량 계획의 모든 API 에 액세스할 수 있기 때문이며, 액세스 제어에는 IAM 역할·Lambda 권한 부여자·Amazon Cognito 사용자 풀을 쓰라고 안내한다. 또 API Gateway 가 생성한 API 키를 쓰고 기밀 정보를 API 키에 넣지 말라고 안내한다(클라이언트가 보통 로깅될 수 있는 헤더로 전송하기 때문). 사용량 계획에 API 키를 추가한 뒤 업데이트가 완료되기까지 몇 분이 걸릴 수 있다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 '사용량 계획과 API 키를 구성하면 고객이 합의된 요청 속도와 할당량을 바탕으로 API 에 액세스한다' 는 서술과 일치한다.",
+      "corrects_courseware": "교재는 API 키를 'API 키 구성' 이라는 개발자 기능으로만 제시하고, 문서가 명시하는 'API 키를 인증·권한 부여에 쓰지 말라' 는 모범 사례와 사용량 계획 할당량이 하드 한도가 아니라는 경고를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html",
+      "fetched_with": "mcp",
+      "section": "What are usage plans and API keys? / Best practices for API keys and usage plans"
+    },
+    {
+      "id": "account-throttle-quota",
+      "claim": "계정·리전별 스로틀 할당량은 HTTP API·REST API·WebSocket API·WebSocket 콜백 API 를 합쳐 초당 10,000 요청(RPS)이고, 토큰 버킷 알고리즘이 제공하는 추가 버스트 용량의 최대 버킷 용량은 5,000 요청이다. 이 스로틀 할당량은 상향 가능하지만 버스트 할당량은 리전의 계정 전체 RPS 할당량을 기준으로 API Gateway 서비스 팀이 정하며 고객이 제어하거나 변경을 요청할 수 없다. 다음 리전에서는 기본 스로틀 할당량이 2,500 RPS, 기본 버스트 할당량이 1,250 RPS 다: 아프리카(케이프타운), 유럽(밀라노), 아시아 태평양(자카르타), 중동(UAE), 아시아 태평양(하이데라바드), 아시아 태평양(멜버른), 유럽(스페인), 유럽(취리히), 이스라엘(텔아비브), 캐나다 서부(캘거리), 아시아 태평양(말레이시아), 아시아 태평양(태국), 멕시코(중부). 관리 작업에도 별도 할당량이 있으며 모두 상향 불가다. 예: CreateDeployment 는 계정당 5초에 1회, CreateApiKey·CreateResource·DeleteApiKey·DeleteResource 는 계정당 초당 5회, 리전 또는 프라이빗 API 의 CreateRestApi·ImportRestApi 는 계정당 3초에 1회, 엣지 최적화 API 의 CreateRestApi·ImportRestApi·DeleteRestApi 는 계정당 30초에 1회, PutRestApi 는 계정당 초당 1회, UpdateUsagePlan 은 계정당 20초에 1회, GetResources 는 계정당 2초에 5회다.",
+      "corrects_courseware": "교재는 제한을 개념으로만 다루고 구체적인 할당량 값을 제시하지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html",
+      "fetched_with": "mcp",
+      "section": "API Gateway account-level quotas, per Region / API Gateway quotas for creating, deploying and managing an API"
+    },
+    {
+      "id": "rest-api-quotas",
+      "claim": "REST API 구성·실행 할당량 중 확인한 값은 다음과 같다. 리전 API 는 리전당 600개, 엣지 최적화 API 는 리전당 120개, 프라이빗 API 는 계정·리전당 600개(모두 상향 불가). 퍼블릭 사용자 지정 도메인 이름은 계정·리전당 120개, 프라이빗은 50개(상향 가능). 도메인당 다중 수준 API 매핑 200개, 계정·리전당 API 키 10,000개, 계정·리전당 API Gateway 생성 클라이언트 인증서 60개. API당 권한 부여자(AWS Lambda 및 Amazon Cognito) 10개, API당 문서 부분 2,000개, API당 리소스 300개, API당 스테이지 10개, API 키당 사용량 계획 10개, API당 모델 크기 400KB. 통합 시간 초과는 리전·엣지 최적화·프라이빗 API 모두 Lambda·Lambda 프록시·HTTP·HTTP 프록시·AWS 통합을 포함한 모든 통합 유형에서 50밀리초~29초이고, 50밀리초 미만으로는 설정할 수 없다. 29초보다 크게 올리는 것은 리전 API 와 프라이빗 API 에서 가능하지만 계정의 리전 수준 스로틀 할당량을 낮춰야 할 수 있고, 엣지 최적화 API 는 상향할 수 없다. 유휴 연결 시간 초과는 310초, 페이로드 크기는 10MB(상향 불가)다. 할당량을 줄이는 모범 사례로 문서는 리소스 수를 줄이려면 {proxy+} 경로를 쓰고, 스테이지 수를 줄이려면 API 를 여러 API 로 분할하고, 권한 부여자 수를 줄이려면 API 메서드 간에 권한 부여자를 재사용하고, 사용 안 하는 API 는 내보낸 뒤 삭제하라고 안내한다.",
+      "corrects_courseware": "교재는 REST API 의 구성·실행 할당량을 다루지 않는다. 특히 통합 시간 초과 29초와 페이로드 10MB 는 Lambda 통합 설계에 직접 영향을 준다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-execution-service-limits-table.html",
+      "fetched_with": "mcp",
+      "section": "Quotas for configuring and running a REST API in API Gateway / Best practices to reduce your quotas"
+    },
+    {
+      "id": "caching-ttl-and-size",
+      "claim": "API 캐싱을 켜면 엔드포인트 응답을 캐시해 엔드포인트 호출 수를 줄이고 API 요청의 대기 시간을 개선할 수 있다. 캐싱은 스테이지 단위로 활성화하며, 지정한 TTL(초) 동안 응답을 캐시하고 그 뒤에는 엔드포인트에 요청하지 않고 캐시에서 응답을 찾아 반환한다. API 캐싱의 기본 TTL 값은 300초, 최대 TTL 값은 3600초이고 TTL=0 은 캐싱 비활성화를 뜻한다. 캐싱은 best-effort 이며 CloudWatch 의 CacheHitCount·CacheMissCount 지표로 캐시에서 처리된 요청을 확인한다. 캐시할 수 있는 응답의 최대 크기는 1,048,576바이트이고 캐시 데이터 암호화는 캐시되는 응답 크기를 늘릴 수 있다. 스테이지에 캐싱을 켜면 API 안전성·가용성을 위해 GET 메서드만 기본으로 캐싱이 활성화되며 메서드 설정 재정의로 다른 메서드에도 켤 수 있다. 캐싱은 선택한 캐시 크기를 기준으로 시간당 과금되고 AWS 프리 티어 대상이 아니다. 캐시 용량(cacheClusterSize) 유효값은 0.5, 1.6, 6.1, 13.5, 28.4, 58.2, 118, 237(GB)이다. 전용 캐시 인스턴스 생성에는 최대 4분이 걸리고, 용량을 바꾸면 기존 캐시 인스턴스를 제거하고 새로 만들기 때문에 기존 캐시 데이터가 모두 삭제된다. 캐시 용량은 캐시 인스턴스의 CPU·메모리·네트워크 대역폭에 영향을 준다. 메서드·통합 파라미터(사용자 지정 헤더·URL 경로·쿼리 문자열)를 캐시 키로 쓸 수 있고 리소스에 캐싱을 설정할 때 캐시 키는 필수다. 스테이지 캐시는 콘솔의 Flush stage cache 또는 flush-stage-cache CLI 로 플러시할 수 있다. 클라이언트가 개별 요청에서 기존 캐시 항목을 무효화하려면 Cache-Control: max-age=0 헤더를 포함해 요청하며, 권한이 있으면 캐시가 아니라 통합 엔드포인트에서 직접 응답을 받고 그 응답이 기존 캐시 항목을 대체한다. 교차 계정 캐시 무효화는 지원되지 않는다. CloudFront 응답의 X-Cache 헤더로 API Gateway 캐시 인스턴스에서 처리되었는지 판단해서는 안 된다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 'API 캐싱을 활성화하면 엔드포인트에 적용되는 호출 수를 줄일 수 있고 대기 시간도 개선된다' 는 서술과 일치한다.",
+      "corrects_courseware": "교재는 캐싱을 개념으로만 제시하고 TTL 기본값·최대값, 캐시 용량 선택지, GET 만 기본 캐싱, 캐시 키 필수, Cache-Control: max-age=0 무효화, 시간당 과금을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html",
+      "fetched_with": "mcp",
+      "section": "Cache settings for REST APIs in API Gateway / Enable Amazon API Gateway caching / Override API Gateway stage-level caching for method-level caching / Use method or integration parameters as cache keys / Flush the API stage cache / Invalidate an API Gateway cache entry"
+    },
+    {
+      "id": "stage-definition-and-settings",
+      "claim": "스테이지는 API 의 스냅샷인 배포에 대한 명명된 참조다. Stage 로 특정 배포를 관리·최적화하며, 스테이지 설정을 구성해 캐싱 활성화, 요청 제한 사용자 지정, 로깅 구성, 스테이지 변수 정의, 테스트용 카나리 릴리스 첨부를 할 수 있다. 초기 배포 후 스테이지를 더 추가해 기존 배포에 연결할 수 있다. 스테이지 이름은 영숫자·하이픈·밑줄만 쓸 수 있고 최대 128자다. 스테이지 수준 제한에서 Rate 는 토큰 버킷에 토큰이 추가되는 초당 요청 수이고 Burst 는 토큰 버킷의 용량이며, 둘 다 계정 수준 값을 넘을 수 없다. 제한 속도는 하드 한도가 아니라 best-effort 로 적용되므로 비용 통제나 API 차단에 의존해서는 안 된다. 실행 로깅 수준은 Off / Errors only / Errors and info logs 세 단계이고, Data tracing 은 문제 해결에 유용하지만 민감한 데이터가 로깅될 수 있어 프로덕션 API 에는 권장하지 않는다. Detailed metrics 를 켜면 API calls·Latency·Integration latency·400 errors·500 errors 지표를 CloudWatch 에 보고하며 메서드 수준 CloudWatch 지표에는 요금이 부과된다(API 수준·스테이지 수준 지표는 무료). 액세스 로그 대상 ARN 으로 CloudWatch Logs 로그 그룹 또는 Firehose 스트림을 지정할 수 있고 Firehose 스트림 이름은 amazon-apigateway-{이름} 형식이어야 한다. X-Ray 추적도 스테이지 설정에서 켠다. 스테이지 설정을 바꾼 뒤에는 새 설정을 적용하기 위해 API 를 다시 배포한다. 웹 ACL 과 클라이언트 인증서도 스테이지 설정에서 연결한다.",
+      "supports_courseware": "교재 슬라이드 10·30 강사 노트의 '스테이지는 API 의 스냅샷인 배포에 대한 명명된 참조' 와 스테이지로 할 수 있는 다섯 가지(캐싱 활성화·요청 제한 사용자 지정·로깅 구성·스테이지 변수 정의·테스트를 위한 canary 릴리스 첨부)가 문서 첫 문단과 문장 단위로 일치한다.",
+      "corrects_courseware": "교재는 'Stage Editor 창' 이라고 표기하지만 현재 콘솔 절차는 Stages 창에서 스테이지를 고르고 Stage details 의 Edit, Logs and tracing 의 Edit 로 나뉘어 있다. 또 교재에는 Detailed metrics 과금, Data tracing 비권장, Firehose 액세스 로그 대상, 설정 변경 후 재배포 필요가 없다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-stages.html",
+      "fetched_with": "mcp",
+      "section": "Set up a stage for a REST API in API Gateway / Create a new stage / Modify stage settings"
+    },
+    {
+      "id": "stage-and-canary-field-types",
+      "claim": "CreateStage 요청 본문 필드의 형식은 다음과 같다. cacheClusterEnabled 는 Boolean, cacheClusterSize 는 String(유효값 0.5 | 1.6 | 6.1 | 13.5 | 28.4 | 58.2 | 118 | 237), canarySettings 는 CanarySettings 객체, deploymentId 는 String(필수), stageName 은 String(필수, 영숫자·하이픈·밑줄만 허용하고 최대 128자), tracingEnabled 는 Boolean, variables 는 문자열-문자열 맵이다. 스테이지 변수 이름에는 영숫자와 밑줄을 쓸 수 있고 값은 [A-Za-z0-9-._~:/?#&=,]+ 와 일치해야 한다. 응답의 methodSettings 는 메서드 경로를 키로 하는 MethodSetting 맵이며 개별 메서드 재정의는 {resource_path}/{http_method}, 스테이지의 모든 메서드 재정의는 /*/* 를 키로 쓴다. MethodSetting 의 cacheDataEncrypted·cachingEnabled·dataTraceEnabled·metricsEnabled·requireAuthorizationForCacheControl 은 Boolean, cacheTtlInSeconds·throttlingBurstLimit·throttlingRateLimit 은 number, loggingLevel·unauthorizedCacheControlHeaderStrategy 는 String 이다. cacheClusterStatus 유효값은 CREATE_IN_PROGRESS | AVAILABLE | DELETE_IN_PROGRESS | NOT_AVAILABLE | FLUSH_IN_PROGRESS 다.",
+      "corrects_courseware": "교재 슬라이드 34 강사 노트의 코드 예는 percentTraffic 을 \"10\", useStageCache 를 \"False\", metricsEnabled 를 \"true\" 로 모두 문자열로 표기한다. API 참조에서 percentTraffic 은 Double, useStageCache 와 metricsEnabled 는 Boolean 이다. 교재 예제는 또 마지막 줄에 닫는 중괄호가 없고 \"False“ 처럼 따옴표가 깨져 있다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/api/API_CreateStage.html",
+      "fetched_with": "mcp",
+      "section": "Request Body / Response Elements"
+    },
+    {
+      "id": "canary-settings-object",
+      "claim": "CanarySettings 는 카나리 배포의 구성 설정이다. deploymentId 는 카나리 배포의 ID(String), percentTraffic 은 카나리 배포로 전환되는 트래픽의 비율(Double, 0~100), stageVariableOverrides 는 카나리 릴리스 배포에서 재정의되는 스테이지 변수의 문자열-문자열 맵, useStageCache 는 카나리 배포가 스테이지 캐시를 사용하는지 나타내는 Boolean 플래그다. 네 필드 모두 필수가 아니다.",
+      "corrects_courseware": "교재 슬라이드 34 코드 예의 percentTraffic·useStageCache 문자열 표기를 교정하는 근거다. 또 교재는 stageVariableOverrides 를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/api/API_CanarySettings.html",
+      "fetched_with": "mcp",
+      "section": "Contents"
+    },
+    {
+      "id": "canary-same-stage",
+      "claim": "카나리 릴리스는 테스트 목적으로 API 의 새 버전을 배포하고 기본 버전은 같은 스테이지에서 정상 작업을 위한 프로덕션 릴리스로 계속 배포해 두는 소프트웨어 개발 전략이다. 카나리 릴리스 배포에서 전체 API 트래픽은 미리 구성한 비율에 따라 무작위로 프로덕션 릴리스와 카나리 릴리스로 나뉘며, 일반적으로 카나리가 작은 비율을 받고 프로덕션이 나머지를 받는다. 갱신된 API 기능은 카나리를 통과하는 트래픽에만 보인다. 카나리 트래픽 비율은 테스트 커버리지나 성능을 최적화하도록 조정할 수 있다. API Gateway 에서 카나리 릴리스 배포는 기본 버전의 프로덕션 릴리스용 배포 스테이지를 사용하고 그 스테이지에 새 버전용 카나리 릴리스를 첨부한다. 스테이지는 최초 배포와, 카나리는 이후 배포와 연결되며 처음에는 스테이지와 카나리가 같은 API 버전을 가리킨다. 카나리 배포를 만들려면 일반 배포의 스테이지에 canarySettings 를 추가하고 배포 ID(처음에는 스테이지에 설정된 기본 버전 배포 ID 와 동일), 0.0~100.0 사이의 API 트래픽 비율, 프로덕션 스테이지 변수를 재정의할 카나리용 스테이지 변수, 스테이지 캐시 사용 여부를 지정한다. 카나리 릴리스를 활성화한 뒤에는 카나리를 비활성화하고 canarySettings 를 제거할 때까지 그 배포 스테이지를 다른 비카나리 배포에 연결할 수 없다. 실행 로깅을 켜면 카나리 릴리스는 모든 카나리 요청에 대해 자체 로그와 지표를 생성하며 프로덕션 스테이지 로그 그룹과 카나리 전용 로그 그룹에 모두 보고한다. 프로덕션 스테이지 실행 로그 그룹 이름은 API-Gateway-Execution-Logs/{rest-api-id}/{stage-name}, 카나리 실행 로그 그룹 이름은 그 뒤에 /Canary 가 붙는다. 액세스 로깅에서도 카나리 액세스 로그 그룹 이름에 /Canary 접미사가 붙는다.",
+      "supports_courseware": "교재 슬라이드 32 강사 노트의 '기본 버전은 여전히 프로덕션 릴리스로, 또는 동일한 스테이지에서의 정상적인 작업을 위한 비프로덕션 릴리스로 배포됩니다' 와 카나리 10% / 안정 90% 예시가 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 34~36 은 '새 스테이지에 배포합니다', '새 스테이지에서 Canary 를 활성화합니다' 라고 기재하고 다이어그램에도 '안정적 스테이지' 와 '새 canary 스테이지' 를 별도 스테이지로 그린다. 문서에서 카나리는 별도 스테이지가 아니라 같은 스테이지의 canarySettings 다. 같은 교재의 슬라이드 32 노트('동일한 스테이지에서')와도 어긋난다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/canary-release.html",
+      "fetched_with": "mcp",
+      "section": "Set up an API Gateway canary release deployment / Canary release deployment in API Gateway"
+    },
+    {
+      "id": "canary-promote",
+      "claim": "카나리 릴리스를 승격하면 카나리 릴리스가 현재 스테이지 설정을 대체한다. 승격은 스테이지의 카나리를 비활성화하지 않으며, 카나리를 비활성화하려면 스테이지의 카나리 설정을 제거해야 한다. 승격 절차는 ① 스테이지의 배포 ID 를 카나리의 배포 ID 로 재설정해 스테이지의 API 스냅샷을 카나리 스냅샷으로 갱신하고 ② 카나리 스테이지 변수가 있으면 스테이지 변수를 그 값으로 갱신하고(갱신하지 않으면 새 API 버전이 예상치 못한 결과를 낼 수 있음) ③ 카나리 트래픽 비율을 0.0% 로 설정하는 것이다. 콘솔에서는 Stages → 스테이지 → Canary 탭 → Promote canary 로 수행한다. CLI 에서는 update-stage 의 patch-operations 로 /canarySettings/percentTraffic 을 0.0 으로 replace 하고 /canarySettings/stageVariableOverrides 를 /variables 로 copy 하고 /canarySettings/deploymentId 를 /deploymentId 로 copy 한다. 승격 후 프로덕션 릴리스는 카나리 릴리스와 같은 deploymentId 를 참조하지만 배포는 여전히 카나리 릴리스 배포로 남는다.",
+      "supports_courseware": "교재 슬라이드 33·36 의 'canary 버전을 승격하고 트래픽 100% 를 이 API 버전으로 보낼 수 있다' 는 결과 서술을 뒷받침한다(프로덕션 스냅샷이 카나리 버전으로 교체되므로 전체 트래픽이 새 버전을 받는다).",
+      "corrects_courseware": "교재는 승격을 '트래픽 100% 를 새 버전으로 보낸다' 로만 서술한다. 실제 메커니즘은 카나리 트래픽 비율을 0.0% 로 내리고 배포 ID·스테이지 변수를 스테이지로 복사하는 것이며, 승격만으로는 카나리가 비활성화되지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/promote-canary-deployment.html",
+      "fetched_with": "mcp",
+      "section": "Promote a canary release / Promote a canary release using the AWS CLI"
+    },
+    {
+      "id": "stage-variables-usage",
+      "claim": "스테이지 변수는 REST API 의 배포 스테이지와 연결된 구성 속성으로 정의할 수 있는 키-값 쌍이다. 환경 변수처럼 작동하며 API 설정과 매핑 템플릿에서 쓸 수 있다. 배포 스테이지로 API 마다 여러 릴리스 스테이지를 관리하고, 스테이지 변수로 배포 스테이지가 서로 다른 백엔드 엔드포인트와 상호 작용하도록 구성할 수 있다. 사용 사례는 두 가지로 제시된다. ① 다른 백엔드 엔드포인트 지정 — 프로덕션 엔드포인트를 호출하면 example.com 을, beta 스테이지를 호출하면 beta.example.com 을 호출하게 할 수 있고 스테이지마다 다른 Lambda 함수 이름을 지정할 수도 있다. 단 스테이지 변수로 통합 엔드포인트의 종류 자체를 바꿀 수는 없다(한 스테이지는 HTTP 프록시, 다른 스테이지는 Lambda 프록시로 지정 불가). 스테이지 변수 값으로 Lambda 함수 이름을 지정하면 Lambda 함수 권한을 직접 구성해야 한다. ② 매핑 템플릿으로 정보 전달 — 매핑 템플릿에서 스테이지 변수에 접근해 Lambda 또는 HTTP 백엔드에 구성 파라미터를 넘길 수 있고, 예를 들어 여러 스테이지에서 같은 Lambda 함수를 재사용하면서 스테이지에 따라 다른 DynamoDB 테이블을 읽게 할 수 있다. 스테이지 변수를 쓰려면 먼저 변수를 구성하고 값을 할당한 뒤 통합 요청에서 http://${stageVariables.url} 처럼 참조하며, API Gateway 가 실행 중인 스테이지에 따라 ${} 를 런타임에 치환한다. 스테이지 변수는 자격 증명 같은 민감한 데이터에 쓰도록 의도된 것이 아니며, 통합에 민감한 데이터를 넘겨야 하면 Lambda 권한 부여자의 출력을 쓰라고 안내한다.",
+      "supports_courseware": "교재 슬라이드 31 본문·강사 노트의 '이름-값 쌍', '환경 변수처럼 작동', 'API 설정 및 매핑 템플릿에서 사용', '여러 데이터 소스 보유 / 여러 릴리스 스테이지 관리 / 구성을 Lambda 함수로 전달' 이 모두 문서와 일치한다.",
+      "corrects_courseware": "교재는 스테이지 변수를 민감한 데이터에 써서는 안 된다는 경고와, 통합 엔드포인트 종류 자체는 바꿀 수 없다는 제약을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/stage-variables.html",
+      "fetched_with": "mcp",
+      "section": "Use stage variables for a REST API in API Gateway / Use cases for stage variables"
+    },
+    {
+      "id": "stage-variable-lambda-alias",
+      "claim": "스테이지 변수는 다음 위치에서 쓸 수 있다. ① 파라미터 매핑 표현식 — 메서드 요청·응답 헤더 파라미터의 매핑 표현식에서 $ 와 {...} 없이 stageVariables.<변수이름> 형태로 부분 치환 없이 참조한다. ② 매핑 템플릿 — $stageVariables.<변수이름> 또는 ${stageVariables.<변수이름>} 형태로 어디서나 쓸 수 있다. ③ HTTP 통합 URI — 프로토콜 없는 전체 URI, 전체 도메인, 서브도메인, 경로, 쿼리 문자열의 일부로 쓸 수 있다. ④ AWS 통합 URI — arn:aws:apigateway:<region>:<service>:${stageVariables.<변수이름>} 처럼 작업 또는 경로 구성 요소로 쓸 수 있다. ⑤ Lambda 함수 AWS 통합 URI — 함수 이름 자리 또는 버전/별칭 자리에 쓸 수 있다. 함수 이름 치환은 arn:aws:apigateway:<region>:lambda:path/2015-03-31/functions/arn:aws:lambda:<region>:<account_id>:function:${stageVariables.<function_variable_name>}/invocations, 버전·별칭 치환은 arn:aws:apigateway:<region>:lambda:path/2015-03-31/functions/arn:aws:lambda:<region>:<account_id>:function:<function_name>:${stageVariables.<version_variable_name>}/invocations 형태다. Lambda 함수에 스테이지 변수를 쓰려면 함수가 API 와 같은 계정에 있어야 하며 스테이지 변수는 교차 계정 Lambda 함수를 지원하지 않는다. ⑥ COGNITO_USER_POOLS 권한 부여자의 Amazon Cognito 사용자 풀 자리 — arn:aws:cognito-idp:<region>:<account_id>:userpool/${stageVariables.<변수이름>}. ⑦ AWS 통합 자격 증명 ARN — arn:aws:iam::<account_id>:${stageVariables.<변수이름>}.",
+      "supports_courseware": "교재 슬라이드 31 다이어그램의 list_function:PROD / list_function:DEV 와 강사 노트의 'list_function:{$stageVariables.environment} 를 호출한다' 는 서술은 문서의 '버전/별칭 자리에 스테이지 변수를 쓴다' 패턴에 해당한다.",
+      "corrects_courseware": "교재 강사 노트는 list_function:{$stageVariables.environment} 로 중괄호 위치가 어긋나 있다. 문서 표기는 function:<function_name>:${stageVariables.<version_variable_name>} 이므로 이 예제에서는 list_function:${stageVariables.environment} 가 된다. 또 교재는 같은 계정 제약을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html",
+      "fetched_with": "mcp",
+      "section": "Parameter mapping expressions / Mapping templates / HTTP integration URIs / AWS integration URIs / AWS integration URIs (Lambda functions) / Amazon Cognito user pool / AWS integration credentials"
+    },
+    {
+      "id": "data-transformations-two-features",
+      "claim": "데이터 변환 기능은 비프록시 통합에서 쓰는 기능이며, 문서는 '가능하면 REST API 에 프록시 통합을 쓰라' 고 권장한다(프록시 통합은 설정이 간소하고 기존 설정을 해체하지 않고도 백엔드와 함께 발전할 수 있기 때문). 비프록시 통합을 쓰는 경우 메서드 요청과 통합 응답을 변환하는 두 가지 기능이 있다. ① 파라미터 매핑 — 통합 요청의 URL 경로 파라미터·URL 쿼리 문자열 파라미터·HTTP 헤더 값을 수정할 수 있지만 통합 요청 페이로드는 수정할 수 없고, HTTP 응답 헤더 값도 수정할 수 있다. CORS 용 정적 헤더 값을 만드는 데 쓴다. 통합 요청에서는 프록시·비프록시 통합 모두에 쓸 수 있지만 통합 응답에서 쓰려면 비프록시 통합이 필요하다. VTL 스크립팅이 필요하지 않다. ② 매핑 템플릿 변환 — 매핑 템플릿으로 URL 경로 파라미터·URL 쿼리 문자열 파라미터·HTTP 헤더와 통합 요청·통합 응답 본문을 매핑한다. 매핑 템플릿은 VTL 로 표현되고 JSONPath 표현식을 사용하며 Content-Type 헤더를 기준으로 페이로드에 적용되는 스크립트다. 매핑 템플릿으로 DynamoDB·Lambda·HTTP 엔드포인트 통합에서 보낼 데이터를 선택하고, API 의 통합 요청·통합 응답 파라미터를 조건부로 재정의하고 새 헤더 값을 만들고 상태 코드를 재정의할 수 있다. 문서는 '가능하면 파라미터 매핑을 쓰라' 고 권장하고, 본문을 바꿔야 하거나 조건부 재정의가 필요하고 프록시 통합을 쓸 수 없을 때 매핑 템플릿 변환을 쓰라고 안내한다.",
+      "supports_courseware": "교재 슬라이드 10·16 강사 노트의 '메서드 요청은 백엔드 요구에 따라 통합 요청 페이로드에서 여러 유형의 페이로드를 선택할 수 있고, 백엔드는 프런트엔드가 예상하는 메서드 응답 페이로드와 다른 통합 응답 페이로드를 반환할 수 있다' 와 슬라이드 12 의 '통합 응답 설정(비프록시 통합에만 해당)' 이 문서와 일치한다.",
+      "corrects_courseware": "교재는 데이터 변환을 매핑 템플릿 중심으로만 제시한다. 현재 문서는 ① 가능하면 프록시 통합을 쓰고 ② 변환이 필요하면 파라미터 매핑을 먼저 고려하고 ③ 본문 변경·조건부 재정의가 필요할 때만 매핑 템플릿을 쓰라는 순서를 명시한다. 파라미터 매핑은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html",
+      "fetched_with": "mcp",
+      "section": "Data transformations for REST APIs in API Gateway / Choose between parameter mapping and mapping template transformations"
+    },
+    {
+      "id": "mapping-template-lifecycle",
+      "claim": "매핑 템플릿 변환은 매핑 템플릿으로 통합 요청 또는 통합 응답을 수정한다. 매핑 템플릿은 VTL 로 표현되고 Content-Type 헤더를 기준으로 JSONPath 를 사용해 페이로드에 적용되는 스크립트다. API Gateway 는 해당 Content-Type 에 대한 매핑 템플릿이 정의되어 있을 때만 매핑 템플릿 변환을 수행한다. Content-Type 에 매핑 템플릿을 정의하지 않으면 기본적으로 본문이 통합 요청을 통해 통합 엔드포인트로 그대로 전달되며, 이 동작은 통합 패스스루 설정으로 바꾼다. 응답 쪽도 같아서, 매핑 템플릿이 정의되어 있지 않으면 통합 응답 본문이 메서드 응답으로 그대로 전달된다. 문서 예제에서 inputRoot 변수는 원본 JSON 데이터의 루트 객체를 나타내고 지시자(directive)는 # 기호로 시작한다. 문서는 '가능하면 매핑 템플릿 변환 대신 프록시 통합으로 데이터를 변환하라' 고 권장한다.",
+      "supports_courseware": "교재 슬라이드 19·20 강사 노트의 '매핑 템플릿은 VTL 로 표현되며 JSONPath 표현식을 사용하여 페이로드에 적용되는 스크립트' 와 슬라이드 16 의 두 매핑 방향(메서드 요청→통합 요청, 통합 응답→메서드 응답)이 문서와 일치한다. set 지시자로 루트를 잡는 관용구도 문서 예제와 같다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.html",
+      "fetched_with": "mcp",
+      "section": "Mapping template transformations for REST APIs in API Gateway / Method request and integration request / Integration response and method response"
+    },
+    {
+      "id": "mapping-template-variables",
+      "claim": "매핑 템플릿 변환에서는 VTL 로 작성한 스크립트 안에서 컨텍스트·입력·유틸리티 변수를 쓸 수 있다. context 변수는 대소문자를 구분하며 표에 52개 항목이 있고, 확인한 것으로 context.accountId(API 소유자의 AWS 계정 ID), context.apiId(API Gateway 가 API 에 할당한 식별자), context.authorizer.claims.property(메서드 호출자 인증 성공 후 Amazon Cognito 사용자 풀이 반환한 클레임의 속성. claims 자체를 호출하면 null 을 반환), context.authorizer.principalId(Lambda 권한 부여자가 반환한 프린시펄 사용자 식별), context.authorizer.property(Lambda 권한 부여자 함수가 반환한 context 맵의 지정된 키-값 쌍의 문자열화된 값. property 에서 지원되는 특수 문자는 밑줄뿐)가 있다. input 변수도 대소문자를 구분하며 input.body(원시 요청 페이로드를 문자열로 반환. 10.00 같은 부동 소수점을 온전히 보존하는 데 쓸 수 있다), input.json(x)(JSONPath 표현식을 평가해 결과를 JSON 문자열로 반환), input.params()(모든 요청 파라미터의 맵을 반환. 주입 공격을 피하려고 util.escapeJavaScript 로 결과를 살균하도록 권장), input.params(x)(경로 → 쿼리 문자열 → 헤더 순으로 검색해 메서드 요청 파라미터 값을 반환), input.path(x)(JSONPath 표현식 문자열을 받아 결과의 JSON 객체 표현을 반환하며 VTL 에서 페이로드 요소에 직접 접근·조작할 수 있게 한다. path 로 얻은 리스트에 size() 를 호출하면 요소 수를 문자열로 반환) 다섯 개다. 스테이지 변수는 stageVariables.변수이름, stageVariables['변수이름'], 중괄호로 감싼 stageVariables['변수이름'] 세 형태로 쓴다. util 변수는 기본 문자 집합이 UTF-8 이며 util.escapeJavaScript(), util.parseJson(), util.urlEncode(), util.urlDecode(), util.base64Encode(), util.base64Decode() 가 있다.",
+      "supports_courseware": "교재 슬라이드 19·20 이 input.path 와 stageVariables.environment 를 쓰는 것은 문서의 변수 목록과 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html",
+      "fetched_with": "mcp",
+      "section": "Context variables for data transformations / Input variables / Stage variables / Util variables"
+    },
+    {
+      "id": "mapping-template-examples",
+      "claim": "매핑 템플릿 예제 문서는 다섯 가지 예를 제시한다. ① 여러 context 변수를 통합 엔드포인트에 전달(stage, requestId, apiId, resourcePath, resourceId, httpMethod, identity.sourceIp, identity.userAgent, identity.accountId, identity.apiKey, identity.caller, identity.user, identity.userArn). ② 모든 요청 파라미터를 JSON 페이로드로 전달 — set 지시자로 input.params() 를 받은 뒤 foreach 지시자를 중첩해 keySet() 을 순회하고 if 지시자와 foreach.hasNext 로 쉼표를 넣으며 값은 util.escapeJavaScript() 로 감싼다. ③ 메서드 요청의 일부만 전달 — input.params('name') 과 input.json 루트 표현식. ④ JSONPath 표현식으로 본문의 일부만 전달 — input.json 에 본문 속성 경로를 지정. ⑤ 메서드 요청 정보를 전달 — input.path 로 얻은 리스트에 size() 를 호출해 요소 수를 얻는다. JSON 입력에 JavaScript 가 파싱할 수 없는 이스케이프되지 않은 문자가 있으면 API Gateway 가 400 응답을 반환할 수 있으므로 util.escapeJavaScript() 를 적용하라고 안내한다. 공식 예제에서 컬렉션 순회는 항상 foreach 지시자로 시작하고 end 로 닫는다.",
+      "corrects_courseware": "교재 슬라이드 19·20 의 매핑 템플릿은 inputRoot 를 set 으로 선언하지만 쓰지 않고, elem 을 반복 지시자 없이 참조한다. 공식 예제에서 컬렉션 순회는 항상 foreach 지시자를 쓰므로 교재 템플릿을 그대로 실행하면 elem 값이 채워지지 않는다. 다만 AWS 문서의 models-mappings 예제에도 foreach 없이 elem 을 쓰는 표기가 있어, 문서가 이 패턴을 명시적으로 오류라고 서술한 문장은 찾지 못했다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-variable-examples.html",
+      "fetched_with": "mcp",
+      "section": "Example 1~5"
+    },
+    {
+      "id": "request-validation-scope",
+      "claim": "API Gateway 를 구성해 통합 요청을 진행하기 전에 API 요청의 기본 검증을 수행할 수 있다. 검증이 실패하면 API Gateway 는 즉시 요청을 실패시키고 호출자에게 400 오류 응답을 반환하며 검증 결과를 CloudWatch Logs 에 게시한다. 이렇게 하면 백엔드에 대한 불필요한 호출이 줄어든다. API Gateway 는 다음 두 조건 중 하나 또는 둘 다를 검증한다. ① 들어오는 요청의 URI·쿼리 문자열·헤더에 있는 필수 요청 파라미터가 포함되어 있고 비어 있지 않은지 — API Gateway 는 파라미터의 존재만 확인하고 유형이나 형식은 확인하지 않는다. ② 해당 요청 페이로드가 주어진 콘텐츠 유형에 대해 구성된 메서드의 JSON 스키마 요청을 따르는지 — 일치하는 콘텐츠 유형이 없으면 요청 검증이 수행되지 않는다. 콘텐츠 유형과 무관하게 같은 모델을 쓰려면 데이터 모델의 콘텐츠 유형을 default 예약 키로 설정한다. 검증을 켜려면 요청 검증자에 검증 규칙을 지정하고 그 검증자를 API 의 요청 검증자 맵에 추가한 뒤 개별 API 메서드에 할당한다. 요청 본문 검증과 통합 패스스루 동작은 별개 주제다.",
+      "supports_courseware": "교재 슬라이드 18 강사 노트의 '계속하기 전에 API 요청의 유효성 검사를 수행하도록 API Gateway 를 구성할 수 있습니다' 와 슬라이드 도형의 '필수 파라미터인 q1 이 비어 있지 않고 설정되어야 합니다' 가 문서의 파라미터 검증 조건과 일치한다.",
+      "corrects_courseware": "교재는 검증이 파라미터의 '존재' 만 확인하고 유형·형식은 확인하지 않는다는 점, 검증 실패 시 400 을 반환하고 CloudWatch Logs 에 결과를 게시한다는 점을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html",
+      "fetched_with": "mcp",
+      "section": "Request validation for REST APIs in API Gateway / Overview of basic request validation in API Gateway"
+    },
+    {
+      "id": "request-validator-fields",
+      "claim": "RequestValidator 는 들어오는 Method 요청에 대한 검증 규칙 집합이다. 필드는 id(String), name(String), validateRequestBody(구성된 Model 스키마에 따라 요청 본문을 검증할지 나타내는 Boolean 플래그), validateRequestParameters(요청 파라미터를 검증할지(true) 아닐지(false) 나타내는 Boolean 플래그)이며 모두 필수가 아니다.",
+      "corrects_courseware": "교재 슬라이드 18 의 구성 JSON 은 validateRequestBody 와 validateRequestParameters 값을 각각 문자열 \"false\"·\"true\" 로 표기한다. API 참조에서 두 필드는 Boolean 이므로 따옴표 없이 false·true 로 써야 한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/api/API_RequestValidator.html",
+      "fetched_with": "mcp",
+      "section": "Contents"
+    },
+    {
+      "id": "model-json-schema-draft4",
+      "claim": "API Gateway 에서 모델은 페이로드의 데이터 구조를 정의하며 JSON schema draft 4 로 정의한다. 모델이 있으면 ① 기본 요청 검증을 쓸 수 있고 ② 데이터 변환용 매핑 템플릿을 만들 수 있고 ③ SDK 를 생성할 때 사용자 정의 데이터 유형(UDT)을 만들 수 있다. 모델에서 스키마 식별자 속성은 유효한 JSON Schema 버전 식별자(json-schema.org 의 draft-04 스키마 URI)를 나타내고, title 은 사람이 읽을 수 있는 모델 식별자, required 는 기본 요청 검증에 필요한 속성 목록, properties 는 모델의 속성이다. enum 으로 허용 값을 제한하고 minimum·maximum 으로 숫자 범위를 제약할 수 있다. 긴 모델에는 참조 프리미티브로 definitions 안의 재사용 가능한 정의를 참조할 수 있고, 외부 모델 파일이나 다른 API 의 모델을 apigateway.amazonaws.com 의 모델 경로로 참조할 수도 있다. 데이터를 변환하면 통합 응답에 페이로드 모델을 정의할 수 있고, Java·Objective-C·Swift 같은 강력한 유형 언어에서는 이 객체가 UDT 에 대응하며 모델을 제공하지 않으면 API Gateway 가 빈 모델로 기본 UDT 를 만든다.",
+      "supports_courseware": "교재 슬라이드 17 의 요청 모델 예제가 draft-04 스키마 식별자와 title·type·required·properties 구조를 쓰는 것, 강사 노트의 모델 용도 세 가지(요청 검증 / 강력한 유형의 API SDK 생성 / 매핑 템플릿 생성의 편리성)가 모두 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings-models.html",
+      "fetched_with": "mcp",
+      "section": "Data models for REST APIs / Creating more complex models / Using output data models"
+    },
+    {
+      "id": "openapi-import",
+      "claim": "API Gateway 로 외부 정의 파일에서 REST API 를 가져올 수 있다. 현재 API Gateway 는 OpenAPI v2.0 과 OpenAPI v3.0 정의 파일을 지원하며 'Amazon API Gateway important notes for REST APIs' 에 나열된 예외가 있다. 새 정의로 덮어써서 API 를 업데이트하거나 기존 API 와 정의를 병합할 수 있고, 요청 URL 의 mode 쿼리 파라미터로 선택한다. 하위 주제로 엣지 최적화 API 가져오기, 리전 API 가져오기, 기존 API 정의 업데이트, OpenAPI basePath 속성 설정, OpenAPI 가져오기용 AWS 변수, 가져오기 오류·경고, REST API 내보내기가 제시된다.",
+      "corrects_courseware": "교재 슬라이드 22 는 제목·본문·YAML 에서 규격을 'Swagger' 로만 부르고 파일 첫 줄이 swagger 2.0 이다. 현재 문서는 이 기능을 'Develop REST APIs using OpenAPI in API Gateway' 로 부르고 OpenAPI v2.0(Swagger 2.0 에 해당)과 OpenAPI v3.0 두 규격을 지원한다고 기술한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html",
+      "fetched_with": "mcp",
+      "section": "Develop REST APIs using OpenAPI in API Gateway"
+    },
+    {
+      "id": "openapi-export",
+      "claim": "API Gateway 콘솔 등으로 REST API 를 만들고 구성한 뒤 API Gateway Export API(Amazon API Gateway Control Service 의 일부)로 OpenAPI 파일로 내보낼 수 있다. Export API 를 쓰려면 API 요청에 서명해야 한다. 내보낸 OpenAPI 정의 파일에 API Gateway 통합 확장 또는 Postman 확장을 포함할 수 있다. 요청 URL 은 OpenAPI 3.0 은 스테이지 경로 아래 exports/oas30, OpenAPI 2.0 은 exports/swagger 형식이고 extensions 쿼리 문자열에 integration 또는 postman 을 지정한다. Accept 헤더를 application/json 또는 application/yaml 로 설정해 JSON 또는 YAML 로 받는다. AWS CLI 로 내보낼 때 요청 검증자 확장을 포함시키려면 --parameters extensions='apigateway' 를 넣어야 한다. 페이로드가 application/json 유형이 아닌 API 는 내보낼 수 없고, 모델을 정의했다면 콘텐츠 유형이 application/json 이어야 하며 모델에는 속성이 있거나 특정 JSONSchema 유형으로 정의되어 있어야 한다. 콘솔에서는 Stages 창의 Stage actions → Export 에서 API 규격 유형·형식·확장을 지정해 내려받는다.",
+      "supports_courseware": "교재 슬라이드 22 의 'API 설계 가져오기 / API 설계 내보내기 / JSON·YAML / API Gateway 확장' 이 모두 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-export-api.html",
+      "fetched_with": "mcp",
+      "section": "Export a REST API from API Gateway / Request to export a REST API / Export REST API using the API Gateway console"
+    },
+    {
+      "id": "openapi-extensions-list",
+      "claim": "API Gateway 확장은 REST API 와 HTTP API 에 대해 AWS 고유 권한 부여와 API Gateway 고유 API 통합을 지원하며 문서는 이 절의 제목을 'OpenAPI extensions for API Gateway' 로 쓴다. 확장을 이해하려면 콘솔에서 REST API 또는 HTTP API 를 만들어 OpenAPI 정의 파일로 내보내 보라고 안내한다. 확장 목록에는 x-amazon-apigateway-any-method, x-amazon-apigateway-cors, x-amazon-apigateway-api-key-source, x-amazon-apigateway-auth, x-amazon-apigateway-authorizer, x-amazon-apigateway-authtype, x-amazon-apigateway-binary-media-types, x-amazon-apigateway-documentation, x-amazon-apigateway-endpoint-access-mode, x-amazon-apigateway-endpoint-configuration, x-amazon-apigateway-gateway-responses(및 gatewayResponse·responseParameters·responseTemplates 하위 객체), x-amazon-apigateway-importexport-version, x-amazon-apigateway-integration(및 requestTemplates·requestParameters·responses·response·responseTemplates·responseParameters·tlsConfig 하위 객체), x-amazon-apigateway-integrations, x-amazon-apigateway-minimum-compression-size, x-amazon-apigateway-policy, x-amazon-apigateway-request-validator, x-amazon-apigateway-request-validators(및 requestValidator), x-amazon-apigateway-security-policy, x-amazon-apigateway-tag-value 가 있다.",
+      "corrects_courseware": "교재 슬라이드 22 는 'API Gateway 확장' 을 항목 하나로만 제시하고 x-amazon-apigateway-integration 만 예로 든다. 현재 문서에는 20개가 넘는 확장이 있다. 문서 페이지 제목도 Swagger 가 아니라 OpenAPI 다(URL 경로에는 여전히 swagger-extensions 가 남아 있다).",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html",
+      "fetched_with": "mcp",
+      "section": "OpenAPI extensions for API Gateway"
+    },
+    {
+      "id": "apigateway-integration-extension",
+      "claim": "x-amazon-apigateway-integration 은 메서드에 사용되는 백엔드 통합의 세부 정보를 지정하는 OpenAPI Operation 객체의 확장 속성이며 결과는 API Gateway Integration 객체다. 속성은 cacheKeyParameters(문자열 배열), cacheNamespace, connectionId(프라이빗 통합용 VpcLink ID), connectionType(유효값은 프라이빗 통합의 VPC_LINK 또는 그 외의 INTERNET), credentials(IAM 역할 기반 자격 증명의 ARN. 지정하지 않으면 리소스 기반 권한으로 기본 설정되며 수동으로 추가해야 한다), contentHandling(CONVERT_TO_TEXT 또는 CONVERT_TO_BINARY), httpMethod(통합 요청에 사용하는 HTTP 메서드. Lambda 함수 호출에서는 값이 POST 여야 한다), integrationSubtype(HTTP API 전용), integrationTarget(VPC 링크 V2 프라이빗 통합 전용 ALB·NLB 리스너), passthroughBehavior(when_no_templates, when_no_match, never), payloadFormatVersion(통합에 전송되는 페이로드 형식. HTTP API 에서는 필수이고 Lambda 프록시 통합은 1.0 과 2.0 을 지원하며 다른 모든 통합은 1.0 만 지원한다), requestParameters, requestTemplates(지정된 MIME 유형 요청 페이로드용 매핑 템플릿), responses(메서드의 응답을 정의하고 통합 응답에서 메서드 응답으로의 파라미터·페이로드 매핑을 지정), responseTransferMode(BUFFERED 는 전체 응답 수신을 기다리고 STREAM 은 사용 가능해지는 대로 부분 응답을 클라이언트로 보낸다), timeoutInMillis(50ms~29,000ms 사이의 통합 시간 초과), type(유효값 http, http_proxy, aws_proxy, aws, mock), tlsConfig, uri(백엔드의 엔드포인트 URI. aws 유형에서는 ARN 값이고 HTTP 통합에서는 https 또는 http 스킴을 포함한 URL)다. 공식 예제는 type, uri, httpMethod, credentials, requestTemplates, requestParameters, cacheNamespace, cacheKeyParameters, responses 를 함께 지정하고 responses 의 키로 2xx 정규식·302·default 를 쓴다. 매핑 템플릿 안의 JSON 이중 인용부호는 문자열 이스케이프해야 한다.",
+      "supports_courseware": "교재 슬라이드 22 YAML 의 x-amazon-apigateway-integration 에 있는 httpMethod POST, Lambda 호출 ARN 형태의 uri, responses.default.statusCode 200 이 모두 문서 정의와 일치한다. 또 슬라이드 19 강사 노트의 '정규 표현식으로 일치시킨 통합 응답 상태 코드군을 단일 응답 상태 코드에 매핑한다' 는 서술은 responses 키에 정규식을 쓰는 이 문서 예제와 PutMethod 의 selectionPattern 으로 확인된다.",
+      "corrects_courseware": "교재 슬라이드 22 YAML 발췌에는 통합 유형을 정하는 type 속성이 없다. 문서에서 type 은 백엔드와의 통합 유형을 지정하는 속성이고 Lambda 프록시는 aws_proxy, Lambda 사용자 지정은 aws 다(소문자). 교재는 또 timeoutInMillis 상한 29,000ms 와 HTTP API 의 payloadFormatVersion 필수 조건을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html",
+      "fetched_with": "mcp",
+      "section": "x-amazon-apigateway-integration object / x-amazon-apigateway-integration examples"
+    },
+    {
+      "id": "http-api-payload-format-versions",
+      "claim": "페이로드 형식 버전은 API Gateway 가 Lambda 통합에 보내는 이벤트의 형식과 API Gateway 가 Lambda 응답을 해석하는 방식을 지정한다. 페이로드 형식 버전을 지정하지 않으면 AWS Management Console 은 기본으로 최신 버전을 쓴다. AWS CLI·CloudFormation·SDK 로 Lambda 통합을 만들면 payloadFormatVersion 을 반드시 지정해야 하며 지원되는 값은 1.0 과 2.0 이다. 두 형식의 차이는 세 가지다. ① 2.0 에는 multiValueHeaders 와 multiValueQueryStringParameters 필드가 없고, 중복 헤더는 쉼표로 합쳐 headers 에, 중복 쿼리 문자열은 쉼표로 합쳐 queryStringParameters 에 들어간다. ② 2.0 에는 rawPath 가 있다. API 매핑으로 스테이지를 사용자 지정 도메인 이름에 연결하면 rawPath 는 API 매핑 값을 제공하지 않으므로 사용자 지정 도메인의 API 매핑에 접근하려면 1.0 과 path 를 써야 한다. ③ 2.0 에는 cookies 필드가 새로 있고 요청의 모든 쿠키 헤더가 쉼표로 합쳐 들어가며, 클라이언트 응답에서 각 쿠키는 set-cookie 헤더가 된다. 모든 헤더 이름은 소문자다. 응답 형식도 버전에 따라 다르다. 1.0 에서는 isBase64Encoded·statusCode·headers·multiValueHeaders·body 형식으로 반환해야 한다. 2.0 에서는 함수가 유효한 JSON 을 반환하고 statusCode 를 반환하지 않으면 API Gateway 가 isBase64Encoded=false, statusCode=200, content-type=application/json, body=함수 응답으로 형식을 추론한다. 응답을 사용자 지정하려면 cookies·isBase64Encoded·statusCode·headers·body 형식으로 반환한다.",
+      "corrects_courseware": "교재는 HTTP API 를 슬라이드 7 에서 한 번 다루면서 페이로드 형식 버전을 언급하지 않는다. HTTP API 에서 Lambda 프록시 통합을 CLI·CloudFormation·SDK 로 만들 때 payloadFormatVersion 은 필수 값이다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html",
+      "fetched_with": "mcp",
+      "section": "Payload format version / Payload format differences / Payload format structure / Lambda function response format"
+    },
+    {
+      "id": "console-test-method",
+      "claim": "API Gateway 콘솔로 REST API 메서드를 테스트할 수 있다. 절차는 콘솔에 로그인 → REST API 선택 → Resources 창에서 테스트할 메서드 선택 → Test 탭 선택(탭이 보이지 않으면 오른쪽 화살표 버튼을 눌러야 할 수 있음) → Query strings·Headers·Request body 같은 상자에 값 입력 → Test 선택이다. 콘솔은 입력한 값을 기본 application/json 형식으로 메서드 요청에 포함한다. 테스트 결과로 Request(호출된 리소스 경로), Status(응답 HTTP 상태 코드), Latency(ms)(호출자 요청 수신부터 응답 반환까지의 시간), Response body, Response headers, Logs 가 표시된다. 매핑에 따라 HTTP 상태 코드·응답 본문·응답 헤더는 Lambda 함수·HTTP 프록시·AWS 서비스 프록시가 보낸 것과 다를 수 있다. Logs 는 이 메서드를 콘솔 외부에서 호출했다면 기록되었을 CloudWatch Logs 항목을 시뮬레이션한 것이며, CloudWatch Logs 항목은 시뮬레이션이지만 메서드 호출 결과는 실제다. 콘솔로 메서드를 테스트하면 되돌릴 수 없는 리소스 변경이 발생할 수 있고, 콘솔에서의 테스트는 콘솔 외부에서 메서드를 호출하는 것과 같다. 예를 들어 API 리소스를 삭제하는 메서드를 콘솔로 호출해 성공하면 그 리소스는 실제로 삭제된다. 콘솔 외에 AWS CLI 또는 AWS SDK 의 test-invoke-method 로도 메서드 호출을 테스트할 수 있다.",
+      "supports_courseware": "교재 슬라이드 26 주석·강사 노트의 '콘솔을 사용한 메서드 테스트는 콘솔 외부에서 메서드를 호출하는 작업과 동일하다', '리소스를 삭제하는 메서드를 호출하면 성공 시 리소스가 삭제된다', '변경 취소가 불가할 수 있다' 가 문서의 Important 문단과 문장 단위로 일치한다.",
+      "corrects_courseware": "교재 슬라이드 25 강사 노트는 'Method Execution 창의 Client 상자에서 TEST 를 선택합니다' 라고 콘솔 경로를 기재한다. 현재 콘솔 절차는 Resources 창에서 메서드를 선택한 뒤 Test 탭을 고르는 것이다. 또 교재는 콘솔 테스트의 로그가 시뮬레이션이라는 점을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-test-method.html",
+      "fetched_with": "mcp",
+      "section": "Test a method with the API Gateway console"
+    },
+    {
+      "id": "test-invoke-method-api",
+      "claim": "TestInvokeMethod 는 헤더·파라미터·들어오는 요청 본문으로 RestApi 의 Method 호출을 시뮬레이션한다. 요청 URI 파라미터는 restapi_id·resource_id·http_method 세 개가 모두 필수다. 요청 본문 필드는 body(시뮬레이션할 들어오는 호출 요청 본문), clientCertificateId, headers, multiValueHeaders, pathWithQueryString(쿼리 문자열을 포함한 시뮬레이션 호출 요청의 URI 경로. 경로 파라미터와 쿼리 문자열 파라미터를 지정하는 데 쓴다), stageVariables(배포된 Stage 에서의 호출을 시뮬레이션할 스테이지 변수 맵)이며 모두 선택이다. 성공하면 HTTP 200 을 반환하고 응답 요소는 body(HTTP 응답 본문), headers(응답 헤더 맵), latency(테스트 호출 요청의 실행 지연 시간(ms), 유형 Long), log(테스트 호출 요청에 대한 API Gateway 실행 로그, 유형 String), multiValueHeaders, status(HTTP 상태 코드, 유형 Integer)다. 오류는 BadRequestException(400), NotFoundException(404), TooManyRequestsException(429), UnauthorizedException(401)이다.",
+      "supports_courseware": "교재 슬라이드 28 의 aws apigateway test-invoke-method 명령과 응답 JSON 의 status·body·headers·multiValueHeaders·log·latency 여섯 필드가 모두 문서의 응답 요소와 일치한다. --rest-api-id·--resource-id·--http-method 가 필수라는 점, --path-with-query-string 이 경로·쿼리 문자열을 지정한다는 점도 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/api/API_TestInvokeMethod.html",
+      "fetched_with": "mcp",
+      "section": "Request Syntax / Request Body / Response Syntax / Response Elements / Errors"
+    },
+    {
+      "id": "mock-integration-status-codes",
+      "claim": "Amazon API Gateway 는 API 메서드에 대해 Mock 통합을 지원하며 통합 백엔드 없이 API Gateway 에서 직접 API 응답을 생성할 수 있게 한다. API 개발자는 이 기능으로 프로젝트 개발이 완료되기 전에 API 를 써야 하는 종속 팀의 작업을 차단하지 않을 수 있고, API 의 개요와 내비게이션을 제공하는 랜딩 페이지를 프로비저닝하는 데도 쓸 수 있다. API 개발자가 API Gateway 가 Mock 통합 요청에 응답하는 방법을 결정한다. 이를 위해 메서드의 통합 요청과 통합 응답을 구성해 특정 상태 코드에 응답을 연결한다. 200 응답을 반환하려면 통합 요청 본문 매핑 템플릿이 statusCode 200 을 반환하도록 구성하고 200 통합 응답에 본문 매핑 템플릿을 설정한다. 500 오류 응답을 반환하려면 같은 방식으로 statusCode 500 을 반환하도록 구성한다. 통합 요청 매핑 템플릿을 정의하지 않고 기본 통합 응답(HTTP 상태 정규식이 정의되지 않은 응답)을 반환하게 할 수도 있다. 통합 요청 매핑 템플릿에 애플리케이션 로직을 넣어 조건에 따라 어떤 Mock 응답을 반환할지 결정할 수 있으며, 문서 예제는 if 지시자로 scope 쿼리 파라미터가 internal 이면 200, 아니면 500 을 반환한다. Mock 통합은 큰 응답 템플릿을 지원하도록 의도된 것이 아니므로 그런 사용 사례에는 Lambda 통합을 고려해야 한다.",
+      "supports_courseware": "교재 슬라이드 10·27 강사 노트의 '통합 백엔드 없이 API Gateway 에서 바로 API 응답을 생성할 수 있다', 'API Gateway 가 Mock 통합 요청에 응답하는 방법을 선택할 수 있다', '다른 팀이 통합을 완료할 때까지 기다리지 않아도 된다' 와 슬라이드 40 지식 확인 3번의 정답 해설('API 개발자는 상태 코드를 구성하고 API Gateway 가 모의 통합 요청에 응답하는 방법을 결정할 수 있다')이 모두 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-mock-integration.html",
+      "fetched_with": "mcp",
+      "section": "Mock integrations for REST APIs in API Gateway"
+    },
+    {
+      "id": "sdk-languages",
+      "claim": "REST API 를 플랫폼·언어별 방식으로 호출하려면 해당 플랫폼·언어의 SDK 를 생성해야 하고, SDK 는 API 를 만들고 테스트하고 스테이지에 배포한 뒤에 생성한다. 현재 API Gateway 는 Java, JavaScript, Java for Android, Objective-C 또는 Swift for iOS, Ruby 로 API SDK 를 생성하는 것을 지원한다. SDK 를 생성하기 전에 API 를 만들거나 가져와서 최소 한 번 배포해야 한다. AWS CLI 명령으로도 SDK 를 생성할 수 있다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 SDK 지원 언어 목록(Java, JavaScript, Java for Android, Objective-C 또는 Swift for iOS, Ruby)이 현재 문서와 그대로 일치한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-generate-sdk.html",
+      "fetched_with": "mcp",
+      "section": "Generate SDKs for REST APIs in API Gateway"
+    },
+    {
+      "id": "logging-execution-vs-access",
+      "claim": "CloudWatch 에는 두 종류의 API 로깅이 있다. 실행 로깅에서는 API Gateway 가 CloudWatch Logs 를 관리하며 로그 그룹·로그 스트림을 만들고 호출자의 요청·응답을 로그 스트림에 보고한다. 기록되는 데이터에는 오류 또는 실행 추적(요청·응답 파라미터 값 또는 페이로드), Lambda 권한 부여자(이전 명칭 사용자 지정 권한 부여자)가 쓰는 데이터, API 키 필요 여부, 사용량 계획 활성화 여부 등이 있다. API Gateway 는 권한 부여 헤더·API 키 값과 유사한 민감한 요청 파라미터를 기록된 데이터에서 삭제한다. 보안 태세를 개선하려면 실행 로깅을 ERROR 또는 INFO 수준으로 쓰도록 권장한다. API 를 배포하면 API Gateway 가 로그 그룹과 그 아래 로그 스트림을 만들며 로그 그룹 이름은 API-Gateway-Execution-Logs_{rest-api-id}/{stage_name} 형식이다. 액세스 로깅에서는 API 개발자가 누가 어떻게 API 에 액세스했는지 기록하며, 직접 로그 그룹을 만들거나 기존 로그 그룹을 고르고 context 변수·로그 형식·로그 그룹 대상을 선택한다. 액세스 로그 형식에는 최소한 context.requestId 또는 context.extendedRequestId 가 포함되어야 하고 모범 사례로 둘 다 넣는다. context.requestId 는 x-amzn-RequestId 헤더 값을 기록하며 클라이언트가 UUID 형식 값으로 재정의할 수 있고 UUID 형식이 아닌 재정의 값은 액세스 로그에서 UUID_REPLACED_INVALID_REQUEST_ID 로 대체된다. context.extendedRequestId 는 API Gateway 가 생성하는 고유 ID 로 x-amz-apigw-id 응답 헤더로 반환되며 호출자가 제공하거나 재정의할 수 없고 AWS Support 문제 해결에 제공해야 할 수 있다. 로그 형식으로 CLF, JSON, XML, CSV 예제를 제시한다. CloudWatch Logs 를 켜려면 apigateway.amazonaws.com 을 신뢰할 수 있는 엔터티로 하는 IAM 역할을 만들고 AmazonAPIGatewayPushToCloudWatchLogs 정책을 붙여 Account 의 cloudWatchRoleArn 에 설정해야 하며, 이 속성은 CloudWatch Logs 를 켜려는 리전마다 따로 설정해야 한다. 실행 로깅과 액세스 로깅은 서로 독립적으로 켤 수 있고, 스테이지 설정·로그·스테이지 변수를 업데이트할 때는 API 를 다시 배포할 필요가 없다.",
+      "corrects_courseware": "교재는 슬라이드 10·30·34 에서 '로깅 구성', 'CloudWatch 를 이용한 로깅을 활성화합니다' 라고만 서술하고 실행 로깅과 액세스 로깅의 구분, 로그 수준, 로그 그룹 이름 규칙, IAM 역할 요구 사항을 다루지 않는다. 참고로 카나리 문서는 실행 로그 그룹 이름을 API-Gateway-Execution-Logs/{rest-api-id}/{stage-name} 로, 이 페이지는 API-Gateway-Execution-Logs_{rest-api-id}/{stage_name} 로 적어 두 페이지의 구분자 표기가 다르다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html",
+      "fetched_with": "mcp",
+      "section": "CloudWatch log formats for API Gateway / Permissions for CloudWatch logging / Set up CloudWatch API logging using the API Gateway console"
+    },
+    {
+      "id": "cloudwatch-metrics",
+      "claim": "Amazon API Gateway 는 1분마다 CloudWatch 로 지표 데이터를 보낸다. AWS/ApiGateway 네임스페이스의 지표는 4XXError(주어진 기간에 캡처된 클라이언트 측 오류 수. 수정된 게이트웨이 응답 상태 코드도 4XXError 로 계산한다), 5XXError(서버 측 오류 수), CacheHitCount(API 캐시에서 처리된 요청 수), CacheMissCount(API 캐싱이 활성화된 상태에서 백엔드에서 처리된 요청 수), Count(총 API 요청 수. SampleCount 통계가 이 지표를 나타낸다), IntegrationLatency(API Gateway 가 백엔드로 요청을 중계한 시점과 백엔드에서 응답을 받은 시점 사이의 시간, 단위 밀리초), Latency(API Gateway 가 클라이언트에서 요청을 받은 시점과 클라이언트에 응답을 반환한 시점 사이의 시간으로 통합 지연 시간과 그 밖의 API Gateway 오버헤드를 포함, 단위 밀리초) 일곱 개다. 오류·캐시 지표의 Sum 통계는 총 건수이고 Average 통계는 총 건수를 기간 내 총 요청 수로 나눈 비율이다. 차원은 ApiName, 'ApiName, Method, Resource, Stage', 'ApiName, Stage' 세 가지다. 'ApiName, Method, Resource, Stage' 차원의 지표는 상세 CloudWatch 지표를 명시적으로 활성화하지 않으면 전송되지 않으며(콘솔의 Logs and tracing → Detailed metrics 또는 update-stage 로 metricsEnabled=true), 이 지표를 활성화하면 계정에 추가 요금이 발생한다. API Gateway 는 ApiName 차원에서 ASCII 가 아닌 문자를 제거하고, APIName 에 ASCII 문자가 없으면 API ID 를 ApiName 으로 쓴다.",
+      "corrects_courseware": "교재는 슬라이드 3·9 다이어그램에 Amazon CloudWatch 를 넣고 슬라이드 34 에서 'CloudWatch 를 이용한 로깅' 만 언급하며 지표 목록·차원·상세 지표 과금을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-metrics-and-dimensions.html",
+      "fetched_with": "mcp",
+      "section": "API Gateway metrics / Dimensions for metrics"
+    },
+    {
+      "id": "xray-tracing",
+      "claim": "AWS X-Ray 로 사용자 요청이 Amazon API Gateway REST API 를 거쳐 하위 서비스로 이동하는 과정을 추적·분석할 수 있다. API Gateway 는 REST API 의 모든 엔드포인트 유형(리전, 엣지 최적화, 프라이빗)에 대해 X-Ray 추적을 지원하고, X-Ray 를 사용할 수 있는 모든 AWS 리전에서 Amazon API Gateway 와 함께 쓸 수 있다. X-Ray 는 요청 전체에 대한 엔드투엔드 뷰를 제공하므로 API 와 백엔드 서비스의 지연 시간을 분석할 수 있고, 서비스 맵으로 요청 전체와 X-Ray 와 통합된 하위 서비스의 지연 시간을 볼 수 있다. 샘플링 규칙을 구성해 어떤 요청을 어떤 샘플링 비율로 기록할지 지정할 수 있다. 이미 추적 중인 서비스에서 API Gateway API 를 호출하면 그 API 에 X-Ray 추적이 활성화되어 있지 않아도 API Gateway 가 추적을 통과시킨다. X-Ray 는 API 스테이지 단위로 콘솔·API·CLI 로 활성화한다.",
+      "supports_courseware": "교재 슬라이드 3·9 다이어그램에 AWS X-Ray 가 애플리케이션 구성 요소로 등장하고 슬라이드 10 강사 노트가 '향상된 관찰 기능 도구로 대기 시간을 줄일 수 있다' 고 서술하는 것을 뒷받침한다.",
+      "corrects_courseware": "교재는 X-Ray 를 다이어그램 요소로만 제시하고 스테이지 단위 활성화, 엔드포인트 유형 전체 지원, 샘플링 규칙, 추적 통과 동작을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-xray.html",
+      "fetched_with": "mcp",
+      "section": "Trace user requests to REST APIs using X-Ray in API Gateway"
+    },
+    {
+      "id": "private-rest-api",
+      "claim": "프라이빗 API 는 Amazon VPC 안에서만 호출할 수 있는 REST API 다. VPC 안에 만드는 엔드포인트 네트워크 인터페이스인 인터페이스 VPC 엔드포인트로 API 에 액세스하며, 인터페이스 엔드포인트는 프라이빗 IP 주소로 AWS 서비스에 비공개로 액세스하게 하는 AWS PrivateLink 기술로 동작한다. Direct Connect 로 온프레미스 네트워크에서 Amazon VPC 로 연결을 수립한 뒤 그 연결로 프라이빗 API 에 액세스할 수도 있다. 모든 경우에 프라이빗 API 트래픽은 보안 연결을 쓰고 퍼블릭 인터넷과 격리되며 트래픽이 Amazon 네트워크를 떠나지 않는다. 모범 사례는 여러 프라이빗 API 에 하나의 VPC 엔드포인트를 쓰기, VPC 엔드포인트를 API 에 연결하기(Route 53 별칭 DNS 레코드가 생성되어 호출이 간단해진다), VPC 에 프라이빗 DNS 켜기(Host 또는 x-apigw-api-id 헤더 없이 VPC 안에서 API 를 호출할 수 있다. 다만 프라이빗 DNS 를 켜면 퍼블릭 API 의 기본 엔드포인트에 액세스할 수 없다), 리소스 정책에 aws:SourceVpc 또는 aws:SourceVpce 조건을 추가해 특정 VPC·VPC 엔드포인트로 액세스를 제한하기, 가장 안전한 데이터 경계를 위해 VPC 엔드포인트 정책 만들기다. 고려 사항으로 REST API 만 지원되고, 프라이빗 API 를 엣지 최적화 API 로 변환할 수 없고, 프라이빗 API 는 TLS 1.2 만 지원하며 이전 TLS 버전은 지원하지 않고, HTTP/2 로 요청하면 HTTP/1.1 로 강제되고, IP 주소 유형을 IPv4 전용으로 설정할 수 없어 dualstack 만 지원된다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 '프라이빗 REST API 는 Amazon VPC 에서만 인터페이스 VPC 엔드포인트를 사용하여 액세스할 수 있고, VPC 엔드포인트 정책은 인터페이스 VPC 엔드포인트에 연결하여 엔드포인트에 대한 액세스를 제어할 수 있는 IAM 리소스 정책' 이라는 서술과 슬라이드 13 의 프라이빗 엔드포인트 설명이 문서와 일치한다.",
+      "corrects_courseware": "교재는 프라이빗 API 의 AWS PrivateLink 기반 동작, Direct Connect 경유 액세스, 프라이빗 DNS 와 리소스 정책 조건, TLS 1.2 전용·HTTP/1.1 강제 같은 고려 사항을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-private-apis.html",
+      "fetched_with": "mcp",
+      "section": "Private REST APIs in API Gateway / Best practices for private APIs / Considerations for private APIs"
+    },
+    {
+      "id": "private-integration-vpc-link",
+      "claim": "Application Load Balancer 또는 Network Load Balancer 와 프라이빗 통합을 만들려면 HTTP 프록시 통합을 만들고 사용할 VPC 링크 V2 를 지정하고 NLB 또는 ALB 의 ARN 을 제공한다. 기본적으로 프라이빗 통합 트래픽은 HTTP 프로토콜을 쓰며 HTTPS 를 쓰려면 uri 에 보안 서버 이름을 포함한다. CLI 에서는 put-integration 에 --type HTTP_PROXY, --connection-type VPC_LINK, --connection-id 를 지정하고, 연결 ID 를 직접 넣는 대신 스테이지 변수를 쓸 수 있다(이때 스테이지 변수 표현식을 이중 인용부호로 감싸고 달러 기호를 이스케이프해야 한다). OpenAPI 로 설정할 때는 connectionType 을 VPC_LINK 로, connectionId 를 VpcLinkV2 의 ID 또는 그 ID 를 참조하는 스테이지 변수로 명시해야 하며, 프라이빗 통합의 uri 파라미터는 VPC 안의 HTTP/HTTPS 엔드포인트를 가리키지만 실제로는 통합 요청의 Host 헤더를 설정하는 데 쓰이고 HTTPS 엔드포인트에서는 VPC 엔드포인트에 설치된 인증서의 도메인 이름 검증에 쓰인다. 콘솔에서 VPC 링크 V1 을 쓰고 있으면 VPC 링크 V2 로 바꿀 수 있고, 변경 후에는 API 를 다시 배포해야 한다.",
+      "supports_courseware": "교재 슬라이드 14 강사 노트가 HTTP API 통합 목록에 'VPC 에 있는 프라이빗 리소스' 를 넣은 것과, HTTP·HTTP_PROXY 설명에 'VPC 에 있는 프라이빗 HTTP 엔드포인트' 를 언급한 것의 배경을 확인한다.",
+      "corrects_courseware": "교재는 프라이빗 통합을 통합 유형 정의 문장 안에 끼워 서술한다. 문서에서 프라이빗 통합은 HTTP_PROXY 유형 + connectionType=VPC_LINK + VPC 링크 V2 로 구성하는 별도 설정이다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-private-integration.html",
+      "fetched_with": "mcp",
+      "section": "Set up a private integration / Create a private integration / Update a private integration"
+    },
+    {
+      "id": "waf-integration",
+      "claim": "AWS WAF 는 웹 애플리케이션과 API 를 공격으로부터 보호하는 웹 애플리케이션 방화벽이다. 웹 액세스 제어 목록(web ACL)이라는 규칙 집합을 구성해 사용자가 정의한 웹 보안 규칙·조건에 따라 웹 요청을 허용·차단·계수할 수 있다. AWS WAF 로 API Gateway REST API 를 SQL 주입, 크로스 사이트 스크립팅(XSS) 같은 일반적인 웹 공격에서 보호할 수 있다. 지정된 IP 주소 범위·CIDR 블록에서 온 요청, 특정 국가·리전에서 시작된 요청, 악성 SQL 코드나 스크립트가 포함된 요청을 허용·차단하는 규칙을 만들 수 있고, HTTP 헤더·메서드·쿼리 문자열·URI·요청 본문(첫 64KB 로 제한)에서 지정된 문자열이나 정규식 패턴에 일치하는 규칙도 만들 수 있다. 특정 사용자 에이전트·악성 봇·콘텐츠 스크레이퍼의 공격을 차단하는 규칙도 만들 수 있고, 속도 기반 규칙으로 이동하며 계속 갱신되는 5분 구간에서 클라이언트 IP 별 허용 웹 요청 수를 지정할 수 있다. AWS WAF 는 웹 공격에 대한 1차 방어선이며 API 에서 AWS WAF 를 활성화하면 리소스 정책·IAM 정책·Lambda 권한 부여자·Amazon Cognito 권한 부여자 같은 다른 액세스 제어 기능보다 먼저 AWS WAF 규칙이 평가된다. 예를 들어 리소스 정책이 허용하는 CIDR 블록의 액세스를 AWS WAF 가 차단하면 AWS WAF 가 우선하고 리소스 정책은 평가되지 않는다. API Gateway 는 리전 애플리케이션용 AWS WAFV2 웹 ACL 또는 AWS WAF Classic 리전 웹 ACL 을 요구하며, 웹 ACL 을 만든 뒤 API 스테이지에 연결한다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 'AWS WAF 통합을 웹 애플리케이션 방화벽으로 사용하면 애플리케이션이 공격받지 않도록 보호할 수 있다' 는 서술과 일치한다.",
+      "corrects_courseware": "교재는 AWS WAF 를 한 문장으로만 다루고, WAF 규칙이 다른 액세스 제어 기능보다 먼저 평가된다는 우선순위와 웹 ACL 을 API 스테이지에 연결한다는 구성 방식을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-aws-waf.html",
+      "fetched_with": "mcp",
+      "section": "Use AWS WAF to protect your REST APIs in API Gateway"
+    },
+    {
+      "id": "security-shared-responsibility",
+      "claim": "AWS 의 클라우드 보안은 최우선 과제이며 보안은 AWS 와 고객의 공동 책임(shared responsibility)이다. 공동 책임 모델은 이를 '클라우드의 보안(security of the cloud)' 과 '클라우드 내부의 보안(security in the cloud)' 으로 설명한다. 클라우드의 보안은 AWS 클라우드에서 AWS 서비스를 실행하는 인프라를 보호하는 AWS 의 책임이고, 제3자 감사자가 AWS 컴플라이언스 프로그램의 일부로 보안 효과를 정기적으로 테스트·검증한다. 클라우드 내부의 보안은 사용하는 AWS 서비스에 따라 결정되는 고객의 책임이며 데이터 민감도, 회사 요구 사항, 적용되는 법률·규정도 고객의 책임 범위에 든다. API Gateway 보안 문서의 하위 주제는 데이터 보호, 자격 증명 및 액세스 관리, 로깅과 모니터링, 컴플라이언스 검증, 복원력, 인프라 보안, 취약점 분석, 보안 모범 사례다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 '보안은 AWS 와 고객의 공동 책임입니다' 와 IAM 자격 증명 기반·리소스 기반 정책 서술을 뒷받침한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/security.html",
+      "fetched_with": "mcp",
+      "section": "Security in Amazon API Gateway"
+    },
+    {
+      "id": "observability-blog",
+      "claim": "AWS 컴퓨팅 블로그 'Troubleshooting Amazon API Gateway with enhanced observability variables' 는 API Gateway 액세스 로그에 추가된 향상된 관찰 기능 변수를 설명한다. API Gateway 는 요청을 단계(phase)로 나누며 애플리케이션에 구성된 기능에 따라 WAF → Authenticate → Authorizer → Authorize → Integration 순서로 나타난다. WAF 단계는 AWS WAF 웹 ACL 이 구성된 경우에만 나타나 WAF 규칙을 평가하고 요청 계속·취소를 결정한다. Authenticate 단계는 IAM 권한 부여자를 쓸 때만 있고 서명된 요청의 자격 증명을 검증한다. Authorizer 단계는 Lambda·JWT·Amazon Cognito 권한 부여자를 쓸 때만 있고 권한 부여자 로직을 처리한다. Authorize 단계는 Lambda 또는 IAM 권한 부여자를 쓸 때만 있고 앞 두 단계 결과를 평가·적용한다. Integration 단계에서 백엔드 통합이 요청을 처리한다. 각 단계는 지연 시간을 더하거나 상태를 반환하거나 오류를 낼 수 있고, 변수 이름은 발생 단계를 따라 context.phase.property 구조를 쓴다(예: WAF 지연 시간은 context.waf.latency). 기존 변수에도 이 이름 규칙에 맞는 별칭이 생겼다(예: context.integrationErrorMessage 의 별칭은 context.integration.error). 권한 부여자·통합 단계에는 context.phase.requestId 와 context.phase.integrationStatus 가 추가로 있다. Lambda 함수를 통합으로 쓸 때 context.integration.integrationStatus 는 Lambda 서비스 자체의 상태(서비스·권한 오류가 없으면 보통 200)이고 context.integration.status 는 Lambda 함수 코드의 성공·실패 상태다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트가 대기 시간 항목에서 인용한 블로그이며, '향상된 관찰 기능 도구를 사용하여 애플리케이션의 대기 시간을 줄일 수 있다' 는 서술의 근거다.",
+      "url": "https://aws.amazon.com/blogs/compute/troubleshooting-amazon-api-gateway-with-enhanced-observability-variables/",
+      "fetched_with": "web_fetch",
+      "section": "The phases of an API request"
+    },
+    {
+      "id": "canary-blog",
+      "claim": "AWS 컴퓨팅 블로그 'Performing canary deployments for service integrations with Amazon API Gateway' 는 API Gateway 서비스 통합에서 카나리 릴리스를 쓰는 방법을 설명한다. Lambda 함수를 컴퓨팅 계층으로 쓸 때는 Lambda 배포 환경 설정(deployment preferences)으로 카나리 릴리스를 관리하는 것이 모범 사례이지만, Lambda 함수 대신 API Gateway 서비스 통합을 쓰면 API 수준에서 카나리 릴리스를 관리해야 한다. 카나리 배포에서는 새 소프트웨어 기능을 부분적으로 배포하고 일정 비율의 트래픽을 새 버전으로 이동해 안정성을 확인하고 새 릴리스와 관련된 위험을 줄인다. 새 버전에 확신이 생기면 모든 트래픽이 새 릴리스로 흐를 때까지 트래픽을 계속 늘린다. 카나리 배포는 블루/그린 배포 같은 다른 전략과 달리 애플리케이션 리소스를 복제할 필요가 없어 비용 효율적인 접근이 될 수 있다. 블로그 예제에서는 두 서비스 버전이 API Gateway 로 배포되고 카나리 버전이 트래픽의 10% 를, 나머지 90% 가 안정 버전으로 라우팅된다. 새 버전 배포 후 상태와 성능을 테스트하고 릴리스 준비가 되었다고 확신하면 카나리 버전을 승격해 트래픽 100% 를 이 API 버전으로 보낼 수 있다. 블로그는 AWS SAM 으로 REST API 카나리 릴리스를 만들며 AWS SAM 이 트래픽을 분할하는 카나리 설정과 API Gateway 가 쓰는 IAM 역할을 생성한다.",
+      "supports_courseware": "교재 슬라이드 32·33 강사 노트가 인용한 블로그이며 '카나리 버전은 트래픽의 10% 를 수신하고 나머지 90% 는 안정 버전으로 라우팅된다', '카나리 버전을 승격하고 트래픽을 100% 이 API 버전으로 보낼 수 있다' 는 두 서술의 근거다.",
+      "url": "https://aws.amazon.com/blogs/compute/performing-canary-deployments-for-service-integrations-with-amazon-api-gateway/",
+      "fetched_with": "web_fetch",
+      "section": "Overview / API Gateway canary deployment example"
+    },
+    {
+      "id": "slide13-resource-list-mismatch",
+      "claim": "교재 슬라이드 13 강사 노트는 '이 예에서 API 리소스는 /notes, /notes/search와 /notes/list로 나열됩니다' 라고 기재하지만 같은 슬라이드의 도형에는 리소스 1(/notes)과 리소스 2(/notes/search)만 있다. 슬라이드 9 의 메서드 목록(/notes GET, /notes POST, /notes/search GET, /notes/(id) DELETE, /notes/(id) POST)에도 /notes/list 는 없다. 교재 내부의 자기 모순이며 어느 쪽이 옳은지는 AWS 문서로 판별할 수 없다.",
+      "courseware_internal": true,
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html",
+      "fetched_with": "mcp",
+      "section": "Amazon API Gateway concepts (API Gateway REST API / Resource)"
+    },
+    {
+      "id": "slide14-mock-passthrough-cell",
+      "claim": "교재 슬라이드 14 표의 Mock 행은 '패스스루' 칸에 MOCK 을, '통합 유형' 칸에도 MOCK 을 넣어 열 의미가 어긋난다. 프록시 행과 비프록시 행은 같은 칸에 각각 '패스스루 동작을 수정하는 옵션은 없습니다', '패스스루 동작을 선택할 수 있습니다' 라는 서술이 들어 있다. 교재 자체의 표기 오류이며 AWS 문서로 검증할 성질의 사실이 아니다.",
+      "courseware_internal": true,
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/integration-passthrough-behaviors.html",
+      "fetched_with": "mcp",
+      "section": "Method request behavior for payloads without mapping templates for REST APIs in API Gateway"
+    },
+    {
+      "id": "slide18-payload-key-mismatch",
+      "claim": "교재 슬라이드 17 의 요청 모델은 Notes 배열 요소에 NoteId 와 Note 를 필수로 요구하지만 슬라이드 18 의 메서드 요청 페이로드는 같은 자리에 Note 가 아니라 Notes 를 쓴다. 슬라이드 18 의 페이로드를 슬라이드 17 의 모델로 검증하면 필수 속성 Note 가 없어 검증에 실패한다. 교재 내부의 자기 모순이다.",
+      "courseware_internal": true,
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings-models.html",
+      "fetched_with": "mcp",
+      "section": "Data models for REST APIs"
+    },
+    {
+      "id": "courseware-doc-links",
+      "claim": "교재 슬라이드 10·14·27·31 강사 노트가 인용한 개발자 안내서 링크 11개는 모두 현재도 유효한 페이지를 가리킨다(ko_kr 경로 대신 언어 코드 없는 경로로 조회했다): set-up-stages.html, api-gateway-api-usage-plans.html, api-gateway-request-throttling.html, apigateway-control-access-to-api.html, rest-api-data-transformations.html, how-to-generate-sdk.html, how-to-mock-integration.html, api-gateway-caching.html, security.html, integration-passthrough-behaviors.html, stage-variables.html. 다만 교재 노트의 URL 문자열 중 여섯 개는 https://docs.aws.amazon.com/ko_kr/ 와 apigateway 사이에 공백이 들어가 있어 그대로 복사해서는 열 수 없다(api-gateway-request-throttling, apigateway-control-access-to-api, rest-api-data-transformations, how-to-generate-sdk, how-to-mock-integration, api-gateway-caching, security, integration-passthrough-behaviors, stage-variables 인용문). 두 블로그 링크(troubleshooting-amazon-api-gateway-with-enhanced-observability-variables, performing-canary-deployments-for-service-integrations-with-amazon-api-gateway)도 유효하다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-stages.html",
+      "fetched_with": "mcp",
+      "section": "각 페이지를 개별 조회해 확인했다. 이 항목의 url 은 대표 페이지 하나다"
+    }
+  ]
+}

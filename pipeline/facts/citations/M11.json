@@ -1,0 +1,323 @@
+{
+  "_note": "M11 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다. M09(Lambda)·M10(API Gateway)에서 이미 검증한 사실은 같은 URL을 재사용했다.",
+  "module": "M11",
+  "verified_on": "2026-08-31",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / AWS 요금·서비스 페이지 web_fetch",
+  "citations": [
+    {
+      "id": "stepfunctions-definition",
+      "claim": "AWS Step Functions 로 워크플로(상태 머신)를 만들어 분산 애플리케이션을 구축하고, 프로세스를 자동화하고, 마이크로서비스를 오케스트레이션하고, 데이터·기계 학습 파이프라인을 만든다. Step Functions 는 상태 머신(state machine)과 태스크(task)를 기반으로 한다. Step Functions 에서 상태 머신은 워크플로라고 불리며 이벤트 기반 단계의 연속이다. 워크플로의 각 단계를 상태(state)라고 하고, 태스크 상태는 다른 AWS 서비스가 수행하는 작업 단위를 나타낸다. 실행 중인 워크플로 인스턴스를 실행(execution)이라고 한다. 상태 머신 태스크의 작업은 Step Functions 외부에 존재하는 작업자인 활동(Activities)으로도 수행할 수 있다. 콘솔에서 워크플로를 시각화·편집·디버깅하고 각 단계의 상태를 검사할 수 있다.",
+      "supports_courseware": "교재 슬라이드 24 강사 노트의 '단계 함수는 상태 머신과 태스크를 기반으로 합니다 / 상태 머신은 워크플로입니다 / 태스크는 다른 AWS 서비스에서 수행하는 단일 작업 단위를 나타내는 워크플로의 상태입니다 / 워크플로의 각 단계는 상태에 해당합니다'가 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is Step Functions? / Standard and Express workflows types / Integrating with other services"
+    },
+    {
+      "id": "workflow-types-standard-express",
+      "claim": "상태 머신을 만들 때 Standard(기본값) 또는 Express 유형을 선택해야 하고, 이 유형은 생성 후 변경할 수 없다. Standard 는 최대 1년까지 실행되고 exactly-once 실행 모델이며 실행 완료 후 최대 90일간 Step Functions API 로 전체 실행 이력을 조회할 수 있고 상태 전환 수로 과금된다. Express 는 최대 5분까지 실행되고 at-least-once(비동기)·at-most-once(동기) 모델이며 실행 이력은 Step Functions 가 저장하지 않으므로 CloudWatch Logs 로깅을 켜야 하고 실행 수·실행 시간·메모리 소비로 과금된다. Standard 는 exactly-once 여서 EMR 클러스터 시작이나 결제 처리 같은 비멱등 작업 오케스트레이션에, Express 는 at-least-once 여서 DynamoDB PUT 같은 멱등 작업에 적합하다. Standard 는 모든 서비스 통합과 모든 통합 패턴을, Express 는 모든 서비스 통합을 지원하지만 Run a Job(.sync)·Callback(.waitForTaskToken) 패턴은 지원하지 않는다. Distributed Map 과 Activities 는 Standard 만 지원한다. Standard 실행 이력 보존은 90일이고 할당량 요청으로 30일로 줄일 수 있다. Express 에는 동기(StartSyncExecution)와 비동기(StartExecution) 두 종류가 있고, 콘솔에서 StartSyncExecution 요청은 60초 후 만료되므로 최대 5분 동기 실행에는 SDK·CLI 를 써야 한다.",
+      "corrects_courseware": "교재는 워크플로 유형(Standard / Express)을 전혀 언급하지 않는다. 상태 머신을 만들 때 반드시 선택해야 하고 이후 변경할 수 없는 값이므로 교재의 Step Functions 소개만으로는 실습에서 선택을 할 수 없다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html",
+      "fetched_with": "mcp",
+      "section": "Choosing workflow type / Comparison of Standard and Express workflow types / Synchronous and Asynchronous Express Workflows / Execution guarantees"
+    },
+    {
+      "id": "state-types-eight",
+      "claim": "Workflow Studio 는 상태를 Actions(=Task 상태)와 일곱 개의 Flow 상태로 나눈다. 워크플로 상태 참조 목록은 Task, Choice, Parallel, Map, Pass, Wait, Succeed, Fail 여덟 개다. 모든 상태는 상태 유형을 나타내는 Type 필드를 갖고, 선택적 Comment 필드를 가질 수 있다. Succeed·Fail 을 제외한 모든 상태는 다음 상태를 지정하는 Next 필드가 필요하고, Choice 상태는 각 Choice Rule 안에 Next 를 여러 개 가질 수 있으며, End 를 true 로 설정하면 종단 상태가 된다. 상태 이름은 문자열이고 상태 머신 전체 범위에서 고유해야 한다. Map 은 Parallel 과 달리 상태 입력 배열의 여러 항목에 같은 단계를 실행한다.",
+      "supports_courseware": "교재 슬라이드 26 강사 노트의 상태 목록(Task / Choice / Succeed or Fail / Pass / Wait / Parallel / Map)과 각 설명이 문서와 일치한다.",
+      "corrects_courseware": "교재는 'Succeed or Fail'을 한 항목으로 묶어 7개로 제시한다. 문서는 Succeed 와 Fail 을 별개 상태로 나열해 총 8개이며, Workflow Studio 의 Flow 상태는 Task 를 제외한 7개다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-states.html",
+      "fetched_with": "mcp",
+      "section": "Discovering workflow states / Reference list of workflow states"
+    },
+    {
+      "id": "jsonpath-field-order",
+      "claim": "JSONPath 를 쓰는 상태 머신에서 상태 간 데이터 흐름을 제어하는 필드는 InputPath, Parameters, ResultSelector, ResultPath, OutputPath 다섯 개이고 적용 순서도 그 순서다. InputPath 는 태스크에 전달할 JSON 입력 부분을 선택하고, Parameters 는 액션에 보낼 데이터를 조정하고, ResultSelector 는 액션 결과에서 이어 나갈 부분을 선택하고, ResultPath 는 상태 입력과 태스크 결과의 조합을 출력으로 전달하고, OutputPath 는 출력 JSON 을 걸러 다음 상태로 전달할 정보를 제한한다. 새 상태 머신에는 JSONata 쿼리 언어를 권장하고, 쿼리 언어를 지정하지 않은 상태 머신은 하위 호환을 위해 JSONPath 로 기본 설정된다. 상태 출력은 기본적으로 바로 다음 상태에만 전달되므로 이후 단계에서 필요한 데이터는 변수에 저장하는 것을 고려한다.",
+      "supports_courseware": "교재 슬라이드 26 다이어그램의 InputPath·Parameters·ResultPath·OutputPath 설명이 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 26 은 다이어그램에 네 필드(InputPath·Parameters·ResultPath·OutputPath)만 표기하고 강사 노트는 조작 필드로 InputPath·Parameters·ResultSelector 세 개만 나열해 본문과 노트가 서로 다르다. 정확한 목록은 다섯 개이고 순서는 InputPath → Parameters → ResultSelector → ResultPath → OutputPath 다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-input-output-filtering.html",
+      "fetched_with": "mcp",
+      "section": "Processing input and output with JSONPath / Processing input and output with JSONata"
+    },
+    {
+      "id": "integration-patterns-three",
+      "claim": "Step Functions 의 서비스 통합 패턴은 세 개이고 공식 이름과 ASL 표기는 다음과 같다. Request Response(기본) 는 서비스를 호출하고 HTTP 응답을 받으면 즉시 다음 상태로 진행하며 Resource 에 접미사를 붙이지 않는다. Run a Job 은 작업이 완료될 때까지 기다리며 리소스 URI 에 .sync 접미사를 붙인다. Wait for a Callback with Task Token 은 태스크 토큰이 페이로드와 함께 반환될 때까지 기다리며 .waitForTaskToken 접미사를 붙이고 SendTaskSuccess 또는 SendTaskFailure 호출로 재개한다. 각 패턴은 태스크 정의의 Resource 필드 URI 로 제어한다. ASL 의 Resource 값은 ARN 형식을 따르는 고유 이름이지만 실제 계정 리소스를 가리키지 않는 경우가 많고, arn:aws:states: 접두사가 Step Functions 통합용 네임스페이스이며 ::: 부분은 리전·계정 필드가 비어 있음을 뜻한다(워크플로가 실행되는 리전·계정에서 추론). Lambda 로의 레거시 통합만 예외로 Resource 값이 실제 Lambda 함수 리소스를 지정한다. Standard 는 세 패턴을 모두, Express 는 Request Response 만 지원한다. 콜백 태스크는 실행이 1년 서비스 할당량에 도달할 때까지 대기할 수 있고, 태스크 토큰은 같은 AWS 계정의 프린시펄이 전달해야 한다.",
+      "supports_courseware": "교재 슬라이드 28 강사 노트가 제시한 3가지 통합 패턴 설명이 문서와 일치한다.",
+      "corrects_courseware": "교재는 세 패턴의 설명만 적고 공식 이름(Request Response / Run a Job / Wait for a Callback with Task Token)과 ASL 표기(.sync, .waitForTaskToken)를 제시하지 않는다. 또 Express 워크플로가 Request Response 만 지원한다는 제약을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html",
+      "fetched_with": "mcp",
+      "section": "Discover service integration patterns / Integration pattern support / Request Response / Run a Job (.sync) / Wait for a Callback with Task Token"
+    },
+    {
+      "id": "optimized-vs-sdk-integrations",
+      "claim": "Step Functions 가 다른 AWS 서비스를 호출하는 통합 유형은 두 가지다. AWS SDK 통합은 상태 머신에서 거의 모든 AWS 서비스 API 작업을 직접 호출하게 하며 수천 개의 API 작업에 접근할 수 있고, 통합 표에는 'Over two hundred services'(200개 이상 서비스)로 기재되어 있다. 최적화 통합(Optimized integrations)은 특정 서비스를 상태 머신에서 쓰기 위한 사용자 지정 옵션을 제공하며 표에 21개 서비스가 나열된다(API Gateway, Athena, AWS Batch, Bedrock, Bedrock AgentCore 등). AWS SDK 통합의 Resource 구문은 arn:aws:states:::aws-sdk:serviceName:apiAction.[serviceIntegrationPattern] 이다(예: arn:aws:states:::aws-sdk:ec2:describeInstances). 파라미터는 원 서비스 API 가 camelCase 여도 Step Functions 에서는 PascalCase 로 표기한다. AWS SDK 통합의 오류 이름은 ServiceName.ErrorName 형식이고 서비스가 Exception 접미사를 쓰지 않아도 Step Functions 에서는 항상 Exception 접미사를 붙여 참조한다(예: S3.BucketAlreadyExistsException). Step Functions 는 AWS SDK 통합에 대해 IAM 정책을 자동 생성하지 못하므로 상태 머신 생성 후 역할 정책을 직접 구성해야 한다.",
+      "corrects_courseware": "교재 슬라이드 28 은 통합 대상을 9개 서비스(Lambda, Batch, Fargate, ECS, DynamoDB, SNS, SQS, Glue, SageMaker)와 '그 외 다수'로만 제시한다. 현재는 최적화 통합과 AWS SDK 통합이 구분되고, AWS SDK 통합으로 200개 이상 서비스의 API 작업을 직접 호출할 수 있다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html",
+      "fetched_with": "mcp",
+      "section": "Learning to use AWS service SDK integrations / Using AWS SDK service integrations / Supported AWS SDK service integrations"
+    },
+    {
+      "id": "distributed-map",
+      "claim": "Map 상태를 Distributed 모드로 설정하면 대규모 병렬 워크로드를 오케스트레이션할 수 있다. Distributed 모드에서 Map 상태의 각 반복은 자체 실행 이력을 가진 하위 워크플로 실행(child workflow execution)으로 실행되어 높은 동시성을 낸다. 지정하지 않으면 Step Functions 가 10,000개의 병렬 하위 워크플로 실행을 실행한다. Distributed 모드는 Amazon S3 의 대규모 데이터 소스(단일 JSON·CSV 파일 또는 S3 객체 집합)에서 입력을 읽을 수 있다. Map 상태를 Distributed 모드로 실행하면 Step Functions 가 Map Run 리소스를 만들고 ARN 을 할당하며 DescribeMapRun API 로 조회할 수 있다. Distributed 모드를 쓰는 조건은 데이터 세트 크기가 256KiB 를 초과하거나, 워크플로 실행 이벤트 이력이 25,000개를 초과하거나, 40개보다 많은 동시 반복이 필요한 경우다. Distributed Map 상태 필드에는 ItemReader, ItemProcessor(ProcessorConfig 의 Mode=DISTRIBUTED, ExecutionType), Label, ResultWriter 등이 있고, 상태 머신 역할에 states:StartExecution·states:DescribeExecution 권한이 필요하다.",
+      "corrects_courseware": "교재 슬라이드 26 의 Map 상태 설명('상태 입력에서 어레이의 여러 항목에 대해 동일한 단계를 실행합니다')은 인라인 모드만 다룬다. 현재 Map 상태에는 Inline 과 Distributed 두 처리 모드가 있고, Distributed 모드는 Standard 워크플로에서만 지원된다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/state-map-distributed.html",
+      "fetched_with": "mcp",
+      "section": "Using Map state in Distributed mode / Key terms / Distributed Map state definition / Permissions / Distributed Map state fields"
+    },
+    {
+      "id": "inline-map-and-deprecated-fields",
+      "claim": "Map 상태는 기본적으로 Inline 모드로 실행된다. Inline 모드는 JSON 배열만 입력으로 받고, 각 반복이 Map 상태를 포함한 워크플로의 컨텍스트에서 실행되어 반복의 실행 이력이 부모 워크플로 실행 이력에 추가되며, 최대 40개의 동시 반복을 지원한다. 실행 이력이 25,000개를 넘지 않고 40개보다 많은 동시 반복이 필요하지 않을 때 Inline 모드를 쓴다. Inline 모드에서는 어느 한 반복이 실패하면 Map 상태가 실패하고 모든 반복이 중지된다. ItemProcessor 필드가 이제 사용이 중단된(deprecated) Iterator 필드를 대체하며, 문서는 Iterator 를 ItemProcessor 로 바꾸도록 강력히 권장한다. 같은 방식으로 ItemSelector 필드가 사용이 중단된 Parameters 필드를 대체한다. MaxConcurrency 로 병렬 반복 수의 상한을 지정하며, 입력 배열 항목이 40개를 넘으면 동시 반복이 제한될 가능성이 커지고 더 높은 동시성이 필요하면 Distributed 모드를 고려한다.",
+      "corrects_courseware": "교재는 Map 상태의 처리 모드와 인라인 모드의 40 동시 반복 한도를 다루지 않는다. 또 Map 상태 안의 Iterator·Parameters 필드가 각각 ItemProcessor·ItemSelector 로 대체되어 사용 중단되었다는 사실을 다루지 않는다(교재 슬라이드 27 의 'Iterator' 는 필드가 아니라 상태 이름이므로 이 사용 중단과는 무관하다).",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/state-map-inline.html",
+      "fetched_with": "mcp",
+      "section": "Using Map state in Inline mode / Key concepts / Inline Map state fields"
+    },
+    {
+      "id": "http-task",
+      "claim": "HTTP Task 는 워크플로에서 HTTPS API 를 호출하는 Task 상태의 한 종류다. Stripe·Salesforce 같은 서드 파티 SaaS 애플리케이션의 퍼블릭 API 와 Amazon VPC 안의 HTTPS 기반 프라이빗 API 를 호출할 수 있다. 인증과 네트워크 연결을 위해 EventBridge connection 이 필요하며, connection 은 Basic·OAuth·API Key 인증 체계를 지원하고 EventBridge 가 AWS Secrets Manager 에 암호화된 시크릿을 만들어 인증 파라미터를 저장하므로 상태 머신 정의에 시크릿을 하드코딩하지 않아도 된다. Task 상태의 Resource 를 arn:aws:states:::http:invoke 로 지정하고 Parameters 에 ApiEndpoint(필수), Method(필수), 그리고 Authentication 또는 InvocationConfig 로 connection ARN 을 넣는다. Headers·QueryParameters 는 선택 필드다. HTTP Task 요청은 60초 후 시간 초과되며 이는 하드 할당량이고, 시간 초과 시 States.Http.Socket 오류가 발생한다. HTTP Task 는 mTLS(상호 TLS)를 지원하지 않는다. HTTP Task 는 버킷 크기 300, 초당 리필 300 의 토큰 버킷으로 제한된다. Workflow Studio 로 HTTP Task 를 포함한 상태 머신을 만들면 HTTP Task 용 IAM 정책이 포함된 실행 역할이 자동 생성된다.",
+      "corrects_courseware": "교재 슬라이드 28 은 통합 대상을 AWS 서비스로만 제시하고, AWS 외부의 HTTPS 엔드포인트를 호출하는 방법을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/call-https-apis.html",
+      "fetched_with": "mcp",
+      "section": "Call HTTPS APIs in Step Functions workflows / Connectivity for an HTTP Task / HTTP Task definition / HTTP Task fields"
+    },
+    {
+      "id": "jsonata-support",
+      "claim": "Step Functions 는 JSONata 를 쿼리·변환 언어로 지원한다. Step Functions 는 JSONata 2.0.6 명세를 구현하며 해당 명세의 모든 내장 함수·연산자를 지원하되 $eval 은 제공하지 않고 $parse 를 쓴다. 기존 워크플로에서 JSONata 를 쓰려면 옵트인해야 하며, 콘솔에서 새 워크플로를 만들 때는 최상위 상태 머신 QueryLanguage 로 JSONata 를 선택하는 것이 권장된다. JSONata 를 선택하면 다섯 개의 JSONPath 필드(InputPath, Parameters, ResultSelector, ResultPath, OutputPath)가 Arguments 와 Output 두 필드로 줄어들고 JSON 객체 키 이름에 .$ 를 쓰지 않는다. JSONata 표현식 구문은 \"{% <JSONata 표현식> %}\" 이며 선행·후행 공백이 있으면 검증 오류가 난다. QueryLanguage 필드는 상태 머신 최상위와 개별 상태 양쪽에 지정할 수 있어 기존 상태 머신에 점진적으로 도입할 수 있고, 최상위에서 생략하면 JSONPath 로 기본 설정된다. Step Functions 는 $states 라는 예약 변수 하나를 정의하며 input, result, errorOutput, context 를 담는다. Assign 과 Output 단계는 병렬로 수행되므로 변수 할당 시 변환한 데이터는 Output 단계에서 다시 변환해야 한다.",
+      "corrects_courseware": "교재 슬라이드 26~27·36 은 JSONPath 기반 필드(InputPath·Parameters·ResultPath·OutputPath)와 '$' 표기법만 다룬다. 현재는 JSONata 가 추가되었고 새 상태 머신에는 JSONata 가 권장된다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/transforming-data.html",
+      "fetched_with": "mcp",
+      "section": "Transforming data with JSONata / QueryLanguage field / Writing JSONata expressions / Reserved variable : $states"
+    },
+    {
+      "id": "workflow-variables",
+      "claim": "워크플로 변수로 한 단계에서 데이터를 저장하고 이후 단계에서 조회할 수 있다. 상태 출력은 바로 다음 단계의 입력으로만 쓸 수 있는 반면 변수는 이후 어느 단계에서든 참조할 수 있고, 상태당 최대 256KiB 를 저장할 수 있다. Assign 으로 변수를 선언·할당할 수 있는 상태 유형은 Pass, Task, Map, Parallel, Choice, Wait 다. 변수를 참조할 때는 이름 앞에 달러 기호($)를 붙인다. 변수 이름은 Unicode Identifier 규칙을 따르고 최대 길이는 80자다. 변수는 워크플로 로컬 범위(workflow-local scope)를 가지며 Parallel·Map 상태 내부는 별도 범위여서 외부 범위 변수는 읽을 수 있지만 자체 변수를 따로 유지한다. 내부 범위에서 외부 범위와 같은 이름의 변수에 할당할 수 없고, Distributed Map 상태는 현재 외부 범위 변수를 참조할 수 없다. Catch 의 Assign 은 Parallel·Map 이 존재하는 외부 범위 변수에 값을 할당할 수 있다.",
+      "corrects_courseware": "교재는 상태 간 데이터 전달을 입력·출력 경로로만 설명하고 변수(Variables)를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/workflow-variables.html",
+      "fetched_with": "mcp",
+      "section": "Passing data between states with variables / States that support variables / Variable name syntax / Variable scope"
+    },
+    {
+      "id": "workflow-studio",
+      "claim": "Workflow Studio 는 AWS Step Functions 콘솔에서 워크플로를 편집할 때 쓰는 시각적 도구다. 상태를 캔버스에 끌어다 놓아 워크플로를 만들고, 상태를 추가·편집·구성하고 입력·출력 필터를 설정하고 결과를 변환하고 오류 처리를 설정할 수 있다. 상태를 수정하면 Workflow Studio 가 상태 머신 정의를 검증하고 자동 생성한다. Workflow Studio 에는 Design, Code, Config 세 가지 모드가 있다. States browser 의 Actions 탭은 서드 파티 HTTP 엔드포인트와 AWS API 에 연결되는 태스크 상태 목록을, Flow 탭은 Choice·Parallel·Map·Pass·Wait·Success·Fail 흐름 상태를, Patterns 탭은 바로 쓸 수 있는 재사용 가능한 구성 블록을 제공한다. Workflow Studio 는 Step Functions 콘솔 외에 AWS Infrastructure Composer 안에서도 쓸 수 있고, AWS Toolkit 을 통해 Visual Studio Code 안에서도 워크플로를 시각화·구축하고 개별 상태를 테스트할 수 있다.",
+      "supports_courseware": "교재 슬라이드 25 강사 노트의 'Workflow Studio 를 사용하여 정의할 수 있다 / 상태 머신은 설계 과정 중 시각화할 수 있다'가 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 25 본문은 도구 이름을 'State Function Workflow Studio'로 적었고 같은 슬라이드 강사 노트는 'Workflow Studio'로 적어 서로 다르다. 공식 이름은 Workflow Studio 다. 또 교재는 Workflow Studio 를 콘솔 전용으로 제시하지만 현재는 Infrastructure Composer 와 VS Code 용 AWS Toolkit 안에서도 쓸 수 있다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/workflow-studio.html",
+      "fetched_with": "mcp",
+      "section": "Developing workflows in Step Functions Workflow Studio / Design mode / States browser"
+    },
+    {
+      "id": "asl-official-doc",
+      "claim": "Amazon States Language 는 상태 머신을 정의하는 JSON 기반 구조화 언어다. AWS 공식 문서는 Step Functions 개발자 안내서의 'Using Amazon States Language to define Step Functions workflows' 페이지이며, 이 페이지가 Amazon States Language Specification(states-language.net/spec.html)과 ASL 코드를 검증하는 Statelint 도구를 함께 참조한다. Step Functions 콘솔 밖에서 상태 머신을 정의하는 경우 정의 파일은 .asl.json 확장자로 저장해야 한다. 문서의 예제 정의는 QueryLanguage 를 JSONata 로 설정하고 Choice 상태에서 Condition 필드에 JSONata 표현식을 쓴다.",
+      "supports_courseware": "교재 슬라이드 25 의 'JSON - Amazon States 언어'와 강사 노트의 'Amazon States Language 라고 하는 JSON 기반 언어를 사용'이 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 25 는 ASL 참조 링크로 AWS 도메인이 아닌 states-language.net 만 제시한다. AWS 공식 문서에도 ASL 페이지가 있고, 콘솔 밖에서 정의를 저장할 때의 .asl.json 확장자 규칙은 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html",
+      "fetched_with": "mcp",
+      "section": "Using Amazon States Language to define Step Functions workflows / Example Amazon States Language Specification (JSONata)"
+    },
+    {
+      "id": "error-handling-retry-catch",
+      "claim": "Pass 와 Wait 을 제외한 모든 상태가 런타임 오류를 만날 수 있다. 상태가 오류를 보고하면 Step Functions 는 기본적으로 상태 머신 실행 전체를 실패시킨다. Catcher 는 Task, Parallel, Map 상태에서 쓸 수 있고 최상위 상태 머신 실행 실패에는 쓸 수 없다. 오류 이름은 대소문자를 구분하는 문자열이며 ASL 이 정의한 내장 오류는 모두 States. 접두사로 시작한다. States.ALL 은 알려진 모든 오류 이름과 일치하는 와일드카드이며 Catcher 에 단독으로 나타나야 하고 States.DataLimitExceeded 종단 오류나 States.Runtime 오류는 잡을 수 없다. 그 밖의 내장 오류로 States.DataLimitExceeded, States.ExceedToleratedFailureThreshold, States.HeartbeatTimeout, States.Http.Socket, States.ItemReaderFailed, States.Permissions, States.ResultWriterFailed, States.Runtime, States.TaskFailed, States.Timeout 이 있다. Task, Parallel, Map 상태는 retrier 객체 배열인 Retry 필드를 가질 수 있고 retrier 필드는 ErrorEquals(필수), IntervalSeconds(기본 1, 최대 99,999,999), MaxAttempts(기본 3, 최대 99,999,999, 0 은 재시도 안 함), BackoffRate(기본 2.0), MaxDelaySeconds(0 초과 31622401 미만), JitterStrategy 다. 프로덕션 코드는 Lambda.ServiceException 과 Lambda.SdkClientException 같은 Lambda 서비스 예외를 처리해야 한다.",
+      "supports_courseware": "교재 슬라이드 36 의 Retry 문(ErrorEquals 에 Lambda.ServiceException·Lambda.AWSLambdaException·Lambda.SdkClientException, IntervalSeconds 2, MaxAttempts 6)과 Catch 문(ErrorEquals: States.ALL)이 실제 필드 구조와 일치한다.",
+      "corrects_courseware": "교재는 Retry·Catch 를 예제로만 보여 주고 필드의 기본값(IntervalSeconds 1, MaxAttempts 3, BackoffRate 2.0)이나 States.ALL 의 제약(단독 사용, States.Runtime·States.DataLimitExceeded 를 잡지 못함)을 설명하지 않는다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html",
+      "fetched_with": "mcp",
+      "section": "Handling errors in Step Functions workflows / Error names / Retrying after an error"
+    },
+    {
+      "id": "activities",
+      "claim": "Step Functions 활동(Activities)으로 상태 머신의 태스크를 Step Functions 외부에서 실행되는 작업자(worker)가 수행하게 할 수 있다. 활동 작업자(activity worker)는 EC2 인스턴스, Amazon ECS, 모바일 디바이스 등 HTTP 연결을 만들 수 있는 어떤 애플리케이션이든 될 수 있다. 콘솔 또는 CreateActivity 호출로 활동을 만들면 태스크 상태에 쓸 ARN 이 제공된다. Step Functions 가 활동 태스크 상태에 도달하면 워크플로는 활동 작업자가 태스크를 폴링할 때까지 기다린다. 활동 작업자는 GetActivityTask 로 폴링하고 응답으로 input 과 taskToken 을 받으며, 작업을 마치면 SendTaskSuccess 또는 SendTaskFailure 로 결과를 보고한다. 관련 API 는 CreateActivity, GetActivityTask, ListActivities, SendTaskFailure, SendTaskHeartbeat, SendTaskSuccess 다. 활동은 버전이 없고 하위 호환이 기대되므로 하위 호환되지 않는 변경이 필요하면 고유한 이름으로 새 활동을 만든다. TimeoutSeconds 를 길게 설정하고 SendTaskHeartbeat 를 주기적으로 보내면 활동이 최대 1년까지 실행 완료를 기다릴 수 있다. 태스크가 시간 초과되면 Step Functions 가 태스크 토큰을 무효화하고 만료된 토큰을 쓰는 API 호출은 TaskTimedOut 예외로 실패한다.",
+      "supports_courseware": "교재 슬라이드 26 다이어그램이 상태가 호출할 수 있는 대상으로 나열한 'AWS 서비스 / Lambda 함수 / 활동 작업자'가 문서와 일치한다.",
+      "corrects_courseware": "교재는 '활동 작업자'를 다이어그램 텍스트로만 제시하고 폴링 모델(GetActivityTask → SendTaskSuccess/Failure), 태스크 토큰, 하트비트를 설명하지 않는다. 또 활동은 Standard 워크플로에서만 지원된다는 제약을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-activities.html",
+      "fetched_with": "mcp",
+      "section": "Learn about Activities in Step Functions / Overview / APIs Related to Activity Tasks / Waiting for an Activity Task to Complete"
+    },
+    {
+      "id": "service-quotas",
+      "claim": "Step Functions 서비스 할당량 중 주요 값은 다음과 같다. 상태 머신·실행·활동 태스크 이름은 80자를 넘을 수 없고 계정·리전 안에서 고유해야 한다. 계정당 등록 상태 머신 100,000개(150,000개까지 증액), 등록 활동 100,000개(150,000개까지), 상태 머신 정의 최대 크기 1MB(하드), 최대 요청 크기 요청당 1MB(하드), 계정·리전당 최대 열린 실행 1,000,000개(Express 에는 적용되지 않음), 열린 Map Run 최대 1000개(하드). 실행 관련 하드 할당량으로 최대 실행 시간은 Standard 1년·Express 5분이고 초과하면 States.Timeout 오류로 실패하며, 최대 실행 이력 크기는 Standard 25,000 이벤트(초과 시 실행 실패)·Express 무제한, 실행 이력 보존은 Standard 90일(요청 시 30일로 축소 가능), 실행 재구동(redrive) 가능 기간은 14일이며 Express 는 redrive 를 지원하지 않는다. 태스크·상태·실행의 최대 입력·출력 크기는 UTF-8 인코딩 문자열 256KiB 다. 게시된 상태 머신 버전은 상태 머신당 1000개, 별칭은 100개다. 신규 AWS 계정은 상태 전환 할당량이 축소되어 시작되고 사용량에 따라 자동 상향된다. HTTP Task 지속 시간은 60초 하드 할당량이다.",
+      "corrects_courseware": "교재는 Step Functions 할당량을 전혀 제시하지 않는다. 특히 태스크·상태·실행 입출력 256KiB 와 Standard 실행 이력 25,000 이벤트는 교재 슬라이드 27 의 반복 패턴을 실무에 적용할 때 직접 부딪히는 한도다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/service-quotas.html",
+      "fetched_with": "mcp",
+      "section": "General quotas / Quotas related to accounts / Quotas related to HTTP Task / Quotas related to state machine executions / Quotas related to task executions / Quotas related to versions and aliases"
+    },
+    {
+      "id": "state-machine-versions",
+      "claim": "버전(version)은 상태 머신의 번호가 붙은 불변 스냅샷이다. 상태 머신에 대한 가장 최근 개정(revision)에서 버전을 게시하며, 버전 ARN 은 상태 머신 ARN 과 버전 번호를 콜론으로 이은 형식(arn:partition:states:region:account-id:stateMachine:myStateMachine:1)이다. 버전을 게시한 뒤에는 버전 ARN 으로 StartExecution 을 호출할 수 있다. 버전은 편집할 수 없고 상태 머신을 업데이트해 새 버전을 게시한다. 버전 번호는 1부터 시작해 단조 증가하며 재사용되지 않는다(버전 10을 삭제한 뒤 새로 게시하면 11이 된다). 모든 버전은 같은 유형(Standard 또는 Express)을 공유하고 이름·생성 날짜는 버전 간에 바꿀 수 없다. 태그는 상태 머신 전역에 적용된다. 버전·개정마다 다를 수 있는 속성은 상태 머신 정의, IAM 역할, 추적 구성, 로깅 구성이다. 상태 머신당 최대 1000개 버전을 게시할 수 있고 이는 소프트 한도다.",
+      "corrects_courseware": "교재는 상태 머신의 버전·별칭을 다루지 않는다. Lambda 의 버전·별칭(모듈 9)과 API Gateway 의 스테이지(모듈 10)에 대응하는 Step Functions 쪽 배포 단위여서 강의 흐름상 비어 있는 지점이다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-state-machine-version.html",
+      "fetched_with": "mcp",
+      "section": "State machine versions in Step Functions workflows / Publishing a state machine version"
+    },
+    {
+      "id": "redrive",
+      "claim": "redrive 로 최근 14일 안에 성공적으로 완료되지 않은 Standard 워크플로 실행(실패·중단·시간 초과)을 다시 시작할 수 있다. 실행을 redrive 하면 Step Functions 가 실패한 단계부터 같은 입력으로 실행을 이어가고, 성공한 단계의 결과와 실행 이력은 보존되어 다시 실행되지 않는다. redrive 된 실행은 원래 시도와 같은 상태 머신 정의와 실행 ARN 을 쓰므로 상태 머신 정의를 업데이트했다면 새 실행을 시작해야 한다. redrive 자격 조건은 2023년 11월 15일 이후 시작한 실행, 상태가 SUCCEEDED 가 아님, redrive 가능 기간 14일 초과하지 않음, 최대 열린 시간 1년 초과하지 않음, 실행 이벤트 이력 수가 24,999 미만이다. redrive 는 상태 전환으로 계산되어 과금에 영향을 준다. Task·Parallel·Inline Map 상태에 정의한 재시도 횟수는 redrive 시 0으로 초기화되어 최대 시도 횟수를 다시 쓸 수 있다. Express 워크플로는 redrive 를 지원하지 않는다.",
+      "corrects_courseware": "교재는 실패한 실행을 다시 시작하는 방법을 다루지 않는다. 교재 슬라이드 23·24 가 '실패한 태스크 Retry'와 '장애·재시도 관리'를 강조하므로 실행 단위 복구 수단인 redrive 를 함께 알아야 한다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/redrive-executions.html",
+      "fetched_with": "mcp",
+      "section": "Restarting state machine executions with redrive / Redrive eligibility / Redrive behavior of individual states"
+    },
+    {
+      "id": "testing-workflows",
+      "claim": "Step Functions 는 상태 머신을 테스트·디버깅하는 방법으로 Test State 를 제공한다. 콘솔에서 상태 정의와 입력을 제공하면 Step Functions 가 그 상태를 실행하고 출력을 보여 주며 상태 머신을 만들지 않아도 된다. TestState API 로도 개별 상태를 테스트할 수 있고 inspectionLevel 은 INFO(기본), DEBUG, TRACE 다(TRACE 는 HTTP Task 에만 제공되며 원시 HTTP 요청·응답을 보여 준다). 데이터 흐름 시뮬레이터(Data flow simulator)는 JSONPath 구문을 테스트하기 위해 만든 콘솔 도구이며 현재 지원되지 않는다(unsupported). AWS Step Functions Local(다운로드 가능한 버전)도 기능 동등성을 제공하지 않으며 지원되지 않는다(unsupported) — 최적화 서비스 통합, 크로스 계정 액세스, 분산 맵을 지원하지 않는다. 문서는 Step Functions Local 대신 TestState API 로 배포 전에 상태 머신 로직을 단위 테스트하도록 안내한다.",
+      "corrects_courseware": "교재 슬라이드 29~30 의 데모는 시각적 개발·실행만 다루고 테스트 방법을 언급하지 않는다. 또 로컬 테스트 수단으로 흔히 알려진 Step Functions Local 은 현재 문서에서 unsupported 로 명시되어 있어, 신규 학습자에게 권장 경로는 TestState API 다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/test-and-debug.html",
+      "fetched_with": "mcp",
+      "section": "Testing and debugging Step Functions state machines / Test with Test State in console and API / Data flow simulator (unsupported) / Step Functions Local (unsupported)"
+    },
+    {
+      "id": "iterate-tutorial",
+      "claim": "'Iterate a loop with a Lambda function in Step Functions' 튜토리얼은 상태 머신과 Lambda 함수로 루프를 특정 횟수만큼 반복하는 설계 패턴을 구현한다. 상태 머신의 루프 횟수를 추적해야 할 때 쓰며, 큰 태스크나 장기 실행을 작은 조각으로 나누거나 특정 이벤트 수 이후 실행을 끝내는 데 도움이 된다. 비슷한 구현으로 장기 실행을 주기적으로 종료·재시작해 Step Functions·Lambda·다른 AWS 서비스의 서비스 할당량 초과를 피할 수 있다. 튜토리얼의 Lambda 함수는 count, index, step 입력을 받아 index 를 step 만큼 증가시키고 index < count 인 Boolean continue 와 함께 반환한다. 상태 머신은 continue 가 true 면 애플리케이션 로직을 실행하고 false 면 종료하는 Choice 상태를 구현한다. 상태는 ConfigureCount, Iterator, IsCountReached, ExampleWork(이 예제에서는 Pass 상태이고 실제 솔루션에서는 Task 를 쓸 것), Done 다섯 개이며, 현재 문서의 Lambda 런타임 선택은 Node.js 다.",
+      "supports_courseware": "교재 슬라이드 27 의 ASL 정의와 강사 노트의 상태별 설명(ConfigureCount / Iterator / IsCountReached / ExampleWork / Done)이 이 튜토리얼과 일치하고, 교재가 제시한 URL 도 그대로 유효하다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-create-iterate-pattern-section.html",
+      "fetched_with": "mcp",
+      "section": "Iterate a loop with a Lambda function / Step 1: Create a Lambda function to iterate a count / Step 3: Create a State Machine"
+    },
+    {
+      "id": "lambda-optimized-integration",
+      "claim": "최적화된 Lambda 통합의 주요 특징은 응답의 Payload 필드가 이스케이프된 JSON 에서 JSON 으로 파싱된다는 점과, Lambda 함수 안에서 예외가 발생하면 Task 가 실패한다는 점이다. 최적화 Lambda API 는 Invoke 다. Task 상태의 Resource 를 arn:aws:states:::lambda:invoke 로 지정하고 FunctionName 을 넘긴다. .waitForTaskToken 을 붙이면 콜백 패턴을 구현하고 이때 TaskToken 을 페이로드에 넣는다. InvocationType 파라미터로 비동기 호출도 가능하며 비동기 호출에서는 하트비트 시간 초과가 즉시 시작된다. Task 결과가 반환되면 함수 출력이 메타데이터 딕셔너리 안에 중첩되어 ExecutedVersion, Payload, SdkHttpMetadata, SdkResponseMetadata, StatusCode 를 포함한다. 대안으로 Resource 필드에 함수 ARN 을 직접 지정할 수 있는데 이 경우 .waitForTaskToken 을 쓸 수 없고 태스크 결과에 함수 출력만 담긴다. Qualifier 파라미터를 쓰거나 FunctionName 에 버전·별칭을 지정하면 IAM 정책 리소스 ARN 에도 한정자를 포함해야 한다(모든 버전·별칭을 허용하려면 :* 를 쓴다).",
+      "supports_courseware": "교재 슬라이드 36 의 Lambda Invoke 상태(Resource: arn:aws:states:::lambda:invoke, OutputPath: $.Payload, Parameters 의 Payload.$ 와 FunctionName)가 최적화 통합의 실제 형태와 일치하고, 함수 출력이 Payload 에 담기므로 OutputPath 로 $.Payload 를 뽑는 이유를 설명해 준다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/connect-lambda.html",
+      "fetched_with": "mcp",
+      "section": "Invoke an AWS Lambda function with Step Functions / Key features of Optimized Lambda integration / Workflow Examples / Directly specified function resource"
+    },
+    {
+      "id": "arn-account-id-format",
+      "claim": "ARN 의 일반 형식은 arn:partition:service:region:account-id:resource-id 이며 account-id 는 리소스를 소유한 AWS 계정 ID 로 하이픈 없이 표기한다. 문서의 예시 값은 123456789012 로 12자리다. 지원되는 partition 은 aws(AWS 리전), aws-cn(중국 리전), aws-us-gov(AWS GovCloud (US) 리전)다. 일부 리소스의 ARN 은 리전이나 계정 ID 또는 둘 다를 생략한다.",
+      "corrects_courseware": "교재 슬라이드 27 의 Resource ARN 은 arn:aws:lambda:us-east-1:12342:function:Iterate 로 계정 ID 자리가 5자리(12342)다. AWS 계정 ID 는 12자리이므로 이 값은 유효한 ARN 이 아니다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html",
+      "fetched_with": "mcp",
+      "section": "ARN format"
+    },
+    {
+      "id": "eventbridge-cwe-rename",
+      "claim": "Amazon EventBridge 는 이전에 Amazon CloudWatch Events 라고 불렸다. CloudWatch Events 에서 만든 기본 이벤트 버스와 규칙이 EventBridge 콘솔에도 표시되고, EventBridge 는 동일한 CloudWatch Events API 를 사용하므로 CloudWatch Events API 를 쓰는 코드는 그대로 동작한다. EventBridge 는 파트너 이벤트, 스키마 레지스트리, EventBridge Pipes 같은 기능으로 CloudWatch Events 의 역량을 확장하며, EventBridge 에 추가되는 새 기능은 CloudWatch Events 에 추가되지 않는다.",
+      "corrects_courseware": "교재 슬라이드 18 은 EventBridge 이름만 나열하고 CloudWatch Events 와의 관계를 설명하지 않는다. 오래된 자료나 기존 코드에서 CloudWatch Events 를 만나는 수강생에게 필요한 정보다.",
+      "url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html",
+      "fetched_with": "mcp",
+      "section": "EventBridge is the evolution of Amazon CloudWatch Events"
+    },
+    {
+      "id": "eventbridge-buses-pipes-scheduler",
+      "claim": "EventBridge 는 이벤트를 사용해 애플리케이션 구성 요소를 연결하는 서버리스 서비스다. 이벤트 기반 아키텍처는 이벤트를 내보내고 이에 응답하며 함께 동작하는 소결합 소프트웨어 시스템을 구축하는 방식이다. EventBridge 는 이벤트를 처리·전달하는 두 가지 방법을 포함한다. 이벤트 버스(Event buses)는 이벤트를 받아 0개 이상의 대상으로 전달하는 라우터이며 여러 소스에서 여러 대상으로 라우팅하는 데 적합하고 전달 전에 선택적으로 이벤트를 변환할 수 있다. 파이프(EventBridge Pipes)는 지점 간(point-to-point) 통합용이며 각 파이프가 단일 소스에서 이벤트를 받아 처리한 뒤 단일 대상으로 전달하고 고급 변환·보강을 지원한다. 파이프와 이벤트 버스는 함께 쓰는 경우가 많다(예: DynamoDB 스트림을 소스로 하는 파이프의 대상을 이벤트 버스로 두기). 이 외에 EventBridge Scheduler 는 cron·rate 표현식으로 반복 일정을 만들거나 일회성 호출을 구성할 수 있는 서버리스 스케줄러이며 유연한 전달 시간 창, 재시도 한도, 실패한 API 호출의 최대 보존 시간을 설정할 수 있다.",
+      "corrects_courseware": "교재 슬라이드 18 은 EventBridge 를 '애플리케이션 통합' 계층의 서비스 이름으로만 나열한다. 현재 EventBridge 는 이벤트 버스·파이프·스케줄러 세 가지 처리 방식을 제공한다.",
+      "url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html",
+      "fetched_with": "mcp",
+      "section": "What Is Amazon EventBridge?"
+    },
+    {
+      "id": "strangler-fig-pattern",
+      "claim": "스트랭글러 피그 패턴은 크고 모놀리식한 시스템을 현대화하거나 다시 작성할 때 위험을 관리하는 방법으로 Martin Fowler 가 소개했다. 다른 시스템이 웹 서비스에 종속성을 갖는 지점에 프록시를 세워 시스템 기능을 점진적으로 교체한다. 처음에는 프록시가 통과(pass-through) 동작을 하며 기존 모놀리식 애플리케이션 서비스가 구현을 채운다. 그다음 모놀리스와 분리된 새 서비스를 만들고 프록시의 구현을 그 새 서비스로 넘긴다. 프록시를 두고 그 구현을 새 서비스로 교체하는 과정을 레거시 시스템의 모든 기능이 새 서비스로 이전될 때까지 반복하며, 그 시점에 레거시 시스템을 폐기할 수 있다. 모범 사례는 테스트 커버리지가 좋고 기술 부채가 적은 구성 요소를 고르기, 확장성 요구가 있는 구성 요소부터 시작하기, 비즈니스 요구가 자주 바뀌고 자주 배포되는 구성 요소를 고르기다.",
+      "supports_courseware": "교재 슬라이드 13 의 디커플링 지침('분리에 적합한 작은 서비스부터 소규모로 시작', '자주 변경되는 기능 분리하기')과 스트랭글러 피그 패턴 설명('단계적 접근 방식', '기존 기능을 점진적으로 마이크로서비스로 교체')이 문서의 패턴 설명·모범 사례와 일치한다. 교재가 제시한 URL 도 그대로 유효하다.",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-aspnet-web-services/fig-pattern.html",
+      "fetched_with": "mcp",
+      "section": "The strangler fig pattern"
+    },
+    {
+      "id": "ddd-bounded-context",
+      "claim": "AWS Well-Architected 신뢰성 원칙 REL03-BP02 는 비즈니스 도메인과 기능에 초점을 맞춘 서비스를 구축하도록 권장한다. 마이크로서비스는 도메인 모델과 바운디드 컨텍스트(bounded context)를 써서 비즈니스 컨텍스트 경계에 맞춰 서비스 경계를 그린다. 바운디드 컨텍스트는 비즈니스 로직을 격리·캡슐화해 팀이 장애 처리 방법을 더 잘 판단하게 한다. 도메인 주도 설계(DDD)는 비즈니스 도메인을 중심으로 소프트웨어를 설계·구축하는 기반 접근 방식이다. 안티 패턴은 UI·미들웨어·데이터베이스 같은 기술 도메인 중심으로 팀을 구성하는 것, 애플리케이션이 여러 도메인 책임에 걸치는 것, 도메인 엔터티 라이브러리 같은 도메인 종속성을 서비스 간에 공유하는 것이다. 구현 단계로 이벤트 스토밍 워크숍으로 이벤트·명령·애그리게이트·도메인을 식별하고, 바운디드 컨텍스트로 도메인을 서비스로 나누며, 기존 모놀리스에는 버블 컨텍스트나 안티 커럽션 레이어 같은 전술적 기법을 쓴다. 모놀리스 분해에는 비즈니스 역량별·서브도메인별·트랜잭션별 패턴이 도메인 주도 접근과 잘 맞는다.",
+      "supports_courseware": "교재 슬라이드 11 의 '예: 도메인 주도 설계 — 마이크로서비스의 기능은 도메인 컨텍스트 내에 존재 / 다른 도메인과의 통합 지점 정의'가 문서의 바운디드 컨텍스트 서술과 일치한다.",
+      "corrects_courseware": "교재는 도메인 주도 설계를 한 줄 예시로만 제시하고 바운디드 컨텍스트라는 용어, 이벤트 스토밍, 안티 패턴, 모놀리스 분해 패턴을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_service_architecture_business_domains.html",
+      "fetched_with": "mcp",
+      "section": "REL03-BP02 Build services focused on specific business domains and functionality / Implementation guidance / Implementation steps"
+    },
+    {
+      "id": "microservices-whitepaper",
+      "claim": "'Implementing Microservices on AWS' 백서(2023년 7월 31일 발행)는 마이크로서비스가 잘 정의된 API 로 통신하고 자율적인 팀이 관리하는 작고 소결합된 서비스에 의존한다고 기술하며, 이점으로 확장성·복원력·유연성 향상과 더 빠른 개발 주기를 든다. 백서는 세 가지 마이크로서비스 패턴을 다룬다: API 기반(API driven), 이벤트 기반(event driven), 데이터 스트리밍(data streaming). 마이크로서비스 아키텍처는 애자일 소프트웨어 개발, 서비스 지향 아키텍처, API 우선 설계, CI/CD 같은 여러 분야의 개념을 결합하며 Twelve-Factor App 설계 패턴을 포함하는 경우가 많다. 백서는 서버리스를 다음 원칙으로 특징짓는다: 프로비저닝·관리할 인프라 없음, 소비 단위에 따른 자동 크기 조정, 'Pay for value' 과금 모델, 내장 가용성·내결함성, 이벤트 기반 아키텍처(EDA). 마이크로서비스가 많은 이점을 제공하지만 사용 사례별 요구와 비용을 평가해야 하고 어떤 경우에는 모놀리식 아키텍처나 다른 접근이 더 적절할 수 있으므로 규모·복잡성·구체적 사용 사례를 고려해 사례별로 판단해야 한다. 모놀리스에서 마이크로서비스로의 전환은 조직 운영 방식에도 영향을 주어 빠른 주기로 일하는 애자일 개발을 촉진하고, 팀은 보통 '투 피자 팀'이라고 불릴 만큼 작으며, 팀이 생성부터 배포·유지 관리까지 서비스에 대한 전적인 책임을 진다.",
+      "supports_courseware": "교재 슬라이드 7 의 마이크로서비스 특징(소결합, 독립 배포 가능, 확장 가능), 슬라이드 10 의 이점(개발 민첩성, 빠르고 독립적인 배포, 독립적 크기 조정, 가용성·복원력), 슬라이드 17 의 서버리스 이점 4개가 백서의 서술과 일치한다.",
+      "corrects_courseware": "교재 슬라이드 12 는 통합을 API 기반과 이벤트 기반 두 범주로만 제시한다. 백서는 API 기반·이벤트 기반·데이터 스트리밍 세 패턴을 다룬다. 또 교재는 마이크로서비스의 이점만 나열하고 '모놀리식이 더 적절할 수 있으므로 사례별로 판단하라'는 문서의 단서를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/whitepapers/latest/microservices-on-aws/microservices-on-aws.html",
+      "fetched_with": "mcp",
+      "section": "Implementing Microservices on AWS / Introduction / Modernizing to microservices"
+    },
+    {
+      "id": "saga-orchestration",
+      "claim": "사가 오케스트레이션 패턴은 중앙 코디네이터(오케스트레이터)를 써서 여러 서비스에 걸친 분산 트랜잭션의 데이터 무결성을 유지한다. 관계형 데이터베이스는 2단계 커밋(2PC)으로 트랜잭션 일관성을 유지하지만, 서비스별 데이터베이스(database-per-service) 설계를 따르는 분산 시스템에서는 2PC 를 쓸 수 없다. 이때 해법 하나가 사가 오케스트레이션 패턴이다. 어느 단계가 실패하면 오케스트레이터가 보상 트랜잭션(compensatory transaction)을 실행해 데이터를 초기 상태로 되돌린다. 고려 사항은 복잡성(보상 트랜잭션·재시도가 애플리케이션 코드를 복잡하게 함), 최종 일관성, 멱등성(사가 참여자는 멱등이어야 함), 트랜잭션 격리 부재(동시 오케스트레이션이 오래된 데이터를 낳을 수 있어 시맨틱 락 권장), 관찰 가능성, 지연 시간, 단일 실패 지점이다. 트랜잭션이 여러 데이터베이스에 분산된 경우 AWS Step Functions 로 사가 오케스트레이션을 구현할 수 있고, 샘플 솔루션은 Step Functions 의 Standard 워크플로를 쓴다. Step Functions 를 쓰면 내장 내결함성과 각 AWS 리전 내 여러 가용 영역에 걸친 서비스 용량 유지로 오케스트레이터의 단일 실패 지점 문제가 완화된다.",
+      "corrects_courseware": "교재 슬라이드 22 의 '노트 게시 워크플로'는 성공 경로와 좋음·나쁨 분기만 보여 주고, 여러 서비스에 걸친 트랜잭션이 중간에 실패했을 때 이미 커밋된 변경을 되돌리는 방법(보상 트랜잭션)을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/saga-orchestration.html",
+      "fetched_with": "mcp",
+      "section": "Saga orchestration pattern / Intent / Motivation / Applicability / Issues and considerations / Implementation using AWS services"
+    },
+    {
+      "id": "eda-transition",
+      "claim": "AWS Serverless Developer Guide 는 이벤트 기반 아키텍처(EDA)를 서버리스 학습 경로의 첫 단계로 제시하며, 서비스가 이벤트를 통해 상호 작용하는 방식을 이해하는 것이 성공적인 서버리스 개발에 필수라고 기술한다. 이벤트는 상태의 변화 또는 업데이트를 나타낸다(예: 장바구니에 담긴 항목, 스토리지에 업로드된 파일, 배송 준비가 된 주문). 이벤트는 수량·가격·통화처럼 상태를 담을 수도 있고 customerId·orderId 처럼 관련 정보를 조회할 식별자만 담을 수도 있다. 전통적인 요청/응답 주기는 인바운드 요청 수락·라우팅·전역 데이터와 유틸리티 서비스 생성·웹 훅 구현·요청 처리·응답 직렬화·메타데이터 추가·응답 전송 여덟 단계를 애플리케이션이 직접 다룬다. 이벤트 기반으로 구현하면 API Gateway 가 인바운드 URL·파라미터·쿼리 문자열·헤더를 추출해 이벤트를 만들고, Lambda 가 그 이벤트를 처리하며, DynamoDB 도 서버리스이고 낮은 지연 시간으로 응답하도록 만들어져 연결 풀이 필요 없다. 이벤트 기반 애플리케이션은 다른 서비스·시스템도 관찰할 수 있는 이벤트로 통신하고 이벤트 생산자는 어떤 소비자가 수신 중인지 알지 못하므로, 기존 워크플로를 방해하지 않고 확장하기가 더 쉽다. 마이크로서비스가 주로 배치 데이터 처리에 쓰인다면 Fargate 에 컨테이너 애플리케이션으로 배포하는 것이 더 적절할 수 있고, 온디맨드 데이터 처리가 필요한 애플리케이션에는 Lambda 함수 배포·유지가 훨씬 간단하다.",
+      "supports_courseware": "교재 슬라이드 12 의 이벤트 기반 서술('상황이 발생했음을 알리는 메시지', '소비자가 이벤트를 구독', '공급자가 이벤트를 생성', '이벤트 기반 애플리케이션은 서비스와 팀 간의 디커플링을 활성화한다')이 문서와 일치한다.",
+      "url": "https://docs.aws.amazon.com/serverless/latest/devguide/serverless-transition.html",
+      "fetched_with": "mcp",
+      "section": "Transitioning to event-driven architecture / Decoupled event-driven architecture"
+    },
+    {
+      "id": "choice-state-rules",
+      "claim": "Choice 상태(\"Type\": \"Choice\")는 상태 머신에 조건 로직을 추가한다. Choices(필수)는 다음 상태를 결정하는 Choice Rule 배열이며 최소 하나의 규칙을 정의해야 한다. Default(선택, 권장)는 어떤 Choice Rule 도 true 로 평가되지 않을 때 전환할 상태 이름이다. Choice 상태는 End 필드를 지원하지 않고 Next 는 Choices 필드 안에서만 쓴다. 어떤 Choices 도 true 가 아니고 Default 도 없으면 상태에서 빠져나가지 못해 상태 머신이 오류를 던진다. JSONPath 방식의 Choice Rule 은 비교(Variable 과 비교 연산자 필드)와 Next 필드로 구성되며 NumericEquals, StringEquals, StringGreaterThan, IsNull, IsPresent, StringMatches, TimestampEquals 등의 연산자를 쓰고 연산자 이름 끝에 Path 를 붙이면 상태 입력의 다른 값과 비교할 수 있다. JSONata 방식의 Choice Rule 은 true/false 로 평가되는 JSONata 표현식인 Condition 필드와 Next 필드를 쓰고, 규칙별 Assign 블록으로 어느 경로를 탔는지에 따라 다른 변수를 설정할 수 있다.",
+      "supports_courseware": "교재 슬라이드 27 의 IsCountReached 상태(Type: Choice, Choices 에 Variable·BooleanEquals·Next, Default: Done)가 문서의 JSONPath Choice Rule 구조와 일치하고, Default 를 지정한 것도 문서 권장과 맞는다.",
+      "corrects_courseware": "교재는 Choice 상태를 '흐름의 적절한 분기를 선택합니다'로만 설명하고 Default 가 없을 때 상태 머신이 오류로 실패한다는 점, Choice 상태가 End 를 지원하지 않는다는 점을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/state-choice.html",
+      "fetched_with": "mcp",
+      "section": "Choice workflow state / Choice Rules (JSONata) / Choice Rules (JSONPath)"
+    },
+    {
+      "id": "sqs-queue-types",
+      "claim": "Amazon SQS 는 표준 큐와 FIFO 큐 두 가지 큐 유형을 지원한다. 표준 큐는 작업마다 초당 거의 무제한의 API 호출을 지원하고, 최소 1회 전달(at-least-once delivery)을 보장하므로 메시지가 두 번 이상 전달될 수 있어 애플리케이션이 멱등 연산으로 중복을 처리하도록 설계해야 하며, 최선 노력 순서(best-effort ordering)여서 순서가 보장되지 않는다. FIFO 큐는 배치를 쓰면 API 메서드당 초당 최대 3,000 메시지를 처리하고(초당 300 API 호출 × 배치 10건), 고처리량 모드를 켜면 메시지 그룹 내 순서를 완화하는 조건으로 초당 최대 30,000 트랜잭션까지 확장할 수 있으며, 배치를 쓰지 않으면 API 메서드당 초당 최대 300 API 호출을 지원한다. FIFO 큐는 정확히 한 번 처리(exactly-once processing)를 제공해 각 메시지를 한 번 전달하고 처리·삭제할 때까지 유지하며, MessageDeduplicationId 또는 콘텐츠 기반 중복 제거로 중복을 방지한다. FIFO 전달은 각 메시지 그룹 안에서 보낸 순서대로 메시지를 받게 하며, 메시지를 여러 그룹으로 분산하면 그룹 내 순서를 유지하면서 병렬 처리할 수 있다.",
+      "corrects_courseware": "교재 슬라이드 18 은 Amazon SQS 를 '애플리케이션 통합' 계층의 서비스 이름으로만 나열한다. 마이크로서비스 간 비동기 통합을 설계할 때 표준 큐의 at-least-once·순서 미보장과 FIFO 큐의 exactly-once·순서 보장 중 무엇을 쓸지가 실제 결정 지점이다.",
+      "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html",
+      "fetched_with": "mcp",
+      "section": "Amazon SQS queue types"
+    },
+    {
+      "id": "stepfunctions-monitoring",
+      "claim": "Step Functions 를 로깅·모니터링하는 도구는 CloudWatch 지표(Metrics in CloudWatch), 이벤트 전달 자동화(Automate event delivery — EventBridge 통합), CloudTrail 의 API 호출, CloudWatch Logs 로깅, X-Ray 의 추적 데이터, User Notifications 를 통한 이벤트 여섯 가지다.",
+      "supports_courseware": "교재 슬라이드 25 강사 노트의 'Amazon CloudWatch 지표, CloudWatch Logs, AWS X-Ray 및 기타 도구를 사용하여 워크플로를 기록하고 모니터링할 수도 있습니다'가 문서와 일치한다.",
+      "corrects_courseware": "교재는 '기타 도구'로 뭉갠 부분에 CloudTrail(API 호출 감사), EventBridge 이벤트 전달, User Notifications 가 들어간다는 것을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/monitoring-logging.html",
+      "fetched_with": "mcp",
+      "section": "Logging and monitoring AWS Step Functions service performance"
+    },
+    {
+      "id": "stepfunctions-pricing",
+      "claim": "AWS Step Functions 요금 페이지는 Standard 워크플로가 애플리케이션 실행에 필요한 상태 전환(state transition) 수를 기준으로 과금된다고 기술한다. Step Functions 는 워크플로의 한 단계가 실행될 때마다 상태 전환을 하나로 계산하고 재시도를 포함한 모든 상태 머신의 상태 전환 총수로 과금하며, 워크플로 어느 단계에 재시도 오류 처리를 넣으면 각 재시도가 추가 상태 전환으로 과금된다. Step Functions 프리 티어는 월 4,000건의 무료 상태 전환을 포함하고 12개월 AWS 프리 티어 기간이 끝나도 자동 만료되지 않으며 기존·신규 AWS 고객 모두에게 무기한 제공된다. Express 워크플로는 워크플로 요청 수와 지속 시간을 기준으로 과금되며, 콘솔에서의 테스트도 요청으로 계산된다. 지속 시간은 워크플로가 실행을 시작한 시점부터 완료·종료될 때까지를 가장 가까운 100ms 로 올림해 계산하고 메모리 사용량은 64MB 단위로 과금된다. 메모리 소비는 워크플로 정의 크기, Map·Parallel 상태 사용, 실행(페이로드) 데이터 크기에 따라 달라진다. 워크플로가 다른 AWS 서비스를 쓰거나 데이터를 전송하면 추가 요금이 발생한다. Distributed Map 은 반복마다 상태 전환 하나가 과금되지만 Inline Map 은 각 반복 시작에 대한 상태 전환이 없다.",
+      "corrects_courseware": "교재는 Step Functions 의 과금 모델을 전혀 다루지 않는다. 슬라이드 23 이 '재시도 및 시간 초과를 처리하는 Lambda 함수를 통해 코드를 작성하는 대신 Step Functions 를 쓸 수 있다'고 권하지만, 재시도가 추가 상태 전환으로 과금된다는 사실은 설계 판단에 필요하다.",
+      "url": "https://aws.amazon.com/step-functions/pricing/",
+      "fetched_with": "web_fetch",
+      "section": "Standard Workflows pricing details / Express Workflows pricing details / Additional charges / Pricing examples (Example 5: Map state)"
+    },
+    {
+      "id": "aws-serverless-page",
+      "claim": "AWS 서버리스 제품 페이지는 AWS 가 서버를 관리하지 않고 코드를 실행하고 데이터를 관리하고 애플리케이션을 통합하는 기술을 제공한다고 기술한다. 서버리스 기술의 특징으로 자동 크기 조정, 내장 고가용성, 사용량 기반(pay-for-use) 과금 모델을 들며, 이를 통해 민첩성을 높이고 비용을 최적화한다고 설명한다. 또한 이 기술이 용량 프로비저닝·패치 같은 인프라 관리 작업을 없애 주므로 고객에게 도움이 되는 코드 작성에 집중할 수 있다고 기술한다.",
+      "supports_courseware": "교재 슬라이드 16~18 이 제시한 서버리스 정의·이점(프로비저닝·관리할 서버 없음, 사용량에 따른 크기 조정, 고가용성·내결함성 내장)이 이 페이지의 서술과 일치하고, 교재가 슬라이드 18 에서 제시한 URL 도 그대로 유효하다.",
+      "url": "https://aws.amazon.com/serverless/",
+      "fetched_with": "web_fetch",
+      "section": "Serverless Computing"
+    },
+    {
+      "id": "lambda-concurrency-reuse-m09",
+      "claim": "(M09 에서 검증한 근거를 재사용) 동시성은 Lambda 함수가 동시에 처리 중인 진행 중 요청 수이며 동시 요청마다 Lambda 가 실행 환경 인스턴스를 별도로 프로비저닝한다. 계정의 리전당 총 동시성 한도는 기본 1,000 이고 증액 요청할 수 있다. 동시성 = (초당 평균 요청 수) × (평균 요청 처리 시간(초)) 로 계산한다. 동시성 제어는 예약된 동시성과 프로비저닝된 동시성 두 가지이며, 예약된 동시성은 계정 동시성의 일부를 그 함수에만 예약하고 구성 자체에는 추가 요금이 없고, 프로비저닝된 동시성은 미리 초기화한 실행 환경 인스턴스 수로 콜드 스타트 지연을 줄이며 추가 요금이 발생한다.",
+      "supports_courseware": "교재 슬라이드 17 의 '사용량에 따른 크기 조정'과 '애플리케이션 크기를 자동으로 조정할 수 있습니다'가 실제로 어떤 한도 안에서 일어나는지를 뒷받침한다. 모듈 9 에서 같은 URL 로 검증한 사실이므로 서술을 일치시켰다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html",
+      "fetched_with": "mcp",
+      "section": "Understanding and visualizing concurrency / Calculating concurrency / Understanding reserved concurrency and provisioned concurrency"
+    },
+    {
+      "id": "fargate-vs-lambda-reuse-m09",
+      "claim": "(M09 에서 검증한 근거를 재사용) AWS Fargate 와 AWS Lambda 는 둘 다 서버리스 컴퓨팅 옵션이며 운영 부담 감소, 사용량 기반 과금, 빠른 배포, 내장 고가용성, 단순화된 컴플라이언스, 코드 집중이라는 이점을 공유한다. Fargate 는 컨테이너용 서버리스 컴퓨팅 엔진이며 주로 Amazon ECS 와 함께 쓰고 장기 실행 애플리케이션·마이크로서비스·배치 처리에 적합하다. Lambda 는 이벤트에 응답해 코드를 함수로 실행하며 호출당 최대 실행 시간이 15분이다. 실행 시간 제한은 Fargate 에 하드 제한이 없고 Lambda 는 호출당 15분이다. 상태 관리는 Fargate 컨테이너가 실행 중 메모리 상태를 유지할 수 있고 Lambda 는 설계상 스테이트리스여서 외부 저장소가 필요하다. 동시성 한도는 Fargate 가 클러스터 용량 기반, Lambda 는 기본 1,000(증액 가능)이다.",
+      "supports_courseware": "교재 슬라이드 18 이 컴퓨팅 계층에 AWS Lambda 와 AWS Fargate 를 나란히 놓은 이유와, 슬라이드 9 의 '상태정보는 외부에 저장' 특징이 Lambda 의 스테이트리스 설계와 어떻게 연결되는지를 뒷받침한다.",
+      "url": "https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html",
+      "fetched_with": "mcp",
+      "section": "Introduction / 비교표 / Differences between Fargate and Lambda"
+    },
+    {
+      "id": "lambda-event-sources-reuse-m09",
+      "claim": "(M09 에서 검증한 근거를 재사용) 'Lambda 함수를 호출할 수 있는 서비스' 표에서 AWS Step Functions 는 동기 또는 비동기 호출로 분류되고, Amazon EventBridge 는 이벤트 버스·규칙이 비동기, 파이프가 동기 또는 비동기로 분류된다. 한 함수에 여러 트리거를 둘 수 있고 각 트리거는 독립적인 클라이언트처럼 동작하며 Lambda 가 함수에 전달하는 각 이벤트에는 하나의 트리거 데이터만 담긴다. 트리거는 Lambda 가 아니라 이벤트를 생성하는 서비스가 저장·관리한다.",
+      "supports_courseware": "교재 슬라이드 22·24 가 Step Functions 로 Lambda 함수를 오케스트레이션하는 구조를 제시하는데, Lambda 쪽 문서에서도 Step Functions 를 호출 경로로 명시하고 있어 양쪽 서술이 일치한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html",
+      "fetched_with": "mcp",
+      "section": "Invoking Lambda with events from other AWS services / Services that can invoke Lambda functions"
+    },
+    {
+      "id": "apigateway-rest-vs-http-reuse-m10",
+      "claim": "(M10 에서 검증한 근거를 재사용) API Gateway 는 REST API 와 HTTP API 를 모두 제공하며 기능·요금이 다르고, 문서는 두 유형의 기능을 나란히 비교한다. API Gateway 가 Step Functions 의 최적화 통합 대상이라는 사실과 동기 Express 워크플로를 API Gateway 에서 호출할 수 있다는 사실은 이 페이지가 아니라 Step Functions 문서(integration-patterns-three / workflow-types-standard-express 항목)에서 확인했다.",
+      "supports_courseware": "교재 슬라이드 22 다이어그램의 '클라이언트 → POST → API Gateway → Step Functions' 경로에서 API Gateway 쪽 서술을 모듈 10 과 일치시키기 위해 같은 URL 을 재사용했다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html",
+      "fetched_with": "mcp",
+      "section": "Choose between REST APIs and HTTP APIs"
+    }
+  ]
+}

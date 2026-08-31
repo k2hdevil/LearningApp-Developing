@@ -1,0 +1,206 @@
+# 폐기·변경 레지스트리 (M01 · 모듈 1 과정 개요)
+#
+# 교재(Developing on AWS 강사용 덱)에 등장하지만 현재는 종료·비권장·변경된 항목을 기록합니다.
+# 본문에서 조용히 지우지 않고 여기에 근거와 함께 남긴 뒤, 모듈 문서의
+# '교재 대비 변경 사항' 장에 delta로 표시합니다. 수강생이 공식 교재를 들고
+# 있으므로 "책에는 있는데 자료에는 없다"는 질문에 답할 수 있어야 합니다.
+#
+# M01은 과정 운영 모듈입니다. API·할당량 같은 기술 사실이 거의 없고, 대신
+#   (1) Pollynotes 아키텍처에 등장하는 서비스의 현재 위치가 바뀐 항목
+#   (2) 교육 과정·실습 플랫폼 페이지가 이동한 항목
+#   (3) 교재 내부에서 서로 어긋나는 표기(외부 문서로 검증할 대상이 아님)
+# 세 종류가 대부분입니다. (3)은 evidence 를 붙이지 않고 courseware_internal: true 로 표시합니다.
+#
+# state 값
+#   ended       : 서비스·버전 지원 종료. 본문에서 제거하고 대체안을 제시한다.
+#   discouraged : 동작하지만 권장되지 않음. 본문 주 경로에서 빼고 주의로만 남긴다.
+#   changed     : 동작·기본값·표기가 바뀜. 본문을 새 내용으로 교체한다.
+#   incorrect   : 교재 기술이 사실과 다름. 교정한다.
+#
+# verified_on 은 아래 항목을 공식 문서로 확인한 날짜입니다.
+
+verified_on: 2026-08-30
+
+items:
+  - id: xray-console-no-longer-developed
+    module: M01
+    state: discouraged
+    title: AWS X-Ray 콘솔
+    courseware_location: '슬라이드 6·12 Pollynotes 아키텍처 다이어그램의 AWS X-Ray 레이블과 슬라이드 12 어젠다의 실습 7 "AWS X-Ray를 사용하여 애플리케이션 관찰"'
+    detail: >-
+      교재는 AWS X-Ray 와 Amazon CloudWatch 를 나란히 놓인 별개 서비스로 제시합니다.
+      현재 문서는 "AWS 는 X-Ray 콘솔을 더 이상 개발하지 않는다"고 명시하고, CloudWatch
+      콘솔에 X-Ray 콘솔에서 다시 설계한 새 X-Ray 기능이 포함되어 있다고 기술합니다.
+      X-Ray Service map 과 CloudWatch ServiceLens map 은 CloudWatch 콘솔 안의
+      X-Ray trace map 으로 통합되었고, X-Ray Insights 도 CloudWatch 콘솔의 Insights 에
+      포함됩니다. X-Ray 자체가 종료된 것은 아니므로 state 는 ended 가 아니라
+      discouraged 입니다. 달라지는 것은 화면 경로입니다.
+    replacement: Amazon CloudWatch 콘솔의 X-Ray traces → Trace Map. 서비스 단위 관찰은 CloudWatch Application Signals
+    evidence: https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html
+
+  - id: polly-voice-mode-two-engines
+    module: M01
+    state: changed
+    title: 선택한 음성 모드
+    courseware_location: 슬라이드 6 강사 노트의 "선택한 노트의 음성 버전을 선택한 음성 모드로 재생할 수 있습니다"
+    detail: >-
+      교재는 "음성 모드"라고만 서술하고 선택지를 제시하지 않습니다. 현재 Amazon Polly
+      문서는 음성 엔진을 네 가지(Generative, Long-form, Neural, Standard)로 명시합니다.
+      Generative 와 Long-form 은 교재 이후 추가된 엔진입니다. 음성을 쓰려면 엔진과
+      음성 합성 API 작업을 선택하고 입력 텍스트와 오디오 출력 형식을 제공합니다.
+    replacement: Generative · Long-form · Neural · Standard 네 가지 음성 엔진
+    evidence: https://docs.aws.amazon.com/polly/latest/dg/voice-engines-polly.html
+
+  - id: lambda-two-compute-primitives
+    module: M01
+    state: changed
+    title: AWS Lambda 함수
+    courseware_location: 슬라이드 9~11 어젠다의 모듈 9·실습 4 "AWS Lambda 함수를 구축하여 DynamoDB에 웹 애플리케이션의 데이터 저장"
+    detail: >-
+      교재는 Lambda 를 함수 하나의 개념으로만 다룹니다. 현재 Lambda 문서는 워크로드
+      패턴에 따라 설계된 두 가지 컴퓨팅 프리미티브를 제시합니다. Lambda Functions 는
+      이벤트·API 호출에 응답해 코드를 실행하고, Lambda MicroVMs 는 시작이 거의 즉시이고
+      최대 8시간까지 상태를 유지하는 격리된 컴퓨팅 환경입니다. 이 과정의 실습은
+      Lambda Functions 경로이므로 실습 내용이 달라지는 것은 아니지만, 문서를 찾아갈 때
+      두 프리미티브가 구분되어 있다는 점을 알아야 합니다.
+    replacement: Lambda Functions(이 과정의 실습 경로) / Lambda MicroVMs
+    evidence: https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+
+  - id: classroom-pages-moved-to-skillbuilder
+    module: M01
+    state: changed
+    title: 강의실 과정 페이지 위치
+    courseware_location: 슬라이드 5 "수강 전 권장 사항"의 두 선수 과정 이름
+    detail: >-
+      교재는 과정 이름만 제시합니다. aws.amazon.com 의 강의실 과정 페이지
+      (/training/classroom/<과정>/) 는 현재 HTTP 200 으로 응답하되 AWS Skill Builder
+      (skillbuilder.aws)의 과정 페이지로 리다이렉트됩니다. 확인한 것은 응답 코드와
+      리다이렉트 대상뿐이며 페이지 본문은 클라이언트 렌더링이라 읽지 못했습니다.
+      AWS Cloud Practitioner Essentials 는 13개 모듈로 개편되었고 AWS Skill Builder ·
+      Coursera · edX 에서 제공된다고 블로그가 알립니다.
+    replacement: AWS Skill Builder 의 과정 페이지. aws.amazon.com/training/classroom/<과정>/ 로 들어가도 자동으로 이동합니다
+    evidence: https://aws.amazon.com/blogs/training-and-certification/new-aws-cloud-practitioner-essentials/
+
+  - id: builder-labs-now-immersive-learning
+    module: M01
+    state: changed
+    title: AWS Builder Labs 소개 페이지
+    courseware_location: 슬라이드 16~18 "과정 실습 및 가이드에 액세스하는 방법 / AWS Builder Labs 지침"
+    detail: >-
+      교재는 AWS Builder Labs 를 강의 실습 포털로만 다룹니다. 현재 AWS 는 AWS Builder
+      Labs 를 AWS Skill Builder 의 몰입형 학습(immersive learning) 경험 중 하나로 제시하고,
+      200개 이상의 가이드형 대화식 실습과 함께 교재에 없는 AI 기반 Learning Assistant 가
+      실습 문맥 안에서 제공된다고 기술합니다. /training/digital/aws-builder-labs/ 는
+      /training/digital/immersive-learning/ 로 리다이렉트됩니다. 강의 실습에 접근하는
+      경로(환영 이메일의 고유 등록 URL → AWS Builder Labs 대시보드)는 교재와 같습니다.
+    replacement: AWS Skill Builder 몰입형 학습 페이지의 AWS Builder Labs 항목
+    evidence: https://aws.amazon.com/training/digital/immersive-learning/
+
+  - id: api-gateway-name-spacing
+    module: M01
+    state: incorrect
+    title: Amazon APIGateway
+    courseware_location: 슬라이드 6·12 Pollynotes 아키텍처 다이어그램의 텍스트 상자
+    detail: >-
+      교재 다이어그램의 텍스트 상자는 서비스 이름을 "Amazon APIGateway" 로 공백 없이
+      적습니다. 문서상 정확한 표기는 "Amazon API Gateway" 입니다. 같은 교재의
+      슬라이드 10·11 다이어그램과 강사 노트는 "Amazon API Gateway"·"API Gateway" 로
+      올바르게 적고 있어 교재 안에서 표기가 엇갈립니다.
+    replacement: Amazon API Gateway
+    evidence: https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html
+
+  - id: iam-abbreviation-aws-iam
+    module: M01
+    state: incorrect
+    title: AWS Identity and Access Management(AWS IAM)
+    courseware_location: 슬라이드 7 강사 노트의 "모듈 4 - AWS Identity and Access Management(AWS IAM) 권한을 지원하는 개발 환경 구성"
+    detail: >-
+      문서상 이 서비스의 약어는 "IAM" 입니다. 교재는 슬라이드 6·7 다이어그램에서
+      "AWS Identity and Access Management(IAM)" 로 적고, 슬라이드 7 강사 노트에서만
+      "AWS Identity and Access Management(AWS IAM)" 로 적어 교재 안에서 표기가
+      엇갈립니다. 의미가 달라지는 오류는 아니지만 수강생이 대조할 때 눈에 띄는 차이입니다.
+    replacement: AWS Identity and Access Management(IAM)
+    evidence: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+
+  - id: module-title-course-overview-vs-intro
+    module: M01
+    state: incorrect
+    courseware_internal: true
+    title: '모듈 1 - 과정 소개'
+    courseware_location: '슬라이드 2 부제 "모듈 1: 과정 개요" vs 슬라이드 7 강사 노트 "모듈 1 - 과정 소개"'
+    detail: >-
+      슬라이드 1 에는 모듈 제목이 없고 모듈 제목은 슬라이드 2 의 부제 "모듈 1: 과정 개요"
+      에서 옵니다. 그런데 슬라이드 7 의 어젠다 강사 노트는 같은 모듈을 "모듈 1 - 과정 소개"
+      라고 적습니다. 어느 쪽이 맞는지는 AWS 문서로 판별할 대상이 아니라 교재 내부
+      불일치입니다. 이 문서는 슬라이드 2 를 따릅니다.
+    replacement: '모듈 1: 과정 개요 (슬라이드 2 부제)'
+
+  - id: lab1-description-in-english
+    module: M01
+    state: incorrect
+    courseware_internal: true
+    title: Configure and test IAM permissions in a development environment.
+    courseware_location: 슬라이드 7 강사 노트의 실습 1 설명
+    detail: >-
+      슬라이드 7 의 강사 노트는 한국어인데 실습 1 설명 한 줄만
+      "실습 1 – Configure and test IAM permissions in a development environment." 로
+      영어입니다. 같은 노트의 다른 모듈 설명은 모두 한국어입니다. 번역 누락으로 보이는
+      교재 내부 문제이며 외부 문서로 검증할 대상이 아닙니다.
+    replacement: 개발 환경에서 IAM 권한을 구성하고 테스트합니다.
+
+  - id: lab2-title-vs-note-mismatch
+    module: M01
+    state: incorrect
+    courseware_internal: true
+    title: 빅 데이터 애플리케이션 워크로드에 적합한 AWS 솔루션 파악
+    courseware_location: 슬라이드 8 상자 "실습 2 / Amazon S3를 사용한 솔루션 개발" vs 같은 슬라이드 강사 노트 "실습 2 - 빅 데이터 애플리케이션 워크로드에 적합한 AWS 솔루션 파악"
+    detail: >-
+      같은 슬라이드에서 실습 2 의 제목과 설명이 서로 다른 실습을 가리킵니다. 상자는
+      "Amazon S3를 사용한 솔루션 개발" 이고 강사 노트는 "빅 데이터 애플리케이션
+      워크로드에 적합한 AWS 솔루션 파악" 입니다. 같은 슬라이드의 다이어그램은
+      개발자 → AWS SDK → Amazon S3 (Notes) 흐름을 그려 상자 제목 쪽과 맞습니다.
+      다른 실습(3·4·6)은 상자 제목과 노트 설명이 대응하므로 노트 쪽이 다른 모듈의
+      학습 목표를 잘못 옮긴 것으로 보입니다. 외부 문서로 판별할 대상은 아닙니다.
+    replacement: 실습 2 - Amazon S3를 사용한 솔루션 개발 (상자 제목 기준)
+
+  - id: agenda-module-titles-vs-decks
+    module: M01
+    state: incorrect
+    courseware_internal: true
+    title: 현대적 애플리케이션 구축
+    courseware_location: 슬라이드 11 어젠다 상자의 모듈 11·모듈 12 제목
+    detail: >-
+      어젠다 상자의 모듈 제목이 개별 모듈 덱의 제목과 다릅니다. 슬라이드 11 은
+      "현대적 애플리케이션 구축" 인데 M11 덱은 "모던 애플리케이션(Modern Application)
+      구축" 이고, 슬라이드 11 은 "애플리케이션 사용자에게 액세스 권한 부여" 인데
+      M12 덱은 "내 애플리케이션의 사용자에게 액세스 권한 부여하기" 입니다. 수강생이
+      어젠다와 모듈 표지를 대조하면 바로 눈에 띕니다. 교재 내부 불일치입니다.
+    replacement: 모듈 11 모던 애플리케이션(Modern Application) 구축 / 모듈 12 내 애플리케이션의 사용자에게 액세스 권한 부여하기 (개별 덱 기준)
+
+  - id: connection-options-two-vs-three
+    module: M01
+    state: incorrect
+    courseware_internal: true
+    title: Guacamole 또는 원격 데스크톱을 사용하여 연결합니다.
+    courseware_location: 슬라이드 7 다이어그램 텍스트 상자 vs 같은 슬라이드 강사 노트
+    detail: >-
+      슬라이드 7 의 다이어그램 상자는 접속 방법을 "Guacamole 또는 원격 데스크톱" 두 가지로
+      적고, 같은 슬라이드의 강사 노트는 "Guacamole, 원격 데스크톱 또는 브라우저 기반
+      옵션" 세 가지로 적습니다. 어느 쪽이 현재 실습 환경의 접속 방법인지는 실습 환경
+      운영 사항이라 AWS 문서로 확인할 수 없습니다. Apache Guacamole 도 AWS 가 운영하는
+      도메인의 문서 대상이 아니므로 근거를 붙일 수 없습니다.
+    replacement: (확인 불가. 실제 접속 방법은 실습 환경 안내를 따를 것)
+
+  - id: language-list-python-dotnet-java-vs-csharp
+    module: M01
+    state: incorrect
+    courseware_internal: true
+    title: Java, Python, C# 중 어떤 언어를 선택하시겠습니까?
+    courseware_location: 슬라이드 5 "최상위 프로그래밍 언어에 대한 기본 지식(Python / .NET / Java)" vs 슬라이드 15 자기 소개 질문
+    detail: >-
+      슬라이드 5 는 언어를 Python / .NET / Java 로 나열하고 슬라이드 15 는 Java / Python /
+      C# 중에서 고르라고 묻습니다. .NET 은 런타임·플랫폼 이름이고 C# 은 그 플랫폼의
+      언어이므로 표기 단위가 다릅니다. 실습 IDE·SDK 선택과 직결되는 항목이라 강의
+      시작 시점에 어느 축으로 물어야 하는지 정리해 두는 편이 낫습니다. 교재 내부
+      표기 차이이며 외부 문서로 검증할 대상은 아닙니다.
+    replacement: (언어 축으로 통일하면 Java / Python / C# · 플랫폼 축으로 통일하면 Java / Python / .NET)

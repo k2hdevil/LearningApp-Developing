@@ -194,13 +194,22 @@ async function main() {
       if (m.error) bad.push('콘텐츠 로드 오류');
       if (!m.h1) bad.push('h1 없음');
       if (m.h2 < 3) bad.push(`h2 ${m.h2}개`);
-      if (m.tables < 5) bad.push(`표 ${m.tables}개`);
-      if (m.codeBlocks < 1) bad.push('코드블록 0개');
-      if (m.codeBlocks !== m.copyButtons) {
-        bad.push(`코드블록 ${m.codeBlocks}개 vs 복사버튼 ${m.copyButtons}개`);
+      // 표와 출처의 하한은 "렌더가 깨졌다"가 아니라 "내용이 빈약하다"는 신호입니다.
+      // 실패로 다루면 얇은 게 정상인 모듈에서 억지로 채우게 되므로 경고로만 둡니다.
+      const thin = [];
+      if (m.tables < 5) thin.push(`표 ${m.tables}개`);
+      if (m.sources < 5) thin.push(`출처 ${m.sources}개`);
+      // 코드 블록은 있으면 제대로 렌더되는지 보고, 없으면 그것도 정상입니다.
+      // M01 처럼 과정 운영 모듈은 원본 덱에 코드가 한 줄도 없습니다.
+      // 존재를 강제하면 코드를 억지로 끼워 넣게 되므로 일관성만 검사합니다.
+      if (m.codeBlocks > 0) {
+        if (m.codeBlocks !== m.copyButtons) {
+          bad.push(`코드블록 ${m.codeBlocks}개 vs 복사버튼 ${m.copyButtons}개`);
+        }
+        if (m.highlighted < 1) bad.push('구문 하이라이팅 없음');
+      } else if (m.copyButtons > 0) {
+        bad.push(`코드블록은 0개인데 복사버튼이 ${m.copyButtons}개`);
       }
-      if (m.highlighted < 1) bad.push('구문 하이라이팅 없음');
-      if (m.sources < 5) bad.push(`출처 ${m.sources}개`);
       if (m.verifyMarkers > 0) bad.push(`VERIFY 마커 ${m.verifyMarkers}개 잔존`);
       if (m.brokenAnchors > 0) bad.push(`깨진 앵커 ${m.brokenAnchors}개`);
 
@@ -211,7 +220,8 @@ async function main() {
           `표=${String(m.tables).padStart(3)} 코드=${String(m.codeBlocks).padStart(2)} ` +
           `복사=${String(m.copyButtons).padStart(2)} 하이라이트=${String(m.highlighted).padStart(4)} ` +
           `출처=${String(m.sources).padStart(2)} 앵커오류=${m.brokenAnchors}` +
-          (bad.length ? `  ← ${bad.join(', ')}` : '')
+          (bad.length ? `  ← ${bad.join(', ')}` : '') +
+          (!bad.length && thin.length ? `  (참고: ${thin.join(', ')})` : '')
       );
       if (bad.length) console.log(`       h1: ${m.h1}`);
     }
