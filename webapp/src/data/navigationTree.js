@@ -182,7 +182,13 @@ export const navigationTree = [
           en: 'Module 13: Deploying Your Application',
         },
         type: 'item',
-        tags: [{ label: 'AWS SAM', category: 'tool' }],
+        contentFile: 'M13-DevOps_Summary.md',
+        tags: [
+          { label: 'AWS SAM', category: 'tool' },
+          { label: 'AWS CloudFormation', category: 'service' },
+          { label: 'CodeDeploy', category: 'service' },
+          { label: 'CI/CD', category: 'concept' },
+        ],
       },
       {
         id: 'M14-Observability_Summary',

@@ -1,0 +1,373 @@
+{
+  "_note": "M13 2단계(최신화) 검증 근거. 각 항목은 실제로 조회한 공식 문서 페이지와 그 근거를 기록한다. verified_on 이후 문서가 바뀔 수 있으므로 재검증 시 이 파일을 기준으로 대조한다. M01(AWS SAM 개요·CloudFormation 개요)·M02(SAM vs CloudFormation vs CDK 비교·커넥터·sam sync)·M03(Cloud9·IDE 도구 키트)·M09(sam local·Lambda 별칭 가중치 라우팅·개발 도구)에서 이미 검증한 사실은 같은 URL 을 재사용하고 id 에 _reuse_mNN 을 붙였다.",
+  "module": "M13",
+  "verified_on": "2026-09-01",
+  "verified_with": "AWS Documentation MCP (docs.aws.amazon.com) / AWS 제품 페이지 web_fetch / 교재 인용 URL link_check",
+  "citations": [
+    {
+      "id": "sam-template-anatomy",
+      "claim": "AWS SAM 템플릿 파일은 CloudFormation 템플릿 파일 형식을 거의 그대로 따르고, 두 형식의 주요 차이는 세 가지다. ① Transform 선언 — AWS SAM 템플릿 파일에는 Transform: AWS::Serverless-2016-10-31 선언이 필수(required)이며 이 선언이 CloudFormation 템플릿 파일을 AWS SAM 템플릿 파일로 식별한다. ② Globals 섹션 — AWS SAM 고유의 섹션으로 모든 서버리스 함수와 API 에 공통인 속성(properties that are common)을 정의하며 AWS::Serverless::Function, AWS::Serverless::Api, AWS::Serverless::CapacityProvider, AWS::Serverless::HttpApi, AWS::Serverless::SimpleTable, AWS::Serverless::StateMachine 리소스가 이 섹션에 정의된 속성을 상속한다. CloudFormation 템플릿에는 대응 섹션이 없다. ③ Resources 섹션 — AWS SAM 템플릿의 Resources 섹션에는 CloudFormation 리소스와 AWS SAM 리소스를 섞어 담을 수 있다. 그 밖의 모든 섹션은 같은 이름의 CloudFormation 템플릿 섹션에 대응한다. 문서가 나열하는 템플릿 섹션은 Transform(필수), Globals(선택), Description(선택), Metadata(선택), Parameters(선택), Mappings(선택), Conditions(선택), Resources(필수), Outputs(선택)이며 Transform 과 Resources 섹션만 필수다(Only the Transform and Resources sections are required). 섹션은 어떤 순서로든 넣을 수 있으나 언어 확장을 쓸 때는 AWS::LanguageExtensions 를 서버리스 변환(AWS::Serverless-2016-10-31)보다 앞에 두어야 한다. Parameters 섹션에 선언한 객체는 sam deploy --guided 명령이 사용자에게 추가 프롬프트를 표시하게 만들고, sam deploy 의 --parameter-overrides 파라미터로 전달한 값과 구성 파일의 항목이 AWS SAM 템플릿 파일의 항목보다 우선한다.",
+      "corrects_courseware": "① 교재 슬라이드 14 의 템플릿은 Transform 값을 AWS::serverless-2016-10-31 로 적어 serverless 의 첫 글자가 소문자다. 문서가 명시하는 값은 AWS::Serverless-2016-10-31 로 대문자 S 다. 같은 코드 블록의 Type: AWS::Serverless::Function 은 대문자 S 를 쓰므로 교재 안에서도 표기가 갈린다. ② 교재 슬라이드 14 의 주석 상자는 Globals 를 'AWS SAM 템플릿 내에서 사용할 전역 변수를 설정합니다'로 설명한다. Globals 는 변수 선언 섹션이 아니라 여러 리소스에 공통으로 적용할 속성을 한 번만 쓰는 섹션이다. ③ 교재는 필수 섹션과 선택 섹션을 구분하지 않는다. 문서는 Transform 과 Resources 두 섹션만 필수라고 명시한다(교재 템플릿 첫 줄의 AWSTemplateFormatVersion 은 문서의 SAM 템플릿 섹션 목록에 없지만, 다른 SAM 문서 페이지의 템플릿 예시에는 이 줄이 그대로 등장하므로 교재 표기가 틀린 것은 아니다). ④ 교재는 Globals 를 상속하는 리소스 목록을 제시하지 않는다. 문서 목록에는 교재 슬라이드 16 에 없는 AWS::Serverless::CapacityProvider 가 포함된다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html",
+      "fetched_with": "mcp",
+      "section": "AWS SAM template anatomy / YAML / Template sections"
+    },
+    {
+      "id": "courseware-url-sam-template-anatomy",
+      "claim": "교재 슬라이드 16 강사 노트가 인용한 URL(https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html)은 현재도 유효하며 페이지 제목은 'AWS SAM template anatomy' 다. 이 페이지의 내용은 위 sam-template-anatomy 항목에서 확인했다.",
+      "supports_courseware": "교재가 제시한 참조 링크가 그대로 살아 있고 다루는 주제도 슬라이드 14·16 의 SAM 템플릿 구조와 일치한다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html",
+      "fetched_with": "mcp",
+      "section": "AWS SAM template anatomy"
+    },
+    {
+      "id": "sam-resource-types",
+      "claim": "AWS SAM 고유의 리소스·속성 유형 참조 페이지가 나열하는 AWS::Serverless::* 리소스 유형은 13개다. AWS::Serverless::Api, AWS::Serverless::Application, AWS::Serverless::CapacityProvider, AWS::Serverless::Connector, AWS::Serverless::Function, AWS::Serverless::GraphQLApi, AWS::Serverless::HttpApi, AWS::Serverless::WebSocketApi, AWS::Serverless::LayerVersion, AWS::Serverless::MicrovmImage, AWS::Serverless::NetworkConnector, AWS::Serverless::SimpleTable, AWS::Serverless::StateMachine. 이 리소스와 속성은 AWS SAM 축약 구문(shorthand syntax)으로 정의하며 AWS SAM 은 CloudFormation 리소스·속성 유형도 지원한다.",
+      "supports_courseware": "교재 슬라이드 16 이 제시한 6개(AWS::Serverless::Api, HttpApi, Function, LayerVersion, SimpleTable, StateMachine)는 모두 현재 목록에 있고, '이러한 리소스 외에도 AWS SAM 템플릿에서는 어떤 AWS CloudFormation 리소스든지 정의할 수 있습니다'라는 강사 노트도 'AWS SAM also supports CloudFormation resource and property types' 서술과 일치한다.",
+      "corrects_courseware": "교재 슬라이드 16 은 6개만 제시한다. 현재 목록에는 교재에 없는 7개가 더 있다 — Application(중첩 서버리스 애플리케이션), CapacityProvider, Connector(리소스 간 권한), GraphQLApi, WebSocketApi, MicrovmImage, NetworkConnector. 특히 Connector 와 GraphQLApi·WebSocketApi 는 교재 이후 추가된 유형이다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-resources-and-properties.html",
+      "fetched_with": "mcp",
+      "section": "AWS SAM resources and properties / Topics"
+    },
+    {
+      "id": "sam-connector",
+      "claim": "AWS::Serverless::Connector 는 두 리소스 사이의 권한을 구성한다(Configures permissions between two resources). 구문은 두 가지다. 임베디드 커넥터 구문은 소스 리소스 안에 Connectors 블록을 두고 각 커넥터에 Destination, Permissions, SourceReference 를 지정한다. AWS::Serverless::Connector 리소스 구문은 Source, Destination, Permissions 를 지정한다. 문서는 대부분의 사용 사례에 임베디드 커넥터 구문을 권장하고(소스 리소스 안에 있어 읽기·유지가 쉬움), 중첩 스택의 리소스나 공유 리소스처럼 같은 AWS SAM 템플릿 안에 없는 소스 리소스를 참조할 때 AWS::Serverless::Connector 구문을 쓰라고 안내한다. Permissions 의 유효 값은 Read 와 Write 두 개이며 Read 는 리소스에서 데이터를 읽도록 허용하는 IAM 작업, Write 는 리소스에 데이터를 시작·기록하도록 허용하는 IAM 작업을 포함한다. Destination 과 Permissions 는 필수이고 Source 는 AWS::Serverless::Connector 구문을 쓸 때 필수다. 세 속성 모두 AWS SAM 고유이며 CloudFormation 에 대응 속성이 없다. 예시로 Lambda 함수에서 DynamoDB 테이블로 Write 연결을 정의할 때 함수 리소스 안에 Connectors: MyConn: Properties: Destination: Id: MyTable / Permissions: - Write 를 쓴다.",
+      "corrects_courseware": "교재는 Lambda 함수에 권한을 주는 방법으로 슬라이드 14 의 Policies: AmazonDynamoDBReadOnlyAccess(관리형 정책 이름)와 슬라이드 15 의 Role: !Sub arn:aws:iam::${AWS::AccountId}:role/DynamoDBReadRole(기존 역할 ARN) 두 가지만 제시한다. 현재는 커넥터로 '이 함수가 이 테이블에 Write 한다'처럼 의도를 선언하면 SAM 이 필요한 IAM 권한을 생성한다. 슬라이드 15 가 Delete 함수에 DynamoDBReadRole 을 붙이는 것 같은 권한 불일치를 줄이는 수단이다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html",
+      "fetched_with": "mcp",
+      "section": "AWS::Serverless::Connector / Syntax / Properties / Examples"
+    },
+    {
+      "id": "sam-cli-command-list",
+      "claim": "AWS SAM CLI 명령 참조 페이지가 나열하는 명령은 24개다. sam build, sam delete, sam deploy, sam init, sam list, sam local callback, sam local execution, sam local generate-event, sam local invoke, sam local start-api, sam local start-lambda, sam logs, sam package, sam pipeline bootstrap, sam pipeline init, sam publish, sam remote callback, sam remote execution, sam remote invoke, sam remote test-event, sam sync, sam traces, sam validate.",
+      "corrects_courseware": "교재가 다루는 명령은 sam init·sam build·sam local invoke·sam local start-api·sam local generate-event·sam package·sam deploy 일곱 개다. 현재 CLI 에는 교재에 없는 명령이 많다. 특히 ① sam validate — 슬라이드 12 강사 노트가 CLI 기능으로 'AWS SAM 템플릿 파일이 사양에 맞게 작성되었는지 확인합니다'를 들면서 명령 이름을 주지 않은 그 기능이다. ② sam sync — 로컬 변경을 클라우드에 계속 동기화한다. ③ sam delete — 배포한 스택을 정리한다. 데모(슬라이드 28)가 리소스를 만들고 끝나므로 필요하다. ④ sam remote invoke·sam remote test-event — 클라우드에 배포된 리소스를 직접 호출한다. 교재는 로컬 테스트만 다룬다. ⑤ sam logs·sam traces·sam list·sam publish·sam pipeline(bootstrap·init) 도 교재에 없다. 또 sam local 의 하위 명령은 교재의 3개가 아니라 6개(callback, execution, generate-event, invoke, start-api, start-lambda)다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html",
+      "fetched_with": "mcp",
+      "section": "AWS SAM CLI command reference / Topics"
+    },
+    {
+      "id": "sam-build-use-container",
+      "claim": "sam build 명령은 로컬 테스트나 AWS 클라우드 배포 같은 개발자 워크플로의 다음 단계를 위해 애플리케이션을 준비한다. --use-container(-u) 옵션은 함수가 네이티브로 컴파일된 종속성을 가진 패키지에 의존할 때 Lambda 같은(Lambda-like) 도커 컨테이너 안에서 함수를 빌드하는 옵션이다. 문서의 --build-image 설명은 --use-container 와 함께 쓰는 예로 sam build --use-container --build-image amazon/aws-sam-cli-build-image-python3.8 과 sam build --use-container --build-image Function1=amazon/aws-sam-cli-build-image-python3.8 을 제시한다. --use-container 와 함께만 쓸 수 있는 옵션은 --build-image, --container-env-var, --container-env-var-file 이며 --use-container 없이 쓰면 오류가 난다. --build-in-source 옵션은 --use-container 와 호환되지 않고, 지원 런타임은 sam init --runtime 이 지원하는 모든 Node.js 런타임, 지원 빌드 방법은 Makefile 과 esbuild 다. --no-use-container 는 도커 컨테이너 대신 로컬 머신에서 빌드를 실행한다. --template-file(--template, -t) 의 기본값은 template.[yaml|yml] 이고, --config-file 의 기본값은 프로젝트 디렉터리 루트의 samconfig.toml, --config-env 의 기본값은 default 다. --cached 를 지정할 때 캐시 디렉터리 기본값은 .aws-sam/cache 다. --hook-name 의 허용 값은 terraform 이다. 그 밖의 옵션으로 --parallel(병렬 빌드), --exclude(-x, 특정 리소스 제외), --base-dir(-s), --build-dir(-b), --manifest(-m), --skip-pull-image, --use-buildkit, --mount-symlinks, --save-params, --parameter-overrides 가 있다.",
+      "corrects_courseware": "교재 슬라이드 23 강사 노트는 '참고: 일부 언어(예: .NET 또는 Python)에서는 -use-container 옵션을 사용할 수 없습니다'라고 적는다. 현재 sam build 참조 문서에는 언어·런타임에 따라 --use-container 를 쓸 수 없다는 서술이 없고, 오히려 --build-image 설명이 Python 빌드 이미지(amazon/aws-sam-cli-build-image-python3.8)를 --use-container 와 함께 쓰는 예로 든다. 문서가 명시하는 --use-container 관련 제약은 '--build-in-source 와 호환되지 않는다'는 것뿐이다. 또 교재 강사 노트는 옵션을 -use-container(하이픈 한 개)로 적는데 정확한 표기는 --use-container(하이픈 두 개)이고 짧은 형식은 -u 다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html",
+      "fetched_with": "mcp",
+      "section": "sam build / Usage / Arguments / Options (--use-container, --build-image, --build-in-source, --template-file, --config-file, --hook-name)"
+    },
+    {
+      "id": "sam-template-default-filename",
+      "claim": "sam build 의 --template-file(--template, -t) 옵션 설명은 AWS SAM 템플릿 파일의 경로와 이름을 지정하는 옵션이며 기본값이 template.[yaml|yml] 이라고 명시한다. 즉 SAM CLI 는 프로젝트 루트의 template.yaml 또는 template.yml 을 기본 템플릿으로 찾는다. sam build 의 --base-dir(-s) 옵션 설명은 기본적으로 소스 코드 폴더의 상대 경로가 AWS SAM 템플릿의 위치를 기준으로 해석된다(By default, relative paths are resolved with respect to the AWS SAM template's location)고 명시하며, 이 옵션이 적용되는 대상은 AWS::Serverless::Function 의 CodeUri, AWS::Serverless::Function 의 Metadata 리소스 속성 중 DockerContext 항목, AWS::Serverless::LayerVersion 의 ContentUri, AWS::Lambda::Function 의 Code, AWS::Lambda::LayerVersion 의 Content 다.",
+      "supports_courseware": "교재 슬라이드 15 강사 노트의 '코드 위치는 AWS SAM 템플릿이 포함된 template.yml 파일에 따라 달라집니다'는 CodeUri 상대 경로가 템플릿 위치를 기준으로 해석된다는 문서 서술과 취지가 같고, template.yml 도 허용되는 기본 파일 이름 중 하나다.",
+      "corrects_courseware": "교재는 파일 이름을 template.yml 로만 적는다. SAM CLI 가 찾는 기본 이름은 template.yaml 또는 template.yml 둘 다이며, sam init 이 생성하는 파일 이름은 이 문서로 확인하지 못했다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html",
+      "fetched_with": "mcp",
+      "section": "sam build / Options (--template-file, --base-dir)"
+    },
+    {
+      "id": "sam-deploymentpreference",
+      "claim": "AWS SAM 은 CodeDeploy 를 내장해 점진적 AWS Lambda 배포를 제공하며, 몇 줄의 구성만으로 ① Lambda 함수의 새 버전을 배포하고 새 버전을 가리키는 별칭을 자동으로 만들고 ② 업데이트가 기대대로 동작한다고 확인할 때까지 고객 트래픽을 점진적으로 이동시키고(제대로 동작하지 않으면 변경을 롤백할 수 있다) ③ 새로 배포한 코드가 올바르게 구성되었고 애플리케이션이 기대대로 동작하는지 검증하는 사전 트래픽·사후 트래픽 테스트 함수를 정의하고 ④ CloudWatch 경보가 트리거되면 배포를 자동으로 롤백한다. AWS SAM 템플릿으로 점진적 배포를 활성화하면 CodeDeploy 리소스가 자동으로 생성되고 AWS Management Console 에서 직접 볼 수 있다. 관련 속성은 네 개다. AutoPublishAlias — 이 속성에 별칭 이름을 지정하면 AWS SAM 이 Lambda 함수의 Amazon S3 URI 변경을 근거로 새 코드 배포를 감지하고, 최신 코드로 함수의 갱신된 버전을 만들어 게시하고, 지정한 이름의 별칭을 만들어(이미 있으면 그대로 사용) 갱신된 버전을 가리키게 한다. 함수 호출은 별칭 한정자를 써야 이 이점을 얻는다. DeploymentPreference.Type — 트래픽 이동 방식으로 Canary(트래픽이 두 번의 증분으로 이동, traffic is shifted in two increments), Linear(같은 크기의 증분으로 증분마다 같은 분 간격으로 이동), AllAtOnce(모든 트래픽이 한 번에 이동) 세 갈래가 있고 사전 정의된 값은 Canary10Percent30Minutes, Canary10Percent5Minutes, Canary10Percent10Minutes, Canary10Percent15Minutes, Linear10PercentEvery10Minutes, Linear10PercentEvery1Minute, Linear10PercentEvery2Minutes, Linear10PercentEvery3Minutes, AllAtOnce 아홉 개다. Alarms — 배포가 일으킨 오류로 트리거되는 CloudWatch 경보 목록이며 트리거되면 배포를 자동 롤백한다. Hooks — 새 버전으로의 트래픽 이동 시작 전(PreTraffic)과 이동 완료 후(PostTraffic)에 실행하는 검증 함수이고, 두 함수 모두 CodeDeploy 에 성공·실패를 콜백해야 하며 실패하면 중단하고 CloudFormation 에 실패를 보고한다. 점진적 배포는 CodeDeploy 가 트래픽을 옮겨 올 이전 버전을 요구하므로 첫 배포는 두 단계로 해야 한다. 1단계는 AutoPublishAlias 만 두고 배포해 별칭을 만들고, 2단계에서 DeploymentPreference 를 추가해 점진적 배포를 수행한다.",
+      "corrects_courseware": "① 교재 모듈 목표 4번과 모듈 요약 4번은 '다양한 AWS SAM 배포 전략 설명'인데, 배포 전략 슬라이드(25~26)에는 AWS SAM 이 한 번도 나오지 않고 강사 노트 전체가 CodeDeploy 설명이다. SAM 템플릿에서 배포 전략을 선언하는 속성(AutoPublishAlias, DeploymentPreference)이 교재에 전혀 없다. ② 교재 슬라이드 26 은 Canary·Linear·All-at-once 세 단어만 제시하고 사전 정의 구성 이름을 하나도 주지 않는다. 실제 값은 Canary10Percent10Minutes 처럼 정해진 문자열 아홉 개이고 SAM 의 표기는 All-at-once 가 아니라 AllAtOnce(하이픈 없는 한 단어)다. ③ 교재 강사 노트는 Canary 를 '트래픽이 2 증분씩 이동합니다'로 옮긴다. 문서 서술은 '두 번의 증분으로 이동한다(shifted in two increments)'이므로 증분 크기가 2라는 뜻이 아니다. ④ 교재는 경보 기반 자동 롤백과 사전·사후 트래픽 후크를 다루지 않는다. 슬라이드 5 가 '롤백 계획 없음'을 전통적 배포의 문제로 제시하는데 그 해법이 바로 이 Alarms·Hooks 다. ⑤ 첫 점진적 배포를 두 단계로 나눠야 한다는 제약도 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/automating-updates-to-serverless-apps.html",
+      "fetched_with": "mcp",
+      "section": "Deploying serverless applications gradually with AWS SAM / Gradually deploying a Lambda function for the first time / Step 1 / Step 2"
+    },
+    {
+      "id": "sam-deploy-changeset",
+      "claim": "sam deploy 명령은 AWS CloudFormation 을 사용해 애플리케이션을 AWS 클라우드에 배포한다(deploys an application to the AWS Cloud using AWS CloudFormation). --stack-name 은 필수(Required)이며 기존 스택 이름을 주면 스택을 업데이트하고 새 이름을 주면 스택을 만든다. --guided(-g)는 AWS SAM CLI 가 프롬프트로 배포를 안내하게 한다. --config-file 의 기본값은 프로젝트 디렉터리 루트의 samconfig.toml 이고 --config-env 의 기본값은 default 다. 배포는 CloudFormation 변경 세트(change set)를 거친다. --confirm-changeset | --no-confirm-changeset 는 계산된 변경 세트를 배포할지 확인하는 프롬프트를 띄우고, --no-execute-changeset 은 변경 세트를 만들고 적용하지 않고 종료하므로 적용 전에 스택 변경을 볼 수 있으며, --role-arn 은 CloudFormation 이 변경 세트를 적용할 때 맡을 IAM 역할 ARN 이다. 롤백 관련 옵션은 두 개다. --disable-rollback 을 주지 않으면 기본적으로 배포 중 오류가 나면 CloudFormation 스택이 마지막 안정 상태로 롤백되고, --disable-rollback 을 주면 오류 이전에 만들어지거나 갱신된 리소스가 롤백되지 않는다. --on-failure 는 스택 생성 실패 시 동작을 ROLLBACK(이전 정상 상태로 롤백) / DELETE(이전 정상 상태가 있으면 롤백, 없으면 스택 삭제) / DO_NOTHING(--disable-rollback 과 같은 효과) 중에서 지정하며 기본 동작은 ROLLBACK 이다. --disable-rollback 과 --on-failure 는 함께 쓸 수 없다. --capabilities 의 유효 값은 CAPABILITY_IAM 과 CAPABILITY_NAMED_IAM 이며 IAM 리소스에 사용자 지정 이름이 있으면 CAPABILITY_NAMED_IAM 을 지정해야 하고, 지정하지 않으면 InsufficientCapabilities 오류가 반환된다. 중첩 애플리케이션을 포함한 애플리케이션을 배포할 때는 CAPABILITY_AUTO_EXPAND 를 써야 한다. --resolve-s3 는 안내 없는 배포에서 패키징·배포용 Amazon S3 버킷을 자동으로 만들며 --s3-bucket 과 함께 지정하면 오류가 난다. 템플릿이 51,200바이트보다 크면 --s3-bucket 또는 --resolve-s3 중 하나가 필요하다. 그 밖에 --parameter-overrides, --tags, --notification-arns, --kms-key-id, --image-repository(-ies), --resolve-image-repos, --signing-profiles, --fail-on-empty-changeset, --force-upload, --save-params, --use-json, --express 옵션이 있고 환경 변수 SAM_CLI_POLL_DELAY 로 CloudFormation 스택 상태 폴링 간격을 조절할 수 있다.",
+      "supports_courseware": "교재 슬라이드 24 의 sam deploy --guided(대화형 프롬프트를 사용하여 배포)와 슬라이드 21 의 sam deploy 는 현재도 유효한 사용법이다.",
+      "corrects_courseware": "① 교재 슬라이드 24 는 세 번째 예시에 '# 구성 파일을 사용하여 배포'라는 주석을 달고 sam deploy --template-file deploy.yml 을 제시한다. --template-file 은 AWS SAM 템플릿의 경로·이름을 지정하는 옵션이고, SAM 의 구성 파일은 --config-file 로 지정하며 기본값은 samconfig.toml 이다. 같은 혼동이 슬라이드 21 강사 노트('구성 파일을 사용할 때 대화형 프롬프트를 통해 배포하려면')에도 있다. ② 교재는 sam deploy 에 --stack-name 이 필수라는 점을 다루지 않는다. ③ 교재는 배포가 CloudFormation 변경 세트를 거친다는 사실과 롤백 옵션(--disable-rollback, --on-failure)을 전혀 다루지 않는다. 슬라이드 5 가 '롤백 계획 없음'을 전통적 배포의 문제로 제시하는데 그 해법의 절반이 여기에 있다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html",
+      "fetched_with": "mcp",
+      "section": "sam deploy / Usage / Environment variables / Options (--stack-name, --guided, --config-file, --confirm-changeset, --no-execute-changeset, --disable-rollback, --on-failure, --capabilities, --resolve-s3)"
+    },
+    {
+      "id": "sam-deploy-guided-samconfig",
+      "claim": "서버리스 애플리케이션을 처음 배포할 때는 --guided 옵션을 쓰고, AWS SAM CLI 가 대화형 흐름으로 배포 설정 구성을 안내한다. 대화형 흐름의 기본값은 ~/.aws/config(일반 AWS 계정 설정), ~/.aws/credentials(계정 자격 증명), <project>/samconfig.toml(프로젝트 구성 파일) 세 곳에서 가져오고, 대괄호([ ])가 기본값을 표시하며 답을 비워 두면 기본값이 선택된다. AWS SAM CLI 는 응답을 프로젝트의 samconfig.toml 파일에 기록하고, 이후 배포에서는 sam deploy 만 실행해도 그 값으로 배포한다. 값을 다시 구성하려면 sam deploy --guided 를 다시 쓰거나 구성 파일을 직접 수정한다. 대화형 흐름이 묻는 항목 예시는 Stack Name, AWS Region, Confirm changes before deploy [Y/n], Allow SAM CLI IAM role creation [Y/n], Disable rollback [y/N], '<함수>may not have authorization defined, Is this okay? [y/N]', Save arguments to configuration file [Y/n], SAM configuration file [samconfig.toml], SAM configuration environment [default] 이다. 배포의 주요 단계는 ① .zip 파일 아카이브로 패키징된 Lambda 함수는 AWS SAM CLI 가 압축해 Amazon S3 버킷에 업로드하고 필요하면 새 버킷을 만든다(출력에 Managed S3 bucket 으로 표시) ② 컨테이너 이미지로 패키징된 함수는 Amazon ECR 에 업로드하고 필요하면 새 리포지토리를 만든다 ③ AWS SAM CLI 가 AWS CloudFormation 변경 세트를 만들고 애플리케이션을 CloudFormation 스택으로 배포한다 ④ 배포된 AWS SAM 템플릿의 Lambda 함수 CodeUri 값을 새 값으로 수정한다. 모범 사례로 문서는 sam deploy 가 .aws-sam 디렉터리의 빌드 아티팩트를 배포하므로 원본 파일을 바꾸면 배포 전에 sam build 로 .aws-sam 디렉터리를 갱신하라고 안내하고, 첫 배포에는 sam deploy --guided 를 쓰고 이후 배포에는 sam deploy 를 쓰라고 안내한다. sam build 성공 출력은 Built Artifacts 를 .aws-sam/build, Built Template 을 .aws-sam/build/template.yaml 로 표시하고 다음에 쓸 명령으로 sam validate, sam local invoke, 'sam sync --stack-name {{stack-name}} --watch', sam deploy --guided 를 안내한다.",
+      "corrects_courseware": "① 교재는 samconfig.toml 을 한 번도 언급하지 않는다. sam deploy --guided 의 결과가 이 파일이고, 이후 배포가 이 파일을 읽는다는 것이 실무의 핵심이다. ② 교재 슬라이드 24 는 sam build && sam package --s3-bucket <bucket_name> 로 버킷 이름을 직접 넘기는 예시를 제시한다. 현재는 sam deploy 가 필요하면 관리형 S3 버킷을 자동으로 만든다. ③ 교재는 빌드 아티팩트가 .aws-sam 디렉터리에 생기고 sam deploy 가 그 디렉터리를 배포한다는 관계를 다루지 않는다. 슬라이드 23 의 sam build && sam local invoke 도 이 관계 위에서 동작한다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-deploy.html",
+      "fetched_with": "mcp",
+      "section": "Introduction to deploying with AWS SAM / Deploying applications using sam deploy / Verify changes before deployment / Best practices / Options for sam deploy / Examples"
+    },
+    {
+      "id": "sam-package-implicit",
+      "claim": "sam package 는 코드와 종속성의 .zip 파일을 만들어 Amazon S3 에 업로드하고(AWS SAM 이 Amazon S3 에 저장되는 모든 파일에 암호화를 활성화한다) 로컬 아티팩트 참조를 업로드된 Amazon S3 위치로 바꾼 AWS SAM 템플릿 사본을 반환한다. 기본 동작은 현재 작업 디렉터리를 프로젝트 루트로 가정하고, 먼저 sam build 로 빌드된 .aws-sam 하위 폴더의 template.yaml 을 찾고, 없으면 현재 작업 디렉터리의 template.yaml 또는 template.yml 을 찾는다. --template 을 지정하면 기본 동작을 덮어써 그 템플릿과 그것이 가리키는 로컬 리소스만 패키징한다. 문서는 참고(Note)로 'sam deploy 가 이제 sam package 의 기능을 암시적으로 수행한다(sam deploy now implicitly performs the functionality of sam package). sam deploy 명령을 직접 써서 애플리케이션을 패키징하고 배포할 수 있다'고 명시한다. --resolve-s3 는 패키징용 S3 버킷을 자동으로 만들고 --s3-bucket 과 함께 지정하면 오류가 난다. 아티팩트가 51,200바이트보다 크면 --s3-bucket 또는 --resolve-s3 중 하나가 필요하다. --output-template-file 로 패키징된 템플릿을 쓸 경로를 지정하며 지정하지 않으면 표준 출력에 쓴다.",
+      "corrects_courseware": "교재 슬라이드 24 는 첫 예시로 sam build && sam package --s3-bucket <bucket_name> 을 제시하고 강사 노트도 'sam package 및 sam deploy 명령을 사용합니다'라고 두 명령을 함께 요구한다. 현재 문서는 sam deploy 가 sam package 의 기능을 암시적으로 수행하므로 sam deploy 만으로 패키징과 배포를 할 수 있다고 명시한다. 또 --s3-bucket 대신 --resolve-s3 로 버킷을 자동 생성할 수 있다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-package.html",
+      "fetched_with": "mcp",
+      "section": "sam package / Note (sam deploy now implicitly performs the functionality of sam package) / Options / Example"
+    },
+    {
+      "id": "sam-init-options",
+      "claim": "sam init 명령은 새 서버리스 애플리케이션을 초기화하는 옵션을 제공한다. --app-template 은 쓰려는 관리형 애플리케이션 템플릿의 식별자이며 확실하지 않으면 옵션 없이 sam init 을 호출해 대화형 워크플로를 쓰라고 안내한다. 이 파라미터는 --no-interactive 를 지정하고 --location 을 주지 않을 때 필수다. --location(-l)은 템플릿·애플리케이션 위치이며 Git, Mercurial, HTTP/HTTPS, .zip 파일, 경로를 받는다. Git 리포지토리는 리포지토리 루트 위치를 써야 하고 로컬 경로는 .zip 파일 또는 Cookiecutter 형식이어야 한다. --runtime(-r)의 허용 값은 dotnet8, dotnet6, java25, java21, java17, java17.al2023, java11, java11.al2023, java8.al2023, nodejs24.x, nodejs22.x, nodejs20.x, nodejs18.x, nodejs16.x, python3.14, python3.13, python3.12, python3.11, python3.10, python3.9, python3.8, ruby4.0, ruby3.4, ruby3.3, ruby3.2 이며 패키지 유형이 Zip 일 때만 적용된다. --package-type 의 값은 Zip(.zip 파일 아카이브) 또는 Image(컨테이너 이미지)다. --architecture(-a)는 x86_64 또는 arm64 다. --dependency-manager(-d)의 값은 gradle, mod, maven, bundler, npm, cli-package, pip 다. --base-image 는 패키지 유형이 Image 일 때만 적용되며 amazon/python3.14-base·amazon/nodejs24.x-base 같은 값을 받는다. 그 밖에 --name(-n, 생성될 디렉터리 이름), --output-dir(-o), --no-interactive, --no-input, --extra-content, --tracing | --no-tracing(AWS X-Ray 추적 활성화), --application-insights | --no-application-insights(기본값은 --no-application-insights), --config-env, --config-file, --save-params, --debug 옵션이 있다.",
+      "supports_courseware": "교재 슬라이드 22 가 제시한 --runtime, --app-template, --location 세 옵션은 모두 현재도 존재하고, --runtime 의 허용 값 목록에 python3.8 도 여전히 포함된다. --location 이 .zip 파일과 로컬 경로를 받는다는 점도 일치한다.",
+      "corrects_courseware": "교재 슬라이드 22 는 세 옵션만 제시한다. 현재 sam init 에는 --name, --package-type, --architecture, --dependency-manager, --base-image, --output-dir, --no-interactive, --tracing, --application-insights, --extra-content 등이 더 있다. 특히 --package-type Image(컨테이너 이미지 Lambda)와 --architecture arm64 는 교재에 없는 선택이다. 또 --location 이 받는 위치에 Git·Mercurial·HTTP/HTTPS 도 포함되고, Git 리포지토리는 루트 위치를 써야 한다는 제약이 있다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-init.html",
+      "fetched_with": "mcp",
+      "section": "sam init / Usage / Options"
+    },
+    {
+      "id": "lambda-python38-python39-deprecated",
+      "claim": "Lambda 런타임 문서의 Deprecated runtimes 표에 python3.8(Python 3.8, Amazon Linux 2)의 지원 종료일(Deprecation date)이 2024년 10월 14일, 함수 생성 차단(Block function create)이 2027년 2월 1일, 함수 업데이트 차단(Block function update)이 2027년 3월 3일로 기재되어 있다. 같은 표에 python3.9(Python 3.9, Amazon Linux 2)의 지원 종료일이 2025년 12월 15일, 함수 생성 차단이 2027년 2월 1일, 함수 업데이트 차단이 2027년 3월 3일로 기재되어 있다. Supported runtimes 표의 Python 런타임은 python3.15(Amazon Linux 2023, 지원 종료 미예정), python3.14(2029-06-30), python3.13(2029-06-30), python3.12(2028-10-31), python3.11(2027-06-30), python3.10(2026-10-31)이다.",
+      "corrects_courseware": "교재는 슬라이드 14·15 의 SAM 템플릿과 슬라이드 22 의 sam init --runtime 예시에서 python3.8 을, 슬라이드 21 의 sam build 출력에서 python3.9 를 쓴다. 두 런타임 모두 현재 Deprecated runtimes 표에 있다. 실습이나 데모를 그대로 재현하면 지원 종료된 런타임을 쓰게 된다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Supported runtimes / Deprecated runtimes (표에서 python3.8·python3.9 행 조회)"
+    },
+    {
+      "id": "sam-controlling-access-to-apis",
+      "claim": "API Gateway API 에 대한 액세스를 제어하려면 AWS SAM 템플릿에서 권한 부여를 활성화한다. AWS SAM 이 지원하는 메커니즘 집합은 AWS::Serverless::HttpApi 와 AWS::Serverless::Api 리소스 유형에서 다르다. 문서의 요약 표는 다음과 같다. Lambda authorizers — HttpApi 지원, Api 지원. IAM permissions — HttpApi 미지원, Api 지원. Amazon Cognito user pools — HttpApi 지원(별표), Api 지원. API keys — HttpApi 미지원, Api 지원. Resource policies — HttpApi 미지원, Api 지원. OAuth 2.0/JWT authorizers — HttpApi 지원, Api 미지원. 별표의 뜻은 AWS::Serverless::HttpApi 리소스 유형에서 Amazon Cognito 를 JSON 웹 토큰(JWT) 발급자로 쓸 수 있다는 것이다. Lambda 권한 부여자는 이전에 사용자 지정 권한 부여자(custom authorizer)로 불렸고 API 를 호출하면 클라이언트 애플리케이션이 제공하는 요청 컨텍스트나 권한 부여 토큰과 함께 호출되어 호출자가 요청한 작업을 수행할 권한이 있는지 응답한다. IAM 권한은 API 호출자가 IAM 자격 증명으로 인증되어야 하고 호출자를 나타내는 IAM 사용자·사용자를 포함한 IAM 그룹·사용자가 맡는 IAM 역할에 IAM 정책이 연결되어 있을 때만 호출이 성공한다. 문서는 메커니즘 선택 지침도 제시한다. 권한 부여나 액세스 제어가 없는 그린필드 프로젝트라면 Amazon Cognito 사용자 풀이 최선일 수 있고(사용자 풀을 설정하면 인증과 액세스 제어가 함께 설정되므로), 애플리케이션에 이미 인증이 설정되어 있거나 사용자 풀이 지원하지 않는 사용자 지정 인증·액세스 제어 로직이 필요하면 Lambda 권한 부여자가 최선일 수 있다. 또 AWS SAM 으로 일부 API Gateway 오류 응답의 내용을 사용자 지정할 수 있고 사용자 지정 API Gateway 응답은 AWS::Serverless::Api 리소스 유형만 지원한다. 현재 페이지 제목은 'Control API access with your AWS SAM template' 이다.",
+      "supports_courseware": "교재 슬라이드 17 의 표 6행 전부가 현재 문서 표와 정확히 일치한다. HttpApi 의 'IAM 권한' 칸이 비어 있는 것도 문서와 같고(IAM 권한은 AWS::Serverless::Api 만 지원), 각주 '* Amazon Cognito를 AWS::Serverless::HttpApi 리소스 유형의 JSON 웹 토큰(JWT) 발급자로 사용할 수 있습니다'도 문서 각주와 같다. 교재 강사 노트가 인용한 URL(serverless-controlling-access-to-apis.html)도 현재 유효하다.",
+      "corrects_courseware": "교재는 표와 각주만 제시하고 각 메커니즘의 정의, 어느 것을 언제 고르는지(그린필드는 Cognito 사용자 풀, 기존 인증이 있으면 Lambda 권한 부여자), Lambda 권한 부여자의 이전 명칭(custom authorizer), AWS SAM 으로 API Gateway 오류 응답을 사용자 지정할 수 있다는 점을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis.html",
+      "fetched_with": "mcp",
+      "section": "Control API access with your AWS SAM template / (mechanism table) / Choosing a mechanism to control access / Customizing error responses / Examples"
+    },
+    {
+      "id": "sam-api-auth-property",
+      "claim": "AWS SAM 템플릿에서 Amazon Cognito 사용자 풀을 정의해 API 액세스를 제어할 때는 ApiAuth 데이터 유형을 쓴다. 예시는 AWS::Serverless::Api 리소스의 Properties 안에 Auth 를 두고 그 아래 DefaultAuthorizer: MyCognitoAuthorizer 와 Authorizers: MyCognitoAuthorizer: UserPoolArn: !GetAtt MyCognitoUserPool.Arn 을 선언하는 형태다. 같은 템플릿의 AWS::Serverless::Function 은 Events 의 Api 이벤트에서 RestApiId: !Ref MyApi 로 그 API 를 참조하고 Path 와 Method 를 지정한다.",
+      "corrects_courseware": "교재 슬라이드 17 강사 노트는 'AWS SAM 템플릿에서 권한 부여를 활성화해야 합니다'라고만 적고 어떤 속성으로 선언하는지 이름을 하나도 제시하지 않는다. 실제 속성은 Auth 이며 그 안에 DefaultAuthorizer 와 Authorizers 를 둔다(데이터 유형 이름은 ApiAuth). 또 함수의 Api 이벤트에서 RestApiId 로 명시적 API 리소스를 참조하는 방식도 교재에 없다(교재 슬라이드 14·15 는 RestApiId 없이 암시적 API 를 만드는 형태다).",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis-cognito-user-pool.html",
+      "fetched_with": "mcp",
+      "section": "Amazon Cognito user pool example for AWS SAM"
+    },
+    {
+      "id": "sam-function-role-vs-policies",
+      "claim": "AWS::Serverless::Function 의 Policies 속성은 이 함수의 권한 정책이며 함수의 기본 IAM 실행 역할에 추가된다(Policies will be appended to the function's default IAM execution role). 단일 값 또는 값 목록을 받고 허용되는 값은 ① AWS SAM 정책 템플릿 ② AWS 관리형 정책 또는 고객 관리형 정책의 ARN ③ 정해진 목록에 있는 AWS 관리형 정책의 이름 ④ YAML 맵으로 작성한 인라인 IAM 정책이다. 참고로 문서는 'Role 속성을 설정하면 이 속성은 무시된다(If you set the Role property, this property is ignored)'고 명시한다. Role 속성은 이 함수의 실행 역할로 쓸 IAM 역할의 ARN 이며 CloudFormation 에서는 필수지만 AWS SAM 에서는 필수가 아니고, 역할을 지정하지 않으면 논리 ID 가 <함수-논리-ID>Role 인 역할이 자동으로 만들어진다. RolePath 는 역할이 자동 생성될 때만 쓰고 Role 로 역할을 지정할 때는 쓰지 않는다. PermissionsBoundary 도 역할이 자동 생성될 때만 동작한다. Tracing 을 Active 또는 PassThrough 로 지정하고 Role 속성을 설정하지 않으면 AWS SAM 이 만들어 주는 Lambda 실행 역할에 arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess 정책을 추가한다. DeploymentPreference 객체를 지정하면 AWS SAM 이 스택당 하나인 AWS::CodeDeploy::Application(이름 ServerlessDeploymentApplication), AWS::CodeDeploy::DeploymentGroup(이름 <함수-논리-ID>DeploymentGroup), AWS::IAM::Role(이름 CodeDeployServiceRole)을 만든다. AutoPublishAlias 를 설정하면 AWS SAM 이 AWS::Lambda::Version 과 AWS::Lambda::Alias 리소스를 생성한다. Timeout 의 기본값은 3초, Architectures 의 기본값은 x86_64, PackageType 의 기본값은 Zip 이며 PackageType 이 Zip 이면 CodeUri 또는 InlineCode 중 하나가 필요하다. CodeUri 가 받는 값은 함수의 Amazon S3 URI, 함수의 로컬 경로(예: hello_world/), FunctionCode 객체다.",
+      "corrects_courseware": "① 교재 슬라이드 14 는 Policies: AmazonDynamoDBReadOnlyAccess 를, 슬라이드 15 는 Role: !Sub arn:aws:iam::${AWS::AccountId}:role/DynamoDBReadRole 을 쓰면서 두 방식의 차이와 우선순위를 설명하지 않는다. 문서는 Role 을 설정하면 Policies 가 무시된다고 명시하고, Role 을 주지 않으면 SAM 이 <함수-논리-ID>Role 역할을 만들어 준다고 기술한다. ② 교재는 Policies 에 쓸 수 있는 값의 종류(정책 템플릿·관리형 정책 ARN·관리형 정책 이름·인라인 정책)를 제시하지 않고 관리형 정책 이름 하나만 예로 든다. ③ 교재는 DeploymentPreference 를 쓰면 CodeDeploy 애플리케이션·배포 그룹·서비스 역할이 자동 생성된다는 점을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html",
+      "fetched_with": "mcp",
+      "section": "AWS::Serverless::Function / Properties (Policies, Role, RolePath, PermissionsBoundary, Tracing, DeploymentPreference, AutoPublishAlias, Timeout, PackageType, CodeUri)"
+    },
+    {
+      "id": "sam-policy-templates",
+      "claim": "AWS SAM 은 Lambda 함수와 AWS Step Functions 상태 머신의 권한을 애플리케이션이 쓰는 리소스로 좁히기 위해 정책 템플릿 목록에서 고를 수 있게 한다. 정책 템플릿을 쓰는 AWS Serverless Application Repository 의 AWS SAM 애플리케이션은 배포할 때 특별한 고객 확인(customer acknowledgment)이 필요하지 않다. 구문 규칙은 AWS SAM 템플릿 파일에 지정하는 모든 정책 템플릿마다 자리표시자 값을 담은 객체를 반드시 지정해야 하고, 자리표시자 값이 필요 없는 정책 템플릿은 빈 객체({})를 지정해야 한다는 것이다. 빈 객체를 주지 않으면 sam build 실행 시 \"Must specify valid parameter values for policy template '<정책-템플릿-이름>'\" 오류가 난다. 일반 IAM 정책이나 AWS 관리형 정책은 CloudFormation 으로 그대로 전달되므로 빈 객체 없이 쓸 수 있고, 한 Policies 목록에 관리형 정책(예: AmazonSQSFullAccess)과 정책 템플릿(예: DynamoDBCrudPolicy: TableName: !Ref SampleTable)을 섞어 쓸 수 있다. 정책 템플릿 표에는 79행이 있고 DynamoDB 관련 템플릿은 DynamoDBBackupFullAccessPolicy(테이블의 온디맨드 백업에 읽기·쓰기 권한), DynamoDBCrudPolicy(DynamoDB 테이블에 생성·읽기·업데이트·삭제 권한), DynamoDBReadPolicy(DynamoDB 테이블에 읽기 전용 권한), DynamoDBReconfigurePolicy(테이블 재구성 권한), DynamoDBRestoreFromBackupPolicy(백업에서 테이블 복원 권한), DynamoDBStreamReadPolicy(DynamoDB 스트림·레코드 설명·읽기 권한), DynamoDBWritePolicy(테이블에 쓰기 전용 권한) 일곱 개다. 새 정책 템플릿 추가를 요청하려면 AWS SAM GitHub 프로젝트의 develop 브랜치 policy_templates.json 소스 파일에 풀 리퀘스트를 제출하고 이유와 링크를 담은 이슈를 제출한다.",
+      "corrects_courseware": "교재 슬라이드 14 는 Policies 값으로 AWS 관리형 정책 이름 AmazonDynamoDBReadOnlyAccess 하나만 제시한다. AmazonDynamoDBReadOnlyAccess 는 계정의 모든 DynamoDB 테이블에 대한 읽기 권한을 주는 AWS 관리형 정책이므로 최소 권한과 거리가 있다. SAM 에는 특정 테이블로 권한을 좁히는 정책 템플릿(예: DynamoDBReadPolicy: TableName: !Ref pollyNotesTable)이 있고 이것이 SAM 이 권장하는 방식이다. 또 슬라이드 15 의 Delete 함수에는 DynamoDBCrudPolicy 나 DynamoDBWritePolicy 가 맞고 교재가 붙인 DynamoDBReadRole 은 삭제 작업을 수행할 수 없다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html",
+      "fetched_with": "mcp",
+      "section": "AWS SAM policy templates / Syntax / Examples / Policy template table (DynamoDB 항목 조회) / Troubleshooting"
+    },
+    {
+      "id": "sam-cli-prerequisites",
+      "claim": "AWS SAM CLI 사전 요구 사항 페이지는 AWS SAM CLI 를 쓰려면 ① AWS 계정, AWS Identity and Access Management(IAM) 자격 증명, IAM 액세스 키 페어 ② AWS 자격 증명을 구성할 AWS Command Line Interface(AWS CLI)가 필요하다고 기술한다. 단계는 AWS 계정 가입 → 1단계 AWS CLI 설치 → 2단계 AWS CLI 로 AWS 자격 증명 구성(aws configure 또는 IAM Identity Center 의 aws configure sso 마법사) → 3단계 (선택) AWS Toolkit for VS Code 설치다. 3단계는 통합 개발 환경을 선호하는 개발자용이며 시각적 디버깅, CodeLens 통합, 간소화된 배포 워크플로를 제공하고 사전 요구 사항은 Visual Studio Code 1.73.0 이상과 YAML 언어 지원 확장이다. 이 페이지에는 도커(Docker)가 사전 요구 사항으로 나오지 않는다. 설치 페이지는 운영 체제별 설치 방법(Linux x86_64·arm64 명령줄 설치 관리자, macOS 패키지 설치 관리자 등)을 안내하고, 2023년 9월부터 AWS 가 AWS 관리형 Homebrew 설치 관리자(aws/tap/aws-sam-cli)를 더 이상 유지하지 않는다는 참고를 담고 있으며, AWS SAM CLI 가 MacOS 13.x 보다 오래된 버전을 지원하지 않는다고 명시한다. 설치 확인은 sam --version 이다.",
+      "supports_courseware": "교재 슬라이드 19 의 4단계(AWS 계정 생성 → IAM 권한·AWS 보안 인증 정보 구성 → 도커 설치 → AWS SAM CLI 다운로드·설치) 중 계정·자격 증명·CLI 설치 부분은 현재 문서와 일치한다. 교재가 인용한 URL(serverless-sam-cli-install.html)도 현재 유효하며 'Install the AWS SAM CLI' 페이지를 제공한다(현재 정식 경로는 install-sam-cli.html).",
+      "corrects_courseware": "① 교재는 사전 요구 사항으로 AWS CLI 설치를 언급하지 않는다. 문서는 AWS SAM CLI 가 자격 증명 구성 등에 AWS CLI 를 요구한다고 명시한다. ② 교재는 도커를 사전 요구 사항 목록에 넣고 '선택 사항'으로 표시하지만, 현재 사전 요구 사항 페이지에는 도커 항목이 없고 대신 (선택) AWS Toolkit for VS Code 설치가 3단계로 들어 있다. ③ Homebrew 로 설치하던 경로가 2023년 9월부터 AWS 관리 대상이 아니고, macOS 12 이하는 지원되지 않는다는 제약이 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/prerequisites.html",
+      "fetched_with": "mcp",
+      "section": "AWS SAM prerequisites / Step 1: Install the AWS CLI / Step 2: Use the AWS CLI to configure AWS credentials / Step 3: (Optional) Install AWS Toolkit for VS Code"
+    },
+    {
+      "id": "courseware-url-sam-cli-install",
+      "claim": "교재 슬라이드 19 강사 노트가 인용한 URL(https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)은 현재도 유효하며 'Install the AWS SAM CLI' 페이지 내용을 제공한다. 다만 현재 문서 안에서 이 페이지를 가리키는 정식 경로는 install-sam-cli.html 이다(사전 요구 사항 페이지와 sam deploy·sam local 페이지의 링크가 모두 install-sam-cli.html 을 가리킨다).",
+      "supports_courseware": "교재가 제시한 참조 링크가 그대로 살아 있다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html",
+      "fetched_with": "mcp",
+      "section": "Install the AWS SAM CLI / Installing the AWS SAM CLI"
+    },
+    {
+      "id": "sam-local-invoke-docker",
+      "claim": "sam local invoke 하위 명령은 AWS Lambda 함수를 로컬에서 한 번 호출한다. 실행하면 AWS SAM CLI 는 현재 작업 디렉터리를 프로젝트 루트로 가정하고 먼저 .aws-sam 하위 폴더의 template.[yaml|yml] 을, 없으면 현재 작업 디렉터리의 template.[yaml|yml] 을 찾는다. 애플리케이션에 함수가 둘 이상이면 함수의 논리 ID 를 준다(예: sam local invoke HelloWorldFunction). 문서는 'AWS SAM CLI 가 도커를 사용해 로컬 컨테이너에서 함수를 빌드한 다음 함수를 호출하고 응답을 출력한다(The AWS SAM CLI builds your function in a local container using Docker)'고 명시하고, 출력 예시는 public.ecr.aws/lambda/python:3.9-rapid-x86_64 같은 런타임 이미지를 내려받아 .aws-sam/build/<함수> 를 컨테이너 안 /var/task 에 마운트하는 과정을 보여 준다. Lambda 함수 런타임 출력(로그)은 stderr, 함수 결과는 stdout 으로 나간다. 이벤트를 전달하려면 --event 옵션을 쓰고(예: sam local invoke --event events/s3.json S3JsonLoggerFunction) 이벤트는 sam local generate-event 로 만들 수 있으며, 환경 변수는 --env-vars 옵션으로 전달한다. 문서는 신뢰할 수 없는 코드에 SAM CLI 의 로컬 호출 기능을 쓰지 않도록 권고하고 완전한 격리가 필요하면 Lambda 서비스에서 직접 실행하라고 안내한다. 로컬 테스트 명령 소개 페이지는 sam local 의 하위 명령으로 generate-event(로컬 테스트용 AWS 서비스 이벤트 생성), invoke(Lambda 함수를 로컬에서 한 번 호출), start-api(로컬 HTTP 서버로 Lambda 함수 실행), start-lambda(AWS CLI·SDK 와 함께 쓸 로컬 HTTP 서버로 Lambda 함수 실행)를 안내한다.",
+      "supports_courseware": "교재 슬라이드 20 의 세 명령 설명(sam local invoke = 도커 컨테이너에서 로컬 실행, sam local start-api = API Gateway 엔드포인트 로컬 복제, sam local generate-event = 샘플 페이로드 생성)이 문서와 일치한다. 슬라이드 21 의 sam local invoke \"HelloWorldFunction\" -e event.json 도 함수 논리 ID + 이벤트 파일을 주는 현재 사용법과 같다.",
+      "corrects_courseware": "① 교재 슬라이드 19 는 도커를 '선택 사항'으로 표시하는데 sam local invoke 는 도커로 로컬 컨테이너를 만들어 함수를 빌드·호출한다. 로컬 테스트를 하려면 도커가 사실상 필수다. ② 교재는 sam local start-lambda(AWS CLI·SDK 와 함께 쓰는 로컬 HTTP 서버)를 다루지 않는다. ③ 신뢰할 수 없는 코드에 로컬 호출을 쓰지 말라는 문서의 주의가 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-invoke.html",
+      "fetched_with": "mcp",
+      "section": "Introduction to testing with sam local invoke / Invoke a Lambda function locally / Managing logs / Options"
+    },
+    {
+      "id": "sam-local-generate-event-services",
+      "claim": "sam local generate-event 하위 명령은 지원되는 AWS 서비스의 이벤트 페이로드 샘플을 생성하고, 생성한 이벤트를 수정해 로컬 리소스 테스트에 넘길 수 있다. 이 명령으로 만든 이벤트는 실제 AWS 서비스가 만드는 이벤트와 같은 구조로 형식화된다. 지원 서비스 목록을 보려면 인자 없이 sam local generate-event 를 실행하며, 문서의 출력 예시에 표시된 서비스는 alb, alexa-skills-kit, alexa-smart-home, apigateway, appsync, batch, cloudformation 이고 목록은 그 뒤로 계속된다(예시가 '...' 로 잘려 있다). 서비스 이름을 주면 생성 가능한 이벤트 유형이 표시되고(예: sam local generate-event s3 → batch-invocation, delete, put), 서비스와 이벤트 유형을 함께 주면 샘플 이벤트가 출력된다(예: sam local generate-event s3 put). 샘플 이벤트는 자리표시자 값을 담고 있으며 --region·--partition·--bucket·--key 같은 옵션으로 명령줄에서 수정할 수 있다.",
+      "corrects_courseware": "교재 슬라이드 20 은 '지원되는 대표적인 서비스는 Amazon S3, API Gateway, Amazon SNS입니다'라고 적어 세 개만 제시한다. 실제 지원 목록은 훨씬 길고 alb·alexa-skills-kit·alexa-smart-home·appsync·batch·cloudformation 등이 알파벳 앞부분에만 이미 여섯 개 더 있다. 또 교재는 서비스별 이벤트 유형을 고르는 두 번째 인자(예: s3 put)와 자리표시자 값을 바꾸는 옵션을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-generate-event.html",
+      "fetched_with": "mcp",
+      "section": "Introduction to testing with sam local generate-event / Generate sample events"
+    },
+    {
+      "id": "sam-sync-accelerate",
+      "claim": "sam sync 명령은 로컬 애플리케이션 변경을 AWS 클라우드에 빠르게 동기화하는 옵션을 제공하며 ① 로컬 변경을 자동으로 감지해 클라우드에 동기화 ② 무엇을 동기화할지 사용자 지정 ③ 테스트·검증을 위해 클라우드의 애플리케이션을 준비하는 데 쓴다. 문서는 sam sync 를 개발 환경용으로 권장하고 프로덕션 환경에는 sam deploy 또는 CI/CD 파이프라인 구성을 권장한다. sam sync 명령은 AWS SAM Accelerate 의 일부이며, AWS SAM Accelerate 는 AWS 클라우드에서 서버리스 애플리케이션을 개발·테스트하는 경험을 빠르게 하는 도구를 제공한다. --watch 옵션으로 실행하면 ① 애플리케이션을 빌드하고(sam build 와 비슷) ② .aws 사용자 폴더의 자격 증명·일반 구성과 samconfig.toml 의 배포 설정으로 CloudFormation 에 배포하고 ③ 계속 실행되며 로컬 변경을 감시하고 ④ 변경을 감지하면 가장 빠른 방법으로 동기화한다. 갱신된 리소스가 AWS 서비스 API 를 지원하면 그것으로 빠르게 갱신하고, 지원하지 않으면 CloudFormation 배포를 수행해 애플리케이션 전체를 갱신한다. sam sync 를 실행하면 '이 명령은 개발 스택에만 써야 한다'는 확인 프롬프트가 나온다. --code 옵션은 Lambda 함수 코드 같은 코드 변경만 동기화하고 --resource-id 로 특정 함수·계층만 지정할 수 있다. --no-watch 는 자동 동기화를 끄고 sam build 와 sam deploy 를 묶은 일회성 CloudFormation 배포를 수행한다. --skip-deploy-sync 는 로컬 템플릿과 배포된 CloudFormation 템플릿을 비교해 변경이 없으면 초기 CloudFormation 배포를 건너뛰며, 변경이 없어도 마지막 CloudFormation 배포 후 7일 이상 지났거나 Lambda 코드 변경이 많으면 배포를 수행한다. --stack-name 으로 갱신할 스택을 지정하고 중첩 스택 리소스는 nestedStackId/resourceId 형식으로 --resource-id 에 준다. --watch-exclude 로 동기화를 유발하지 않을 파일·폴더를 지정한다.",
+      "corrects_courseware": "교재 슬라이드 21 의 AWS SAM 워크플로는 init → build → test(local invoke) → deploy 네 단계다. 교재 이후 추가된 sam sync 는 개발 중 반복 주기를 줄이는 별도 경로이며 AWS SAM Accelerate 라는 이름으로 묶여 있다. sam build 성공 출력도 다음에 쓸 명령으로 'sam sync --stack-name {{stack-name}} --watch' 를 안내한다. 다만 문서는 sam sync 를 개발 환경 전용으로 권장하고 프로덕션에는 sam deploy 나 CI/CD 파이프라인을 쓰라고 명시하므로, 교재의 4단계 워크플로가 프로덕션 경로로서 여전히 유효하다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/accelerate.html",
+      "fetched_with": "mcp",
+      "section": "Introduction to using sam sync to sync to AWS Cloud / Automatically detect and sync local changes to the AWS Cloud / Customize what local changes are synced / Options for the sam sync command"
+    },
+    {
+      "id": "codedeploy-deployment-configurations",
+      "claim": "배포 구성(deployment configuration)은 배포 중 CodeDeploy 가 사용하는 규칙과 성공·실패 조건의 집합이며, EC2/온프레미스 컴퓨팅 플랫폼, AWS Lambda 컴퓨팅 플랫폼, Amazon ECS 컴퓨팅 플랫폼 중 어디에 배포하는지에 따라 다르다. EC2/온프레미스에 배포할 때 배포 구성은 'minimum healthy hosts' 값과 선택적인 'minimum healthy hosts per zone' 값으로 배포 중 언제든 사용 가능한 상태로 남아 있어야 하는 인스턴스의 수나 비율을 지정한다. AWS 가 제공하는 사전 정의 배포 구성 세 개 중 하나를 쓰거나 사용자 지정 배포 구성을 만들 수 있고, 배포 구성을 지정하지 않으면 CodeDeploy 는 CodeDeployDefault.OneAtATime 을 쓴다. EC2/온프레미스용 사전 정의 구성은 CodeDeployDefault.AllAtOnce, CodeDeployDefault.HalfAtATime, CodeDeployDefault.OneAtATime 이다. AWS Lambda 컴퓨팅 플랫폼에 배포할 때 배포 구성은 애플리케이션의 새 Lambda 함수 버전으로 트래픽이 이동하는 방식을 지정하며 canary, linear, all-at-once 배포 구성으로 트래픽을 이동할 수 있고 사용자 지정 canary·linear 배포 구성도 만들 수 있다. Lambda 컴퓨팅 플랫폼용 사전 정의 배포 구성은 아홉 개다. CodeDeployDefault.LambdaCanary10Percent5Minutes(첫 증분에서 트래픽 10%를 이동하고 나머지 90%는 5분 뒤 배포), LambdaCanary10Percent10Minutes(나머지 90%를 10분 뒤), LambdaCanary10Percent15Minutes(15분 뒤), LambdaCanary10Percent30Minutes(30분 뒤), CodeDeployDefault.LambdaLinear10PercentEvery1Minute(모든 트래픽이 이동할 때까지 1분마다 10% 이동), LambdaLinear10PercentEvery2Minutes, LambdaLinear10PercentEvery3Minutes, LambdaLinear10PercentEvery10Minutes, CodeDeployDefault.LambdaAllAtOnce(모든 트래픽을 한 번에 갱신된 Lambda 함수로 이동)다. Amazon ECS 플랫폼에도 canary·linear·all-at-once 구성이 있다. 사용자 지정 배포 구성은 CodeDeploy 콘솔·AWS CLI·CodeDeploy API·CloudFormation 템플릿으로 만들 수 있고, 콘솔에서 컴퓨팅 플랫폼으로 EC2/On-premises·AWS Lambda·Amazon ECS 중 하나를 고른다. 영역 구성(zonal configuration) 기능은 Amazon EC2 인스턴스에 대한 현재 위치 배포에서만 지원되고 사전 정의 배포 구성으로는 쓸 수 없어 사용자 지정 배포 구성을 만들어야 한다.",
+      "supports_courseware": "교재 슬라이드 26 강사 노트의 Canary·Linear·All-at-once 설명과 '자체 사용자 지정 canary 또는 선형 배포 구성을 만들 수도 있습니다', '최소 50%의 인스턴스가 필요하다면 이를 배포 구성에서 지정하면 됩니다'(EC2/온프레미스의 minimum healthy hosts)가 현재 문서와 일치한다. 강사 노트가 인용한 두 URL(deployment-configurations-create.html, deployment-configurations.html#deployment-configuration-lambda)도 현재 유효하다.",
+      "corrects_courseware": "① 교재는 사전 정의 배포 구성의 이름을 하나도 제시하지 않는다. Lambda 플랫폼에는 CodeDeployDefault.LambdaCanary10Percent5Minutes 처럼 정해진 이름 아홉 개가 있다. ② 교재 강사 노트는 Canary 를 '트래픽이 2 증분씩 이동합니다'로 옮겼는데 문서 설명은 '첫 증분에서 10%를 이동하고 나머지 90%를 N분 뒤 배포'다. ③ 교재는 배포 구성을 지정하지 않으면 CodeDeployDefault.OneAtATime 이 쓰인다는 기본값을 다루지 않는다. ④ 교재는 Amazon ECS 컴퓨팅 플랫폼을 언급하지 않고 EC2/온프레미스와 Lambda 두 갈래로만 설명한다. 문서의 컴퓨팅 플랫폼은 EC2/On-Premises, AWS Lambda, Amazon ECS 세 개다.",
+      "url": "https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html",
+      "fetched_with": "mcp",
+      "section": "Working with deployment configurations in CodeDeploy / Deployment configurations on an EC2/on-premises compute platform / Deployment configurations on an AWS Lambda compute platform / Predefined deployment configurations for an AWS Lambda compute platform (표 조회)"
+    },
+    {
+      "id": "codedeploy-deployment-types",
+      "claim": "CodeDeploy 의 컴퓨팅 플랫폼은 세 개다. EC2/On-Premises 는 Amazon EC2 클라우드 인스턴스·온프레미스 서버·둘 다일 수 있는 물리 서버 인스턴스를 기술하며, 이 플랫폼의 배포는 현재 위치(in-place) 또는 블루/그린 배포 유형으로 트래픽이 인스턴스로 향하는 방식을 관리한다. AWS Lambda 는 Lambda 함수의 갱신된 버전으로 구성된 애플리케이션을 배포하는 데 쓰고, 갱신된 Lambda 함수 버전으로 트래픽이 이동하는 방식을 canary·linear·all-at-once 구성 중에서 골라 관리한다. Amazon ECS 는 컨테이너화된 애플리케이션을 태스크 세트로 배포하며 CodeDeploy 가 갱신된 버전을 새 대체 태스크 세트로 설치해 블루/그린 배포를 수행한다. 배포 유형은 두 개다. 현재 위치 배포(In-place deployment)는 배포 그룹의 각 인스턴스에서 애플리케이션을 중지하고 최신 애플리케이션 수정 버전을 설치한 뒤 새 버전을 시작·검증하며, 로드 밸런서를 써서 배포 중 각 인스턴스를 등록 해제하고 배포 완료 후 서비스에 복원할 수 있다. 문서는 'EC2/온프레미스 컴퓨팅 플랫폼을 쓰는 배포만 현재 위치 배포를 쓸 수 있다(Only deployments that use the EC2/On-Premises compute platform can use in-place deployments)'고 명시한다. 블루/그린 배포는 컴퓨팅 플랫폼에 따라 동작이 다르다. EC2/온프레미스에서는 배포 그룹의 인스턴스(원래 환경)가 다른 인스턴스 집합(대체 환경)으로 교체되며 대체 환경 프로비저닝 → 최신 수정 버전 설치 → 애플리케이션 테스트·시스템 검증을 위한 선택적 대기 → 대체 환경 인스턴스를 Elastic Load Balancing 로드 밸런서에 등록해 트래픽을 재라우팅하고 원래 환경 인스턴스를 등록 해제하는 단계를 거치며, EC2/온프레미스 플랫폼의 블루/그린 배포는 Amazon EC2 인스턴스에서만 동작한다. AWS Lambda 또는 Amazon ECS 컴퓨팅 플랫폼의 블루/그린 배포에서는 canary·linear·all-at-once 배포 구성에 따라 트래픽이 증분으로 이동한다. CloudFormation 을 통한 블루/그린 배포에서는 CloudFormation 스택 업데이트의 일부로 트래픽이 이동하며 현재는 ECS 블루/그린 배포만 지원된다.",
+      "supports_courseware": "교재 슬라이드 26 강사 노트의 '현재 위치 배포 - 배포 그룹에 있는 각 인스턴스의 애플리케이션이 중지됩니다. 최신 애플리케이션 수정 버전이 설치되고, 애플리케이션의 새 버전이 시작 및 검증됩니다. 현재 위치 배포는 EC2/온프레미스 컴퓨팅 제품과 서비스를 사용하는 배포에서만 사용할 수 있습니다'와 '블루/그린 배포 - 업데이트된 애플리케이션 수정 버전을 이용해 트래픽이 현재 컴퓨팅 환경에서 새 환경으로 이동합니다'가 현재 문서와 일치한다.",
+      "corrects_courseware": "교재는 Lambda 배포의 Canary·Linear·All-at-once 를 '현재 위치 / 블루-그린' 두 배포 유형과 별개 층위로 제시한다. 문서 기준으로 Lambda 플랫폼의 배포는 블루/그린 배포이고 canary·linear·all-at-once 는 그 블루/그린 배포에서 트래픽을 옮기는 배포 구성이다. 또 교재는 Amazon ECS 컴퓨팅 플랫폼과 CloudFormation 을 통한 블루/그린 배포를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/codedeploy/latest/userguide/primary-components.html",
+      "fetched_with": "mcp",
+      "section": "Compute platform / Deployment type"
+    },
+    {
+      "id": "courseware-url-codedeploy-config-create",
+      "claim": "교재 슬라이드 26 강사 노트가 인용한 URL(https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations-create.html)은 현재도 유효하며 페이지 제목은 'Create a deployment configuration with CodeDeploy' 다. 페이지는 기본 배포 구성을 쓰지 않을 때 사용자 지정 배포 구성을 만드는 방법을 CodeDeploy 콘솔·AWS CLI·CodeDeploy API·CloudFormation 템플릿으로 안내하고, 콘솔 절차에서 컴퓨팅 플랫폼을 EC2/On-premises·AWS Lambda·Amazon ECS 중에서 고르게 한다.",
+      "supports_courseware": "교재가 제시한 참조 링크가 살아 있고 다루는 주제(배포 구성 생성)도 슬라이드 26 과 일치한다.",
+      "url": "https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations-create.html",
+      "fetched_with": "mcp",
+      "section": "Create a deployment configuration with CodeDeploy / Creating a deployment configuration (console)"
+    },
+    {
+      "id": "devops-what-is-page",
+      "claim": "교재 슬라이드 8·9 강사 노트가 인용한 URL(https://aws.amazon.com/devops/what-is-devops/)은 현재도 응답하며 페이지 제목은 'What is DevOps?' 다. 조회한 내용에서 'DevOps Cultural Philosophy' 절은 DevOps 가 가장 단순하게는 전통적으로 사일로화된 개발과 운영 두 팀 사이의 장벽을 없애는 것이며, 두 팀이 함께 일해 개발자의 생산성과 운영의 신뢰성을 모두 최적화하고, 자주 소통하고 효율을 높이고 고객에게 제공하는 서비스의 품질을 개선하려 노력하며, 자신이 맡은 역할이나 직함의 전통적 범위를 넘어 서비스에 대한 완전한 주인 의식을 갖는다고 기술한다. 품질 보증·보안 팀도 이 팀들과 긴밀히 통합될 수 있고, DevOps 모델을 쓰는 조직은 조직 구조와 무관하게 전체 개발·인프라 수명 주기를 자기 책임의 일부로 본다. 'DevOps Practices Explained' 절은 조직이 더 빠르게 혁신하도록 돕는 핵심 방식이 몇 가지 있고 대부분 적절한 도구로 달성된다고 기술하며, 근본적인 방식 하나는 매우 자주 작은 업데이트를 수행하는 것이고 이는 각 배포의 위험을 낮추며 오류를 일으킨 마지막 배포를 식별할 수 있어 버그를 더 빠르게 해결하도록 돕는다고 설명한다. 이어 마이크로서비스 아키텍처가 크고 복잡한 시스템을 단순하고 독립적인 프로젝트로 분리하고 각 서비스의 범위가 단일 목적·기능으로 정해진다고 기술하고, 마이크로서비스와 릴리스 빈도 증가의 조합이 배포 수를 크게 늘려 운영 과제를 만들므로 지속적 통합·지속적 전달 같은 DevOps 방식이 이를 해결한다고 서술한다. 코드형 인프라와 구성 관리 같은 인프라 자동화 방식이 컴퓨팅 리소스를 탄력적으로 유지하도록 돕고, 모니터링과 로깅 사용이 엔지니어가 애플리케이션·인프라 성능을 추적해 문제에 빠르게 대응하도록 돕는다고 기술한다.",
+      "supports_courseware": "교재 슬라이드 9 가 제시한 DevOps 방식 6개 중 지속적 통합·지속적 전달·마이크로서비스·코드형 인프라·모니터링 및 로깅 다섯 개가 이 페이지에 그대로 나온다. 슬라이드 6 의 '고도의 협업 환경 조성'과 슬라이드 9 의 '커뮤니케이션 및 협업'도 'DevOps Cultural Philosophy' 절의 사일로 제거·빈번한 소통 서술에 대응한다. 슬라이드 6 의 '소규모 개발'·'잦은 릴리스'도 '매우 자주 작은 업데이트를 수행한다'는 근본 방식에 대응한다.",
+      "corrects_courseware": "이 페이지는 인프라 자동화 방식으로 코드형 인프라와 함께 '구성 관리(configuration management)'를 제시한다. 교재 슬라이드 9 의 6개 목록에는 구성 관리가 없다. 또 교재 슬라이드 8 이 제시한 이점 6개(속도·빠른 전달·신뢰성·확장성·협업 강화·보안)는 이번 조회에서 가져온 본문에 포함되지 않았으므로 이 항목의 근거로 쓰지 않았다.",
+      "url": "https://aws.amazon.com/devops/what-is-devops/",
+      "fetched_with": "web_fetch",
+      "section": "What is DevOps? / DevOps Cultural Philosophy / DevOps Practices Explained"
+    },
+    {
+      "id": "sam-what-is_reuse_m01_m02",
+      "claim": "(M01·M02 에서 검증한 근거를 재사용하고 이번에 같은 URL 을 다시 조회했다) AWS Serverless Application Model(AWS SAM)은 코드형 인프라(IaC)로 서버리스 애플리케이션을 구축하는 오픈 소스 프레임워크다. AWS SAM 의 축약 구문으로 CloudFormation 리소스와 특수한 서버리스 리소스를 선언하면 배포 중에 인프라로 변환된다. AWS SAM 을 쓸 때 상호 작용하는 두 가지는 ① AWS SAM CLI — 서버리스 애플리케이션의 개발·로컬 테스트·배포를 돕는 명령줄 도구 ② AWS SAM 템플릿 — 서버리스 리소스 정의를 위한 단순화된 구문을 제공하는 CloudFormation 의 확장이다. sam init 명령은 AWS SAM 템플릿·애플리케이션 코드·그 밖의 구성 파일을 담은 프로젝트 디렉터리(AWS SAM 프로젝트)를 만든다. 사용 시나리오는 서버리스 애플리케이션(Lambda 함수, Lambda durable functions, API Gateway API, DynamoDB 테이블 등을 최소한의 코드로 정의), CloudFormation 보강(기존 CloudFormation 템플릿에 서버리스 구성 요소를 더하며 SAM 리소스와 표준 CloudFormation 리소스가 같은 템플릿에서 함께 동작), 로컬 개발·테스트, 서버리스 CI/CD, 콘솔에서 만든 리소스를 IaC 로 전환하는 마이그레이션이다. 다른 IaC 도구와의 비교로는 템플릿 호환성을 유지하면서 서버리스 리소스 정의를 단순화하려면 CloudFormation 대신 SAM 을, 인프라를 프로그래밍 방식이 아니라 선언적으로 기술하고 싶으면 AWS CDK 대신 SAM 을 쓰고, SAM CLI 의 로컬 테스트 기능으로 CDK 애플리케이션을 보완해 둘을 함께 쓸 수도 있다고 안내한다. 주요 기능은 더 적은 코드로 인프라 코드를 빠르게 정의, AWS SAM CLI 로 작성·빌드·배포·테스트·모니터링 전 주기 관리, AWS SAM 커넥터로 리소스 간 권한을 빠르게 프로비저닝, sam sync 로 개발 중 로컬 변경을 클라우드에 계속 동기화, AWS SAM CLI 로 Terraform 서버리스 애플리케이션의 Lambda 함수·계층 로컬 디버깅·테스트다.",
+      "supports_courseware": "교재 슬라이드 12 본문 'AWS SAM은 서버리스 애플리케이션을 배포하는 데 사용하는 오픈 소스 프레임워크입니다'와 구성 요소 두 개(AWS SAM 템플릿 사양 / AWS SAM 명령줄 인터페이스)가 문서와 일치한다. 강사 노트의 '서버리스 애플리케이션을 구성하는 함수, API, 권한, 구성 및 이벤트를 설명하는 효율적인 구문'도 축약 구문 서술과 대응한다.",
+      "corrects_courseware": "① 교재는 SAM 을 CloudFormation·AWS CDK 와 비교해 언제 무엇을 쓰라는 안내를 다루지 않는다. ② 교재에는 AWS SAM 커넥터, sam sync, Terraform 지원이 없다. 이 세 가지가 현재 문서의 '주요 기능'에 들어 있다. ③ 교재는 SAM 이 CloudFormation 을 보강하는 용도(기존 CloudFormation 템플릿에 서버리스 구성 요소 추가)와 CI/CD·마이그레이션 시나리오를 다루지 않는다. M01·M02 가 같은 출처로 확인한 내용과 같다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html",
+      "fetched_with": "mcp",
+      "section": "What is the AWS Serverless Application Model (AWS SAM)? / When to use AWS SAM / Comparing AWS SAM with other IaC tools / Key features"
+    },
+    {
+      "id": "sam-transform-mechanism",
+      "claim": "AWS SAM 템플릿 사양은 ① CloudFormation 위에 구축되어(Built on AWS CloudFormation) AWS SAM 템플릿에서 CloudFormation 구문을 직접 쓸 수 있고 ② CloudFormation 의 확장(An extension of CloudFormation)이어서 같은 템플릿 안에서 CloudFormation 구문과 AWS SAM 구문을 함께 쓸 수 있고 ③ 추상적인 축약 구문(An abstract, short-hand syntax)이며 ④ 변환적(Transformational)이어서 AWS SAM 이 템플릿을 CloudFormation 을 통해 인프라를 프로비저닝하는 데 필요한 코드로 변환하는 복잡한 작업을 수행한다. 문서의 예시는 Lambda 함수 하나, HTTP API 하나, SimpleTable 하나, 커넥터 하나로 구성된 23줄의 AWS SAM 템플릿이며 'To provision this infrastructure, the template is deployed to CloudFormation. During deployment, AWS SAM transforms the 23 lines of code into the CloudFormation syntax required to generate these resources in AWS. The transformed CloudFormation template contains over 200 lines of code!' 라고 기술한다. 변환된 CloudFormation 템플릿에서 AWS::Serverless::Function 은 AWS::Lambda::Function 과 AWS::IAM::Role(ManagedPolicyArns 에 arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole)과 AWS::Lambda::Permission 으로, HttpApi 이벤트는 AWS::ApiGatewayV2::Api(논리 ID ServerlessHttpApi)와 AWS::ApiGatewayV2::Stage($default 스테이지, AutoDeploy true)로, AWS::Serverless::SimpleTable 은 AWS::DynamoDB::Table(id 를 HASH 키로 하는 문자열 속성, BillingMode PAY_PER_REQUEST)로 확장되고 SAM 이 만든 리소스에는 Metadata 의 SamResourceId 와 lambda:createdBy=SAM 태그가 붙는다.",
+      "supports_courseware": "교재 슬라이드 13 강사 노트의 'AWS SAM은 자체 템플릿에 있는 리소스를 상응하는 AWS CloudFormation 템플릿으로 변환합니다. 그런 다음 CloudFormation 템플릿을 적용하여 AWS 리소스를 만들고 업데이트합니다'가 문서 서술과 일치한다. 슬라이드 13 다이어그램의 순서(AWS SAM 템플릿 → AWS CloudFormation 템플릿 → AWS 리소스)와 슬라이드 21 다이어그램(AWS SAM 템플릿 → AWS CloudFormation → 스택)도 같다. 슬라이드 30 지식 확인 4번('AWS SAM 템플릿은 AWS CloudFormation 템플릿의 확장입니다' — 참)도 'An extension of CloudFormation' 서술로 뒷받침된다.",
+      "corrects_courseware": "교재는 변환이 '언제' 일어나는지 명확히 하지 않는다. 문서는 변환이 배포 중(during deployment) CloudFormation 쪽에서 수행된다고 기술하며, 이것이 Transform 선언이 필요한 이유다. 또 교재는 SimpleTable 이 만들어 내는 DynamoDB 테이블의 구체적 형태(id 를 해시 키로 하는 온디맨드 테이블)와 SAM 이 붙이는 SamResourceId 메타데이터·lambda:createdBy 태그를 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam-overview.html",
+      "fetched_with": "mcp",
+      "section": "How AWS SAM works / What is the AWS SAM template specification? / What is the AWS SAM project and AWS SAM template?"
+    },
+    {
+      "id": "sam-globals-section",
+      "claim": "AWS SAM 템플릿의 Globals 섹션은 템플릿에 선언한 리소스들이 공통 구성을 가질 때 쓴다. 예를 들어 동일한 Runtime·Memory·VPCConfig·Environment·Cors 구성을 가진 AWS::Serverless::Function 리소스가 여럿이면 모든 리소스에 정보를 중복하는 대신 Globals 섹션에 한 번 선언하고 리소스가 상속하게 한다. Globals 섹션이 지원하는 AWS SAM 리소스 유형은 AWS::Serverless::Api, AWS::Serverless::CapacityProvider, AWS::Serverless::Function, AWS::Serverless::HttpApi, AWS::Serverless::SimpleTable, AWS::Serverless::StateMachine, AWS::Serverless::MicrovmImage, AWS::Serverless::NetworkConnector 다. 지원되는 속성은 리소스별로 정해져 있고 목록에 없는 리소스·속성은 지원되지 않으며, 그 이유로 문서는 ① 잠재적 보안 문제를 열거나 ② 템플릿을 이해하기 어렵게 만든다는 두 가지를 든다. Globals 의 Api 에 지원되는 속성에는 AccessLogSetting, Auth, BinaryMediaTypes, CacheClusterEnabled, CacheClusterSize, CanarySetting, Cors, DefinitionUri, Domain, EndpointConfiguration, EndpointAccessMode, GatewayResponses, MethodSettings, MinimumCompressionSize, Name, OpenApiVersion, PropagateTags, SecurityPolicy, TracingEnabled, Variables 가 있다. AWS SAM 은 Events 섹션에 API 를 선언하면 암시적 API(implicit API)를 만들고 Globals 로 암시적 API 의 모든 속성을 재정의할 수 있다. 재정의 규칙은 데이터 유형에 따라 다르다. 원시 데이터 유형(문자열·숫자·불리언)은 Resources 섹션의 값이 Globals 의 값을 대체하고, 맵은 병합되며 중복 키는 Resources 항목이 우선하고, 리스트는 Globals 의 항목이 Resources 의 리스트 앞에 추가된다(additive). 리소스는 Globals 에 선언한 속성에 새 값을 줄 수는 있지만 그 속성을 제거할 수는 없으므로, 일부 리소스만 쓰는 속성은 Globals 에 선언하지 말아야 한다.",
+      "supports_courseware": "교재 슬라이드 14 의 Globals 예시(Api → MethodSettings → - LoggingLevel: INFO)는 유효하다. MethodSettings 는 Globals 의 Api 에 지원되는 속성 목록에 있다.",
+      "corrects_courseware": "교재 슬라이드 14 의 주석 상자는 Globals 를 'AWS SAM 템플릿 내에서 사용할 전역 변수를 설정합니다'로 설명한다. Globals 는 변수를 선언하는 섹션이 아니라 여러 리소스가 공통으로 쓰는 속성을 한 번만 선언해 상속시키는 섹션이다(템플릿에서 값을 파라미터화하는 섹션은 Parameters 다). 또 교재는 어떤 리소스 유형이 Globals 를 상속하는지, 재정의 규칙(원시 값은 대체, 맵은 병합, 리스트는 앞에 추가), 선언한 속성을 리소스에서 제거할 수 없다는 제약을 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html",
+      "fetched_with": "mcp",
+      "section": "Globals section of the AWS SAM template / Supported resources and properties / Implicit APIs / Overridable properties"
+    },
+    {
+      "id": "sam-validate",
+      "claim": "sam validate 명령은 AWS SAM 템플릿 파일이 유효한지 검증한다(verifies whether an AWS SAM template file is valid). --lint 옵션은 cfn-lint 로 템플릿에 린팅 검증을 수행하며 추가 파라미터는 cfnlintrc 구성 파일로 지정한다. --template-file(--template, -t)의 기본값은 template.[yaml|yml] 이고, 템플릿이 현재 작업 디렉터리에 있고 이름이 template.[yaml|yml|json] 이면 이 옵션이 필요하지 않으며 방금 sam build 를 실행했다면 역시 필요하지 않다. --config-file 의 기본값은 프로젝트 루트의 samconfig.toml 이다.",
+      "supports_courseware": "교재 슬라이드 12 강사 노트가 AWS SAM CLI 로 할 수 있는 일의 첫 항목으로 든 'AWS SAM 템플릿 파일이 사양에 맞게 작성되었는지 확인합니다'가 이 명령에 대응한다. 또 --template-file 이 template.[yaml|yml|json] 을 받는다는 서술은 교재 슬라이드 13 강사 노트의 '자체 템플릿(YAML 또는 JSON)'을 뒷받침한다.",
+      "corrects_courseware": "교재는 템플릿 검증 기능을 강사 노트에 적으면서 명령 이름(sam validate)을 한 번도 제시하지 않는다. 슬라이드 20~24 가 다루는 명령 목록에도 없다. 또 cfn-lint 기반 린팅(--lint)도 교재에 없다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-validate.html",
+      "fetched_with": "mcp",
+      "section": "sam validate / Options (--lint, --template-file)"
+    },
+    {
+      "id": "sam-list-resources",
+      "claim": "sam list 명령은 서버리스 애플리케이션의 리소스와 애플리케이션 상태에 관한 중요한 정보를 출력하며, 로컬·클라우드 개발을 돕기 위해 배포 전후에 쓴다. 하위 명령은 세 개다. endpoints — CloudFormation 스택의 클라우드·로컬 엔드포인트 목록을 표시한다. resources — 배포 시 AWS CloudFormation 에 생성되는 AWS SAM 템플릿의 리소스를 표시한다. stack-outputs — AWS SAM 또는 CloudFormation 템플릿에서 만들어진 CloudFormation 스택의 출력을 표시한다.",
+      "corrects_courseware": "교재 슬라이드 28 데모 항목의 'AWS SAM 애플리케이션 배포 → 생성한 리소스 표시'는 콘솔 조작을 전제하는 것으로 보인다. 현재 CLI 에는 sam list resources·sam list endpoints·sam list stack-outputs 로 같은 정보를 확인하는 경로가 있고 교재에는 없다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-list.html",
+      "fetched_with": "mcp",
+      "section": "sam list / Subcommands"
+    },
+    {
+      "id": "sam-delete",
+      "claim": "sam delete 명령은 CloudFormation 스택, Amazon S3·Amazon ECR 에 패키징·배포된 아티팩트, AWS SAM 템플릿 파일을 삭제해 AWS SAM 애플리케이션을 삭제한다. 이 명령은 Amazon ECR 컴패니언 스택이 배포되어 있는지도 확인하고 있으면 그 스택과 Amazon ECR 리포지토리 삭제 여부를 사용자에게 묻는다. --no-prompts 를 지정하면 비대화형 모드로 동작하며 이때 컴패니언 스택과 Amazon ECR 리포지토리가 기본으로 삭제되고 --stack-name 옵션 또는 구성 toml 파일로 스택 이름을 반드시 제공해야 한다. --stack-name 은 삭제할 CloudFormation 스택 이름이고 --s3-bucket·--s3-prefix 로 삭제할 S3 경로를 지정할 수 있다. 예시는 sam delete --stack-name MY-STACK 이다.",
+      "corrects_courseware": "교재는 배포한 리소스를 정리하는 방법을 전혀 다루지 않는다. 데모(슬라이드 28)가 애플리케이션을 배포하고 테스트하는 데서 끝나므로 sam delete 로 스택과 아티팩트를 정리하는 절차가 필요하다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-delete.html",
+      "fetched_with": "mcp",
+      "section": "sam delete / Usage / Options / Examples"
+    },
+    {
+      "id": "cloudformation-change-sets",
+      "claim": "변경 세트(change set)는 스택에 제안한 변경이 실행 중인 리소스에 어떤 영향을 줄지 미리 볼 수 있게 하며 리소스 속성과 특성에 대한 영향도 포함한다. 변경이 중요한 리소스를 삭제하거나 교체하는지와 무관하게 CloudFormation 은 사용자가 변경 세트를 실행하기로 결정할 때만 스택을 변경하므로, 제안한 변경을 진행할지 아니면 다른 변경 세트를 만들어 다른 방안을 탐색할지 결정할 수 있다. 변경 세트는 CloudFormation 콘솔·AWS CLI·CloudFormation API 로 만들고 관리한다. 절차는 ① 갱신하려는 스택의 변경을 제출해 변경 세트를 만든다(수정한 스택 템플릿이나 수정한 입력 파라미터 값을 제출할 수 있고, CloudFormation 이 스택과 제출한 변경을 비교해 변경 세트를 생성하며 이 시점에는 스택을 변경하지 않는다) ② 변경 세트를 보고 어떤 스택 설정·리소스가 바뀔지 확인한다(추가·수정·삭제될 리소스와 태그 같은 속성·특성의 전후 비교를 볼 수 있다) ③ (선택) 다른 변경을 고려하려면 추가 변경 세트를 만든다 ④ 적용하려는 변경을 담은 변경 세트를 실행하면 CloudFormation 이 스택을 갱신한다. 변경을 실행한 뒤 CloudFormation 은 그 스택과 연결된 모든 변경 세트를 제거한다(갱신된 스택에 적용할 수 없으므로). 중요 사항으로 변경 세트가 스택 갱신 성공을 보장하지는 않지만, 변경 세트 생성 중에 속성 구문 오류·리소스 이름 충돌·서비스 할당량 한도 같은 일반적인 실패 원인에 대해 배포 전 검증(pre-deployment validation)을 수행한다. 사용자 지정 리소스 로직이나 서비스별 제약 같은 런타임 조건 때문에 발생하는 실패는 실행 중에 여전히 일어날 수 있다.",
+      "corrects_courseware": "교재는 CloudFormation 변경 세트를 전혀 다루지 않는다. 그런데 sam deploy 는 변경 세트를 만들어 배포하며(--confirm-changeset / --no-execute-changeset), sam deploy --guided 의 'Confirm changes before deploy' 프롬프트가 바로 변경 세트를 실행 전에 검토하겠다는 선택이다. 슬라이드 5 가 문제로 든 '롤백 계획 없음'과 '인적 오류 발생 가능성'에 대응하는 안전장치이므로 교재 대비 중요한 보강 지점이다.",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html",
+      "fetched_with": "mcp",
+      "section": "Update CloudFormation stacks using change sets / Change set overview"
+    },
+    {
+      "id": "serverless-application-repository-active",
+      "claim": "AWS Serverless Application Repository 는 개발자와 기업이 AWS 클라우드에서 서버리스 애플리케이션을 빠르게 찾고 배포하고 게시할 수 있게 한다. 애플리케이션을 커뮤니티 전체에 공개로 공유하거나 팀·조직 안에서 비공개로 공유할 수 있고, 게시할 때 AWS Management Console·AWS SAM CLI·AWS SDK 로 코드를 업로드하며 코드와 함께 매니페스트 파일(AWS SAM 템플릿)을 업로드한다. AWS Serverless Application Repository 는 AWS Lambda 콘솔과 깊이 통합되어 있고, 카테고리 키워드로 웹·모바일 백엔드·데이터 처리 애플리케이션·챗봇 같은 애플리케이션을 찾아볼 수 있으며 이름·게시자·이벤트 소스로 검색할 수도 있다. 이 페이지에는 서비스가 신규 고객에게 제공되지 않는다는 안내가 없다.",
+      "corrects_courseware": "교재는 AWS Serverless Application Repository 를 전혀 다루지 않는다. SAM 애플리케이션을 공개·비공개로 공유하는 경로이고 sam publish 명령과 AWS::Serverless::Application 리소스 유형이 여기에 연결되므로, SAM 을 주제로 하는 모듈에서 언급할 가치가 있다. 조회 시점에 서비스는 정상 제공 중이다.",
+      "url": "https://docs.aws.amazon.com/serverlessrepo/latest/devguide/what-is-serverlessrepo.html",
+      "fetched_with": "mcp",
+      "section": "What Is the AWS Serverless Application Repository?"
+    },
+    {
+      "id": "courseware-url-apigateway-resource-policies",
+      "claim": "교재 슬라이드 16 강사 노트가 인용한 URL(https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-resource-policies.html)은 현재도 유효하며 페이지 제목은 'Control access to a REST API with API Gateway resource policies' 다. 페이지는 API Gateway 리소스 정책이 API 에 연결해 지정된 프린시펄(보통 IAM 역할 또는 그룹)이 API 를 호출할 수 있는지 제어하는 JSON 정책 문서라고 기술하고, 특정 AWS 계정의 사용자·지정한 소스 IP 주소 범위나 CIDR 블록·지정한 VPC 또는 VPC 엔드포인트에서 API 를 안전하게 호출하도록 허용하는 데 쓸 수 있다고 설명한다. API Gateway 의 어떤 엔드포인트 유형에도 리소스 정책을 연결할 수 있고, 프라이빗 API 에서는 리소스 정책과 VPC 엔드포인트 정책을 함께 쓴다. 리소스 정책은 IAM 자격 증명 기반 정책과 다르며 둘을 함께 쓸 수 있다.",
+      "supports_courseware": "교재가 제시한 참조 링크가 살아 있고, 슬라이드 17 표의 '리소스 정책' 행(AWS::Serverless::Api 만 지원)과 내용이 대응한다.",
+      "corrects_courseware": "교재는 이 링크를 슬라이드 16(AWS SAM 리소스)의 참조로 붙였는데 페이지 주제는 API Gateway 액세스 제어이므로 슬라이드 17(AWS SAM으로 액세스 제어)에 붙는 것이 맞다. 슬라이드 16 은 SAM 리소스 유형 목록을 다루는 슬라이드다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-resource-policies.html",
+      "fetched_with": "mcp",
+      "section": "Control access to a REST API with API Gateway resource policies"
+    },
+    {
+      "id": "codedeploy-lambda-always-bluegreen",
+      "claim": "CodeDeploy 배포 유형 개요는 현재 위치 배포와 블루/그린 배포 두 가지를 제시하고, 현재 위치 배포 설명에 '참고: AWS Lambda 와 Amazon ECS 배포는 현재 위치 배포 유형을 쓸 수 없다(AWS Lambda and Amazon ECS deployments cannot use an in-place deployment type)'는 주의를 붙인다. 블루/그린 배포 개요는 '모든 AWS Lambda 와 Amazon ECS 배포는 블루/그린이다(All AWS Lambda and Amazon ECS deployments are blue/green). EC2/온프레미스 배포는 현재 위치 또는 블루/그린일 수 있다'고 명시한다. AWS Lambda 플랫폼의 블루/그린 배포에서는 트래픽이 한 Lambda 함수 버전에서 같은 함수의 새 버전으로 이동하고, Amazon ECS 에서는 서비스의 태스크 세트에서 갱신된 대체 태스크 세트로, EC2/온프레미스에서는 원래 환경의 인스턴스 집합에서 대체 인스턴스 집합으로 이동한다. AWS Lambda 또는 Amazon ECS 컴퓨팅 플랫폼을 쓰면 트래픽 이동 방식을 canary·linear·all-at-once 배포 구성 중 하나로 지정해야 한다. 블루/그린 배포가 현재 위치 배포보다 갖는 이점으로 새 대체 환경에서 애플리케이션을 설치·테스트한 뒤 트래픽만 재라우팅해 프로덕션에 배포할 수 있다는 점, EC2/온프레미스에서는 원래 인스턴스가 종료되지 않았으면 트래픽을 되돌리는 것만으로 최신 버전으로 더 빠르고 안정적으로 되돌릴 수 있다는 점(현재 위치 배포는 이전 버전을 다시 배포해야 롤백된다), AWS Lambda 플랫폼에서는 원래 함수 버전에서 새 함수 버전으로 트래픽이 이동하는 방식을 제어할 수 있다는 점을 든다. 현재 위치 배포는 AppSpec 파일(application specification file)로 CodeDeploy 가 실행할 배포 작업을 정의하고 배포 가능한 콘텐츠와 AppSpec 파일을 묶은 애플리케이션 수정 버전(revision)을 Amazon S3 버킷이나 GitHub 리포지토리에 업로드한 뒤, 각 인스턴스의 CodeDeploy 에이전트가 CodeDeploy 를 폴링해 대상 수정 버전을 가져와 배포한다.",
+      "supports_courseware": "교재 슬라이드 26 강사 노트의 '현재 위치 배포는 EC2/온프레미스 컴퓨팅 제품과 서비스를 사용하는 배포에서만 사용할 수 있습니다'가 문서와 일치한다.",
+      "corrects_courseware": "교재는 배포 유형(현재 위치 / 블루-그린)과 Lambda 배포 구성(Canary / Linear / All-at-once)을 서로 다른 층위로 나란히 제시해, Lambda 배포가 어느 유형인지 밝히지 않는다. 문서는 'AWS Lambda 와 Amazon ECS 배포는 현재 위치 배포를 쓸 수 없고 모두 블루/그린'이라고 명시하므로, Canary·Linear·All-at-once 는 Lambda 블루/그린 배포에서 트래픽을 옮기는 배포 구성이다. 또 교재는 현재 위치 배포에 필요한 AppSpec 파일과 CodeDeploy 에이전트를 다루지 않는다. 롤백 관점의 차이(블루/그린은 트래픽을 되돌리면 되고 현재 위치는 이전 버전을 재배포해야 한다)도 교재에 없으며, 이는 슬라이드 5 의 '롤백 계획 없음' 문제와 직접 연결된다.",
+      "url": "https://docs.aws.amazon.com/codedeploy/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "Overview of CodeDeploy deployment types / Overview of an in-place deployment / Overview of a blue/green deployment / Blue/Green deployment on an AWS Lambda or Amazon ECS compute platform"
+    },
+    {
+      "id": "codepipeline-what-is",
+      "claim": "AWS CodePipeline 은 소프트웨어를 릴리스하는 데 필요한 단계를 모델링·시각화·자동화하는 데 쓰는 지속적 전달(continuous delivery) 서비스다. 소프트웨어 릴리스 프로세스의 여러 단계를 빠르게 모델링·구성할 수 있고 CodePipeline 이 소프트웨어 변경을 지속적으로 릴리스하는 데 필요한 단계를 자동화한다. 문서의 DevOps 파이프라인 예시는 소스 스테이지(Source)와 두 번째 스테이지(Prod)로 구성된 2단계 파이프라인이며, 소스는 GitHub 리포지토리를 GitHub 소스 작업으로 구성하고, 개발자가 커밋을 푸시하면 CodePipeline 이 변경을 감지해 파이프라인 실행이 시작되고, 소스 작업의 출력 아티팩트가 다음 스테이지 작업의 입력 아티팩트가 된다. Prod 스테이지의 첫 작업은 CodeBuild 에서 만든 빌드 프로젝트를 빌드 작업으로 구성한 것이고, 다음 작업은 CodeBuild 에서 만든 단위 테스트 프로젝트를 테스트 작업으로 구성한 것이며, 그다음 배포 작업이 애플리케이션을 프로덕션 환경에 배포하고 마지막으로 CodeBuild 에서 만든 통합 테스트 프로젝트가 테스트 작업으로 실행된다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 'AWS CodePipeline - 지속적 전달 파이프라인을 자동화합니다'가 문서의 서비스 정의와 일치한다. 슬라이드 30 지식 확인 3번('AWS CodePipeline은 AWS CodeBuild와 AWS CodeDeploy를 오케스트레이션할 수 있습니다' — 참) 중 CodeBuild 를 빌드·테스트 작업으로 파이프라인 스테이지에 넣는 부분이 이 예시로 확인된다.",
+      "corrects_courseware": "교재 슬라이드 10 의 DevOps 도구 목록에는 소스 리포지토리 서비스가 하나도 없다. 슬라이드 9 강사 노트는 지속적 통합을 '코드 변경 사항을 중앙 리포지토리에 정기적으로 병합'으로 정의하지만 그 리포지토리를 무엇으로 두는지 답하지 않는다. 현재 CodePipeline 문서의 DevOps 파이프라인 예시는 소스로 GitHub 리포지토리를 쓴다.",
+      "url": "https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS CodePipeline? / DevOps pipeline example"
+    },
+    {
+      "id": "ci-vs-continuous-delivery",
+      "claim": "CodePipeline 문서는 CodePipeline 을 소프트웨어의 빌드·테스트·프로덕션 배포를 자동화하는 지속적 전달 서비스로 정의한다. 지속적 전달(continuous delivery)은 릴리스 프로세스가 자동화된 소프트웨어 개발 방법론이며 모든 소프트웨어 변경이 자동으로 빌드·테스트되고 프로덕션에 배포된다. 프로덕션으로의 최종 푸시 전에 '사람, 자동화된 테스트 또는 비즈니스 규칙(a person, an automated test, or a business rule)'이 최종 푸시 시점을 결정한다. 지속적 전달로 모든 성공적인 소프트웨어 변경을 즉시 프로덕션에 릴리스할 수 있지만 모든 변경을 바로 릴리스해야 하는 것은 아니다. 지속적 통합(continuous integration)은 팀 구성원이 버전 제어 시스템을 사용해 자신의 작업을 main 브랜치 같은 같은 위치에 자주 통합하는 소프트웨어 개발 방식이며 각 변경이 빌드·검증되어 통합 오류를 가능한 한 빨리 감지한다. 문서는 '지속적 통합은 코드를 자동으로 빌드하고 테스트하는 데 초점을 두며, 이는 프로덕션까지의 전체 소프트웨어 릴리스 프로세스를 자동화하는 지속적 전달과 대비된다'고 명시한다.",
+      "supports_courseware": "교재 슬라이드 7 강사 노트의 '지속적 통합(CI)은 소프트웨어를 구축한 다음 자동 테스트를 위해 비프로덕션 환경에 배포합니다'가 문서의 '지속적 통합은 코드를 자동으로 빌드하고 테스트하는 데 초점을 둔다'와 취지가 같다. 슬라이드 9 강사 노트의 지속적 통합 정의('버전 관리 시스템을 사용해 코드 변경 사항을 중앙 리포지토리에 정기적으로 병합')와 지속적 전달 정의('프로덕션에 릴리스하기 위한 코드 변경이 자동으로 빌드, 테스트 및 준비된다')도 문서와 일치한다.",
+      "corrects_courseware": "교재 슬라이드 7 강사 노트는 '지속적 전달은 프로덕션에 배포하기 전에 수동 승인 단계를 거쳐야 합니다'라고 단정한다. 문서는 최종 푸시 시점을 사람·자동화된 테스트·비즈니스 규칙 중 무엇이 결정할 수도 있다고 기술하므로 수동 승인이 필수 조건은 아니다. 또 교재는 약어를 지속적 통합 = CI, 지속적 배포 = CD 로 배정하고 지속적 전달에는 약어를 주지 않는데, 영어에서 continuous delivery 와 continuous deployment 모두 CD 로 줄여 쓰이므로 혼동을 부른다. 이 페이지는 continuous deployment 를 정의하지 않으므로 교재의 '지속적 배포(CD)는 구축에서 프로덕션 배포에 이르는 완전 자동화된 파이프라인입니다'라는 서술은 이 근거로 확인하지 못했다.",
+      "url": "https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-continuous-delivery-integration.html",
+      "fetched_with": "mcp",
+      "section": "Continuous delivery and continuous integration"
+    },
+    {
+      "id": "codebuild-what-is",
+      "claim": "AWS CodeBuild 는 클라우드의 완전관리형 빌드 서비스다. CodeBuild 는 소스 코드를 컴파일하고 단위 테스트를 실행하고 배포할 준비가 된 아티팩트를 생성하며, 자체 빌드 서버를 프로비저닝·관리·확장할 필요를 없앤다. Apache Maven·Gradle 같은 인기 프로그래밍 언어와 빌드 도구용으로 미리 패키징된 빌드 환경을 제공하고 자체 빌드 도구를 쓰도록 환경을 사용자 지정할 수도 있으며, 최대 빌드 요청에 맞춰 자동으로 확장된다. 이점은 완전관리형(자체 빌드 서버 설정·패치·업데이트·관리 불필요), 온디맨드(빌드 요구에 맞춰 확장하고 소비한 빌드 분(minutes)에 대해서만 지불), 즉시 사용 가능(가장 인기 있는 프로그래밍 언어용 사전 구성 빌드 환경 제공)이다. CodeBuild 는 AWS CodeBuild 콘솔 또는 AWS CodePipeline 콘솔로 실행할 수 있고 AWS CLI·AWS SDK 로 자동화할 수 있다. CodeBuild 를 AWS CodePipeline 파이프라인의 빌드 또는 테스트 스테이지에 빌드 작업 또는 테스트 작업으로 추가할 수 있다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 'AWS CodeBuild - 종량제 모델에서 지속적인 크기 조정을 통해 코드를 구축하고 테스트합니다'가 문서의 온디맨드 확장·빌드 분 단위 과금·코드 컴파일과 단위 테스트 실행 서술과 일치한다. 슬라이드 30 지식 확인 3번의 CodePipeline·CodeBuild 통합도 확인된다.",
+      "url": "https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS CodeBuild? / How to run CodeBuild"
+    },
+    {
+      "id": "cloudformation-what-is_reuse_m01",
+      "claim": "(M01 에서 검증한 근거를 재사용하고 이번에 같은 URL 을 다시 조회했다) CloudFormation 은 AWS 리소스를 모델링하고 설정하도록 돕는 서비스다. 원하는 AWS 리소스를 모두 기술한 템플릿을 만들면 CloudFormation 이 그 리소스를 프로비저닝하고 구성하며, 개별 리소스를 하나하나 만들어 구성하고 무엇이 무엇에 종속되는지 파악할 필요가 없다. 템플릿은 모든 리소스와 그 속성을 기술하고, 그 템플릿으로 CloudFormation 스택을 만들면 리소스가 프로비저닝된다. 스택을 삭제하면 스택의 모든 리소스가 삭제되므로 리소스 모음을 하나의 단위로 관리한다. 같은 템플릿을 재사용해 여러 리전에서 일관되고 반복 가능한 방식으로 리소스를 만들 수 있다. 템플릿이 텍스트 파일이므로 소스 코드의 리비전을 관리하듯 버전 제어 시스템으로 인프라 변경을 추적할 수 있고, 인프라 변경을 되돌려야 하면 이전 버전의 템플릿을 쓸 수 있다. CloudFormation 은 콘솔·API·AWS CLI·AWS SDK 와 여러 통합을 통해 제공된다.",
+      "supports_courseware": "교재 슬라이드 10 강사 노트의 'AWS CloudFormation - 개발자와 기업이 관련 AWS 및 서드 파티 리소스의 모음을 생성하고 순서에 따라 예측 가능한 방식으로 프로비저닝 및 관리할 수 있는 방법을 제공하는 서비스'가 문서의 템플릿·스택·종속성 처리 서술과 일치한다. 슬라이드 13·21 의 'AWS SAM 템플릿 → AWS CloudFormation → 스택' 흐름도 스택 개념과 일치한다.",
+      "corrects_courseware": "현재 문서의 제목과 본문은 서비스를 접두사 없이 'CloudFormation' 으로 표기한다(문서 제목 'What is CloudFormation?'). 교재는 'AWS CloudFormation' 으로 적는다. 두 표기 모두 통용되지만 문서 본문은 접두사 없는 표기를 쓴다. 이는 M01 에서 확인한 것과 같다. 또 교재는 템플릿을 버전 제어해 인프라 변경을 추적하고 이전 템플릿으로 되돌릴 수 있다는 점(슬라이드 5 의 '롤백 계획 없음' 문제와 직결)을 강사 노트에서 다루지 않는다.",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is CloudFormation? / Simplify infrastructure management / Quickly replicate your infrastructure / Easily control and track changes to your infrastructure"
+    },
+    {
+      "id": "sam-runtime-any-lambda-runtime",
+      "claim": "AWS::Serverless::Function 의 Runtime 속성은 함수의 런타임 식별자이며 PackageType 이 Zip 일 때만 필요하다. CloudFormation 호환성 설명은 'This property is passed directly to the Runtime property of an AWS::Lambda::Function resource' 로, 이 값이 AWS::Lambda::Function 리소스의 Runtime 속성으로 그대로 전달된다고 명시한다. 참고로 이 속성에 provided 식별자를 지정하면 Metadata 리소스 속성으로 AWS SAM 에 이 함수가 필요한 사용자 지정 런타임을 빌드하도록 지시할 수 있다. 또 PackageType 을 Image 로 지정하면 컨테이너 이미지로 패키징한 Lambda 함수를 쓰며 이때는 ImageUri 만 적용되고 Runtime·CodeUri·InlineCode 는 무시된다.",
+      "supports_courseware": "교재 슬라이드 30 지식 확인 5번('Node.js, Java, Python 또는 Go로 작성된 경우에만 AWS SAM을 사용하여 서버리스 애플리케이션을 구축할 수 있다' — 거짓, 해설 'AWS Lambda에서 지원하는 모든 런타임을 사용할 수 있습니다')이 문서와 부합한다. SAM 의 Runtime 값은 Lambda 함수의 Runtime 속성으로 그대로 전달되므로 Lambda 가 지원하는 런타임을 쓸 수 있고, provided 식별자로 사용자 지정 런타임까지 쓸 수 있다.",
+      "corrects_courseware": "교재 지식 확인 5번 해설은 런타임 이야기만 한다. 현재는 런타임 외에 컨테이너 이미지(PackageType: Image)로 패키징한 Lambda 함수도 SAM 으로 정의할 수 있으므로 언어 선택의 폭이 런타임 목록보다 넓다. 또 sam init --runtime 이 받는 값 목록에는 Go 전용 식별자가 없고 Go 함수는 provided 계열 런타임으로 빌드하므로, 교재 문제의 보기(Node.js·Java·Python·Go)를 그대로 런타임 식별자로 읽으면 안 된다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html",
+      "fetched_with": "mcp",
+      "section": "AWS::Serverless::Function / Properties (Runtime, PackageType, ImageUri)"
+    },
+    {
+      "id": "sam-init-interactive-flow",
+      "claim": "sam deploy 소개 페이지의 예시는 현재 sam init 대화형 흐름의 프롬프트를 보여 준다. 첫 프롬프트는 'Which template source would you like to use? 1 - AWS Quick Start Templates / 2 - Custom Template Location' 이고, AWS Quick Start Templates 를 고르면 'Choose an AWS Quick Start application template 1 - Hello World Example / 2 - Multi-step workflow / ...' 가 이어진다. 그다음 'Use the most popular runtime and package type? (Python and zip) [y/N]' 를 묻고, 아니면 'Which runtime would you like to use?' 로 번호가 붙은 런타임 목록을 제시한다. 이어 'What package type would you like to use? 1 - Zip / 2 - Image' 를 묻고, 종속성 관리자를 알린 뒤 'Project name [sam-app]' 을 묻는다. 생성 결과 요약에는 Name, Base Image, Architectures(x86_64), Dependency Manager(pip), Output Directory, Configuration file(sam-app/samconfig.toml)이 표시되고 다음 단계는 sam-app/README.md 에 있다고 안내한다.",
+      "supports_courseware": "교재 슬라이드 21 이 제시한 첫 프롬프트('Which template source would you like to use? / 1 - AWS Quick Start Templates / 2 - Custom Template Location / Choice:_')가 현재 문서 예시와 같다. 슬라이드 28 데모 항목의 '빠른 템플릿'도 이 AWS Quick Start Templates 를 가리킨다.",
+      "corrects_courseware": "교재 슬라이드 21 은 첫 프롬프트에서 멈추고 이후 단계를 보여 주지 않는다. 현재 흐름에는 애플리케이션 템플릿 선택, 런타임 선택, 패키지 유형 선택(Zip / Image), 프로젝트 이름 입력이 이어지고, 생성 결과에 samconfig.toml 구성 파일이 포함된다. 교재에는 패키지 유형 선택과 samconfig.toml 생성이 모두 없다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-deploy.html",
+      "fetched_with": "mcp",
+      "section": "Introduction to deploying with AWS SAM / Examples (Deploy a Hello World application that contains a Lambda function packaged as a container image)"
+    },
+    {
+      "id": "lambda-weighted-alias_reuse_m09",
+      "claim": "(M09 에서 검증한 근거를 재사용하고 이번에 같은 URL 을 다시 조회했다) 가중치 별칭(weighted alias)으로 같은 함수의 서로 다른 두 버전 사이에 트래픽을 분할할 수 있고, 이 방식으로 소량의 트래픽으로 새 버전을 테스트하고 필요하면 빠르게 롤백할 수 있다. 이를 카나리 배포(canary deployment)라고 하며, 카나리 배포는 모든 트래픽을 한 번에 전환하는 대신 요청의 일부에만 새 버전을 노출한다는 점에서 블루/그린 배포와 다르다. 별칭은 최대 두 개의 함수 버전을 가리킬 수 있고 두 버전은 실행 역할이 같아야 하고 데드 레터 큐 구성이 같거나 없어야 하며 둘 다 게시된 버전이어야 한다($LATEST 는 불가). 콘솔에서 추가 버전에 가중치(%)를 지정하면 첫 버전이 나머지 가중치를 자동으로 받는다. AWS CLI 는 create-alias·update-alias 의 --routing-config 파라미터로 지정하며 형식은 AdditionalVersionWeights={\"2\"=0.03} 이고, 모든 트래픽을 버전 2로 보내려면 function-version 을 2로 바꾸고 --routing-config AdditionalVersionWeights={} 로 라우팅 구성을 재설정한다. 호출된 버전은 CloudWatch Logs 의 START 로그 항목(Version: 2)과 동기 호출 응답의 x-amz-executed-version 헤더로 확인하고, 별칭 호출 지표는 ExecutedVersion 차원으로 필터링한다. 문서는 Lambda 가 두 버전 사이 트래픽 분배에 단순한 확률 모델을 쓰므로 트래픽이 적을 때는 구성한 비율과 실제 비율의 편차가 클 수 있다고 알린다. 롤링 배포 절에서는 AWS CodeDeploy 와 AWS SAM 으로 함수 코드 변경을 자동 감지해 새 버전을 배포하고 새 버전으로 가는 트래픽을 점진적으로 늘리는 롤링 배포를 만들 수 있다고 기술하며, 롤링 배포에서 AWS SAM 이 하는 일을 ① Lambda 함수를 구성하고 별칭을 만든다(가중치 별칭 라우팅 구성이 롤링 배포를 구현하는 기반 기능이다) ② CodeDeploy 애플리케이션과 배포 그룹을 만든다(배포 그룹이 롤링 배포와 필요 시 롤백을 관리한다) ③ 새 함수 버전 생성을 감지한다 ④ CodeDeploy 가 새 버전 배포를 시작하도록 트리거한다 네 가지로 제시한다. 예시 SAM 템플릿은 AutoPublishAlias 와 DeploymentPreference(Type: Linear10PercentEvery2Minutes)를 쓴다.",
+      "corrects_courseware": "교재 슬라이드 26 은 Canary·Linear·All-at-once 를 CodeDeploy 배포 구성으로만 설명하고, 그 구성이 실제로 무엇을 조작하는지(Lambda 별칭의 가중치 라우팅)를 다루지 않는다. 문서는 '가중치 별칭 라우팅 구성이 롤링 배포를 구현하는 기반 기능' 이라고 명시한다. 또 교재는 별칭이 최대 두 버전만 가리킬 수 있다는 제약, 트래픽이 적을 때 실제 비율이 구성 비율과 크게 다를 수 있다는 주의, 호출된 버전을 확인하는 방법(START 로그의 Version, x-amz-executed-version 헤더)을 다루지 않는다. M09 에서 같은 출처로 확인한 내용과 같다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html",
+      "fetched_with": "mcp",
+      "section": "Implement Lambda canary deployments using a weighted alias / Create a weighted alias / Determining which version was invoked / Create a rolling deployment with weighted aliases / Example AWS SAM template"
+    }
+  ]
+}
