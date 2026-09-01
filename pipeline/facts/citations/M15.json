@@ -1,0 +1,421 @@
+{
+  "_note": "모듈 15(과정 마무리) 2단계 최신화 근거. 이 모듈은 기술 문서가 아니라 교육·자격증 프로그램 안내이므로 근거가 대부분 aws.amazon.com(tier2)에 있습니다. link_check 는 URL 이 살아 있는지와 어디로 리디렉션되는지만 확인한 항목입니다.",
+  "module": "M15-WrapUp_Summary",
+  "verified_on": "2026-08-25",
+  "citations": [
+    {
+      "id": "sb-course-count",
+      "claim": "AWS Skill Builder 는 900개가 넘는 무료 자습형 디지털 과정을 제공하고, 온라인 학습 센터에 1,000개가 넘는 무료 학습 리소스가 있다.",
+      "url": "https://aws.amazon.com/training/digital/",
+      "fetched_with": "web_fetch",
+      "section": "AWS Skill Builder",
+      "corrects_courseware": "교재 슬라이드 5는 '600여 개의 디지털 과정' 및 '600개가 넘는 온디맨드 디지털 과정'이라고 적는다."
+    },
+    {
+      "id": "sb-learning-modes",
+      "claim": "Skill Builder 의 학습 방식은 자습형 디지털 과정, 자습형 Digital Classroom(강사 촬영 영상·실습·지식 확인·과정 평가), 그리고 AWS 인증 강사가 진행하는 라이브 AWS Classroom Training(대면 또는 가상)으로 나뉜다. Digital Classroom 은 Individual Annual 또는 Team 구독에서 제공된다.",
+      "url": "https://aws.amazon.com/training/digital/",
+      "fetched_with": "web_fetch",
+      "section": "Learn from AWS experts"
+    },
+    {
+      "id": "sb-subscription-tiers",
+      "claim": "몰입형 학습 경험 전체를 쓰려면 Skill Builder Individual 또는 Team 구독으로 업그레이드해야 한다.",
+      "url": "https://aws.amazon.com/training/digital/",
+      "fetched_with": "web_fetch",
+      "section": "Why Skill Builder?"
+    },
+    {
+      "id": "sb-exam-prep-tools",
+      "claim": "AWS Certification Official Exam Prep 은 question sets, pretests, exam prep courses, Escape Room, SimuLearn, practice exams 로 구성된다.",
+      "url": "https://aws.amazon.com/training/digital/",
+      "fetched_with": "web_fetch",
+      "section": "Prepare for AWS Certification(s) exams",
+      "corrects_courseware": "교재 슬라이드 8~12는 준비 자료를 '공식 연습 문제 모음'과 '공식 연습 시험' 두 가지로만 든다."
+    },
+    {
+      "id": "sb-skills-profile",
+      "claim": "Skills Profile 로 자격증, 배지, 실습 성과를 하나의 프로필에 모아 공개할 수 있고 LinkedIn 으로 확장할 수 있다.",
+      "url": "https://aws.amazon.com/training/digital/",
+      "fetched_with": "web_fetch",
+      "section": "Level up your AWS Skills"
+    },
+    {
+      "id": "microcredentials",
+      "claim": "마이크로크리덴셜은 라이브 AWS 환경에서 실시간 평가로 실무 기술을 검증하며 AWS Certification 을 보완한다. 주제는 서버리스, 에이전틱 AI, 애플리케이션 네트워킹, 인시던트 대응이고 주제가 추가될 예정이다. AWS Skill Builder 구독이 필요하지 않다.",
+      "url": "https://aws.amazon.com/certification/",
+      "fetched_with": "web_fetch",
+      "section": "Microcredentials",
+      "corrects_courseware": "교재는 검증 수단으로 AWS Certification 만 다룬다."
+    },
+    {
+      "id": "microcredentials-vs-cert",
+      "claim": "Certification 은 폭넓은 기술 지식과 이해를 검증하고, 마이크로크리덴셜은 AWS 환경에서 문제를 식별·해결하고 솔루션을 구현하는 능력을 검증한다. 둘을 함께 취득하면 지식과 실무 능력을 모두 검증한다.",
+      "url": "https://aws.amazon.com/certification/",
+      "fetched_with": "web_fetch",
+      "section": "Why earn both Certifications and microcredentials?"
+    },
+    {
+      "id": "dev-assoc-experience",
+      "claim": "AWS Certified Developer - Associate 는 시험 가이드 기준으로 AWS 서비스를 사용해 애플리케이션을 개발·유지 관리한 실무 경험 1년 이상을 권장한다. IT 또는 클라우드 개발자 직무에 있는 사람에게 AWS Certification 여정의 이상적인 출발점이다.",
+      "url": "https://aws.amazon.com/certification/certified-developer-associate/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs"
+    },
+    {
+      "id": "dev-assoc-prerequisite-advice",
+      "claim": "IT 실무 경험이 전혀 없는 지원자는 AWS Certified Developer - Associate 시험에 앞서 AWS Certified Cloud Practitioner 를 먼저 취득해 AWS 클라우드와 서비스의 기초 지식을 얻는 것이 도움이 된다.",
+      "url": "https://aws.amazon.com/certification/certified-developer-associate/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs"
+    },
+    {
+      "id": "dev-assoc-validity",
+      "claim": "AWS Certified Developer - Associate 자격증은 3년간 유효하다. 만료 전에 최신 버전 시험에 합격하거나, AWS Certified DevOps Engineer - Professional 을 취득해 이 Associate 자격증을 자동으로 재인증할 수 있다.",
+      "url": "https://aws.amazon.com/certification/certified-developer-associate/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs",
+      "corrects_courseware": "교재는 자격증 유효 기간과 재인증을 한 줄도 다루지 않는다."
+    },
+    {
+      "id": "dev-assoc-next-certs",
+      "claim": "AWS Certified Developer - Associate 다음으로 다른 클라우드 전문가들이 취득한 자격증은 AWS Certified SysOps Administrator - Associate 와 AWS Certified DevOps Engineer - Professional 이며, 머신 러닝 엔지니어 같은 역할로 가려는 경우 AWS Certified Data Engineer - Associate 를 취득했다.",
+      "url": "https://aws.amazon.com/certification/certified-developer-associate/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs"
+    },
+    {
+      "id": "exam-discount",
+      "claim": "AWS Certification 하나를 취득하면 다음 AWS Certification 시험에 50% 할인을 받는다. 할인은 AWS Certification 계정에서 확인한다.",
+      "url": "https://aws.amazon.com/certification/certified-developer-associate/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs",
+      "corrects_courseware": "교재에 할인 언급이 없다."
+    },
+    {
+      "id": "cloud-practitioner-level",
+      "claim": "AWS Certified Cloud Practitioner 는 IT 배경이 없을 수 있는 클라우드 입문자를 대상으로 하고, AWS 클라우드 노출 경험 6개월까지를 가정하지만 필수는 아니다. 영업·마케팅·제품·프로젝트 관리 같은 현업 직무를 위한 시험이다.",
+      "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs"
+    },
+    {
+      "id": "cloud-practitioner-recert",
+      "claim": "AWS Certified Cloud Practitioner 는 3년간 유효하고 재인증 방법이 세 가지다. AWS Cloud Quest: Recertify Cloud Practitioner 게임 기반 학습 완료, 최신 버전 시험 합격, 또는 Associate·Professional 레벨 시험 합격.",
+      "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs"
+    },
+    {
+      "id": "devops-pro-experience",
+      "claim": "AWS Certified DevOps Engineer - Professional 은 시험 가이드 기준으로 AWS 환경을 프로비저닝·운영·관리한 경험 2년 이상을 권장하고, 소프트웨어 개발 수명 주기와 프로그래밍 또는 스크립팅 경험도 함께 권장한다. 3년간 유효하고 최신 버전 시험 합격으로 재인증한다.",
+      "url": "https://aws.amazon.com/certification/certified-devops-engineer-professional/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs"
+    },
+    {
+      "id": "recert-time-extension",
+      "claim": "재인증은 갱신(renewal)과 유지(maintenance) 두 방식이 있고, 시간 연장은 해당 재인증 행위를 완료한 날짜를 기준으로 계산된다. 시험을 다시 봐서 갱신하면 그 시험을 완료한 날부터 3년이 더해지고, 유지 방식은 유지 활동을 완료한 날부터 1년이 더해진다.",
+      "url": "https://aws.amazon.com/certification/recertification/",
+      "fetched_with": "web_fetch",
+      "section": "AWS Recertification"
+    },
+    {
+      "id": "recert-maintenance-requirement",
+      "claim": "유지(maintenance) 방식을 쓰려면 만료 90일 이내인 활성 자격증과 활성 AWS Skill Builder 구독(Monthly, Annual 또는 Team)이 필요하다.",
+      "url": "https://aws.amazon.com/certification/recertification/",
+      "fetched_with": "web_fetch",
+      "section": "AWS Recertification"
+    },
+    {
+      "id": "recert-cloud-quest",
+      "claim": "AWS Cloud Quest: Recertify Cloud Practitioner 는 AWS Certified Cloud Practitioner 보유자가 자격증 활성 상태를 유지하는 방법이다. 자격증 만료 6개월 이내에 자격이 생기고, 완료하면 유효 기간이 3년 연장된다.",
+      "url": "https://aws.amazon.com/certification/recertification/",
+      "fetched_with": "web_fetch",
+      "section": "AWS Recertification"
+    },
+    {
+      "id": "testing-online-proctoring",
+      "claim": "온라인 감독 시험은 집이나 사무실 같은 사적인 공간에서 자기 컴퓨터로 응시하며, 감독관이 화면 공유 애플리케이션과 웹캠으로 원격 감독한다. 대부분의 시험 예약은 주 7일 24시간 가능하다.",
+      "url": "https://aws.amazon.com/certification/certification-prep/testing/",
+      "fetched_with": "web_fetch",
+      "section": "Schedule an AWS Certification Exam"
+    },
+    {
+      "id": "testing-provider",
+      "claim": "온라인 감독 시험은 시험 제공 업체 Pearson VUE 를 통해 모든 AWS Certification 시험에서 이용할 수 있다.",
+      "url": "https://aws.amazon.com/certification/certification-prep/testing/",
+      "fetched_with": "web_fetch",
+      "section": "Schedule an AWS Certification Exam",
+      "corrects_courseware": "교재 슬라이드 13은 섹션 표지뿐이어서 응시 옵션의 내용이 없다."
+    },
+    {
+      "id": "testing-proctor-languages",
+      "claim": "감독 언어별 가능 시간은 영어 24시간 주 7일, 일본어 월~토 현지 시각(JST) 오전 9시~오후 4시, 스페인어(라틴 아메리카) 월~금 EST 오전 10시~오후 5시 45분, 중국어 만다린(중국 본토 고객) 월~금 현지 시각(CST) 오전 8시~오후 5시다.",
+      "url": "https://aws.amazon.com/certification/certification-prep/testing/",
+      "fetched_with": "web_fetch",
+      "section": "Schedule an AWS Certification Exam"
+    },
+    {
+      "id": "testing-language-toggle",
+      "claim": "현지화된 시험에 등록한 응시자는 시험 중 토글 기능으로 문제를 영어로도 볼 수 있다. 온라인 감독 시험을 완료하려면 감독관과의 의사 소통이 필요하다.",
+      "url": "https://aws.amazon.com/certification/certification-prep/testing/",
+      "fetched_with": "web_fetch",
+      "section": "Schedule an AWS Certification Exam"
+    },
+    {
+      "id": "dva-c03-schedule",
+      "claim": "AWS Certified Developer - Associate 시험이 DVA-C03 으로 개정된다. 개정 시험 등록은 2026년 10월 27일에 열리고 GA 제공은 2026년 12월 1일에 시작된다. 현재 버전 DVA-C02 의 마지막 응시일은 2026년 11월 30일이다. DVA-C03 은 출시 시점에 현재 지원되는 모든 언어로 제공된다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Coming soon: AWS Certified Developer - Associate (DVA-C03)",
+      "corrects_courseware": "교재는 시험 코드와 개정 일정을 다루지 않는다."
+    },
+    {
+      "id": "dva-c03-exam-details",
+      "claim": "DVA-C03 GA 시험 세부 정보는 다음과 같다. 시간 130분, 문항 65개(채점 50개, 비채점 15개), 응시료 150 USD, 합격 점수 1,000점 만점에 720점, 현재 지원되는 모든 언어, Pearson VUE(시험 센터 또는 온라인 감독).",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "GA exam details"
+    },
+    {
+      "id": "dva-c03-domains",
+      "claim": "DVA-C03 의 네 도메인은 바뀌지 않았다. AWS 서비스를 사용한 개발 30%, 보안 26%, 테스트와 배포 22%, 문제 해결과 최적화 22%.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "What has changed in DVA-C03 and why"
+    },
+    {
+      "id": "dva-c03-ai-security",
+      "claim": "DVA-C03 에 새 태스크 2.3 'AI 보안'(5개 스킬)이 추가된다. AI 서비스 액세스 관리, 데이터 프라이버시 제어(VPC 엔드포인트, 입출력이 AI 모델 학습에 쓰이지 않도록 보장), 콘텐츠 필터링과 프롬프트 인젝션 방어, AI 에이전트 상호 작용 보안(도구 사용 권한 부여, 세션 격리, 사람 개입 승인 흐름), 모니터링 로그의 민감 콘텐츠 보호.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "What has changed in DVA-C03 and why"
+    },
+    {
+      "id": "dva-c03-ai-assisted-dev",
+      "claim": "DVA-C03 은 모든 도메인에 AI 지원 개발을 넣는다. 코드 생성과 자동 검토(도메인 1), 테스트 자동화와 회귀 테스트(도메인 3), 자동 배포 승인을 포함한 CI/CD 워크플로 지원(도메인 3), 오류 분석과 문제 해결 제안(도메인 4), 성능 최적화 권장(도메인 4). AI 지원 개발은 선택 사항이 아니라 핵심 역량이 되었다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Coming soon: AWS Certified Developer - Associate (DVA-C03)"
+    },
+    {
+      "id": "dva-c03-new-services",
+      "claim": "DVA-C03 에 새로 범위에 들어오는 서비스는 Amazon Bedrock, Amazon Bedrock AgentCore, Amazon Q, Kiro, Amazon Data Firehose, AWS PrivateLink 다. 컨테이너 관리도 추가되어 Amazon ECR 로 컨테이너 이미지를 빌드·관리하고 Amazon ECS, Amazon EKS, AWS Fargate 로 컨테이너 애플리케이션을 배포하는 내용이 들어간다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "What has changed in DVA-C03 and why"
+    },
+    {
+      "id": "dva-c03-consolidations",
+      "claim": "DVA-C03 에서 통합된 항목은 다음과 같다. DynamoDB 4개 스킬을 1개로, 보안(암호화와 민감 데이터) 2개 태스크의 13개 스킬을 1개 태스크의 7개 스킬로, 테스트 2개 태스크의 11개 스킬을 1개 태스크의 5개 스킬로, 관측가능성 8개를 5개로, 최적화 9개를 6개로 통합했다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Key consolidations"
+    },
+    {
+      "id": "dva-c03-out-of-scope",
+      "claim": "DVA-C03 의 범위 밖 항목은 프롬프트 엔지니어링, RAG 설계, AI 모델 선택, Amazon SageMaker AI, AI 거버넌스 프레임워크 설계다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Out of scope"
+    },
+    {
+      "id": "dva-c03-recommended-experience",
+      "claim": "DVA-C03 권장 경험은 AWS 서비스를 사용해 애플리케이션을 개발·유지 관리한 실무 경험 1년 이상, 고급 프로그래밍 언어 하나 이상에 능숙함, AI 지원 개발 도구와 워크플로 사용 경험, 애플리케이션 수명 주기 관리와 CI/CD 파이프라인 이해다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Who is this certification for?"
+    },
+    {
+      "id": "dva-c02-or-c03",
+      "claim": "이미 준비가 되어 지금 자격증을 얻고 싶으면 2026년 11월 30일까지 DVA-C02 를 보고, AI 지원 개발 기술과 AI 서비스의 최신 보안 관행까지 검증하고 싶으면 DVA-C03 을 기다린다. DVA-C02 로 취득한 자격증은 원래 만료일까지 유효하다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Should you take DVA-C02 or DVA-C03?"
+    },
+    {
+      "id": "sap-c03-schedule",
+      "claim": "AWS Certified Solutions Architect - Professional 도 SAP-C03 으로 개정된다. 등록은 2026년 10월 27일에 열리고 GA 제공은 2026년 11월 17일에 시작되며, SAP-C02 의 마지막 응시일은 2026년 11월 16일이다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Coming soon: AWS Certified Solutions Architect - Professional (SAP-C03)"
+    },
+    {
+      "id": "mla-c02-beta",
+      "claim": "AWS Certified Machine Learning Engineer - Associate 개정판 MLA-C02 의 베타 등록이 영어로 열렸다. MLA-C01 의 영어 마지막 응시일은 2026년 9월 28일이고, 일본어·한국어·중국어 간체는 2027년 1월 14일 GA 제공까지 유지된다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/september-2026-new-offerings/",
+      "fetched_with": "web_fetch",
+      "section": "Beta registration now open: AWS Certified Machine Learning Engineer - Associate (MLA-C02)"
+    },
+    {
+      "id": "genai-dev-pro-launch",
+      "claim": "AWS Certified Generative AI Developer - Professional 자격증의 표준 버전 등록이 열렸다. 개발자가 파운데이션 모델을 애플리케이션과 비즈니스 워크플로에 통합하는 능력을 검증한다. 베타 버전의 마지막 응시일은 2026년 3월 31일이었다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/",
+      "fetched_with": "web_fetch",
+      "section": "Registration is now open: AWS Certified Generative AI Developer - Professional",
+      "corrects_courseware": "교재 시점의 자격증 목록에는 이 자격증이 없다."
+    },
+    {
+      "id": "genai-dev-pro-exam-details",
+      "claim": "AWS Certified Generative AI Developer - Professional 은 Professional 범주이고 시험 시간 180분, 문항 75개(선택형 또는 복수 응답), 응시료 300 USD, Pearson VUE 시험 센터 또는 온라인 감독 시험, 제공 언어는 영어·일본어·한국어·중국어 간체다.",
+      "url": "https://aws.amazon.com/certification/certified-generative-ai-developer-professional/",
+      "fetched_with": "web_fetch",
+      "section": "Exam overview"
+    },
+    {
+      "id": "genai-dev-pro-experience",
+      "claim": "AWS Certified Generative AI Developer - Professional 대상 응시자는 AWS 또는 오픈 소스 기술로 프로덕션급 애플리케이션을 만든 경험 2년 이상, 일반적인 AI/ML 또는 데이터 엔지니어링 경험, 그리고 생성형 AI 솔루션 구현 실무 경험 1년을 갖춘 사람이다.",
+      "url": "https://aws.amazon.com/certification/certified-generative-ai-developer-professional/",
+      "fetched_with": "web_fetch",
+      "section": "Key FAQs"
+    },
+    {
+      "id": "genai-dev-pro-prep-steps",
+      "claim": "AWS Skill Builder 의 Exam Prep Plan 은 네 단계로 구성된다. 1) 시험 스타일 문제로 시험을 파악, 2) 디지털 과정과 AWS Builder Labs·AWS Cloud Quest·AWS Jam 으로 지식과 기술 보완, 3) 시험 범위와 도메인별 주제를 검토하고 강사의 문제 풀이·응시 전략을 따라가며 AWS SimuLearn 으로 연습, 4) AWS Certification Official Pretest 로 준비 상태 평가.",
+      "url": "https://aws.amazon.com/certification/certified-generative-ai-developer-professional/",
+      "fetched_with": "web_fetch",
+      "section": "Prepare for the exam",
+      "corrects_courseware": "교재 슬라이드 8~12의 4단계와 단계 이름과 도구가 다르다. 4단계가 Official Practice Exam 이 아니라 Official Pretest 다."
+    },
+    {
+      "id": "agentic-ai-microcredential",
+      "claim": "AWS Agentic AI Demonstrated 마이크로크리덴셜은 프로비저닝된 AWS 환경에서 실무 구현 능력을 보여 주는 자격이다. AWS 서비스로 AI 솔루션을 구현하는 능력, 실제 시나리오에서 문제를 식별하고 해결하는 능력, 프로덕션 환경에서 AI 워크로드를 배포하고 관리하는 능력을 평가한다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/",
+      "fetched_with": "web_fetch",
+      "section": "Complementary microcredential now available"
+    },
+    {
+      "id": "ml-specialty-retired",
+      "claim": "AWS Certified Machine Learning - Specialty 자격증의 은퇴가 발표되었고 마지막 응시일은 2026년 3월 31일이다. 이미 취득한 사람의 자격증은 원래 만료일까지 유효하다. 대체 경로는 AWS Certified AI Practitioner, AWS Certified Machine Learning Engineer - Associate, AWS Certified Data Engineer - Associate, 그리고 새 AWS Certified Generative AI Developer - Professional 이다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/",
+      "fetched_with": "web_fetch",
+      "section": "AWS Certified Machine Learning - Specialty retirement"
+    },
+    {
+      "id": "ml-specialty-recert-deadline",
+      "claim": "AWS Certified Machine Learning - Specialty 는 2026년 3월 31일까지 시험을 다시 봐서 재인증할 수 있었고, 그날이 이 시험의 마지막 제공일이다. Professional·Specialty 바우처도 그날까지 이 시험에 쓸 수 있었다.",
+      "url": "https://aws.amazon.com/certification/certified-machine-learning-specialty/",
+      "fetched_with": "web_fetch",
+      "section": "Exam retirement FAQs"
+    },
+    {
+      "id": "security-specialty-scs-c03",
+      "claim": "AWS Certified Security - Specialty 시험이 SCS-C03 으로 개정되었다. 신흥 기술 범위를 넓혀 생성형 AI 와 머신 러닝 보안을 별도로 다루고, 탐지(Detection)와 인시던트 대응(Incident Response) 역량을 각각 별개 섹션으로 두도록 도메인을 재구성했다. SCS-C02 응시 기한은 2025년 12월 1일이었다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/",
+      "fetched_with": "web_fetch",
+      "section": "Updated security certification"
+    },
+    {
+      "id": "three-specialty-retired-2024",
+      "claim": "AWS 는 2024년 4월에 Specialty 자격증 세 개를 은퇴시켰다. AWS Certified Data Analytics - Specialty, AWS Certified Database - Specialty, AWS Certified: SAP on AWS - Specialty. Specialty 자격증 수를 줄이고 Foundational·Associate·Professional 레벨의 제공을 강화하는 것이 이유다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/",
+      "fetched_with": "web_fetch",
+      "section": "Retiring specialty certifications",
+      "corrects_courseware": "교재 슬라이드 7은 '슬라이드에는 현재 제공되는 AWS Certification이 나와 있습니다'라고 하지만 그 목록은 지금과 다르다."
+    },
+    {
+      "id": "three-specialty-retired-dates",
+      "claim": "은퇴하는 세 Specialty 자격증의 마지막 응시일은 AWS Certified Data Analytics - Specialty 가 4월 8일, AWS Certified Database - Specialty 와 AWS Certified: SAP on AWS - Specialty 가 4월 29일이었다. 은퇴일 이후에는 시험을 제공하지 않으므로 재인증할 수 없다. 보유한 자격증은 취득일로부터 3년간 활성 상태로 남고 Credly 디지털 배지도 계속 표시할 수 있다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/",
+      "fetched_with": "web_fetch",
+      "section": "Retiring specialty certifications"
+    },
+    {
+      "id": "data-engineer-associate-launch",
+      "claim": "AWS Certified Data Engineer - Associate 자격증이 2024년에 출시되었고 2024년 3월 12일부터 예약하고 응시할 수 있게 되었다. 핵심 데이터 관련 AWS 서비스에 대한 기술과 지식을 검증한다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/",
+      "fetched_with": "web_fetch",
+      "section": "Rising demand for cloud data expertise"
+    },
+    {
+      "id": "specialty-exam-prep-retired",
+      "claim": "은퇴한 세 Specialty 자격증의 AWS Skill Builder 시험 준비 자료도 함께 종료되었다. 준비 자료에는 Official Practice Question Sets, Official Practice Exams, Exam Prep 과정이 포함된다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/",
+      "fetched_with": "web_fetch",
+      "section": "Retiring specialty certifications"
+    },
+    {
+      "id": "pricing-whitepaper-url",
+      "claim": "'How AWS Pricing Works' 백서의 현재 진입 경로는 /whitepapers/latest/how-aws-pricing-works/ 이다. 교재가 제시한 welcome.html 은 이 경로로 리디렉션된다.",
+      "url": "https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/",
+      "fetched_with": "link_check",
+      "section": "",
+      "corrects_courseware": "교재 슬라이드 3 강사 노트는 .../how-aws-pricing-works/welcome.html 을 제시한다."
+    },
+    {
+      "id": "cert-exams-url-redirect",
+      "claim": "교재가 여러 곳에서 제시하는 https://aws.amazon.com/certification/exams 는 현재 https://aws.amazon.com/certification/ 로 리디렉션된다. 별도의 시험 목록 페이지가 아니다.",
+      "url": "https://aws.amazon.com/certification/",
+      "fetched_with": "link_check",
+      "section": "",
+      "corrects_courseware": "교재 슬라이드 8·9 강사 노트가 이 URL 을 '모든 AWS Certification 시험 살펴보기'로 제시한다."
+    },
+    {
+      "id": "builder-labs-url-redirect",
+      "claim": "교재가 제시하는 https://aws.amazon.com/training/digital/aws-builder-labs 는 현재 https://aws.amazon.com/training/digital/immersive-learning/ 로 리디렉션된다.",
+      "url": "https://aws.amazon.com/training/digital/immersive-learning/",
+      "fetched_with": "link_check",
+      "section": "",
+      "corrects_courseware": "교재 슬라이드 10 강사 노트가 aws-builder-labs 경로를 제시한다."
+    },
+    {
+      "id": "tech-talks-url-redirect",
+      "claim": "교재가 제시하는 https://aws.amazon.com/events/online-tech-talks/on-demand 는 현재 https://aws.amazon.com/events/online-tech-talks/ 로 리디렉션된다.",
+      "url": "https://aws.amazon.com/events/online-tech-talks/",
+      "fetched_with": "link_check",
+      "section": "",
+      "corrects_courseware": "교재 슬라이드 6 강사 노트가 /on-demand 경로를 제시한다."
+    },
+    {
+      "id": "followup-courses-moved-to-skillbuilder",
+      "claim": "교재가 www.aws.training 의 SessionSearch URL 로 제시하는 후속 과정 두 개는 현재 aws.amazon.com/training/classroom/ 경로에 있고, 그 경로가 다시 AWS Skill Builder 로 리디렉션된다. Advanced Developing on AWS 와 Developing Serverless Solutions on AWS 두 과정 모두 이 방식으로 확인했다.",
+      "url": "https://aws.amazon.com/training/classroom/advanced-developing-on-aws/",
+      "fetched_with": "link_check",
+      "section": "",
+      "corrects_courseware": "교재 슬라이드 3 강사 노트가 www.aws.training/SessionSearch?...&courseId=36896 형태의 URL 을 제시한다."
+    },
+    {
+      "id": "serverless-solutions-course-exists",
+      "claim": "Developing Serverless Solutions on AWS 과정은 aws.amazon.com/training/classroom/developing-serverless-solutions-on-aws/ 경로로 접근할 수 있고 AWS Skill Builder 로 리디렉션된다.",
+      "url": "https://aws.amazon.com/training/classroom/developing-serverless-solutions-on-aws/",
+      "fetched_with": "link_check",
+      "section": ""
+    },
+    {
+      "id": "advanced-genai-dev-course",
+      "claim": "Advanced Generative AI Development on AWS 강의식 과정은 파운데이션 모델 구현, Amazon Bedrock Knowledge Bases 를 사용한 검색 증강, Bedrock AgentCore 를 사용한 에이전틱 AI 개발, 엔터프라이즈 통합 패턴을 3일 실습 형식으로 다룬다.",
+      "url": "https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/",
+      "fetched_with": "web_fetch",
+      "section": "Registration is now open: AWS Certified Generative AI Developer - Professional"
+    },
+    {
+      "id": "lambda-whitepaper-alive",
+      "claim": "교재가 제시하는 Serverless Architectures with AWS Lambda 백서 PDF URL 은 현재도 응답한다.",
+      "url": "https://d1.awsstatic.com/whitepapers/serverless-architectures-with-aws-lambda.pdf",
+      "fetched_with": "link_check",
+      "section": ""
+    },
+    {
+      "id": "back-to-basics-alive",
+      "claim": "교재가 제시하는 Back to Basics 동영상 시리즈 페이지는 현재도 응답한다.",
+      "url": "https://aws.amazon.com/architecture/back-to-basics/",
+      "fetched_with": "link_check",
+      "section": ""
+    },
+    {
+      "id": "ramp-up-guides-alive",
+      "claim": "교재가 제시하는 AWS 램프업 가이드 페이지는 현재도 응답한다.",
+      "url": "https://aws.amazon.com/training/ramp-up-guides/",
+      "fetched_with": "link_check",
+      "section": ""
+    },
+    {
+      "id": "premium-support-alive",
+      "claim": "교재가 제시하는 AWS Support 페이지는 현재도 응답한다.",
+      "url": "https://aws.amazon.com/premiumsupport/",
+      "fetched_with": "link_check",
+      "section": ""
+    }
+  ]
+}

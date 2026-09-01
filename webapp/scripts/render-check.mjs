@@ -187,9 +187,15 @@ async function main() {
     await send(ws, 'Runtime.enable');
     await sleep(2500);
 
+    // 모드 전환 검사는 코드 블록 배경색을 읽습니다. 그래서 코드가 실제로 있는 모듈에서
+    // 해야 합니다. 모듈 목록의 마지막 항목에 코드가 없으면(M15 처럼) 배경색이 null 로
+    // 나와 거짓 실패가 납니다. 어느 모듈을 쓸지는 아래 루프에서 트리를 돌며 정합니다.
+    let moduleWithCode = null;
+
     for (const id of MODULES) {
       await openModule(ws, id);
       const m = await evaluate(ws, PROBE);
+      if (!moduleWithCode && m.codeBlocks > 0) moduleWithCode = id;
       const bad = [];
       if (m.error) bad.push('콘텐츠 로드 오류');
       if (!m.h1) bad.push('h1 없음');
@@ -248,6 +254,12 @@ async function main() {
     // 시작 모드는 localStorage 에 따라 달라지므로 방향을 가정하지 않고
     // 두 상태를 찍은 뒤 darkMode 플래그로 어느 쪽이 다크인지 판별합니다.
     console.log('\n  --- 모드 전환 ---');
+    if (moduleWithCode) {
+      await openModule(ws, moduleWithCode);
+      console.log(`  코드 블록이 있는 모듈에서 검사: ${moduleWithCode}`);
+    } else {
+      console.log('  코드 블록이 있는 모듈이 없어 코드 배경색 검사를 건너뜁니다');
+    }
     const first = await evaluate(ws, PROBE);
     const modeLabel = await clickUtility('dark mode|다크 모드|light mode|라이트 모드');
     await sleep(1500);
@@ -269,15 +281,19 @@ async function main() {
     if (darkSnap.bodyColor === lightSnap.bodyColor) {
       modeProblems.push('본문 색이 모드에 따라 바뀌지 않음');
     }
-    if (darkSnap.codeBg === lightSnap.codeBg) {
-      modeProblems.push('코드 배경색이 모드에 따라 바뀌지 않음');
-    }
-    // 사용자가 지정한 값. 라이트 #f8f8f8, 다크 #282c34
-    if (!/rgb\(248, 248, 248\)/.test(lightSnap.codeBg ?? '')) {
-      modeProblems.push(`라이트 코드배경이 #f8f8f8 아님: ${lightSnap.codeBg}`);
-    }
-    if (!/rgb\(40, 44, 52\)/.test(darkSnap.codeBg ?? '')) {
-      modeProblems.push(`다크 코드배경이 #282c34 아님: ${darkSnap.codeBg}`);
+    // 코드 배경색 검사는 코드 블록이 실제로 렌더된 경우에만 의미가 있습니다.
+    // 코드가 없으면 codeBg 가 양쪽 모두 null 이고, 그것은 렌더 결함이 아닙니다.
+    if (moduleWithCode) {
+      if (darkSnap.codeBg === lightSnap.codeBg) {
+        modeProblems.push('코드 배경색이 모드에 따라 바뀌지 않음');
+      }
+      // 사용자가 지정한 값. 라이트 #f8f8f8, 다크 #282c34
+      if (!/rgb\(248, 248, 248\)/.test(lightSnap.codeBg ?? '')) {
+        modeProblems.push(`라이트 코드배경이 #f8f8f8 아님: ${lightSnap.codeBg}`);
+      }
+      if (!/rgb\(40, 44, 52\)/.test(darkSnap.codeBg ?? '')) {
+        modeProblems.push(`다크 코드배경이 #282c34 아님: ${darkSnap.codeBg}`);
+      }
     }
 
     if (modeProblems.length) {

@@ -1,0 +1,248 @@
+# 모듈 15(과정 마무리) 교재 대비 변경 사항 대장
+#
+# status 값
+#   incorrect   교재 기술 오류
+#   changed     동작·기본값·이름·URL 이 변경됨
+#   discouraged 비권장 (대체 경로가 권장됨)
+#   ended       지원 종료 또는 제공 종료
+#
+# courseware_internal: true 는 외부 문서와의 불일치가 아니라 교재 안에서
+# 서로 어긋나는 경우입니다. 이 항목에는 evidence 를 비워 둡니다.
+
+module: M15-WrapUp_Summary
+verified_on: '2026-08-25'
+
+items:
+  # ---------------------------------------------------------------- incorrect
+  - id: feedback-wrong-course-name
+    status: incorrect
+    title: 과정 피드백 안내가 다른 과정 이름을 지시함
+    courseware_location: 슬라이드 14 본문 4번 단계
+    courseware_says: '완료한 Architecting on AWS 교육 과정을 선택하고 Evaluate 를 선택합니다'
+    verified: 이 덱은 Developing on AWS 과정의 것이다. Architecting on AWS 는 다른 과정이다. 다른 과정 덱에서 복사해 온 흔적으로 보인다.
+    evidence: ''
+    courseware_internal: true
+
+  - id: skillbuilder-course-count
+    status: incorrect
+    title: Skill Builder 무료 디지털 과정 수
+    courseware_location: 슬라이드 5 본문 및 강사 노트
+    courseware_says: '600여 개의 디지털 과정 / 600개가 넘는 온디맨드 디지털 과정 및 학습 플랜'
+    verified: 현재 Skill Builder 는 900개가 넘는 무료 자습형 디지털 과정을 제공하고, 온라인 학습 센터 전체로는 1,000개가 넘는 무료 학습 리소스를 제공한다.
+    evidence: sb-course-count
+    courseware_internal: false
+
+  - id: cert-list-outdated
+    status: incorrect
+    title: 슬라이드에 나온 자격증 목록이 현재와 다름
+    courseware_location: 슬라이드 7 강사 노트
+    courseware_says: '슬라이드에는 현재 제공되는 AWS Certification이 나와 있습니다'
+    verified: 교재 시점 이후 Specialty 세 개(Data Analytics, Database, SAP on AWS)가 2024년 4월에 은퇴하고 Machine Learning - Specialty 도 2026년 3월 31일로 제공이 끝났다. 반대로 AI Practitioner, Data Engineer - Associate, Machine Learning Engineer - Associate, Generative AI Developer - Professional 이 추가되었다. 강사 노트 자신이 '시험은 자주 업데이트되며 … 변경될 수 있습니다'라고 경고한다.
+    evidence: three-specialty-retired-2024
+    courseware_internal: false
+
+  - id: instructor-note-duplicate-sentence
+    status: incorrect
+    title: 강사 노트가 같은 경고 문장을 연달아 두 번 반복
+    courseware_location: 슬라이드 7 강사 노트
+    courseware_says: '시험은 자주 업데이트되며 제공되는 시험과 각 시험의 테스트 항목에 관한 세부 정보는 변경될 수 있습니다. 그러나 시험은 자주 업데이트되며 …'
+    verified: 같은 문장이 '그러나'로 이어져 두 번 나온다. 편집 실수다.
+    evidence: ''
+    courseware_internal: true
+
+  - id: subscription-note-duplicate
+    status: incorrect
+    title: 구독 필요 안내를 표현만 바꿔 두 번 적음
+    courseware_location: 슬라이드 11 강사 노트
+    courseware_says: '참고: 이러한 리소스 중 일부는 디지털 구독이 필요합니다. / 참고: 일부 자료에는 AWS Skill Builder 구독이 필요합니다.'
+    verified: 같은 내용을 두 번 적었다. 이 문서는 한 번만 싣는다.
+    evidence: ''
+    courseware_internal: true
+
+  - id: followup-course-url-unlabeled
+    status: incorrect
+    title: 후속 과정 URL 하나에 과정 이름이 붙어 있지 않음
+    courseware_location: 슬라이드 3 강사 노트
+    courseware_says: 'Advanced Developing on AWS 뒤에 URL 두 개가 연달아 나오고 courseId=53785 URL 에는 과정 이름이 없다'
+    verified: 본문 목록과 대조하면 이 URL 이 Developing Serverless Solutions on AWS 에 대응한다. 강사 노트에서 이름이 누락되었다.
+    evidence: ''
+    courseware_internal: true
+
+  - id: untitled-slide
+    status: incorrect
+    title: 자격증 레벨 슬라이드에 제목이 없음
+    courseware_location: 슬라이드 7
+    courseware_says: '슬라이드 제목이 비어 있고 본문 텍스트 박스에 AWS Certification 레벨 이라고만 적혀 있다'
+    verified: 제목 자리가 비어 목차·인쇄물에서 이 슬라이드를 식별할 수 없다. 이 문서는 'AWS Certification 레벨'을 절 제목으로 썼다.
+    evidence: ''
+    courseware_internal: true
+
+  # ------------------------------------------------------------------ changed
+  - id: exam-prep-step4-name
+    status: changed
+    title: 시험 준비 4단계의 마지막 도구 이름
+    courseware_location: 슬라이드 8·12
+    courseware_says: '공식 연습 시험으로 실전 시험 준비 상태를 확인합니다 (Official Practice Exam)'
+    verified: 현재 Exam Prep Plan 의 4단계는 AWS Certification Official Pretest 로 준비 상태를 평가하는 것이다. Official Exam Prep 구성도 question sets, pretests, exam prep courses, Escape Room, SimuLearn, practice exams 로 넓어졌다.
+    evidence: genai-dev-pro-prep-steps
+    replacement: AWS Certification Official Pretest
+    courseware_internal: false
+
+  - id: exam-prep-tools-expanded
+    status: changed
+    title: 시험 준비에 쓰는 도구 구성
+    courseware_location: 슬라이드 9~12
+    courseware_says: '공식 연습 문제 모음, 자습형 디지털 과정, AWS Builder Lab, AWS Cloud Quest, 공식 연습 시험'
+    verified: 현재 Exam Prep Plan 2단계는 디지털 과정과 AWS Builder Labs·AWS Cloud Quest·AWS Jam 을 쓰고, 3단계는 도메인별 검토와 강사 문제 풀이에 AWS SimuLearn 을 더한다. AWS Jam 과 AWS SimuLearn 은 교재에 없다.
+    evidence: genai-dev-pro-prep-steps
+    courseware_internal: false
+
+  - id: builder-labs-url
+    status: changed
+    title: AWS Builder Labs URL
+    courseware_location: 슬라이드 10 강사 노트
+    courseware_says: 'https://aws.amazon.com/training/digital/aws-builder-labs'
+    verified: 이 URL 은 현재 https://aws.amazon.com/training/digital/immersive-learning/ 로 리디렉션된다.
+    evidence: builder-labs-url-redirect
+    replacement: 'https://aws.amazon.com/training/digital/immersive-learning/'
+    courseware_internal: false
+
+  - id: cert-exams-url
+    status: changed
+    title: 시험 목록 페이지 URL
+    courseware_location: 슬라이드 8·9 강사 노트
+    courseware_says: 'https://aws.amazon.com/certification/exams'
+    verified: 이 URL 은 현재 https://aws.amazon.com/certification/ 로 리디렉션된다. 별도의 시험 목록 페이지가 아니다.
+    evidence: cert-exams-url-redirect
+    replacement: 'https://aws.amazon.com/certification/'
+    courseware_internal: false
+
+  - id: tech-talks-url
+    status: changed
+    title: Tech Talks URL
+    courseware_location: 슬라이드 6 강사 노트
+    courseware_says: 'https://aws.amazon.com/events/online-tech-talks/on-demand'
+    verified: 이 URL 은 현재 https://aws.amazon.com/events/online-tech-talks/ 로 리디렉션된다.
+    evidence: tech-talks-url-redirect
+    replacement: 'https://aws.amazon.com/events/online-tech-talks/'
+    courseware_internal: false
+
+  - id: pricing-whitepaper-url
+    status: changed
+    title: AWS 요금제 백서 URL
+    courseware_location: 슬라이드 3 강사 노트
+    courseware_says: 'https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/welcome.html'
+    verified: welcome.html 은 현재 /whitepapers/latest/how-aws-pricing-works/ 로 리디렉션된다.
+    evidence: pricing-whitepaper-url
+    replacement: 'https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/'
+    courseware_internal: false
+
+  - id: skillbuilder-url
+    status: changed
+    title: Skill Builder 학습 페이지 URL
+    courseware_location: 슬라이드 9 강사 노트
+    courseware_says: 'https://explore.skillbuilder.aws/learn'
+    verified: 이 URL 은 현재 Skill Builder 최상위 도메인으로 리디렉션된다. AWS 소유 진입점은 https://aws.amazon.com/training/digital/ 이다.
+    evidence: builder-labs-url-redirect
+    replacement: 'https://aws.amazon.com/training/digital/'
+    courseware_internal: false
+
+  - id: workshops-url
+    status: changed
+    title: AWS Workshops URL
+    courseware_location: 슬라이드 6 강사 노트
+    courseware_says: 'https://workshops.aws'
+    verified: 이 URL 은 현재 AWS Builder Center 의 워크숍 경로로 리디렉션된다. 리디렉션 사실만 확인했고 새 경로의 내용은 이 문서의 근거 도메인 규칙상 인용하지 않는다.
+    evidence: builder-labs-url-redirect
+    courseware_internal: false
+
+  - id: followup-course-urls
+    status: changed
+    title: 후속 과정 등록 경로
+    courseware_location: 슬라이드 3 강사 노트
+    courseware_says: 'www.aws.training/SessionSearch?pageNumber=1&courseId=36896&languageId=1 형태의 URL'
+    verified: 후속 과정 두 개는 현재 aws.amazon.com/training/classroom/ 경로에 있고 그 경로가 AWS Skill Builder 로 리디렉션된다.
+    evidence: followup-courses-moved-to-skillbuilder
+    replacement: 'https://aws.amazon.com/training/classroom/advanced-developing-on-aws/ 및 .../developing-serverless-solutions-on-aws/'
+    courseware_internal: false
+
+  - id: sb-classroom-structure
+    status: changed
+    title: Skill Builder 의 학습 방식 구성
+    courseware_location: 슬라이드 5·6
+    courseware_says: '무료 디지털 교육과 강의식 교육 두 갈래로 제시'
+    verified: 현재는 자습형 디지털 과정, 자습형 Digital Classroom(강사 촬영 영상·실습·지식 확인·과정 평가), 라이브 AWS Classroom Training 세 갈래다. Digital Classroom 은 Individual Annual 또는 Team 구독에서 제공된다.
+    evidence: sb-learning-modes
+    courseware_internal: false
+
+  - id: dev-associate-exam-revision
+    status: changed
+    title: 이 과정과 직결되는 시험이 개정 중
+    courseware_location: 덱에 시험 코드와 개정 일정이 없음
+    courseware_says: ''
+    verified: AWS Certified Developer - Associate 가 DVA-C03 으로 개정된다. 등록은 2026년 10월 27일, GA 제공은 2026년 12월 1일이고 DVA-C02 의 마지막 응시일은 2026년 11월 30일이다. AI 지원 개발과 AI 보안이 추가되고 컨테이너 관리가 들어온다.
+    evidence: dva-c03-schedule
+    courseware_internal: false
+
+  - id: security-specialty-revision
+    status: changed
+    title: Security - Specialty 시험 개정
+    courseware_location: 슬라이드 7
+    courseware_says: 'Specialty 자격증을 이름만 언급'
+    verified: AWS Certified Security - Specialty 가 SCS-C03 으로 개정되었다. 생성형 AI 와 머신 러닝 보안을 별도로 다루고 탐지와 인시던트 대응을 각각 별개 섹션으로 두도록 도메인을 재구성했다. SCS-C02 응시 기한은 2025년 12월 1일이었다.
+    evidence: security-specialty-scs-c03
+    courseware_internal: false
+
+  # -------------------------------------------------------------- discouraged
+  - id: aws-training-portal
+    status: discouraged
+    title: www.aws.training 포털 사용
+    courseware_location: 슬라이드 3·14 강사 노트 및 본문
+    courseware_says: 'https://www.aws.training 에 로그인하고 SessionSearch·Details 경로로 과정을 찾는다'
+    verified: AWS 가 안내하는 현재 학습 진입점은 AWS Skill Builder 이고, 교재가 제시한 강의식 과정 경로는 aws.amazon.com/training/classroom/ 에서 Skill Builder 로 리디렉션된다. www.aws.training 자체는 아직 응답하지만 이 문서의 근거 도메인 허용 목록에 없어 인용 대상이 아니다.
+    evidence: followup-courses-moved-to-skillbuilder
+    replacement: 'AWS Skill Builder (https://aws.amazon.com/training/digital/)'
+    courseware_internal: false
+
+  # -------------------------------------------------------------------- ended
+  - id: ml-specialty-ended
+    status: ended
+    title: AWS Certified Machine Learning - Specialty 제공 종료
+    courseware_location: 슬라이드 7
+    courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'
+    verified: 이 시험의 마지막 응시일은 2026년 3월 31일이었다. 이미 취득한 사람의 자격증은 원래 만료일까지 유효하다. 대체 경로는 AI Practitioner, Machine Learning Engineer - Associate, Data Engineer - Associate, Generative AI Developer - Professional 이다.
+    evidence: ml-specialty-retired
+    replacement: 'AWS Certified Machine Learning Engineer - Associate 등'
+    ended_on: '2026-03-31'
+    courseware_internal: false
+
+  - id: data-analytics-specialty-ended
+    status: ended
+    title: AWS Certified Data Analytics - Specialty 제공 종료
+    courseware_location: 슬라이드 7
+    courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'
+    verified: 2024년 4월에 은퇴했고 마지막 응시일은 4월 8일이었다. 은퇴일 이후에는 시험을 제공하지 않으므로 재인증할 수 없다.
+    evidence: three-specialty-retired-dates
+    replacement: 'AWS Certified Data Engineer - Associate'
+    ended_on: '2024-04-08'
+    courseware_internal: false
+
+  - id: database-specialty-ended
+    status: ended
+    title: AWS Certified Database - Specialty 제공 종료
+    courseware_location: 슬라이드 7
+    courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'
+    verified: 2024년 4월에 은퇴했고 마지막 응시일은 4월 29일이었다.
+    evidence: three-specialty-retired-dates
+    ended_on: '2024-04-29'
+    courseware_internal: false
+
+  - id: sap-on-aws-specialty-ended
+    status: ended
+    title: 'AWS Certified: SAP on AWS - Specialty 제공 종료'
+    courseware_location: 슬라이드 7
+    courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'
+    verified: 2024년 4월에 은퇴했고 마지막 응시일은 4월 29일이었다.
+    evidence: three-specialty-retired-dates
+    ended_on: '2024-04-29'
+    courseware_internal: false

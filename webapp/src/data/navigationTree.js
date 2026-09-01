@@ -209,6 +209,12 @@ export const navigationTree = [
         id: 'M15-WrapUp_Summary',
         title: { ko: '모듈 15: 과정 마무리', en: 'Module 15: Course Wrap-up' },
         type: 'item',
+        contentFile: 'M15-WrapUp_Summary.md',
+        tags: [
+          { label: 'AWS Certification', category: 'concept' },
+          { label: 'AWS Skill Builder', category: 'tool' },
+          { label: 'DVA-C03', category: 'concept' },
+        ],
       },
       {
         id: 'M16-NewFeatures_Summary',

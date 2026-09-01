@@ -43,6 +43,12 @@ tier2:
       루트 경로는 403 을 반환하므로 문서 경로까지 포함해 인용합니다.
   - domain: docs.amazonaws.cn
     note: 중국 리전(aws-cn 파티션) 문서. 리전별 차이를 다룰 때만 씁니다
+  - domain: d1.awsstatic.com
+    note: >-
+      AWS 정적 자산 CDN. AWS 공식 백서 PDF 가 여기에 있습니다
+      (예: /whitepapers/serverless-architectures-with-aws-lambda.pdf).
+      AWS 가 운영하며 저작권도 AWS 입니다. HTML 문서가 아니라 PDF 자산에만 씁니다.
+      2026-08-25 에 M15 백서 링크 확인에 사용했습니다
 
 informational:
   - domain: publicsuffix.org
