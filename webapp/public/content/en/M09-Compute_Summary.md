@@ -1307,7 +1307,7 @@ The command on courseware slide 34. **There are two problems with it.**
 ```bash
 # Courseware slide 34 (as printed, with problems)
 aws lambda create-function --function-name dictate-function --handler app.lambda_handler \
-  --runtime python3.8 -–role arn:aws:iam::563926481938:role/lambdaPollyRole \
+  --runtime python3.8 -–role arn:aws:iam::111122223333:role/lambdaPollyRole \
   --environment Variables={TABLE_NAME=$notesTable} --zip-file fileb://dictate-function.zip
 ```
 
@@ -1316,6 +1316,8 @@ aws lambda create-function --function-name dictate-function --handler app.lambda
 | 🔄 `-–role` | Typeset with a **single hyphen plus an en dash (`–`)** instead of two hyphens, so the shell won't recognize it if you copy it verbatim. Every other flag on the same slide uses two hyphens. This is a typesetting error in the courseware |
 | 🔄 `python3.8` | **Reached end of support on October 14, 2024.** Function creation is blocked from February 1, 2027, and function updates from March 3, 2027 |
 
+The account ID in the role ARN has been changed in the quotation above. The value printed in the courseware is not one of the AWS documentation example account IDs, so it was replaced with the documentation example `111122223333`. This is unrelated to the `--role` and `--runtime` problems and does not affect how the command behaves.
+
 The corrected form:
 
 ```bash
@@ -1323,7 +1325,7 @@ The corrected form:
 aws lambda create-function --function-name dictate-function \
   --handler app.lambda_handler \
   --runtime python3.13 \
-  --role arn:aws:iam::563926481938:role/lambdaPollyRole \
+  --role arn:aws:iam::111122223333:role/lambdaPollyRole \
   --environment Variables={TABLE_NAME=$notesTable} \
   --zip-file fileb://dictate-function.zip
 ```
