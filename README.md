@@ -214,10 +214,56 @@ python3 pipeline/dump.py M01
 
 ---
 
+## 배포 (AWS Amplify Hosting)
+
+저장소 루트의 두 파일이 배포 설정입니다. Amplify 콘솔에서 저장소를 연결하면 나머지는
+Amplify 가 합니다.
+
+| 파일 | 역할 |
+|---|---|
+| `amplify.yml` | 빌드 설정. `appRoot: webapp`, `npm ci` → `npm run build`, 산출물 `dist/` |
+| `customHttp.yml` | 응답 헤더. HSTS, `nosniff`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, CSP |
+
+커스텀 헤더는 `amplify.yml` 이 아니라 **저장소 루트의 `customHttp.yml`** 에 넣습니다. monorepo
+는 `appRoot` 별로 선언하는 형식이고, 이 파일이 콘솔의 Custom headers 설정을 덮어씁니다.
+
+### 앱을 처음 만들 때
+
+앱이 저장소 루트가 아니라 `webapp/` 에 있으므로 monorepo 로 설정해야 합니다.
+
+1. Amplify 콘솔에서 **Create new app** → Git 공급자와 저장소·브랜치 선택
+2. **My app is a monorepo** 를 선택하고 경로에 `webapp` 입력
+3. 이때 콘솔이 `AMPLIFY_MONOREPO_APP_ROOT=webapp` 환경 변수를 자동으로 넣습니다
+4. **Save and deploy**
+
+이 환경 변수는 `amplify.yml` 의 `appRoot` 와 **값이 같아야 합니다.** 이미 만들어진 앱이거나
+CloudFormation 으로 배포했다면 Hosting → Environment variables 에서 직접 넣습니다.
+
+### 알아 둘 점
+
+- **Node 버전을 `amplify.yml` 에서 고정합니다.** Vite 7 은 Node 20.19+ 또는 22.12+ 를
+  요구합니다. AL2023 빌드 이미지의 기본값은 Node 22 이지만, 이미지 기본값이 바뀌거나 live
+  package updates 로 다른 버전이 지정될 수 있으므로 `nvm use 22` 를 `preBuild` 에 둡니다.
+  `preBuild` 는 live package updates 다음에 실행되므로 이 값이 이깁니다.
+- **토큰 검사가 배포 게이트를 겸합니다.** `npm run build` 가 `check-tokens.mjs` 까지 돌리므로,
+  Cloudscape 토큰을 쓰지 않고 색을 하드코딩한 곳이 있으면 배포가 실패합니다.
+- **SPA 리라이트 규칙이 필요하지 않습니다.** 이 앱은 해시 라우팅(`/#M04-Permissions_Summary`)
+  을 쓰므로 모든 요청 경로가 `/` 입니다. 콘텐츠 마크다운은 같은 오리진에서 `fetch` 합니다.
+- **CSP 는 실제로 검증한 값입니다.** 빌드된 `dist/` 를 그 헤더와 함께 서빙하고 헤드리스
+  브라우저로 확인했습니다. 위반 0건, Google Fonts 스타일시트 로드, `Noto Sans Mono` 실제 로드,
+  코드 블록의 구문 하이라이팅 색 8종 정상 적용입니다.
+- **CSP 는 Amplify 에서만 적용되고 로컬 개발 서버에는 걸리지 않습니다.** 게이트도 렌더 검사도
+  CSP 위반을 잡지 못하므로, 헤더를 조일 때는 배포 후 브라우저 콘솔을 확인하세요.
+
+---
+
 ## 구조
 
 ```text
 .
+├── amplify.yml                 Amplify 빌드 설정
+├── customHttp.yml              Amplify 응답 헤더 (CSP 등)
+│
 ├── pipeline/
 │   ├── extract.py              PPT -> JSON
 │   ├── dump.py                 JSON -> 평문 대장

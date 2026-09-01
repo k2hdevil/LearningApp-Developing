@@ -36,3 +36,30 @@ webapp/deploy.zip
 
 # 로컬 백업 아카이브
 backups/
+
+# Amplify
+#
+# Amplify Hosting 은 저장소를 연결해서 직접 빌드합니다. 배포에 필요한 것은
+# 저장소 루트의 amplify.yml(빌드 설정) 과 customHttp.yml(응답 헤더) 두 개이고,
+# 이 둘은 커밋합니다. 아래는 Amplify CLI 나 로컬 샌드박스를 쓸 때 생기는
+# 산출물이라 커밋하지 않습니다.
+.amplify/
+amplify_outputs*.json
+amplifyconfiguration*.json
+
+# 환경 변수와 자격 증명
+#
+# Amplify 의 환경 변수는 콘솔의 Environment variables 에서 설정합니다.
+# 저장소에 넣지 않습니다.
+.env
+.env.*
+*.pem
+*.key
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+
+# npm 로컬 캐시
+webapp/.npm/
