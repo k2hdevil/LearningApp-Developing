@@ -197,9 +197,12 @@ export const navigationTree = [
           en: 'Module 14: Observing Your Application',
         },
         type: 'item',
+        contentFile: 'M14-Observability_Summary.md',
         tags: [
           { label: 'CloudWatch', category: 'service' },
           { label: 'AWS X-Ray', category: 'service' },
+          { label: 'OpenTelemetry', category: 'tool' },
+          { label: 'Observability', category: 'concept' },
         ],
       },
       {

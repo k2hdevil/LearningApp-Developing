@@ -1,0 +1,878 @@
+{
+  "_note": "모듈 14(애플리케이션 관찰) 2단계 최신화 근거. 각 항목은 실제로 조회한 AWS 공식 문서 페이지에 대응합니다. fetched_with 는 조회 도구입니다.",
+  "module": "M14-Observability_Summary",
+  "verified_on": "2026-08-25",
+  "citations": [
+    {
+      "id": "cw-metric-definition",
+      "claim": "지표는 CloudWatch에 게시된 시간 순서별 데이터 포인트 집합이다. 지표는 이름, 네임스페이스, 0개 이상의 측정 기준으로 고유하게 정의된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Metrics"
+    },
+    {
+      "id": "cw-metric-region-scope",
+      "claim": "지표는 생성된 리전에만 존재한다. 지표는 삭제할 수 없고, 새 데이터가 게시되지 않으면 15개월 후 자동으로 만료된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Metrics"
+    },
+    {
+      "id": "cw-metric-retention",
+      "claim": "지표 보존 기간은 기간(period)별로 다르다. 60초 미만 3시간, 60초 15일, 300초 63일, 3600초 455일(15개월). 짧은 기간 데이터는 장기 보관을 위해 집계된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Metrics retention"
+    },
+    {
+      "id": "cw-namespace",
+      "claim": "네임스페이스는 CloudWatch 지표의 컨테이너다. 기본 네임스페이스는 없고 게시하는 데이터 포인트마다 지정해야 한다. AWS 네임스페이스는 'AWS/service' 규칙을 따르며 Amazon EC2 는 AWS/EC2 를 쓴다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Namespaces"
+    },
+    {
+      "id": "cw-dimension-limit",
+      "claim": "측정 기준은 지표 자격 증명의 일부인 이름/값 쌍이며, 하나의 지표에 최대 30개까지 할당할 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Dimensions"
+    },
+    {
+      "id": "cw-dimension-combination",
+      "claim": "CloudWatch는 측정 기준의 고유한 조합 각각을 별개의 지표로 취급한다. 게시한 조합으로만 통계를 조회할 수 있고, 사용자 지정 지표에 대해서는 측정 기준을 넘어 집계하지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Dimension combinations"
+    },
+    {
+      "id": "cw-resolution",
+      "claim": "지표는 표준 해상도(1분 세분성) 또는 고해상도(1초 세분성)다. AWS 서비스 지표는 기본적으로 표준 해상도다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Resolution"
+    },
+    {
+      "id": "cw-period",
+      "claim": "기간(period)의 유효 값은 1, 5, 10, 30 또는 60의 배수이며 기본값은 60초다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "Periods"
+    },
+    {
+      "id": "cw-otel-metrics",
+      "claim": "CloudWatch는 OTLP로 전송된 OpenTelemetry 지표를 지원한다. 네임스페이스·측정 기준 대신 지표 이름과 레이블(지표당 최대 150개)을 쓰고, PromQL로 조회하며 CloudWatch Query Studio 에서 다룬다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html",
+      "fetched_with": "mcp",
+      "section": "OpenTelemetry metrics",
+      "corrects_courseware": "교재는 CloudWatch 지표 모델을 네임스페이스와 측정 기준 하나로만 설명한다."
+    },
+    {
+      "id": "cw-alarm-types",
+      "claim": "CloudWatch 경보에는 지표 경보, PromQL 경보, 로그 경보, 복합 경보(composite alarm)가 있다. 지표 경보는 단일 지표 또는 지표 math 표현식의 결과를 감시한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html",
+      "fetched_with": "mcp",
+      "section": "Using Amazon CloudWatch alarms",
+      "corrects_courseware": "교재는 '경보는 단일 지표를 관찰한다'고만 서술한다. 지표 math 결과와 복합 경보, 로그 경보는 다루지 않는다."
+    },
+    {
+      "id": "cw-alarm-doc-path",
+      "claim": "CloudWatch 경보 사용 설명서의 현재 경로는 /AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html 이다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html",
+      "fetched_with": "mcp",
+      "section": "Using Amazon CloudWatch alarms",
+      "corrects_courseware": "교재 슬라이드 15 강사 노트는 /AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html 을 제시한다."
+    },
+    {
+      "id": "cw-alarm-composite-limits",
+      "claim": "복합 경보는 SNS 알림을 보내고 조사·OpsItem·인시던트를 생성할 수 있지만 EC2 작업이나 Auto Scaling 작업은 수행할 수 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html",
+      "fetched_with": "mcp",
+      "section": "Using Amazon CloudWatch alarms"
+    },
+    {
+      "id": "cw-alarm-count-unlimited",
+      "claim": "계정에서 생성할 수 있는 경보 수에는 제한이 없다. 경보 이력은 30일간 보존된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html",
+      "fetched_with": "mcp",
+      "section": "Common features of CloudWatch alarms"
+    },
+    {
+      "id": "cw-alarm-state-change",
+      "claim": "경보는 상태가 바뀔 때만 작업을 호출한다. 예외는 Auto Scaling 작업으로, 새 상태를 유지하는 동안 1분에 한 번씩 계속 호출한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html",
+      "fetched_with": "mcp",
+      "section": "Using Amazon CloudWatch alarms"
+    },
+    {
+      "id": "cw-alarm-evaluation-quota",
+      "claim": "경보에는 평가 기간 할당량이 있다. 기간이 1시간(3600초) 이상인 경보는 최대 평가 기간이 7일, 그보다 짧은 기간의 경보는 1일이다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html",
+      "fetched_with": "mcp",
+      "section": "Common features of CloudWatch alarms"
+    },
+    {
+      "id": "cw-alarm-three-states",
+      "claim": "경보는 항상 OK, ALARM, INSUFFICIENT_DATA 세 상태 중 하나이며, CloudWatch에 보고되는 각 데이터 포인트는 임계값 이내(not breaching), 임계값 위반(breaching), 누락(missing) 중 하나로 분류된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html",
+      "fetched_with": "mcp",
+      "section": "Configuring how CloudWatch alarms treat missing data"
+    },
+    {
+      "id": "cw-alarm-missing-data-options",
+      "claim": "누락 데이터 처리 옵션은 notBreaching, breaching, ignore, missing 네 가지이며 기본 동작은 missing 이다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html",
+      "fetched_with": "mcp",
+      "section": "Configuring how CloudWatch alarms treat missing data",
+      "corrects_courseware": "교재 CLI 예시는 --treat-missing-data missing 을 명시하는데 이는 기본값이므로 생략해도 동작이 같다."
+    },
+    {
+      "id": "cw-alarm-dynamodb-default",
+      "claim": "AWS/DynamoDB 네임스페이스의 지표를 평가하는 경보는 누락 데이터를 ignore 로 처리하는 것이 기본이다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html",
+      "fetched_with": "mcp",
+      "section": "Configuring how CloudWatch alarms treat missing data"
+    },
+    {
+      "id": "cw-alarm-evaluation-range",
+      "claim": "경보 평가 시 CloudWatch는 평가 기간(Evaluation Periods) 수보다 많은 데이터 포인트를 가져오려 시도한다. 이 범위를 평가 범위(evaluation range)라 한다. 실제 데이터 포인트가 평가 기간 수 이상 확보되면 누락 데이터 설정은 무시된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html",
+      "fetched_with": "mcp",
+      "section": "How alarm state is evaluated when data is missing"
+    },
+    {
+      "id": "cw-alarm-m-of-n",
+      "claim": "Datapoints to Alarm 이 Evaluation Periods 보다 작으면 'M out of N' 경보가 된다. 예를 들어 Datapoints to Alarm 2, Evaluation Periods 3 은 3개 중 2개 경보다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html",
+      "fetched_with": "mcp",
+      "section": "How alarm state is evaluated when data is missing",
+      "corrects_courseware": "교재 슬라이드 15 강사 노트는 '연속 기간 3개'만 설명하여 M out of N 동작을 다루지 않는다."
+    },
+    {
+      "id": "cw-alarm-premature",
+      "claim": "경보는 평가 기간 안에서 가장 오래된 위반 데이터 포인트가 Datapoints to Alarm 값만큼 오래되었고 그보다 최근 데이터가 모두 위반 또는 누락이면, 사용 가능한 데이터 포인트 수가 M보다 적어도 ALARM 상태로 전환된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html",
+      "fetched_with": "mcp",
+      "section": "Avoiding premature transitions to alarm state"
+    },
+    {
+      "id": "cw-alarm-window",
+      "claim": "경보는 슬라이딩 평가 창(기본)과 월 클럭 평가 창을 선택할 수 있다. 월 클럭 창은 정시나 하루 시작 같은 고정 경계에 정렬되며 더 과거 데이터를 추가로 조회하지 않는다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html",
+      "fetched_with": "mcp",
+      "section": "How alarm state is evaluated when data is missing"
+    },
+    {
+      "id": "cw-putmetricalarm-required",
+      "claim": "PutMetricAlarm 에서 필수 파라미터는 AlarmName 이다. ComparisonOperator, EvaluationPeriods, Threshold, DatapointsToAlarm 은 API 스펙상 Required: No 이지만, 각 PutMetricAlarm 호출은 MetricName, Metrics 배열, EvaluationCriteria 중 하나를 반드시 지정해야 한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html",
+      "fetched_with": "mcp",
+      "section": "Request Parameters"
+    },
+    {
+      "id": "cw-putmetricalarm-actions",
+      "claim": "AlarmActions 에 지정할 수 있는 ARN은 EC2 작업(stop/terminate/reboot/recover), Auto Scaling 정책, Lambda 함수, SNS 주제, Systems Manager OpsItem·대응 계획, Amazon Q Developer 운영 조사다. 배열 항목은 최대 5개다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html",
+      "fetched_with": "mcp",
+      "section": "AlarmActions",
+      "corrects_courseware": "교재 슬라이드 17~19 CLI 예시는 --alarm-actions 값으로 CloudWatch 경보 ARN(arn:aws:cloudwatch:...:alarm:...)을 넣는데, 이는 유효 값 목록에 없다."
+    },
+    {
+      "id": "cw-putmetricalarm-mn",
+      "claim": "DatapointsToAlarm 은 'M out of N' 경보의 M이고 EvaluationPeriods 는 N이다. EvaluationPeriods 는 임계값과 비교하는 기간의 수다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html",
+      "fetched_with": "mcp",
+      "section": "DatapointsToAlarm"
+    },
+    {
+      "id": "cw-putmetricalarm-initial-state",
+      "claim": "PutMetricAlarm 으로 경보를 생성하면 상태가 즉시 INSUFFICIENT_DATA 로 설정되고(PromQL 경보는 OK), 그다음 평가되어 상태가 정해진다. 기존 경보를 업데이트하면 상태는 유지되지만 구성은 전체가 덮어써진다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html",
+      "fetched_with": "mcp",
+      "section": "PutMetricAlarm"
+    },
+    {
+      "id": "cw-comparison-operators",
+      "claim": "ComparisonOperator 의 유효 값은 GreaterThanOrEqualToThreshold, GreaterThanThreshold, LessThanThreshold, LessThanOrEqualToThreshold 이며, 이상 탐지 모델 기반 경보에는 LessThanLowerOrGreaterThanUpperThreshold, LessThanLowerThreshold, GreaterThanUpperThreshold 를 쓴다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html",
+      "fetched_with": "mcp",
+      "section": "ComparisonOperator"
+    },
+    {
+      "id": "cw-logs-concepts",
+      "claim": "CloudWatch Logs의 핵심 개념은 로그 클래스, 로그 이벤트, 로그 스트림, 로그 그룹, 지표 필터, 보존 설정, 삭제 보호다. 로그 그룹은 같은 보존·모니터링·액세스 제어 설정을 공유하는 로그 스트림의 그룹이고, 각 로그 스트림은 하나의 로그 그룹에 속해야 한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html",
+      "fetched_with": "mcp",
+      "section": "Amazon CloudWatch Logs concepts"
+    },
+    {
+      "id": "cw-logs-stream-unlimited",
+      "claim": "하나의 로그 그룹에 속할 수 있는 로그 스트림의 수에는 제한이 없다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html",
+      "fetched_with": "mcp",
+      "section": "Log groups"
+    },
+    {
+      "id": "cw-logs-class",
+      "claim": "CloudWatch Logs는 로그 그룹 클래스를 두 가지 제공한다. Standard는 실시간 모니터링과 빈번한 액세스가 필요한 로그를 위한 완전 기능 옵션이고, Infrequent Access는 액세스 빈도가 낮은 로그를 위한 저비용 옵션으로 Standard 기능의 일부만 지원한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html",
+      "fetched_with": "mcp",
+      "section": "Log class"
+    },
+    {
+      "id": "cw-logs-deletion-protection",
+      "claim": "로그 그룹에 삭제 보호를 켜면 명시적으로 해제할 때까지 모든 삭제 작업이 차단된다. 기본적으로 삭제 보호는 켜져 있지 않다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html",
+      "fetched_with": "mcp",
+      "section": "Deletion protection"
+    },
+    {
+      "id": "cw-logs-retention-default",
+      "claim": "기본적으로 로그 데이터는 CloudWatch Logs에 무기한 저장된다(Never Expire). 로그 그룹별로 보존 기간을 설정할 수 있고 언제든 변경할 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html",
+      "fetched_with": "mcp",
+      "section": "Change log data retention in CloudWatch Logs",
+      "corrects_courseware": "교재는 로그 그룹이 '같은 보존 기간을 공유한다'고만 말하고 기본값이 무기한이라는 사실을 밝히지 않는다."
+    },
+    {
+      "id": "cw-logs-retention-delay",
+      "claim": "로그 이벤트는 보존 기간에 도달하는 즉시 삭제되지 않는다. 삭제까지 보통 최대 72시간이 걸리고 드물게 더 오래 걸릴 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html",
+      "fetched_with": "mcp",
+      "section": "Change log data retention in CloudWatch Logs"
+    },
+    {
+      "id": "cw-logs-send-methods",
+      "claim": "CloudWatch Logs에 로그를 보내는 방법은 CloudWatch 에이전트, AWS CLI 의 put-log-events, PutLogEvents API 다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html",
+      "fetched_with": "mcp",
+      "section": "Send logs to a log group"
+    },
+    {
+      "id": "cw-logs-insights",
+      "claim": "CloudWatch Logs Insights로 로그 데이터를 대화식으로 검색·분석할 수 있다. 계정당 Logs Insights QL 동시 쿼리는 100개, OpenSearch PPL 또는 SQL 동시 쿼리는 15개로 제한된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html",
+      "fetched_with": "mcp",
+      "section": "Analyzing log data with CloudWatch Logs Insights"
+    },
+    {
+      "id": "cw-logs-insights-languages",
+      "claim": "CloudWatch Logs Insights는 쿼리 언어 세 가지를 지원한다. 전용 Logs Insights QL, OpenSearch Service PPL(파이프 처리 언어), OpenSearch Service SQL.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html",
+      "fetched_with": "mcp",
+      "section": "Analyzing log data with CloudWatch Logs Insights"
+    },
+    {
+      "id": "cw-logs-insights-json",
+      "claim": "CloudWatch Logs Insights는 Route 53, Lambda, CloudTrail, VPC 같은 AWS 서비스 로그와 JSON 으로 로그 이벤트를 내보내는 모든 애플리케이션·사용자 지정 로그에서 로그 필드를 자동으로 검색한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html",
+      "fetched_with": "mcp",
+      "section": "Analyzing log data with CloudWatch Logs Insights"
+    },
+    {
+      "id": "cw-logs-insights-limits",
+      "claim": "쿼리는 완료되지 않으면 60분 후 시간이 초과되고, 쿼리 결과는 7일간 사용할 수 있다. 2018년 11월 5일 이후 CloudWatch Logs에 전송된 로그 데이터를 검색할 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html",
+      "fetched_with": "mcp",
+      "section": "Analyzing log data with CloudWatch Logs Insights"
+    },
+    {
+      "id": "cw-logs-insights-features",
+      "claim": "필드 인덱스로 스캔 비용과 시간을 줄일 수 있고, 패턴 분석·쿼리 저장·대시보드 추가·KMS 로 결과 암호화·자연어 쿼리 생성·패싯 탐색·주변 로그 보기를 지원한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html",
+      "fetched_with": "mcp",
+      "section": "Analyzing log data with CloudWatch Logs Insights"
+    },
+    {
+      "id": "cw-emf",
+      "claim": "CloudWatch 임베디드 지표 형식(EMF)으로 CloudWatch Logs에 기록되는 로그 형태로 사용자 지정 지표를 비동기 생성할 수 있다. CloudWatch가 지표를 자동으로 추출해 시각화와 경보에 쓸 수 있고, 연결된 상세 로그 이벤트는 Logs Insights로 조회할 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html",
+      "fetched_with": "mcp",
+      "section": "Embedding metrics within logs"
+    },
+    {
+      "id": "cw-emf-permission",
+      "claim": "EMF로 로그에서 지표를 생성하려면 logs:PutLogEvents 권한이 필요하고 cloudwatch:PutMetricData 권한은 필요하지 않다. EMF는 Lambda 함수나 컨테이너 같은 임시 리소스에서 실행 가능한 사용자 지정 지표를 만드는 데 유용하다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html",
+      "fetched_with": "mcp",
+      "section": "Embedding metrics within logs"
+    },
+    {
+      "id": "cw-emf-cardinality",
+      "claim": "EMF는 설계상 고유한 측정 기준 조합마다 사용자 지정 지표를 만든다. requestId 같은 고카디널리티 측정 기준으로 지표를 만들면 의도치 않은 요금이 발생한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html",
+      "fetched_with": "mcp",
+      "section": "Embedding metrics within logs"
+    },
+    {
+      "id": "cw-putmetricdata",
+      "claim": "PutMetricData API 또는 AWS CLI로 사용자 지정 지표를 게시할 수 있다. 새 지표 이름으로 호출하면 CloudWatch가 지표를 생성한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html",
+      "fetched_with": "mcp",
+      "section": "Publish custom metrics (PutMetricData / EMF)"
+    },
+    {
+      "id": "cw-putmetricdata-otel-recommendation",
+      "claim": "새로 구현하는 경우 사용자 지정 지표 게시에는 OpenTelemetry 사용을 권장한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html",
+      "fetched_with": "mcp",
+      "section": "Publish custom metrics (PutMetricData / EMF)"
+    },
+    {
+      "id": "cw-dimension-syntax",
+      "claim": "측정 기준 표기 형식이 명령마다 다르다. put-metric-data 는 'Name=Value', get-metric-statistics 와 put-metric-alarm 은 'Name=MyName,Value=MyValue' 를 쓴다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html",
+      "fetched_with": "mcp",
+      "section": "Use dimensions"
+    },
+    {
+      "id": "cw-metric-visibility-delay",
+      "claim": "지표를 생성한 뒤 get-metric-statistics 로 통계를 조회할 수 있게 되기까지 최대 2분, list-metrics 목록에 나타나기까지 최대 15분이 걸릴 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html",
+      "fetched_with": "mcp",
+      "section": "Publish single data points"
+    },
+    {
+      "id": "cw-dashboards",
+      "claim": "CloudWatch는 자동 사전 구축 대시보드를 제공하고 사용자 지정 대시보드도 만들 수 있다. 여러 리전에 걸친 리소스를 한 화면에서 볼 수 있고, 콘솔·AWS CLI·PutDashboard API로 생성한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html",
+      "fetched_with": "mcp",
+      "section": "Using Amazon CloudWatch dashboards"
+    },
+    {
+      "id": "cw-cross-account-observability",
+      "claim": "CloudWatch 크로스 계정 관측가능성을 설정하면 모니터링 계정에서 소스 계정의 지표를 그래프로 그리고, 소스 계정 지표를 감시하는 경보를 만들고, 소스 계정 로그 그룹에 Logs Insights 쿼리를 실행하고, X-Ray 트레이스 맵에서 소스 계정 노드를 볼 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html",
+      "fetched_with": "mcp",
+      "section": "Using Amazon CloudWatch dashboards",
+      "corrects_courseware": "교재는 '지표는 생성된 리전에만 존재한다'는 서술만 남기고, 크로스 계정·크로스 리전으로 지표를 모아 보는 방법을 다루지 않는다."
+    },
+    {
+      "id": "cw-agent-scope",
+      "claim": "CloudWatch 에이전트는 EC2 인스턴스, 온프레미스 서버, 컨테이너화된 애플리케이션에서 지표·로그·트레이스를 수집한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html",
+      "fetched_with": "mcp",
+      "section": "Collect metrics, logs, and traces using the CloudWatch agent",
+      "corrects_courseware": "교재 슬라이드 17~19는 CloudWatch 에이전트의 대상을 Amazon EC2 와 온프레미스 서버 두 가지로만 적는다."
+    },
+    {
+      "id": "cw-agent-traces",
+      "claim": "CloudWatch 에이전트 버전 1.300025.0 이상은 OpenTelemetry 또는 X-Ray 클라이언트 SDK 에서 트레이스를 수집해 X-Ray로 보낼 수 있다. 별도의 트레이스 수집 데몬을 실행할 필요가 없어 관리할 에이전트 수가 줄어든다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html",
+      "fetched_with": "mcp",
+      "section": "Collect metrics, logs, and traces using the CloudWatch agent"
+    },
+    {
+      "id": "cw-agent-namespace",
+      "claim": "CloudWatch 에이전트가 수집한 지표의 기본 네임스페이스는 CWAgent 이며 다른 네임스페이스를 지정할 수 있다. 이 지표는 사용자 지정 지표로 과금된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html",
+      "fetched_with": "mcp",
+      "section": "Collect metrics, logs, and traces using the CloudWatch agent"
+    },
+    {
+      "id": "cw-agent-statsd",
+      "claim": "CloudWatch 에이전트는 StatsD 와 collectd 프로토콜로 애플리케이션·서비스의 사용자 지정 지표를 가져올 수 있다. StatsD 는 Linux 와 Windows Server 모두, collectd 는 Linux 에서만 지원된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html",
+      "fetched_with": "mcp",
+      "section": "Collect metrics, logs, and traces using the CloudWatch agent"
+    },
+    {
+      "id": "cw-agent-amp",
+      "claim": "CloudWatch 에이전트는 지표를 CloudWatch, Amazon Managed Service for Prometheus 또는 양쪽 모두로 보낼 수 있다. 구성 파일의 metrics_destinations 파라미터에 cloudwatch, amp 또는 둘 다 지정한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html",
+      "fetched_with": "mcp",
+      "section": "Collect metrics, logs, and traces using the CloudWatch agent"
+    },
+    {
+      "id": "cw-app-insights",
+      "claim": "CloudWatch Application Insights는 애플리케이션과 기반 AWS 리소스의 문제를 감지한다. 애플리케이션을 추가하면 리소스를 스캔해 CloudWatch 지표와 로그를 추천·구성하고, 이력 데이터로 지표 패턴을 분석해 이상을 감지하며 자동 대시보드를 만든다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html",
+      "fetched_with": "mcp",
+      "section": "Detect common application problems with CloudWatch Application Insights"
+    },
+    {
+      "id": "cw-app-insights-mttr",
+      "claim": "Application Insights가 제공하는 애플리케이션 상태 가시성은 애플리케이션 문제 해결의 평균 수리 시간(MTTR, mean time to repair)을 줄이는 데 도움이 된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html",
+      "fetched_with": "mcp",
+      "section": "Detect common application problems with CloudWatch Application Insights"
+    },
+    {
+      "id": "cw-app-insights-stacks",
+      "claim": "Application Insights는 SageMaker 등 AWS 기술로 구동되며, .NET·SQL 애플리케이션 스택의 흔한 문제(애플리케이션 지연 시간, SQL Server 백업 실패, 메모리 누수, 대용량 HTTP 요청, 취소된 I/O 작업)에 대해 근본 원인 후보와 해결 단계를 제시한다. AWS Systems Manager OpsCenter 와 통합되어 관련 Automation 문서를 실행할 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html",
+      "fetched_with": "mcp",
+      "section": "Detect common application problems with CloudWatch Application Insights",
+      "corrects_courseware": "교재 슬라이드 21은 '무한 루프 / 다운스트림 속도 저하 / 잘못된 API 버전 / 트리거 확인' 네 항목을 흔한 결함 패턴으로 들지만 문서가 드는 목록과 다르다."
+    },
+    {
+      "id": "cw-app-signals",
+      "claim": "CloudWatch Application Signals는 EC2, ECS, Lambda 등에서 실행되는 애플리케이션의 지표와 트레이스를 자동 수집하고, 호출량·가용성·지연 시간·결함·오류 같은 핵심 지표를 코드 작성 없이 표시한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html",
+      "fetched_with": "mcp",
+      "section": "Application Signals"
+    },
+    {
+      "id": "cw-app-signals-slo",
+      "claim": "Application Signals로 서비스 수준 목표(SLO)를 만들고 서비스 수준 지표(SLI) 상태를 서비스 목록과 토폴로지 맵에서 추적할 수 있다. SLO를 감시하는 경보도 만들 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html",
+      "fetched_with": "mcp",
+      "section": "Application Signals"
+    },
+    {
+      "id": "cw-app-signals-support",
+      "claim": "Application Signals는 Java, Python, Node.js, .NET 애플리케이션을 지원하고 Amazon EKS, Amazon ECS, Amazon EC2 에서 지원·테스트된다. Canada West(Calgary)를 제외한 모든 상용 리전에서 사용할 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html",
+      "fetched_with": "mcp",
+      "section": "Application Signals"
+    },
+    {
+      "id": "cw-app-signals-integrations",
+      "claim": "Application Signals는 CloudWatch RUM, CloudWatch Synthetics 카나리, AWS Service Catalog AppRegistry, Amazon EC2 Auto Scaling 과 연동되어 클라이언트 페이지·카나리·애플리케이션 이름을 대시보드와 맵에 표시한다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html",
+      "fetched_with": "mcp",
+      "section": "Application Signals"
+    },
+    {
+      "id": "cw-transaction-search",
+      "claim": "Transaction Search는 애플리케이션 트랜잭션 스팬을 완전히 볼 수 있게 하는 대화식 분석 기능이다. 스팬 100%를 구조화된 로그로 CloudWatch에 수집해 트레이스가 끊기는 것을 막고, 최대 10,000개 스팬을 포함하는 큰 트레이스를 볼 수 있다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search.html",
+      "fetched_with": "mcp",
+      "section": "Transaction Search"
+    },
+    {
+      "id": "cw-transaction-search-spans",
+      "claim": "Transaction Search를 켜면 X-Ray로 보낸 스팬이 aws/spans 라는 로그 그룹에 수집된다. X-Ray 트레이스는 저장 전에 시맨틱 컨벤션 형식으로 자동 변환된다. 일부 스팬은 X-Ray에서 트레이스 요약으로 인덱싱된다.",
+      "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search.html",
+      "fetched_with": "mcp",
+      "section": "How it works"
+    },
+    {
+      "id": "xray-what-is",
+      "claim": "AWS X-Ray는 애플리케이션이 처리하는 요청에 대한 데이터를 수집하고, 데이터를 보고 필터링하며 인사이트를 얻어 문제와 최적화 기회를 찾는 도구를 제공한다. 다운스트림 AWS 리소스, 마이크로서비스, 데이터베이스, 웹 API 호출 세부 정보도 볼 수 있다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS X-Ray?"
+    },
+    {
+      "id": "xray-trace-map-term",
+      "claim": "X-Ray는 AWS 리소스의 트레이스 데이터로 상세한 '트레이스 맵(trace map)'을 생성한다. 트레이스 맵은 클라이언트, 프런트엔드 서비스, 프런트엔드가 요청 처리와 데이터 유지를 위해 호출하는 백엔드 서비스를 보여 준다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS X-Ray?",
+      "corrects_courseware": "교재는 이 도식을 일관되게 '서비스 맵'이라 부른다."
+    },
+    {
+      "id": "xray-daemon-udp",
+      "claim": "각 클라이언트 SDK는 X-Ray로 직접 보내지 않고 UDP 트래픽을 수신하는 데몬 프로세스에 JSON 세그먼트 문서를 보낸다. X-Ray 데몬은 세그먼트를 큐에 버퍼링해 배치로 업로드한다. 데몬은 Linux, Windows, macOS 용으로 제공되고 AWS Elastic Beanstalk 와 AWS Lambda 플랫폼에 포함되어 있다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS X-Ray?"
+    },
+    {
+      "id": "xray-segment",
+      "claim": "애플리케이션 로직을 실행하는 컴퓨팅 리소스가 작업 데이터를 세그먼트로 보낸다. 세그먼트는 리소스 이름, 요청 세부 정보, 수행한 작업 세부 정보를 제공하고, 호스트·요청·응답·수행한 작업·발생한 문제를 기록할 수 있다. 세그먼트 문서는 최대 64 kB 다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Segments"
+    },
+    {
+      "id": "xray-subsegment",
+      "claim": "하위 세그먼트는 애플리케이션이 원래 요청을 이행하기 위해 만든 다운스트림 호출의 더 세분화된 타이밍 정보와 세부 정보를 제공한다. AWS 서비스, 외부 HTTP API, SQL 데이터베이스 호출 정보를 담을 수 있고 임의의 하위 세그먼트를 정의해 특정 함수나 코드 줄을 계측할 수도 있다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Subsegments"
+    },
+    {
+      "id": "xray-inferred-segment",
+      "claim": "DynamoDB처럼 자체 세그먼트를 보내지 않는 서비스에 대해서는 X-Ray가 하위 세그먼트로 '추론된 세그먼트(inferred segment)'와 트레이스 맵의 다운스트림 노드를 생성한다. 다운스트림 서비스도 계측되어 있으면 그 서비스가 보낸 세그먼트가 추론된 세그먼트를 대체한다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Subsegments"
+    },
+    {
+      "id": "xray-forwarded-for",
+      "claim": "로드 밸런서나 다른 중개자가 요청을 전달하면 X-Ray는 IP 패킷의 소스 IP 대신 X-Forwarded-For 헤더의 클라이언트 IP를 기록한다. 전달된 요청에 기록된 클라이언트 IP는 위조될 수 있으므로 신뢰해서는 안 된다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Segments"
+    },
+    {
+      "id": "xray-trace",
+      "claim": "트레이스 ID는 애플리케이션을 경유하는 요청의 경로를 추적하고, 트레이스는 단일 요청이 생성한 모든 세그먼트를 수집한다. 트레이스 데이터는 30일간 보존된다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Traces"
+    },
+    {
+      "id": "xray-service-graph-retention",
+      "claim": "서비스 그래프는 애플리케이션을 구성하는 서비스와 리소스 정보를 담은 JSON 문서이고, 콘솔이 이를 시각화한 것이 서비스 맵이다. 서비스 그래프 데이터는 30일간 보존된다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Service graph"
+    },
+    {
+      "id": "xray-sampling-default",
+      "claim": "X-Ray SDK는 샘플링 알고리즘으로 트레이싱할 요청을 결정한다. 기본적으로 매초 첫 번째 요청과 추가 요청의 5%를 기록한다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Sampling",
+      "corrects_courseware": "교재는 샘플링을 한 줄도 다루지 않는다."
+    },
+    {
+      "id": "xray-tracing-header",
+      "claim": "샘플링 결정과 트레이스 ID는 X-Amzn-Trace-Id 라는 트레이싱 헤더로 HTTP 요청에 추가된다. 요청이 처음 도달한 X-Ray 통합 서비스가 이 헤더를 추가한다. 헤더에는 상위 세그먼트 ID도 담길 수 있다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Tracing header"
+    },
+    {
+      "id": "xray-tracing-header-security",
+      "claim": "트레이싱 헤더는 X-Ray SDK, AWS 서비스, 클라이언트 요청 어디에서든 올 수 있다. 사용자가 트레이스 ID나 샘플링 결정을 임의로 넣는 문제를 막으려면 애플리케이션이 수신 요청에서 X-Amzn-Trace-Id 를 제거할 수 있다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Tracing header"
+    },
+    {
+      "id": "xray-annotations-limit",
+      "claim": "Annotations 는 필터 표현식에 쓰기 위해 인덱싱되는 키-값 쌍이고, X-Ray는 트레이스당 최대 50개의 주석을 인덱싱한다. 메타데이터는 객체와 목록을 포함한 임의 타입의 값을 가질 수 있지만 인덱싱되지 않는다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Annotations and metadata"
+    },
+    {
+      "id": "xray-annotations-view",
+      "claim": "주석과 메타데이터는 CloudWatch 콘솔의 트레이스 세부 정보 페이지에서 세그먼트 또는 하위 세그먼트 세부 정보 창에서 볼 수 있다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Annotations and metadata"
+    },
+    {
+      "id": "xray-error-classification",
+      "claim": "X-Ray는 오류를 세 가지로 분류한다. Error 는 클라이언트 오류(400 시리즈), Fault 는 서버 결함(500 시리즈), Throttle 은 제한 오류(429 Too Many Requests)다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Errors, faults, and exceptions",
+      "corrects_courseware": "교재 슬라이드 30 강사 노트는 '성공한 호출과 오류 및 결합의 비율'이라고 쓴다. 문맥상 '결함(fault)'의 오타다."
+    },
+    {
+      "id": "xray-groups",
+      "claim": "필터 표현식으로 그룹을 정의하면 그룹별 서비스 그래프, 트레이스 요약, CloudWatch 지표를 생성할 수 있다. 조건에 맞는 트레이스 수 지표가 1분마다 CloudWatch에 게시된다. 그룹의 필터 표현식을 수정해도 이미 기록된 데이터는 바뀌지 않는다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html",
+      "fetched_with": "mcp",
+      "section": "Groups"
+    },
+    {
+      "id": "xray-console-not-developed",
+      "claim": "AWS는 X-Ray 콘솔을 더 이상 개발하지 않는다. CloudWatch 콘솔에는 X-Ray 콘솔에서 재설계된 새 X-Ray 기능이 들어 있고, X-Ray 콘솔의 모든 기능을 포함한다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html",
+      "fetched_with": "mcp",
+      "section": "Use the X-Ray console",
+      "corrects_courseware": "교재 슬라이드 26·36은 X-Ray 콘솔을 기본 확인 창구로 제시한다."
+    },
+    {
+      "id": "xray-servicemap-merged",
+      "claim": "X-Ray 서비스 맵과 CloudWatch ServiceLens 맵은 Amazon CloudWatch 콘솔의 X-Ray 트레이스 맵으로 통합되었다. CloudWatch 콘솔 왼쪽 탐색 창의 'X-Ray traces' 아래 'Trace Map' 에서 연다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html",
+      "fetched_with": "mcp",
+      "section": "Explore the X-Ray console"
+    },
+    {
+      "id": "xray-cloudwatch-console-features",
+      "claim": "CloudWatch 콘솔에서 X-Ray 트레이스와 CloudWatch 로그·지표를 함께 보고 분석할 수 있다. X-Ray Insights 는 CloudWatch 콘솔의 Insights 에 포함된다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html",
+      "fetched_with": "mcp",
+      "section": "Use the Amazon CloudWatch console"
+    },
+    {
+      "id": "xray-sdk-maintenance",
+      "claim": "AWS X-Ray SDK와 데몬은 2026년 2월 25일부터 유지 관리 모드에 들어갔다. 유지 관리 모드에서 AWS는 보안 문제 해결을 위한 릴리스만 제공하고 새 기능 개선은 하지 않는다. 그 전까지는 일반 제공(GA) 상태로 버그·보안 수정을 포함한 정기 릴리스가 있었다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-daemon-timeline.html",
+      "fetched_with": "mcp",
+      "section": "X-Ray SDK and Daemon Support timeline",
+      "corrects_courseware": "교재 슬라이드 33~34는 X-Ray SDK를 계측의 기본 경로로 제시한다."
+    },
+    {
+      "id": "xray-otel-primary",
+      "claim": "X-Ray는 애플리케이션 트레이싱과 관측가능성의 기본 계측 표준을 OpenTelemetry 로 전환하고 있다. AWS는 애플리케이션 계측에 OpenTelemetry 를 채택할 것을 권장한다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html",
+      "fetched_with": "mcp",
+      "section": "Migrating from X-Ray instrumentation to OpenTelemetry instrumentation"
+    },
+    {
+      "id": "xray-otel-mapping",
+      "claim": "X-Ray 개념과 OpenTelemetry 개념의 대응은 다음과 같다. X-Ray Recorder = Tracer Provider·Tracers, 세그먼트 = 서버 Span, 하위 세그먼트 = 비서버 Span, Annotations·메타데이터 = Attributes, X-Ray 데몬 = OpenTelemetry Collector, X-Ray 트레이스 컨텍스트 전파 = W3C Trace Context 전파.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html",
+      "fetched_with": "mcp",
+      "section": "Understanding OpenTelemetry concepts for migration"
+    },
+    {
+      "id": "xray-otel-annotations",
+      "claim": "OpenTelemetry 스팬 속성은 기본적으로 X-Ray 원시 데이터에서 메타데이터로 변환된다. 특정 속성을 주석으로 바꾸려면 그 키를 aws.xray.annotations 속성 목록에 추가한다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html",
+      "fetched_with": "mcp",
+      "section": "Working with span attributes"
+    },
+    {
+      "id": "xray-otel-aws-options",
+      "claim": "AWS는 OpenTelemetry 사용 경로를 세 가지 제공한다. AWS Distro for OpenTelemetry(OTel 트레이스를 세그먼트로 X-Ray에 내보냄), CloudWatch Application Signals(맞춤 OTel 트레이스·지표로 애플리케이션 상태 모니터링), CloudWatch OTel 엔드포인트(HTTP OTel 엔드포인트로 X-Ray에 트레이스 전송).",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html",
+      "fetched_with": "mcp",
+      "section": "OpenTelemetry support in AWS"
+    },
+    {
+      "id": "xray-otel-span-conversion",
+      "claim": "OpenTelemetry 로 마이그레이션하면 스팬이 X-Ray 세그먼트 또는 하위 세그먼트로 자동 변환되므로 기존 CloudWatch 콘솔 경험은 그대로 유지된다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html",
+      "fetched_with": "mcp",
+      "section": "Understanding trace data structure"
+    },
+    {
+      "id": "xray-sampling-rules",
+      "claim": "샘플링 규칙은 AWS Distro for OpenTelemetry, X-Ray SDK, 액티브 트레이싱을 지원하는 AWS 서비스가 어떤 요청을 기록할지 결정하는 데 쓴다. 규칙 옵션은 규칙 이름, 우선순위(1~9999), 예비량(reservoir), 비율(rate), 서비스 이름, 서비스 유형, 호스트 등이다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html",
+      "fetched_with": "mcp",
+      "section": "Sampling rule options"
+    },
+    {
+      "id": "xray-sampling-reservoir",
+      "claim": "예비량(reservoir)은 고정 비율을 적용하기 전에 초당 계측할 일치 요청 수이고, 비율(rate)은 예비량이 소진된 뒤 계측할 일치 요청의 비율이다. 기본값은 예비량 초당 1건, 비율 5%다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html",
+      "fetched_with": "mcp",
+      "section": "Customizing sampling rules"
+    },
+    {
+      "id": "xray-sampling-parent-based",
+      "claim": "X-Ray 샘플링은 상위 기반(parent-based)이다. 샘플링 결정은 보통 요청을 처음 처리하는 X-Ray 활성 서비스(루트 서비스)가 한 번만 내리고, 다운스트림 서비스는 자체 규칙이 일치하더라도 상위의 결정을 따른다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html",
+      "fetched_with": "mcp",
+      "section": "Customizing sampling rules"
+    },
+    {
+      "id": "xray-sampling-local-vs-service",
+      "claim": "코드에 포함한 JSON 문서로 로컬 샘플링 규칙을 읽게 하면 인스턴스마다 독립적으로 샘플링해 전체 샘플링 비율이 올라가고, 규칙을 바꾸려면 코드를 재배포해야 한다. 서비스에서 규칙을 읽게 하면 서비스가 예비량을 인스턴스 수에 따라 분배하고 배포 없이 규칙을 관리할 수 있다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html",
+      "fetched_with": "mcp",
+      "section": "Customizing sampling rules"
+    },
+    {
+      "id": "xray-sampling-cloudwatch-console",
+      "claim": "샘플링 규칙은 Amazon CloudWatch 콘솔에서도 구성할 수 있다. Settings → X-Ray traces 섹션의 Sampling rules 에서 View settings 를 선택한다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html",
+      "fetched_with": "mcp",
+      "section": "Customizing sampling rules"
+    },
+    {
+      "id": "xray-sampling-entrypoints",
+      "claim": "샘플링을 구성할 수 있는 대상은 API Gateway 진입점, AWS AppSync, AWS Step Functions, 그리고 EC2·ECS·Elastic Beanstalk 같은 컴퓨팅 플랫폼에 ADOT 또는 X-Ray SDK로 계측한 애플리케이션이다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html",
+      "fetched_with": "mcp",
+      "section": "Configuring sampling rules"
+    },
+    {
+      "id": "lambda-exec-lifecycle",
+      "claim": "Lambda 실행 환경 수명 주기는 Init, Invoke, Shutdown 단계로 이루어진다. 런타임과 모든 확장이 완료되고 대기 중인 이벤트가 없으면 Lambda가 실행 환경을 동결(freeze)한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html",
+      "fetched_with": "mcp",
+      "section": "Lambda execution environment lifecycle",
+      "corrects_courseware": "교재 슬라이드 16 강사 노트가 경고하는 '백그라운드 스레드 동결'의 근거다."
+    },
+    {
+      "id": "lambda-init-phase",
+      "claim": "Init 단계에서 Lambda는 세 가지 작업을 한다. 모든 확장 시작(Extension init), 런타임 부트스트랩(Runtime init), 함수의 정적 코드 실행(Function init). Init 단계는 10초로 제한되며 세 작업이 끝나지 않으면 첫 호출 시점에 함수 타임아웃으로 재시도한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html",
+      "fetched_with": "mcp",
+      "section": "Init phase",
+      "corrects_courseware": "교재 슬라이드 27 다이어그램은 콜드 스타트를 'code-start 컨테이너 다운로드 → 런타임 부트스트랩 → 코드 실행'으로 적는다."
+    },
+    {
+      "id": "lambda-xray-modes",
+      "claim": "Lambda는 X-Ray 트레이싱 모드를 두 가지 지원한다. Active 는 함수 호출에 대한 트레이스 세그먼트를 자동 생성해 X-Ray로 보내고, PassThrough 는 트레이싱 컨텍스트만 다운스트림으로 전파한다. Active 를 켜지 않으면 기본값은 PassThrough 다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Default tracing behavior in Lambda"
+    },
+    {
+      "id": "lambda-xray-passive-change",
+      "claim": "이전에는 Amazon API Gateway 같은 업스트림 서비스가 트레이싱 헤더를 추가하면 Lambda가 트레이스를 자동으로 보냈다. 지금은 자동으로 보내지 않으며, 이 수동 트레이싱 동작에 의존하는 구성은 Active 트레이싱으로 전환해야 한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Default tracing behavior in Lambda",
+      "corrects_courseware": "교재는 트레이싱 모드를 다루지 않아 이 동작 변경을 알 수 없다."
+    },
+    {
+      "id": "lambda-xray-two-segments",
+      "claim": "Lambda는 트레이스당 세그먼트 2개를 기록해 서비스 그래프에 노드 2개를 만든다. AWS::Lambda 세그먼트는 MicroVM 스케줄링, 실행 환경 생성 또는 동결 해제, 함수 코드와 모든 레이어 다운로드를 포함한 실행 환경 준비 전 과정을 담고, AWS::Lambda::Function 세그먼트는 함수가 수행한 작업을 담는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Understanding X-Ray traces"
+    },
+    {
+      "id": "lambda-xray-subsegments-old",
+      "claim": "기존 형식에서 함수 세그먼트는 Initialization, Invocation, Overhead 하위 세그먼트를 가진다(SnapStart 는 Restore 도). Initialization 은 Init 단계, Invocation 은 핸들러 호출 단계, Overhead 는 런타임이 응답을 보낸 뒤 다음 호출 신호까지의 구간이다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Old-style AWS X-Ray Lambda segment structure"
+    },
+    {
+      "id": "lambda-xray-subsegments-new",
+      "claim": "새 형식에는 Invocation 세그먼트가 없다. Init 하위 세그먼트만 남고 사용자 하위 세그먼트가 AWS::Lambda::Function 세그먼트에 직접 붙으며, 이 세그먼트가 aws.responseLatency, aws.responseDuration, aws.runtimeOverhead, aws.extensionOverhead 를 주석으로 담는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "New-style AWS X-Ray Lambda segment structure"
+    },
+    {
+      "id": "lambda-xray-error-attribution",
+      "claim": "예시 트레이스에는 이름이 같은 세그먼트 2개가 있고 origin 이 각각 AWS::Lambda 와 AWS::Lambda::Function 이다. AWS::Lambda 세그먼트에 오류가 보이면 Lambda 서비스 쪽 문제이고, AWS::Lambda::Function 세그먼트에 오류가 보이면 함수 쪽 문제다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Understanding X-Ray traces"
+    },
+    {
+      "id": "lambda-xray-sampling-fixed",
+      "claim": "Lambda 함수의 X-Ray 샘플링 비율은 초당 1건과 추가 요청의 5%이며 사용자가 구성할 수 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Visualize Lambda function invocations using AWS X-Ray"
+    },
+    {
+      "id": "lambda-xray-permissions",
+      "claim": "함수가 트레이스 데이터를 X-Ray에 업로드하려면 실행 역할에 권한이 필요하다. 콘솔에서 트레이싱을 켜면 Lambda가 필요한 권한을 추가하고, 그렇지 않으면 AWSXRayDaemonWriteAccess 정책을 실행 역할에 붙인다. 필요한 API는 xray:PutTraceSegments 와 xray:PutTelemetryRecords 다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Execution role permissions"
+    },
+    {
+      "id": "lambda-xray-console-path",
+      "claim": "콘솔에서 액티브 트레이싱을 켜는 경로는 함수 → Configuration → Monitoring and operations tools → Additional monitoring tools 편집 → 'CloudWatch Application Signals and AWS X-Ray' 에서 'Lambda service traces' 를 Enable 하는 것이다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "To turn on active tracing"
+    },
+    {
+      "id": "lambda-xray-unsupported",
+      "claim": "Amazon MSK, 자체 관리형 Apache Kafka, ActiveMQ·RabbitMQ 를 쓰는 Amazon MQ, Amazon DocumentDB 이벤트 소스 매핑을 사용하는 Lambda 함수에는 X-Ray 트레이싱이 지원되지 않는다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Visualize Lambda function invocations using AWS X-Ray"
+    },
+    {
+      "id": "lambda-xray-subsegment-scope",
+      "claim": "X-Ray SDK로 Invocation 하위 세그먼트를 다운스트림 호출·주석·메타데이터로 확장할 수 있지만, 함수 세그먼트에 직접 접근하거나 핸들러 호출 범위 밖에서 수행한 작업을 기록할 수는 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html",
+      "fetched_with": "mcp",
+      "section": "Old-style AWS X-Ray Lambda segment structure"
+    },
+    {
+      "id": "lambda-log-destinations",
+      "claim": "Lambda 함수 로그의 기본 대상은 CloudWatch Logs 이고, Lambda 콘솔에서 Amazon S3 또는 Firehose 를 대상으로 구성할 수도 있다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html",
+      "fetched_with": "mcp",
+      "section": "Working with Lambda function logs",
+      "corrects_courseware": "교재는 Lambda 로그 대상을 CloudWatch Logs 하나로만 전제한다."
+    },
+    {
+      "id": "lambda-advanced-logging",
+      "claim": "Lambda 고급 로깅 제어로 세 가지를 설정할 수 있다. 로그 형식(일반 텍스트 또는 구조화된 JSON), 로그 수준(JSON 구조화 로그에서 FATAL, ERROR, WARN, INFO, DEBUG, TRACE), 로그를 보낼 CloudWatch 로그 그룹.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html",
+      "fetched_with": "mcp",
+      "section": "Configuring advanced logging controls for Lambda functions",
+      "corrects_courseware": "교재 슬라이드 16은 정형 로그를 애플리케이션이 직접 만들어야 하는 것으로만 다룬다."
+    },
+    {
+      "id": "lambda-log-destination-tradeoff",
+      "claim": "로그 대상 선택 기준은 비용, 분석 기능, 설정 난이도다. Amazon S3 는 장기 보관에 가장 경제적이고, CloudWatch Logs 는 실시간 조회·처리·알림에 강하며 Logs Insights 와 Live Tail 과 기본 통합된다. Firehose 는 OpenSearch Service, Redshift Data API 나 Datadog·Splunk 같은 대상으로의 스트리밍을 사전 통합으로 단순화한다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html",
+      "fetched_with": "mcp",
+      "section": "Choosing a service destination to send logs to"
+    },
+    {
+      "id": "lambda-recursion-detection",
+      "claim": "Lambda는 재귀 루프를 감지하면 기본적으로 함수 호출을 중단하고 알린다. 같은 요청 체인에서 함수가 약 16번 호출되면 다음 호출을 자동으로 중단한다. 이 기능은 모든 고객에게 기본으로 켜져 있고 요금이 없으며, X-Ray 액티브 트레이싱을 켤 필요가 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html",
+      "fetched_with": "mcp",
+      "section": "Understanding recursive loop detection",
+      "corrects_courseware": "교재 슬라이드 21은 '무한 루프'를 흔한 결함 패턴으로 들지만 방어 장치를 다루지 않는다."
+    },
+    {
+      "id": "lambda-recursion-scope",
+      "claim": "Lambda 재귀 루프 감지는 Lambda 함수, Amazon SQS, Amazon S3, Amazon SNS 사이의 루프와 Lambda 함수만으로 이루어진 루프를 감지한다. DynamoDB 처럼 다른 서비스가 루프에 끼면 감지하고 중단할 수 없다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html",
+      "fetched_with": "mcp",
+      "section": "Supported AWS services"
+    },
+    {
+      "id": "lambda-recursion-tracing-header",
+      "claim": "재귀 루프 감지는 AWS X-Ray 트레이싱 헤더를 사용한다. 지원 서비스가 Lambda 에 이벤트를 보내면 이벤트에 메타데이터가 자동으로 주석 처리되고, 함수가 지원 SDK 버전으로 다른 지원 서비스에 이벤트를 쓸 때 이 메타데이터가 갱신된다. 메타데이터에는 이벤트가 함수를 호출한 횟수가 담긴다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html",
+      "fetched_with": "mcp",
+      "section": "Understanding recursive loop detection"
+    },
+    {
+      "id": "lambda-recursion-alarm-guard",
+      "claim": "감지 대상이 아닌 서비스가 낀 루프로 인한 예상치 못한 요금을 막으려면 CloudWatch 경보로 비정상 사용 패턴(Lambda 동시성·호출 급증 등)을 알리도록 구성하고, 청구 경보나 AWS Cost Anomaly Detection 을 함께 쓰는 것이 권장된다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html",
+      "fetched_with": "mcp",
+      "section": "Supported AWS services"
+    },
+    {
+      "id": "sam-tracing-property",
+      "claim": "AWS::Serverless::Function 의 Tracing 속성은 함수의 X-Ray 트레이싱 모드를 지정한다. 유효 값은 Active, Disabled, PassThrough 다. Active 또는 PassThrough 로 지정하고 Role 속성을 설정하지 않으면 AWS SAM 이 생성하는 실행 역할에 arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess 정책을 추가한다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html",
+      "fetched_with": "mcp",
+      "section": "Tracing",
+      "corrects_courseware": "교재는 SAM 템플릿에서 트레이싱을 켜는 방법을 다루지 않는다."
+    },
+    {
+      "id": "sam-recursive-loop-property",
+      "claim": "AWS::Serverless::Function 의 RecursiveLoop 속성으로 재귀 루프 감지 동작을 정한다. Allow 면 재귀 루프를 감지해도 아무 조치를 하지 않고, Terminate 면 호출을 중단하고 알린다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html",
+      "fetched_with": "mcp",
+      "section": "RecursiveLoop"
+    },
+    {
+      "id": "apigw-xray-scope",
+      "claim": "API Gateway는 REST API 엔드포인트 유형 전체(리전, 엣지 최적화, 프라이빗)에서 X-Ray 트레이싱을 지원하며, X-Ray를 사용할 수 있는 모든 AWS 리전에서 쓸 수 있다. API 스테이지 단위로 콘솔·API·CLI 로 켠다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-xray.html",
+      "fetched_with": "mcp",
+      "section": "Trace user requests to REST APIs using X-Ray in API Gateway"
+    },
+    {
+      "id": "apigw-xray-passthrough",
+      "claim": "이미 트레이싱되고 있는 서비스에서 API Gateway API를 호출하면, 해당 API에 X-Ray 트레이싱이 켜져 있지 않아도 API Gateway가 트레이스를 통과시킨다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-xray.html",
+      "fetched_with": "mcp",
+      "section": "Trace user requests to REST APIs using X-Ray in API Gateway"
+    },
+    {
+      "id": "eventbridge-rename",
+      "claim": "Amazon EventBridge 는 이전에 Amazon CloudWatch Events 라고 불렸다. CloudWatch Events 에서 만든 기본 이벤트 버스와 규칙은 EventBridge 콘솔에도 표시되고 API도 동일하다. EventBridge 에 추가되는 새 기능은 CloudWatch Events 에 추가되지 않는다.",
+      "url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html",
+      "fetched_with": "mcp",
+      "section": "EventBridge is the evolution of Amazon CloudWatch Events",
+      "corrects_courseware": "교재 슬라이드 20 강사 노트는 Application Insights 가 'CloudWatch Events 를 생성하여' 알린다고 쓴다."
+    },
+    {
+      "id": "eventbridge-what-is",
+      "claim": "EventBridge 는 이벤트로 애플리케이션 구성 요소를 연결하는 서버리스 서비스다. 이벤트를 처리·전달하는 방식은 이벤트 버스(다대다 라우팅)와 파이프(단일 소스에서 단일 대상으로의 점대점 통합) 두 가지이고, 별도로 EventBridge Scheduler 를 제공한다.",
+      "url": "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html",
+      "fetched_with": "mcp",
+      "section": "What Is Amazon EventBridge?"
+    },
+    {
+      "id": "ddb-capacity-metrics",
+      "claim": "DynamoDB 는 ConsumedReadCapacityUnits 와 ConsumedWriteCapacityUnits 지표를 CloudWatch 에 1분 간격으로 집계해 게시한다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html",
+      "fetched_with": "mcp",
+      "section": "DynamoDB metrics"
+    },
+    {
+      "id": "ddb-dimensions",
+      "claim": "DynamoDB 지표에 사용할 수 있는 측정 기준은 DelegatedOperation, GlobalSecondaryIndexName, Operation, OperationType, Verb, ReceivingRegion, Source, StreamLabel, TableName 이다. GlobalSecondaryIndexName 을 지정하면 TableName 도 함께 지정해야 한다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html",
+      "fetched_with": "mcp",
+      "section": "Understanding metrics and dimensions for DynamoDB",
+      "corrects_courseware": "교재 슬라이드 17~19 CLI 예시는 --namespace AWS/DynamoDB 와 --dimensions \"Name=InstanceId,Value=i-12345678\" 을 함께 쓴다. InstanceId 는 DynamoDB 측정 기준이 아니다."
+    }
+  ]
+}
