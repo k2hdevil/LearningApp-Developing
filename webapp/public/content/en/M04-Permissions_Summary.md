@@ -886,7 +886,7 @@ Default region name [None]: us-west-2
 Default output format [None]: json
 
 $ aws configure --profile user1
-AWS Access Key ID [None]: AKIAI44QH8DHBEXAMPLE
+AWS Access Key ID [None]: AKIA####H8DHBEXAMPLE
 AWS Secret Access Key [None]: PsdaswtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 Default region name [None]: us-east-1
 Default output format [None]: json
@@ -912,7 +912,7 @@ aws_access_key_id=AKIA####ODNN7EXAMPLE
 aws_secret_access_key=…PxRfiCYEXAMPLEKEY
 
 [user1]
-aws_access_key_id=AKIAI44QH8DHBEXAMPLE
+aws_access_key_id=AKIA####H8DHBEXAMPLE
 aws_secret_access_key=…Co8nbEXAMPLEKEY
 ```
 
