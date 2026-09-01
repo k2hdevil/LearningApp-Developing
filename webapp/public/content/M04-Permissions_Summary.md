@@ -20,6 +20,7 @@
 >
 > - 🆕 원본 강사용 덱에 없는 내용. AWS 공식 문서로 확인한 항목입니다.
 > - 🔄 원본 강사용 덱의 내용이 현재와 달라 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [8장](#8-교재-대비-변경-사항)에 정리했습니다.
+> - 예시 액세스 키 ID 는 `AKIA####ODNN7EXAMPLE` 처럼 **5~8번째 글자를 `#` 로 가렸습니다.** 자격 증명 스캐너가 실제 키로 오인하는 것을 막기 위한 것이고, AWS 문서의 원래 예시값은 이 자리에 영숫자가 들어갑니다. 접두사 4자(`AKIA`·`ASIA`)는 구분이 학습 내용이므로 그대로 두었습니다.
 > - 검증일: 2026년 8월 25일. 이후 문서가 갱신될 수 있으니 시험·실무 적용 전에는 링크된 원문을 확인하세요.
 
 ---
@@ -765,7 +766,7 @@ aws sts assume-role \
 
 # 4) 응답의 Credentials 값을 환경 변수로 내보냅니다.
 #    임시 액세스 키 ID 는 ASIA 로 시작합니다.
-export AWS_ACCESS_KEY_ID=ASIAIOSFODNN7EXAMPLE
+export AWS_ACCESS_KEY_ID=ASIA####ODNN7EXAMPLE
 export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 export AWS_SESSION_TOKEN=<SessionToken>
 
@@ -783,7 +784,7 @@ aws s3 mb s3://devonawstest-bucket
 |---|---|---|
 | 버킷 이름 | `s3://DevonAWStest_bucket` | 범용 버킷 이름은 **소문자, 숫자, 마침표(`.`), 하이픈(`-`)** 만 쓸 수 있습니다. 대문자와 밑줄이 들어 있어 권한과 무관하게 실패합니다. `devonawstest-bucket`으로 바꿨습니다 |
 | 역할 이름 | `ContractorAccess` / `Contractors3access` / `S3access` 혼용 | 정책의 `Resource`가 가리키는 `role/S3access`로 통일했습니다 |
-| 임시 액세스 키 예시 | `AKIAIOSFODNN7EXAMPLE` | `AKIA`는 장기 액세스 키 접두사입니다. `assume-role`이 반환하는 임시 키는 `ASIA`로 시작합니다 |
+| 임시 액세스 키 예시 | `AKIA####ODNN7EXAMPLE` | `AKIA`는 장기 액세스 키 접두사입니다. `assume-role`이 반환하는 임시 키는 `ASIA`로 시작합니다 |
 | 계정 ID | `112233445566`(정책) / `111722413196`(명령) | 정책의 `Resource`와 명령의 `--role-arn`이 서로 다른 계정을 가리켜 `sts:AssumeRole` 허용이 매칭되지 않습니다. 문서 예시용 `111122223333`으로 통일했습니다 |
 
 🆕 `GetCallerIdentity`에는 **권한이 필요하지 않습니다.** 관리자가 `sts:GetCallerIdentity`를 명시적으로 거부하는 정책을 연결해도 이 작업은 여전히 수행할 수 있습니다. 액세스가 거부될 때도 같은 정보가 반환되기 때문입니다. 응답 필드는 세 개입니다.
@@ -879,7 +880,7 @@ aws s3 mb s3://devonawstest-bucket
 
 ```bash
 $ aws configure
-AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Access Key ID [None]: AKIA####ODNN7EXAMPLE
 AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 Default region name [None]: us-west-2
 Default output format [None]: json
@@ -907,7 +908,7 @@ output=json
 ```ini
 # ~/.aws/credentials
 [default]
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_access_key_id=AKIA####ODNN7EXAMPLE
 aws_secret_access_key=…PxRfiCYEXAMPLEKEY
 
 [user1]
@@ -1249,7 +1250,7 @@ DNS 서버, 스위치, 로드 밸런서 같은 네트워크 구성 요소는 요
 | 데모 버킷 이름 | `aws s3 mb s3://DevonAWStest_bucket` | 범용 버킷 이름은 소문자·숫자·마침표·하이픈만 쓸 수 있습니다. 대문자와 밑줄이 있어 권한과 무관하게 실패합니다 | [버킷 명명 규칙](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) |
 | 데모 역할 이름 | 같은 데모에서 `ContractorAccess`, `Contractors3access`, `S3access` 혼용 | 정책의 `Resource`가 가리키는 `role/S3access`로 통일해야 `sts:AssumeRole` 허용이 매칭됩니다 | [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) |
 | 데모 계정 ID | `111122223333`, `1234567891011`(13자리), `111722413196`, `112233445566` 혼용. 정책의 계정과 명령의 `--role-arn` 계정이 불일치 | 문서 예시용 12자리 계정 ID로 통일해야 정책과 명령이 맞습니다 | [Cross-account policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) |
-| 임시 액세스 키 예시 | `export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE` | `AKIA`는 장기 액세스 키 접두사입니다. `assume-role`이 반환하는 임시 키는 `ASIA`로 시작합니다 | [Programmatic access with AWS security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html) |
+| 임시 액세스 키 예시 | `export AWS_ACCESS_KEY_ID=AKIA####ODNN7EXAMPLE` | `AKIA`는 장기 액세스 키 접두사입니다. `assume-role`이 반환하는 임시 키는 `ASIA`로 시작합니다 | [Programmatic access with AWS security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html) |
 | JetBrains 툴킷 설정 경로 | "JetBrains용 AWS Toolkit는 Eclipse 기본 설정 창을 통해 프로세스를 간소화합니다" | 서로 다른 IDE를 섞은 서술입니다. 현재 경로는 AWS Connection Settings → Set up authentication → Authenticate with IAM | [AWS IAM credentials — Toolkit for JetBrains](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/setup-credentials.html) |
 | 우선순위 목록의 인스턴스 프로파일 | 설정 값 우선순위 목록의 마지막 항목으로 "인스턴스 프로파일" 기재 | 인스턴스 프로파일은 설정 값 소스가 아니라 **자격 증명 공급자**입니다. 두 개념이 분리되어 있습니다 | [Settings reference](https://docs.aws.amazon.com/sdkref/latest/guide/settings-reference.html) |
 | "가장 제한적인 정책이 적용됩니다" | 충돌 시 가장 제한적인 정책이 적용된다고 서술 | 결과는 같지만 정확한 규칙은 "명시적 거부가 우선한다"입니다. 정책 범위를 비교하는 것이 아니라, 어느 계층에든 `Deny`가 있으면 그 시점에 거부가 확정됩니다 | [Policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic_policy-eval-denyallow.html) |

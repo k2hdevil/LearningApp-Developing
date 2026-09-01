@@ -301,7 +301,7 @@ items:
     courseware_location: '슬라이드 19 "데모: 권한 테스트 (AWS Management Console)" 강사 노트의 export 명령'
     detail: >-
       교재는 assume-role 로 받은 임시 자격 증명을 내보내는 예시에
-      export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE 을 씁니다. AKIA 는 IAM 사용자 또는
+      export AWS_ACCESS_KEY_ID=AKIA####ODNN7EXAMPLE 을 씁니다. AKIA 는 IAM 사용자 또는
       루트 사용자의 장기 액세스 키 접두사이고, AWS STS 작업으로 만든 임시 보안 인증
       정보의 액세스 키는 ASIA 로 시작합니다. 예시 값이 장기 키 형태여서 임시 자격 증명의
       특징을 가립니다.

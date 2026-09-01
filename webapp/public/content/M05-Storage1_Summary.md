@@ -20,6 +20,7 @@
 >
 > - 🆕 원본 강사용 덱에 없는 내용. AWS 공식 문서로 확인한 항목입니다.
 > - 🔄 원본 강사용 덱의 내용이 현재와 달라 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [8장](#8-교재-대비-변경-사항)에 정리했습니다.
+> - 예시 액세스 키 ID 는 `AKIA####ODNN7EXAMPLE` 처럼 **5~8번째 글자를 `#` 로 가렸습니다.** 자격 증명 스캐너가 실제 키로 오인하는 것을 막기 위한 것이고, AWS 문서의 원래 예시값은 이 자리에 영숫자가 들어갑니다.
 > - 검증일: 2026년 8월 25일. 이후 문서가 갱신될 수 있으니 시험·실무 적용 전에는 링크된 원문을 확인하세요.
 
 ---
@@ -334,7 +335,7 @@ S3 작업에 전제 조건(precondition)을 붙여, 조건이 충족되지 않�
 DELETE /photo.gif?versionId=121212 HTTP/1.1
 Host: bucket.s3.amazonaws.com
 Date: Wed, 26 Oct 2021 17:50:00 GMT
-Authorization: AWS AKIAIOSFODNN7EXAMPLE:xQE0diMbLRepdf3YB+FIEXAMPLE=
+Authorization: AWS AKIA####ODNN7EXAMPLE:xQE0diMbLRepdf3YB+FIEXAMPLE=
 Content-Type: text/plain
 Content-Length: 0
 ```

@@ -55,7 +55,7 @@
     {
       "id": "programmatic-access-credentials",
       "claim": "AWS는 프로그래밍 방식 호출에 가능하면 단기 액세스 키를 사용하도록 권장한다. 비밀 액세스 키는 생성 시점에만 다운로드할 수 있고 잃어버리면 새로 만들어야 한다. 액세스 키 ID가 AKIA 로 시작하면 IAM 사용자 또는 AWS 계정 루트 사용자의 장기 액세스 키이고, ASIA 로 시작하면 AWS STS 작업으로 만든 임시 보안 인증 정보의 액세스 키다. IAM 사용자에게는 콘솔 자격 증명을 임시 자격 증명으로 사용해 요청에 서명하는 방식이 권장(Recommended)되고, 장기 자격 증명 사용은 권장되지 않는다(Not recommended). 장기 액세스 키 대안: 코드·리포지토리에 키를 넣지 말고 AWS Secrets Manager 사용, IAM 역할로 임시 자격 증명 발급, AWS 외부 머신에는 IAM Roles Anywhere, AWS CLI 버전 2의 aws login 명령으로 콘솔 자격 증명 기반 단기 자격 증명 생성, 브라우저 기반 사전 인증 셸인 AWS CloudShell 사용, 사람 사용자에게는 IAM Identity Center 권한 세트 사용.",
-      "corrects_courseware": "교재 슬라이드 19 데모는 assume-role 로 받은 임시 자격 증명의 예시 액세스 키를 AKIAIOSFODNN7EXAMPLE 로 적는다. AKIA 는 장기 키 접두사이므로 임시 자격 증명 예시로는 ASIA 형태가 맞다. aws login 과 CloudShell 사전 인증도 교재에 없다.",
+      "corrects_courseware": "교재 슬라이드 19 데모는 assume-role 로 받은 임시 자격 증명의 예시 액세스 키를 AKIA####ODNN7EXAMPLE 로 적는다. AKIA 는 장기 키 접두사이므로 임시 자격 증명 예시로는 ASIA 형태가 맞다. aws login 과 CloudShell 사전 인증도 교재에 없다.",
       "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html",
       "fetched_with": "mcp",
       "section": "Alternatives to long-term access keys"

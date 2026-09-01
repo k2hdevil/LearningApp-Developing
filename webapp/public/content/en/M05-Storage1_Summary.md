@@ -20,6 +20,7 @@
 >
 > - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
 > - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
+> - Example access key IDs have **characters 5 through 8 replaced with `#`**, as in `AKIA####ODNN7EXAMPLE`. This keeps credential scanners from mistaking them for real keys; the original example values in the AWS documentation have alphanumeric characters in those positions.
 > - Verified on: August 25, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -334,7 +335,7 @@ After enabling versioning for the first time, propagation takes time, so AWS rec
 DELETE /photo.gif?versionId=121212 HTTP/1.1
 Host: bucket.s3.amazonaws.com
 Date: Wed, 26 Oct 2021 17:50:00 GMT
-Authorization: AWS AKIAIOSFODNN7EXAMPLE:xQE0diMbLRepdf3YB+FIEXAMPLE=
+Authorization: AWS AKIA####ODNN7EXAMPLE:xQE0diMbLRepdf3YB+FIEXAMPLE=
 Content-Type: text/plain
 Content-Length: 0
 ```

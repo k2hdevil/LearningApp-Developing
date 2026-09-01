@@ -20,6 +20,7 @@
 >
 > - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
 > - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
+> - Example access key IDs have **characters 5 through 8 replaced with `#`**, as in `AKIA####ODNN7EXAMPLE`. This keeps credential scanners from mistaking them for real keys; the original example values in the AWS documentation have alphanumeric characters in those positions. The four-character prefix (`AKIA`, `ASIA`) is left intact because the distinction between them is part of the material.
 > - Verified on: August 25, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -765,7 +766,7 @@ aws sts assume-role \
 
 # 4) Export the Credentials values from the response as environment variables.
 #    A temporary access key ID starts with ASIA.
-export AWS_ACCESS_KEY_ID=ASIAIOSFODNN7EXAMPLE
+export AWS_ACCESS_KEY_ID=ASIA####ODNN7EXAMPLE
 export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 export AWS_SESSION_TOKEN=<SessionToken>
 
@@ -783,7 +784,7 @@ What was corrected relative to the courseware:
 |---|---|---|
 | Bucket name | `s3://DevonAWStest_bucket` | General purpose bucket names can consist only of **lowercase letters, numbers, periods (`.`), and hyphens (`-`)**. The uppercase letters and underscore make this fail regardless of permissions. Changed to `devonawstest-bucket` |
 | Role name | `ContractorAccess` / `Contractors3access` / `S3access` used interchangeably | Standardized on `role/S3access`, which is what the policy's `Resource` points to |
-| Temporary access key example | `AKIAIOSFODNN7EXAMPLE` | `AKIA` is the long-term access key prefix. Temporary keys returned by `assume-role` start with `ASIA` |
+| Temporary access key example | `AKIA####ODNN7EXAMPLE` | `AKIA` is the long-term access key prefix. Temporary keys returned by `assume-role` start with `ASIA` |
 | Account ID | `112233445566` (policy) / `111722413196` (command) | The policy's `Resource` and the command's `--role-arn` point to different accounts, so the `sts:AssumeRole` allow does not match. Standardized on the documentation example account `111122223333` |
 
 🆕 **No permissions are required to perform `GetCallerIdentity`.** Even if an administrator attaches a policy that explicitly denies `sts:GetCallerIdentity`, you can still perform the operation, because the same information is returned when access is denied. The response has three fields.
@@ -879,7 +880,7 @@ The procedure the courseware presents:
 
 ```bash
 $ aws configure
-AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Access Key ID [None]: AKIA####ODNN7EXAMPLE
 AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 Default region name [None]: us-west-2
 Default output format [None]: json
@@ -907,7 +908,7 @@ output=json
 ```ini
 # ~/.aws/credentials
 [default]
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_access_key_id=AKIA####ODNN7EXAMPLE
 aws_secret_access_key=…PxRfiCYEXAMPLEKEY
 
 [user1]
@@ -1249,7 +1250,7 @@ Items in the courseware (the instructor deck) that differ from current behavior.
 | Demo bucket name | `aws s3 mb s3://DevonAWStest_bucket` | General purpose bucket names can consist only of lowercase letters, numbers, periods, and hyphens. The uppercase letters and underscore make this fail regardless of permissions | [Bucket naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) |
 | Demo role name | `ContractorAccess`, `Contractors3access`, and `S3access` used interchangeably in the same demo | Must be standardized on `role/S3access`, which the policy's `Resource` points to, for the `sts:AssumeRole` allow to match | [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) |
 | Demo account IDs | `111122223333`, `1234567891011` (13 digits), `111722413196`, and `112233445566` mixed. The policy's account and the command's `--role-arn` account do not match | Must be standardized on 12-digit documentation example accounts for the policy and command to line up | [Cross-account policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) |
-| Temporary access key example | `export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE` | `AKIA` is the long-term access key prefix. Temporary keys returned by `assume-role` start with `ASIA` | [Programmatic access with AWS security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html) |
+| Temporary access key example | `export AWS_ACCESS_KEY_ID=AKIA####ODNN7EXAMPLE` | `AKIA` is the long-term access key prefix. Temporary keys returned by `assume-role` start with `ASIA` | [Programmatic access with AWS security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html) |
 | JetBrains toolkit setup path | "The AWS Toolkit for JetBrains streamlines the process through the Eclipse Preferences window" | This mixes two different IDEs. The current path is AWS Connection Settings → Set up authentication → Authenticate with IAM | [AWS IAM credentials — Toolkit for JetBrains](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/setup-credentials.html) |
 | Instance profile in the precedence list | Lists "instance profile" as the last entry in the settings precedence order | An instance profile is not a settings source; it is a **credential provider.** The two concepts are documented separately | [Settings reference](https://docs.aws.amazon.com/sdkref/latest/guide/settings-reference.html) |
 | "The most restrictive policy applies" | States that on conflict the most restrictive policy applies | The outcome is the same, but the precise rule is "an explicit deny takes precedence." AWS does not compare policy scopes; if a `Deny` exists at any layer, deny is fixed at that point | [Policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic_policy-eval-denyallow.html) |
