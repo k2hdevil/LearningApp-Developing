@@ -699,7 +699,7 @@ aws s3 mb s3://bucketfordevonawsdemo05122021 --profile userwithpermissionboundar
 
 🆕 `PutUserPermissionsBoundary` API의 파라미터는 `PermissionsBoundary`(관리형 정책 ARN, 20~2048자)와 `UserName`(ARN이 아닌 친숙한 이름, 1~64자)이고 **둘 다 필수**입니다. 이 API 문서도 "권한 경계로 사용되는 정책은 권한을 제공하지 않으므로 **권한 정책을 반드시 별도로 연결해야 한다**"고 명시합니다. 데모에서 `PowerUserAccess`가 그룹에 붙어 있는 것이 그 권한 정책 역할을 합니다.
 
-🔄 교재 강사 노트의 계정 ID가 일관되지 않습니다. 같은 데모 안에서 `111122223333`, `1234567891011`(13자리, AWS 계정 ID는 12자리), `111722413196`이 섞여 나옵니다. 위 코드에서는 전부 문서 예시용 `111122223333`으로 통일했습니다.
+🔄 교재 강사 노트의 계정 ID가 일관되지 않습니다. 같은 데모 안에서 `111122223333`, `1234567891011`(13자리, AWS 계정 ID는 12자리), `444455556666`이 섞여 나옵니다. 위 코드에서는 전부 문서 예시용 `111122223333`으로 통일했습니다.
 
 > — 출처: [PutUserPermissionsBoundary](https://docs.aws.amazon.com/IAM/latest/APIReference/API_PutUserPermissionsBoundary.html), [Permissions boundaries for IAM entities](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
 
@@ -785,7 +785,7 @@ aws s3 mb s3://devonawstest-bucket
 | 버킷 이름 | `s3://DevonAWStest_bucket` | 범용 버킷 이름은 **소문자, 숫자, 마침표(`.`), 하이픈(`-`)** 만 쓸 수 있습니다. 대문자와 밑줄이 들어 있어 권한과 무관하게 실패합니다. `devonawstest-bucket`으로 바꿨습니다 |
 | 역할 이름 | `ContractorAccess` / `Contractors3access` / `S3access` 혼용 | 정책의 `Resource`가 가리키는 `role/S3access`로 통일했습니다 |
 | 임시 액세스 키 예시 | `AKIA####ODNN7EXAMPLE` | `AKIA`는 장기 액세스 키 접두사입니다. `assume-role`이 반환하는 임시 키는 `ASIA`로 시작합니다 |
-| 계정 ID | `112233445566`(정책) / `111722413196`(명령) | 정책의 `Resource`와 명령의 `--role-arn`이 서로 다른 계정을 가리켜 `sts:AssumeRole` 허용이 매칭되지 않습니다. 문서 예시용 `111122223333`으로 통일했습니다 |
+| 계정 ID | `112233445566`(정책) / `444455556666`(명령) | 정책의 `Resource`와 명령의 `--role-arn`이 서로 다른 계정을 가리켜 `sts:AssumeRole` 허용이 매칭되지 않습니다. 문서 예시용 `111122223333`으로 통일했습니다 |
 
 🆕 `GetCallerIdentity`에는 **권한이 필요하지 않습니다.** 관리자가 `sts:GetCallerIdentity`를 명시적으로 거부하는 정책을 연결해도 이 작업은 여전히 수행할 수 있습니다. 액세스가 거부될 때도 같은 정보가 반환되기 때문입니다. 응답 필드는 세 개입니다.
 
@@ -1249,7 +1249,7 @@ DNS 서버, 스위치, 로드 밸런서 같은 네트워크 구성 요소는 요
 |---|---|---|---|
 | 데모 버킷 이름 | `aws s3 mb s3://DevonAWStest_bucket` | 범용 버킷 이름은 소문자·숫자·마침표·하이픈만 쓸 수 있습니다. 대문자와 밑줄이 있어 권한과 무관하게 실패합니다 | [버킷 명명 규칙](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) |
 | 데모 역할 이름 | 같은 데모에서 `ContractorAccess`, `Contractors3access`, `S3access` 혼용 | 정책의 `Resource`가 가리키는 `role/S3access`로 통일해야 `sts:AssumeRole` 허용이 매칭됩니다 | [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) |
-| 데모 계정 ID | `111122223333`, `1234567891011`(13자리), `111722413196`, `112233445566` 혼용. 정책의 계정과 명령의 `--role-arn` 계정이 불일치 | 문서 예시용 12자리 계정 ID로 통일해야 정책과 명령이 맞습니다 | [Cross-account policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) |
+| 데모 계정 ID | `111122223333`, `1234567891011`(13자리), `444455556666`, `112233445566` 혼용. 정책의 계정과 명령의 `--role-arn` 계정이 불일치 | 문서 예시용 12자리 계정 ID로 통일해야 정책과 명령이 맞습니다 | [Cross-account policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html) |
 | 임시 액세스 키 예시 | `export AWS_ACCESS_KEY_ID=AKIA####ODNN7EXAMPLE` | `AKIA`는 장기 액세스 키 접두사입니다. `assume-role`이 반환하는 임시 키는 `ASIA`로 시작합니다 | [Programmatic access with AWS security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html) |
 | JetBrains 툴킷 설정 경로 | "JetBrains용 AWS Toolkit는 Eclipse 기본 설정 창을 통해 프로세스를 간소화합니다" | 서로 다른 IDE를 섞은 서술입니다. 현재 경로는 AWS Connection Settings → Set up authentication → Authenticate with IAM | [AWS IAM credentials — Toolkit for JetBrains](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/setup-credentials.html) |
 | 우선순위 목록의 인스턴스 프로파일 | 설정 값 우선순위 목록의 마지막 항목으로 "인스턴스 프로파일" 기재 | 인스턴스 프로파일은 설정 값 소스가 아니라 **자격 증명 공급자**입니다. 두 개념이 분리되어 있습니다 | [Settings reference](https://docs.aws.amazon.com/sdkref/latest/guide/settings-reference.html) |

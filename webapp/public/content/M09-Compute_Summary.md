@@ -1307,7 +1307,7 @@ aws lambda create-function-url-config \
 ```bash
 # 교재 슬라이드 34 (문제가 있는 형태)
 aws lambda create-function --function-name dictate-function --handler app.lambda_handler \
-  --runtime python3.8 -–role arn:aws:iam::563926481938:role/lambdaPollyRole \
+  --runtime python3.8 -–role arn:aws:iam::111122223333:role/lambdaPollyRole \
   --environment Variables={TABLE_NAME=$notesTable} --zip-file fileb://dictate-function.zip
 ```
 
@@ -1316,6 +1316,8 @@ aws lambda create-function --function-name dictate-function --handler app.lambda
 | 🔄 `-–role` | 하이픈 두 개가 아니라 **하이픈 하나 + en dash(`–`)** 로 조판되어 있어 그대로 붙여 쓰면 셸이 인식하지 못합니다. 같은 슬라이드의 다른 플래그는 모두 하이픈 두 개입니다. 교재 자체의 조판 오류입니다 |
 | 🔄 `python3.8` | **2024년 10월 14일 지원 종료.** 함수 생성 차단은 2027년 2월 1일, 함수 업데이트 차단은 2027년 3월 3일입니다 |
 
+위 인용에서 역할 ARN 의 계정 ID 는 바꿨습니다. 교재에 적힌 값이 AWS 문서의 예시 계정 ID 가 아니어서, 문서 예시용 `111122223333` 으로 대체했습니다. `--role` 과 `--runtime` 문제와는 무관한 교정이며, 명령의 동작에는 영향이 없습니다.
+
 교정한 형태입니다.
 
 ```bash
@@ -1323,7 +1325,7 @@ aws lambda create-function --function-name dictate-function --handler app.lambda
 aws lambda create-function --function-name dictate-function \
   --handler app.lambda_handler \
   --runtime python3.13 \
-  --role arn:aws:iam::563926481938:role/lambdaPollyRole \
+  --role arn:aws:iam::111122223333:role/lambdaPollyRole \
   --environment Variables={TABLE_NAME=$notesTable} \
   --zip-file fileb://dictate-function.zip
 ```
