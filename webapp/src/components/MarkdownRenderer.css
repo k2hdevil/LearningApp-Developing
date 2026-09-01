@@ -1,0 +1,210 @@
+/*
+ * 마크다운 본문 스타일.
+ *
+ * 색상은 전부 --doa-* CSS 변수를 씁니다. 이 변수들은 markdownTokens.js 가
+ * Cloudscape 디자인 토큰에서 읽어 .markdown-body 인라인 style 로 주입합니다.
+ * 여기에 색상 리터럴이나 해시가 붙은 Cloudscape 변수 이름을 직접 적지 마세요.
+ * 해시는 Cloudscape 릴리스마다 바뀌고, 없는 변수는 fallback 으로 떨어져
+ * 다크 모드에서 밝은 색이 그대로 남습니다.
+ *
+ * 코드 블록은 Cloudscape CodeView 가 그리므로 이 파일에서 배경을 칠하지 않습니다.
+ */
+
+.markdown-body {
+  color: var(--doa-text-body);
+  font-size: 15px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+/* ── 헤딩 ── */
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  color: var(--doa-text-heading);
+  font-weight: 700;
+  line-height: 1.35;
+  /* 고정 헤더에 가려지지 않도록 앵커 이동 시 위쪽 여유를 둡니다. */
+  scroll-margin-top: 80px;
+}
+
+.markdown-body h1 {
+  font-size: 28px;
+  margin: 0 0 12px;
+}
+
+.markdown-body h2 {
+  font-size: 22px;
+  margin: 36px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--doa-divider);
+}
+
+.markdown-body h3 {
+  font-size: 18px;
+  margin: 28px 0 10px;
+}
+
+.markdown-body h4 {
+  font-size: 16px;
+  margin: 20px 0 8px;
+}
+
+.markdown-body h5,
+.markdown-body h6 {
+  font-size: 15px;
+  margin: 16px 0 8px;
+}
+
+/* ── 본문 ── */
+
+.markdown-body p {
+  margin: 0 0 12px;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0 0 12px;
+  padding-left: 24px;
+}
+
+.markdown-body li {
+  margin: 4px 0;
+}
+
+.markdown-body li > ul,
+.markdown-body li > ol {
+  margin: 4px 0;
+}
+
+.markdown-body hr {
+  height: 1px;
+  border: 0;
+  margin: 28px 0;
+  background: var(--doa-divider);
+}
+
+.markdown-body strong {
+  font-weight: 700;
+  color: var(--doa-text-heading);
+}
+
+/* ── 링크 ── */
+
+.markdown-body a {
+  color: var(--doa-link);
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  color: var(--doa-link-hover);
+  text-decoration: underline;
+}
+
+/* ── 인라인 코드 ── */
+
+/*
+ * 본문 속 인라인 코드입니다. 테두리는 두지 않습니다.
+ * Cloudscape 의 코드 텍스트 스타일(Box variant="code")도 색·폰트·크기만 지정하고
+ * 테두리나 배경을 두지 않습니다. 여기서는 본문과 구분되도록 배경만 옅게 깝니다.
+ */
+.markdown-body :not(pre) > code {
+  background: var(--doa-code-bg);
+  color: var(--doa-text-body);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: var(--doa-font-mono);
+  font-size: 0.88em;
+}
+
+/*
+ * 코드 블록 안에서는 위 인라인 규칙을 되돌립니다.
+ *
+ * Cloudscape CodeView 는 코드 블록의 줄마다 <td><code> 를 렌더합니다.
+ * 그 <code> 의 부모가 pre 가 아니어서 위의 :not(pre) > code 규칙에 걸리고,
+ * 결과적으로 줄마다 배경·여백·작은 글씨가 붙습니다(테두리를 두면 줄마다 테두리가 생깁니다).
+ * 코드 블록의 배경과 여백은 CodeView 가 담당하므로 여기서는 전부 비웁니다.
+ *
+ * 선택자 특이도: 이 규칙(클래스 2)이 위 규칙(클래스 1)을 이깁니다.
+ */
+.markdown-body .code-block code {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ── 인용문 ── */
+
+.markdown-body blockquote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 4px solid var(--doa-quote-border);
+  border-radius: 0 4px 4px 0;
+  background: var(--doa-quote-bg);
+  color: var(--doa-text-body);
+}
+
+.markdown-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* ── 표 ── */
+
+.markdown-table-scroll {
+  overflow-x: auto;
+  margin: 16px 0;
+  border: 1px solid var(--doa-divider);
+  border-radius: 8px;
+  background: var(--doa-surface);
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.markdown-body th {
+  background: var(--doa-table-header-bg);
+  color: var(--doa-text-heading);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--doa-divider);
+  white-space: nowrap;
+}
+
+.markdown-body td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--doa-divider);
+  vertical-align: top;
+}
+
+.markdown-body tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.markdown-body tbody tr:hover {
+  background: var(--doa-row-hover-bg);
+}
+
+/* ── 코드 블록 ── */
+
+/* 배경·테두리·복사 버튼은 Cloudscape CodeView 가 담당합니다.
+   여기서는 바깥 여백만 잡습니다. */
+.code-block {
+  margin: 16px 0;
+}
+
+/* ── 이미지 ── */
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+}

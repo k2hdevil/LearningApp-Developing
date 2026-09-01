@@ -1,0 +1,40 @@
+# AWS Amplify Hosting 빌드 설정
+#
+# 앱이 저장소 루트가 아니라 webapp/ 에 있으므로 monorepo 형식을 씁니다.
+# appRoot 는 AMPLIFY_MONOREPO_APP_ROOT 환경 변수와 값이 같아야 합니다.
+# Amplify 콘솔에서 앱을 만들 때 "My app is a monorepo" 를 선택하고 경로에
+# webapp 을 입력하면 콘솔이 이 변수를 자동으로 설정합니다. 이미 만들어진 앱이나
+# CloudFormation 으로 배포한 앱은 Hosting > Environment variables 에서 직접
+# 넣어야 합니다.
+#   https://docs.aws.amazon.com/amplify/latest/userguide/monorepo-configuration.html
+#
+# buildPath 를 지정하지 않았으므로 모든 단계가 appRoot(webapp) 에서 돌고,
+# artifacts.baseDirectory 와 cache.paths 도 appRoot 기준 상대 경로입니다.
+version: 1
+applications:
+  - appRoot: webapp
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            # Vite 7 은 Node.js 20.19+ 또는 22.12+ 를 요구합니다.
+            #   https://v7.vite.dev/guide/migration
+            # AL2023 빌드 이미지의 기본 Node 는 22 이지만, 이미지 기본값이 바뀌거나
+            # live package updates 로 다른 버전이 지정돼 있을 수 있으므로 명시합니다.
+            # preBuild 명령은 live package updates 다음에 실행되므로 이 값이 이깁니다.
+            - nvm use 22
+            - node -v
+            # package-lock.json 이 저장소에 있으므로 ci 로 잠긴 버전을 그대로 씁니다.
+            - npm ci
+        build:
+          commands:
+            # vite build 뒤에 check-tokens.mjs 가 돕니다. Cloudscape 토큰을 쓰지 않고
+            # 색을 하드코딩한 곳이 있으면 여기서 빌드가 실패하고 배포되지 않습니다.
+            - npm run build
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
