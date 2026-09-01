@@ -37,10 +37,15 @@ const ITEMS = flatten(navigationTree).filter((node) => /^M\d\d-/.test(node.id ??
 const MODULES = ITEMS.filter((node) => node.contentFile).map((node) => node.id);
 
 /**
- * 아직 콘텐츠가 없는 모듈 하나. 열 수 없는 해시를 앱이 어떻게 처리하는지 볼 때 씁니다.
- * 여기에 특정 모듈 이름을 박아 두면 그 모듈이 게시되는 순간 검사가 거짓 실패를 냅니다.
+ * 열 수 없는 해시. 앱이 주소를 정정하는지 볼 때 씁니다.
+ *
+ * 콘텐츠가 없는 모듈이 있으면 그것을 쓰고, 전부 게시되어 하나도 없으면 트리에 없는
+ * 합성 id 를 씁니다. 앱의 정정 경로는 두 경우 모두 같습니다. 특정 모듈 이름을 박아 두면
+ * 그 모듈이 게시되는 순간 검사가 거짓 실패를 냅니다.
  */
-const PENDING_MODULE = ITEMS.find((node) => !node.contentFile)?.id ?? null;
+const PENDING_MODULE =
+  ITEMS.find((node) => !node.contentFile)?.id ?? 'M00-NoSuchModule_Synthetic';
+const PENDING_IS_SYNTHETIC = !ITEMS.some((node) => !node.contentFile);
 
 let msgId = 0;
 
@@ -372,10 +377,13 @@ async function main() {
     // 경로가 같고 해시만 다르면 브라우저는 페이지를 다시 로드하지 않습니다(same-document
     // navigation). 그래서 마운트 시 정정하는 코드와 hashchange 로 정정하는 코드는
     // 서로 다른 경로이고 둘 다 확인해야 합니다. 쿼리를 붙여 진짜 새 로드를 만듭니다.
-    if (!PENDING_MODULE) {
-      console.log('\n  SKIP 준비 중 모듈이 없어 열 수 없는 해시를 검사할 수 없습니다');
-    } else {
+    {
       const badHash = `#${PENDING_MODULE}`;
+      if (PENDING_IS_SYNTHETIC) {
+        console.log(
+          `\n  준비 중 모듈이 없어 트리에 없는 합성 해시(${badHash})로 검사합니다`
+        );
+      }
       for (const [label, url] of [
         ['해시만 변경 (리로드 없음, hashchange 경로)', `${BASE}/${badHash}`],
         ['새 로드 (마운트 경로)', `${BASE}/?fresh=${Date.now()}${badHash}`],
@@ -392,7 +400,7 @@ async function main() {
           `({ h1: document.querySelector('.markdown-body h1')?.textContent ?? null,
               hash: window.location.hash })`
         );
-        console.log(`\n  준비 중 모듈 해시(${badHash}) — ${label}`);
+        console.log(`\n  열 수 없는 해시(${badHash}) — ${label}`);
         console.log(`  열린 h1: ${fallback.h1}`);
         console.log(`  정정된 해시: ${fallback.hash}`);
         if (!fallback.h1) {

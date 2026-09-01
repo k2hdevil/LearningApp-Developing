@@ -15,7 +15,7 @@ verified_on: '2026-08-25'
 items:
   # ---------------------------------------------------------------- incorrect
   - id: alarm-doc-url-path
-    status: incorrect
+    state: incorrect
     title: 경보 사용 설명서 URL 경로
     courseware_location: 슬라이드 15 강사 노트
     courseware_says: 'https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html'
@@ -24,7 +24,7 @@ items:
     courseware_internal: false
 
   - id: cli-metric-name-mismatch
-    status: incorrect
+    state: incorrect
     title: CLI 예시의 경보 이름과 지표 불일치
     courseware_location: 슬라이드 17·18·19 터미널 예시
     courseware_says: '--alarm-name NotesWriteCapacityUnitsLimit 인데 --metric-name ConsumedReadCapacityUnits'
@@ -33,7 +33,7 @@ items:
     courseware_internal: false
 
   - id: cli-wrong-dimension
-    status: incorrect
+    state: incorrect
     title: DynamoDB 네임스페이스에 EC2 측정 기준 사용
     courseware_location: 슬라이드 17·18·19 터미널 예시
     courseware_says: '--namespace AWS/DynamoDB 와 --dimensions "Name=InstanceId,Value=i-12345678" 을 함께 사용'
@@ -42,7 +42,7 @@ items:
     courseware_internal: false
 
   - id: cli-alarm-action-arn
-    status: incorrect
+    state: incorrect
     title: 경보 작업에 CloudWatch 경보 ARN 지정
     courseware_location: 슬라이드 17·18·19 터미널 예시
     courseware_says: '--alarm-actions arn:aws:cloudwatch:us-east-2:111122223333:alarm:Notes-WriteCapacityUnitsLimit-BasicAlarm'
@@ -51,7 +51,7 @@ items:
     courseware_internal: false
 
   - id: cli-missing-evaluation-periods
-    status: incorrect
+    state: incorrect
     title: datapoints-to-alarm 만 있고 evaluation-periods 가 없음
     courseware_location: 슬라이드 17·18·19 터미널 예시
     courseware_says: '--datapoints-to-alarm 5 만 지정'
@@ -60,7 +60,7 @@ items:
     courseware_internal: false
 
   - id: cli-missing-threshold
-    status: incorrect
+    state: incorrect
     title: 임계값과 비교 연산자 누락
     courseware_location: 슬라이드 17·18·19 터미널 예시
     courseware_says: '--threshold 와 --comparison-operator 가 없음'
@@ -69,7 +69,7 @@ items:
     courseware_internal: false
 
   - id: cli-split-into-two-lines
-    status: incorrect
+    state: incorrect
     title: CLI 명령이 두 줄로 분리되어 있음
     courseware_location: 슬라이드 17·18·19 터미널 예시
     courseware_says: '--dimensions 절이 줄바꿈 이후 별도 줄에 놓여 있고 줄 연결 문자가 없음'
@@ -78,7 +78,7 @@ items:
     courseware_internal: false
 
   - id: three-pillars-inconsistent
-    status: incorrect
+    state: incorrect
     title: 3대 요소를 슬라이드마다 다르게 표기
     courseware_location: 슬라이드 8·9 대 슬라이드 25
     courseware_says: '슬라이드 8·9 는 로깅 / 지표 / 트레이싱, 슬라이드 25 는 로깅 / 모니터링 / 트레이싱'
@@ -87,7 +87,7 @@ items:
     courseware_internal: true
 
   - id: cloudwatch-does-tracing
-    status: incorrect
+    state: incorrect
     title: CloudWatch 기능에 트레이싱을 넣어 놓고 트레이싱은 X-Ray 에 배정
     courseware_location: 슬라이드 11 강사 노트 대 슬라이드 9
     courseware_says: '슬라이드 11 은 CloudWatch 의 기능으로 "지표 수집 및 트레이싱"을 들고, 슬라이드 9 는 트레이싱을 AWS X-Ray 에 배정'
@@ -96,7 +96,7 @@ items:
     courseware_internal: true
 
   - id: cold-start-typo
-    status: incorrect
+    state: incorrect
     title: 콜드 스타트 표기 오류
     courseware_location: 슬라이드 27 다이어그램
     courseware_says: 'code-start 컨테이너 다운로드'
@@ -105,7 +105,7 @@ items:
     courseware_internal: false
 
   - id: fault-typo
-    status: incorrect
+    state: incorrect
     title: 결함을 결합으로 표기
     courseware_location: 슬라이드 30 강사 노트
     courseware_says: '성공한 호출과 오류 및 결합의 비율을 바탕으로 색상을 적용'
@@ -114,7 +114,7 @@ items:
     courseware_internal: false
 
   - id: logging-protocols-term
-    status: incorrect
+    state: incorrect
     title: 로깅 프레임워크를 프로토콜이라 표기
     courseware_location: 슬라이드 16 본문
     courseware_says: '지원되는 로깅 프로토콜 - Apache log4net, Apache Log4j, Nlog, Serilog'
@@ -123,7 +123,7 @@ items:
     courseware_internal: false
 
   - id: alarm-consecutive-periods
-    status: incorrect
+    state: incorrect
     title: 경보 평가를 연속 기간으로만 설명
     courseware_location: 슬라이드 15 강사 노트
     courseware_says: '임계값이 연속 기간 3개에 대해 위반된 경우에만 경보가 작업을 호출합니다'
@@ -132,7 +132,7 @@ items:
     courseware_internal: false
 
   - id: alarm-single-metric-only
-    status: incorrect
+    state: incorrect
     title: 경보가 감시하는 대상을 단일 지표로 한정
     courseware_location: 슬라이드 13 본문 · 슬라이드 38 지식 확인 5번
     courseware_says: '경보는 지정된 기간 동안 단일 지표를 관찰하고'
@@ -141,7 +141,7 @@ items:
     courseware_internal: false
 
   - id: fault-patterns-mismatch
-    status: incorrect
+    state: incorrect
     title: 흔한 결함 패턴 목록이 문서와 다름
     courseware_location: 슬라이드 21 본문
     courseware_says: '무한 루프 / 다운스트림 속도 저하 / 잘못된 API 버전 / 트리거 확인'
@@ -150,7 +150,7 @@ items:
     courseware_internal: false
 
   - id: runsqlquery-void-await
-    status: incorrect
+    state: incorrect
     title: void 메서드에서 await 사용
     courseware_location: 슬라이드 34 예시 코드
     courseware_says: 'public void RunSqlQuery(string connectionString) 안에서 await command.ExecuteXmlReaderAsync() 호출'
@@ -159,7 +159,7 @@ items:
     courseware_internal: true
 
   - id: ihostingenvironment-old
-    status: incorrect
+    state: incorrect
     title: 오래된 호스팅 환경 인터페이스 이름
     courseware_location: 슬라이드 34 예시 코드
     courseware_says: 'public void Configure(IApplicationBuilder app, IHostingEnvironment env)'
@@ -168,7 +168,7 @@ items:
     courseware_internal: true
 
   - id: objective-wording-drift
-    status: incorrect
+    state: incorrect
     title: 모듈 목표 문구가 슬라이드마다 다름
     courseware_location: 슬라이드 3 대 슬라이드 42
     courseware_says: '슬라이드 3 은 "관측가능성(Observability)구별"(공백 없음), 슬라이드 42 는 "관측가능성(Observability) 구별"'
@@ -177,7 +177,7 @@ items:
     courseware_internal: true
 
   - id: slide-6-7-duplicate
-    status: incorrect
+    state: incorrect
     title: 같은 본문을 두 슬라이드에 반복하면서 노트가 어긋남
     courseware_location: 슬라이드 6·7
     courseware_says: '슬라이드 6 노트에만 "정보에 근거하여 모니터링 항목과 모니터링 방법을 결정합니다"가 있고, 슬라이드 7 노트에만 "작업과 인사이트를 달성하려 합니다"가 있음'
@@ -186,7 +186,7 @@ items:
     courseware_internal: true
 
   - id: slide-17-19-duplicate
-    status: incorrect
+    state: incorrect
     title: 같은 슬라이드를 3장 반복
     courseware_location: 슬라이드 17·18·19
     courseware_says: 'CloudWatch를 사용하여 애플리케이션 구성(1/3)·(2/3)·(3/3) 의 본문과 터미널 예시가 동일'
@@ -195,7 +195,7 @@ items:
     courseware_internal: true
 
   - id: slide-29-repeat
-    status: incorrect
+    state: incorrect
     title: 슬라이드 29 노트가 슬라이드 27 설명을 반복
     courseware_location: 슬라이드 29 강사 노트
     courseware_says: '트레이스 ID 와 트레이스 정의를 슬라이드 27 과 같은 문장으로 반복한 뒤 MTTD·MTTI·MTTR·MTBF 를 소개'
@@ -205,7 +205,7 @@ items:
 
   # ------------------------------------------------------------------ changed
   - id: xray-console-superseded
-    status: changed
+    state: changed
     title: X-Ray 콘솔이 CloudWatch 콘솔로 대체됨
     courseware_location: 슬라이드 26 다이어그램 · 슬라이드 36 데모 노트
     courseware_says: 'X-Ray 콘솔을 트레이스 확인 창구로 제시'
@@ -215,7 +215,7 @@ items:
     courseware_internal: false
 
   - id: service-map-to-trace-map
-    status: changed
+    state: changed
     title: 서비스 맵과 ServiceLens 맵이 트레이스 맵으로 통합됨
     courseware_location: 슬라이드 26·30·31 · 슬라이드 36
     courseware_says: '서비스 맵(Service map)'
@@ -225,7 +225,7 @@ items:
     courseware_internal: false
 
   - id: cloudwatch-events-renamed
-    status: changed
+    state: changed
     title: CloudWatch Events 가 Amazon EventBridge 로 이름이 바뀜
     courseware_location: 슬라이드 20 강사 노트
     courseware_says: 'CloudWatch Events를 생성하여 향후 이벤트를 알림'
@@ -235,7 +235,7 @@ items:
     courseware_internal: false
 
   - id: lambda-passive-tracing-removed
-    status: changed
+    state: changed
     title: Lambda 가 업스트림 헤더만으로 트레이스를 자동 전송하지 않음
     courseware_location: 슬라이드 27·36 (트레이싱 모드 미언급)
     courseware_says: 'API Gateway → Lambda 트레이스가 자연히 수집되는 것으로 전제'
@@ -245,7 +245,7 @@ items:
     courseware_internal: false
 
   - id: lambda-segment-structure
-    status: changed
+    state: changed
     title: Lambda X-Ray 세그먼트 구조가 바뀌는 중
     courseware_location: 슬라이드 27 다이어그램
     courseware_says: '초기화 / 호출 하위 세그먼트로 나뉜 구조'
@@ -254,7 +254,7 @@ items:
     courseware_internal: false
 
   - id: cloudwatch-agent-collects-traces
-    status: changed
+    state: changed
     title: CloudWatch 에이전트가 트레이스도 수집함
     courseware_location: 슬라이드 17·18·19
     courseware_says: 'CloudWatch 에이전트 - Amazon EC2, On-premises servers (지표·로그 수집 용도로만 제시)'
@@ -263,7 +263,7 @@ items:
     courseware_internal: false
 
   - id: cloudwatch-otel-metrics
-    status: changed
+    state: changed
     title: CloudWatch 가 OpenTelemetry 지표를 지원함
     courseware_location: 슬라이드 13·14
     courseware_says: '지표를 네임스페이스와 측정 기준으로만 설명'
@@ -272,7 +272,7 @@ items:
     courseware_internal: false
 
   - id: lambda-log-destinations-expanded
-    status: changed
+    state: changed
     title: Lambda 로그 대상이 CloudWatch Logs 외로 확장됨
     courseware_location: 슬라이드 16 강사 노트
     courseware_says: 'Lambda 로그를 CloudWatch Logs 로 보내는 것만 전제'
@@ -281,7 +281,7 @@ items:
     courseware_internal: false
 
   - id: lambda-advanced-logging-added
-    status: changed
+    state: changed
     title: Lambda 고급 로깅 제어가 추가됨
     courseware_location: 슬라이드 16
     courseware_says: '정형 로그를 애플리케이션이 직접 JSON 으로 만들어야 하는 것으로 제시'
@@ -290,7 +290,7 @@ items:
     courseware_internal: false
 
   - id: log-group-classes-added
-    status: changed
+    state: changed
     title: 로그 그룹 클래스가 추가됨
     courseware_location: 슬라이드 13 강사 노트
     courseware_says: '로그 그룹을 보존·모니터링·액세스 제어 설정을 공유하는 단위로만 설명'
@@ -299,7 +299,7 @@ items:
     courseware_internal: false
 
   - id: alarm-evaluation-window-added
-    status: changed
+    state: changed
     title: 경보 평가 창 선택이 추가됨
     courseware_location: 슬라이드 15
     courseware_says: '기간이 고정 경계로 나뉜 그림으로만 설명'
@@ -308,7 +308,7 @@ items:
     courseware_internal: false
 
   - id: alarm-actions-expanded
-    status: changed
+    state: changed
     title: 경보 작업 대상이 확장됨
     courseware_location: 슬라이드 12 강사 노트
     courseware_says: 'EC2 인스턴스 중지·시작·종료, EC2 Auto Scaling, Amazon SNS'
@@ -318,7 +318,7 @@ items:
 
   # -------------------------------------------------------------- discouraged
   - id: xray-sdk-discouraged
-    status: discouraged
+    state: discouraged
     title: 계측에 X-Ray SDK 사용
     courseware_location: 슬라이드 33·34
     courseware_says: 'X-Ray SDK for .NET·Java·Python 으로 계측하는 방법만 제시'
@@ -328,7 +328,7 @@ items:
     courseware_internal: false
 
   - id: xray-daemon-discouraged
-    status: discouraged
+    state: discouraged
     title: X-Ray 데몬 사용
     courseware_location: 슬라이드 26 다이어그램
     courseware_says: 'X-Ray 데몬(daemon)을 트레이스 전송 경로로 제시'
@@ -338,7 +338,7 @@ items:
     courseware_internal: false
 
   - id: local-sampling-rules-discouraged
-    status: discouraged
+    state: discouraged
     title: 코드에 포함한 JSON 로컬 샘플링 규칙
     courseware_location: 덱에 샘플링 자체가 없음
     courseware_says: ''
@@ -349,7 +349,7 @@ items:
 
   # -------------------------------------------------------------------- ended
   - id: xray-sdk-daemon-ga-ended
-    status: ended
+    state: ended
     title: X-Ray SDK·데몬 일반 제공 종료
     courseware_location: 슬라이드 26·33·34
     courseware_says: 'X-Ray SDK 와 데몬을 현행 계측 수단으로 제시'

@@ -1,0 +1,366 @@
+{
+  "_note": "M16(교재 이후 신규 기능)은 원본 강사용 덱이 없는 종합 모듈입니다. 근거는 M01~M15 작업 중 실제로 조회해 기록한 페이지를 이어받았고, primary_record 에 그 원 기록이 있는 파일을 적었습니다. reread_on_2026_08_25 가 true 인 세 페이지는 M16 작성 시점에 다시 읽어 값을 갱신했습니다. 그 밖의 URL 은 2026-08-25 에 HTTP 200 응답과 리디렉션 대상을 재확인했습니다.",
+  "module": "M16-NewFeatures_Summary",
+  "verified_on": "2026-08-25",
+  "synthesized_from": [
+    "facts/deprecations/M01.yaml",
+    "facts/deprecations/M02.yaml",
+    "facts/deprecations/M03.yaml",
+    "facts/deprecations/M04.yaml",
+    "facts/deprecations/M05.yaml",
+    "facts/deprecations/M06.yaml",
+    "facts/deprecations/M07.yaml",
+    "facts/deprecations/M08.yaml",
+    "facts/deprecations/M09.yaml",
+    "facts/deprecations/M10.yaml",
+    "facts/deprecations/M11.yaml",
+    "facts/deprecations/M12.yaml",
+    "facts/deprecations/M13.yaml",
+    "facts/deprecations/M14.yaml",
+    "facts/deprecations/M15.yaml"
+  ],
+  "citations": [
+    {
+      "id": "https://aws.amazon.com/blogs/developer/cli-v1-maintenance-mode-announcement/",
+      "claim": "AWS CLI v1은 2026년 7월 15일 유지 관리 모드(maintenance mode)에 진입하고 2027년 7월 15일 지원이 종료된다. 유지 관리 모드 기간에는 중요 버그 수정과 보안 업데이트만 제공되고, AWS CLI v1 자체 변경·신규 서비스·기존 서비스 API 업데이트·리전 및 엔드포인트 확장은 추가되지 않는다. AWS는 v2로 마이그레이션할 것을 권장한다. v2는 Python을 내장하므로 시스템 전역 Python을 요구하지 않고, 서버 측 명령 완성·자동 프롬프트·위저드 같은 대화형 기능, aws login, AWS IAM Identity Center 인증, aws configure 하위의 프로파일·자격 증명 관리 명령을 제공한다. v1으로 백포트되지 않은 v2 기능으로는 고수준 DynamoDB 명령, SSH 클라이언트를 사용하는 EC2 Instance Connect, CloudWatch Logs Live Tail 대화형 모드가 있다.",
+      "url": "https://aws.amazon.com/blogs/developer/cli-v1-maintenance-mode-announcement/",
+      "fetched_with": "web_fetch",
+      "section": "CLI v1 Maintenance Mode Announcement / Additional features of AWS CLI v2",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": true
+    },
+    {
+      "id": "API_ListObjects",
+      "claim": "ListObjects는 개정된 작업이며, AWS는 애플리케이션 개발 시 최신 버전인 ListObjectsV2를 사용할 것을 권장한다. 하위 호환성을 위해 ListObjects를 계속 지원한다. ListObjects는 디렉터리 버킷에서 지원되지 않는다. 페이지 매김에 continuation-token 대신 marker를 사용한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjects.html",
+      "fetched_with": "mcp",
+      "section": "ListObjects",
+      "primary_record": "facts/citations/M06.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "VirtualHosting",
+      "claim": "Amazon S3는 현재 모든 AWS 리전에서 가상 호스팅 스타일과 경로 스타일(path-style) URL 액세스를 모두 지원한다. 그러나 경로 스타일 URL은 향후 중단될 예정이다. 2020년 9월 23일 업데이트로 경로 스타일 URL 폐기 시점이 연기되었다. 웹 브라우저에서 접근하는 웹사이트 콘텐츠를 호스팅할 때는 브라우저 동일 출처 보안 모델과 충돌할 수 있으므로 경로 스타일 URL 사용을 피하고 S3 웹사이트 엔드포인트 또는 CloudFront 배포를 사용하도록 권장한다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html",
+      "fetched_with": "mcp",
+      "section": "Path-style requests",
+      "primary_record": "facts/citations/M05.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "amazons3-ol-change",
+      "claim": "2025년 11월 7일부터 S3 Object Lambda는 현재 이 서비스를 사용 중인 기존 고객과 일부 선정된 AWS Partner Network(APN) 파트너에게만 제공된다. 기존 고객과 APN 파트너 솔루션을 사용·배포하는 고객은 계속 사용할 수 있다. AWS는 S3 Object Lambda의 보안·가용성 개선은 우선적으로 처리하지만 새 기능을 도입할 계획이 없다. 대안으로 Dynamic Image Transformation for Amazon CloudFront 솔루션, CloudFront·API Gateway·함수 URL 등 다른 방법으로 AWS Lambda를 호출하는 방식, 클라이언트 애플리케이션에서 데이터를 처리하는 방식이 제시된다. 모든 대안이 계속 Amazon S3를 기반 스토리지로 사용하므로 데이터 마이그레이션은 필요하지 않다.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/amazons3-ol-change.html",
+      "fetched_with": "mcp",
+      "section": "Amazon S3 Object Lambda availability change",
+      "primary_record": "facts/citations/M06.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "storage-class-intro",
+      "claim": "설계 기준 내구성은 모든 클래스가 99.999999999%. 설계 기준 가용성과 AZ 수는 다르다. S3 Standard 99.99%/AZ>=3, S3 Standard-IA 99.9%/AZ>=3, S3 Intelligent-Tiering 99.9%/AZ>=3, S3 One Zone-IA 99.5%/AZ 1, S3 Express One Zone 99.95%/AZ 1, S3 Glacier Instant Retrieval 99.9%/AZ>=3, S3 Glacier Flexible Retrieval 99.99%(복원 후)/AZ>=3, S3 Glacier Deep Archive 99.99%(복원 후)/AZ>=3. 최소 스토리지 기간: Standard·Intelligent-Tiering·Express One Zone 없음, Standard-IA·One Zone-IA 30일, Glacier IR·Glacier Flexible 90일, Deep Archive 180일. 최소 과금 객체 크기: Standard-IA·One Zone-IA·Glacier IR 128KB.",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+      "fetched_with": "mcp",
+      "section": "Comparing the Amazon S3 storage classes",
+      "primary_record": "facts/citations/M05.json, facts/citations/M06.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "best-practices",
+      "claim": "IAM 보안 모범 사례: 사람 사용자는 자격 증명 공급자와의 페더레이션으로 임시 보안 인증 정보를 사용해야 하며, 중앙 집중식 액세스 관리에는 AWS IAM Identity Center가 권장된다. 워크로드는 IAM 역할의 임시 보안 인증 정보를 사용해야 하고, Amazon EC2·Lambda 같은 AWS 컴퓨팅에서는 AWS가 역할의 임시 자격 증명을 리소스에 전달한다. AWS 외부 워크로드는 IAM Roles Anywhere(X.509), AssumeRoleWithSAML, AssumeRoleWithWebIdentity, AWS IoT Core mTLS 등으로 임시 자격 증명을 받을 수 있다. IAM 사용자나 루트 사용자가 필요한 시나리오에서는 MFA를 요구하고, 가능하면 패스키·보안 키 같은 피싱 저항 MFA를 사용한다. 장기 액세스 키가 필요한 사용 사례로는 IAM 역할을 쓸 수 없는 워크로드(WordPress 플러그인 등), IAM Identity Center를 지원하지 않는 서드 파티 AWS 클라이언트, CodeCommit, Amazon Keyspaces가 있으며 이 경우 마지막 사용 정보로 키를 갱신·삭제한다. 여러 계정에는 SCP로 보안 주체 가드레일, RCP로 리소스 가드레일을 설정하되 SCP·RCP는 권한을 부여하지 않으므로 자격 증명 기반 또는 리소스 기반 정책을 연결해야 한다. 계정 내 권한 관리를 위임할 때는 권한 경계로 위임 권한의 상한을 설정한다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+      "fetched_with": "mcp",
+      "section": "Security best practices in IAM",
+      "primary_record": "facts/citations/M04.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "root-user-best-practices",
+      "claim": "루트 사용자는 특권 작업을 수행할 수 있으므로 이메일·암호에 더해 MFA를 두 번째 인증 요소로 추가하는 것이 중요하다. 루트 사용자에 지원되는 MFA 유형을 조합해 최대 8개 디바이스를 등록할 수 있다. 모든 AWS 계정 유형(독립 실행형, 관리 계정, 멤버 계정)이 루트 사용자에 MFA를 구성해야 하며, MFA가 이미 활성화되어 있지 않으면 사용자는 AWS Management Console 접근을 위한 첫 로그인 시도로부터 35일 이내에 MFA를 등록해야 한다. MFA 유형은 FIDO 인증 하드웨어 보안 키, 하드웨어 TOTP 토큰, 가상 MFA 애플리케이션이다. 루트 사용자의 액세스 키는 만들지 않도록 강력히 권장되며, 프로그래밍 방식 액세스가 필요하면 루트 자격 증명으로 aws login 명령을 사용한다. AWS Organizations로 관리하는 여러 계정에서는 멤버 계정의 루트 자격 증명(암호, 액세스 키, 서명 인증서, MFA)을 제거하도록 권장하며, 제거된 멤버 계정은 루트로 로그인하거나 루트 암호를 복구할 수 없다. 루트 암호 요구 사항은 8~128자이며 대문자·소문자·숫자·기호 중 세 종류 이상을 포함해야 한다.",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html",
+      "fetched_with": "mcp",
+      "section": "Secure your root user sign-in with multi-factor authentication (MFA)",
+      "primary_record": "facts/citations/M04.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "LegacyConditionalParameters",
+      "claim": "AWS는 레거시 조건 파라미터 대신 새 표현식 파라미터를 쓰도록 권장한다. DynamoDB는 한 호출에서 레거시 조건 파라미터와 표현식 파라미터를 섞어 쓰는 것을 허용하지 않으며, 예를 들어 Query를 AttributesToGet과 ConditionExpression으로 함께 호출하면 오류가 발생한다. 대응 관계는 BatchGetItem·GetItem·Query·Scan의 AttributesToGet → ProjectionExpression, DeleteItem·PutItem·UpdateItem의 Expected → ConditionExpression, Query의 KeyConditions → KeyConditionExpression, Query의 QueryFilter → FilterExpression, Scan의 ScanFilter → FilterExpression, UpdateItem의 AttributeUpdates → UpdateExpression이다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LegacyConditionalParameters.html",
+      "fetched_with": "mcp",
+      "section": "Legacy DynamoDB conditional parameters",
+      "primary_record": "facts/citations/M08.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "ProgrammingWithJava",
+      "claim": "AWS SDK for Java 2.x는 추상화 수준에 따라 세 가지 인터페이스를 지원한다. 하위 수준 인터페이스는 서비스 API와 일대일 매핑이며 모든 DynamoDB API를 쓸 수 있지만 .s()·.n() 같은 함수로 값을 감싸야 해 장황하다. 상위 수준 인터페이스는 DynamoDB 확장 클라이언트(enhanced client)로 클라이언트 측 데이터 클래스와 테이블을 매핑하며, 1.x의 상위 수준 인터페이스는 주 클래스 이름 DynamoDBMapper 로 불렸고 2.x는 별도 패키지·Maven 아티팩트 software.amazon.awssdk.enhanced.dynamodb 에 있으며 주 클래스는 DynamoDbEnhancedClient 다. 확장 클라이언트는 @DynamoDbBean 대신 @DynamoDbImmutable 로 불변 데이터 클래스도 매핑할 수 있다. Document 인터페이스는 데이터 유형 설명자를 지정할 필요가 없고 EnhancedDocument 를 사용하며 fromJson·toJson 유틸리티 메서드를 제공한다. 페이지 매김에서 Limit은 필터 적용 전 읽을 항목 수를 지정하며 응답은 Limit과 무관하게 항상 최대 1MB다. LastEvaluatedKey 를 ExclusiveStartKey 로 넘겨 다음 페이지를 읽거나, queryPaginator·scanPaginator 같은 자동 페이지 매김 메서드를 쓸 수 있다. 필터링되는 데이터는 항목이 필터에 일치하든 하지 않든 읽기 용량을 소비한다.",
+      "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html",
+      "fetched_with": "mcp",
+      "section": "About the AWS SDK for Java 2.x",
+      "primary_record": "facts/citations/M08.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "q-developer-ide-end-of-support",
+      "claim": "2027년 4월 30일 AWS는 Amazon Q Developer IDE 플러그인 지원을 중단한다. AWS는 Amazon Q Developer IDE 플러그인과 유사한 기능(에이전틱 코딩, 채팅, MCP 지원을 포함한 최신 모델과 기능)을 위해 Kiro를 살펴보도록 안내한다. IDE에서 Amazon Q Developer를 사용해 왔다면 인라인 제안, 채팅, 코드 생성 등 지금 의존하는 기능이 모두 Kiro에서 제공된다.",
+      "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-developer-ide-end-of-support.html",
+      "fetched_with": "mcp",
+      "section": "Amazon Q Developer IDE plugins end of support / Migrating from Amazon Q Developer to Kiro",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "api-gateway-api-usage-plans",
+      "claim": "API 를 생성·테스트·배포한 뒤 API Gateway 사용량 계획으로 API 를 고객용 제품으로 제공할 수 있다. 사용량 계획은 배포된 하나 이상의 API 스테이지·메서드에 누가 액세스할 수 있는지 지정하고 선택적으로 요청 제한을 시작할 목표 요청 속도를 설정한다. 사용량 계획은 API 키로 API 클라이언트를 식별한다. API 키는 API 액세스를 부여하려고 애플리케이션 개발자 고객에게 배포하는 영숫자 문자열 값이며 Lambda 권한 부여자·IAM 역할·Amazon Cognito 와 함께 액세스 제어에 쓸 수 있다. API Gateway 가 API 키를 생성해 주거나 CSV 파일에서 가져올 수 있다. API 키에는 이름과 값이 있고 이름은 1,024자를 넘을 수 없으며 값은 20~128자의 영숫자 문자열이다. API 키 값은 고유해야 하며 이름이 달라도 값이 같으면 같은 키로 취급된다. 하나의 API 키를 여러 사용량 계획에 연결할 수 있고 하나의 사용량 계획을 여러 스테이지에 연결할 수 있지만, 특정 API 키는 API 의 각 스테이지에 대해 하나의 사용량 계획에만 연결될 수 있다. 제한 한도는 요청 제한을 시작할 목표 지점을, 할당량 한도는 지정된 시간 간격 안에 특정 API 키로 제출할 수 있는 목표 최대 요청 수를 설정한다. 제한과 할당량은 사용량 계획 안의 모든 API 스테이지에 걸쳐 집계된 개별 API 키 요청에 적용된다. 사용량 계획의 제한과 할당량은 하드 한도가 아니라 best-effort 로 적용되므로 클라이언트가 초과할 수 있고, 비용 통제나 API 액세스 차단에 의존해서는 안 되며 비용 모니터링에는 AWS Budgets, 요청 관리에는 AWS WAF 를 고려하라고 안내한다. 모범 사례로 문서는 'API 액세스를 제어하는 인증·권한 부여에 API 키를 쓰지 말라' 고 명시한다. 한 사용량 계획에 여러 API 가 있으면 그중 한 API 의 유효한 API 키를 가진 사용자가 그 사용량 계획의 모든 API 에 액세스할 수 있기 때문이며, 액세스 제어에는 IAM 역할·Lambda 권한 부여자·Amazon Cognito 사용자 풀을 쓰라고 안내한다. 또 API Gateway 가 생성한 API 키를 쓰고 기밀 정보를 API 키에 넣지 말라고 안내한다(클라이언트가 보통 로깅될 수 있는 헤더로 전송하기 때문). 사용량 계획에 API 키를 추가한 뒤 업데이트가 완료되기까지 몇 분이 걸릴 수 있다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html",
+      "fetched_with": "mcp",
+      "section": "What are usage plans and API keys? / Best practices for API keys and usage plans",
+      "primary_record": "facts/citations/M10.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "apigateway-use-lambda-authorizer",
+      "claim": "Lambda 권한 부여자(Lambda authorizer)는 이전에 사용자 지정 권한 부여자(custom authorizer)라고 불렸다. 클라이언트가 API 메서드에 요청하면 API Gateway 가 Lambda 권한 부여자를 호출하고, 권한 부여자는 호출자의 자격 증명을 입력으로 받아 IAM 정책을 출력으로 반환한다. OAuth·SAML 같은 전달자 토큰 인증 전략이나 요청 파라미터로 호출자 신원을 판별하는 사용자 지정 권한 부여 체계를 구현할 수 있고 REST API 콘솔·AWS CLI·AWS SDK 로 만든다. 워크플로는 ① 클라이언트가 전달자 토큰 또는 요청 파라미터를 넘겨 메서드를 호출 ② API Gateway 가 메서드 요청에 Lambda 권한 부여자가 구성되어 있는지 확인하고 구성되어 있으면 함수를 호출 ③ 함수가 OAuth 공급자 호출·SAML 어설션 획득·요청 파라미터 기반 IAM 정책 생성·데이터베이스 자격 증명 조회 중 한 방법으로 호출자를 인증 ④ 함수가 IAM 정책과 프린시펄 식별자를 반환(반환하지 않으면 호출 실패) ⑤ API Gateway 가 IAM 정책을 평가해 거부면 403 ACCESS_DENIED 같은 상태 코드를 반환하고 허용이면 메서드를 호출한다. 권한 부여 캐싱을 켜면 정책이 캐시되어 권한 부여자 함수가 다시 호출되지 않는다. Lambda 권한 부여자 유형은 두 가지다. REQUEST 권한 부여자는 헤더·쿼리 문자열 파라미터·stageVariables·$context 변수 조합으로 호출자 자격 증명을 받고 여러 자격 증명 소스로 세분화된 정책을 만들 수 있으며, 캐싱을 켜면 지정된 자격 증명 소스가 모두 있는지 확인하고 없거나 null 이거나 비어 있으면 함수를 호출하지 않고 401 Unauthorized 를 반환한다. TOKEN 권한 부여자는 JWT·OAuth 토큰 같은 전달자 토큰으로 자격 증명을 받고, 캐싱을 켜면 토큰 소스에 지정한 헤더 이름이 캐시 키가 되며 정규식(IdentityValidationExpression, TOKEN 전용)으로 토큰을 미리 검증할 수 있다. 문서는 여러 자격 증명 소스를 쓸 수 있고 캐시 키를 분리할 수 있다는 이유로 REQUEST 권한 부여자를 권장한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html",
+      "fetched_with": "mcp",
+      "section": "Use API Gateway Lambda authorizers / Lambda authorizer authorization workflow / Choosing a type of Lambda authorizer",
+      "primary_record": "facts/citations/M10.json, facts/citations/M12.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "rest-api-data-transformations",
+      "claim": "데이터 변환 기능은 비프록시 통합에서 쓰는 기능이며, 문서는 '가능하면 REST API 에 프록시 통합을 쓰라' 고 권장한다(프록시 통합은 설정이 간소하고 기존 설정을 해체하지 않고도 백엔드와 함께 발전할 수 있기 때문). 비프록시 통합을 쓰는 경우 메서드 요청과 통합 응답을 변환하는 두 가지 기능이 있다. ① 파라미터 매핑 — 통합 요청의 URL 경로 파라미터·URL 쿼리 문자열 파라미터·HTTP 헤더 값을 수정할 수 있지만 통합 요청 페이로드는 수정할 수 없고, HTTP 응답 헤더 값도 수정할 수 있다. CORS 용 정적 헤더 값을 만드는 데 쓴다. 통합 요청에서는 프록시·비프록시 통합 모두에 쓸 수 있지만 통합 응답에서 쓰려면 비프록시 통합이 필요하다. VTL 스크립팅이 필요하지 않다. ② 매핑 템플릿 변환 — 매핑 템플릿으로 URL 경로 파라미터·URL 쿼리 문자열 파라미터·HTTP 헤더와 통합 요청·통합 응답 본문을 매핑한다. 매핑 템플릿은 VTL 로 표현되고 JSONPath 표현식을 사용하며 Content-Type 헤더를 기준으로 페이로드에 적용되는 스크립트다. 매핑 템플릿으로 DynamoDB·Lambda·HTTP 엔드포인트 통합에서 보낼 데이터를 선택하고, API 의 통합 요청·통합 응답 파라미터를 조건부로 재정의하고 새 헤더 값을 만들고 상태 코드를 재정의할 수 있다. 문서는 '가능하면 파라미터 매핑을 쓰라' 고 권장하고, 본문을 바꿔야 하거나 조건부 재정의가 필요하고 프록시 통합을 쓸 수 없을 때 매핑 템플릿 변환을 쓰라고 안내한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html",
+      "fetched_with": "mcp",
+      "section": "Data transformations for REST APIs in API Gateway / Choose between parameter mapping and mapping template transformations",
+      "primary_record": "facts/citations/M10.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "set-up-logging",
+      "claim": "CloudWatch 에는 두 종류의 API 로깅이 있다. 실행 로깅에서는 API Gateway 가 CloudWatch Logs 를 관리하며 로그 그룹·로그 스트림을 만들고 호출자의 요청·응답을 로그 스트림에 보고한다. 기록되는 데이터에는 오류 또는 실행 추적(요청·응답 파라미터 값 또는 페이로드), Lambda 권한 부여자(이전 명칭 사용자 지정 권한 부여자)가 쓰는 데이터, API 키 필요 여부, 사용량 계획 활성화 여부 등이 있다. API Gateway 는 권한 부여 헤더·API 키 값과 유사한 민감한 요청 파라미터를 기록된 데이터에서 삭제한다. 보안 태세를 개선하려면 실행 로깅을 ERROR 또는 INFO 수준으로 쓰도록 권장한다. API 를 배포하면 API Gateway 가 로그 그룹과 그 아래 로그 스트림을 만들며 로그 그룹 이름은 API-Gateway-Execution-Logs_{rest-api-id}/{stage_name} 형식이다. 액세스 로깅에서는 API 개발자가 누가 어떻게 API 에 액세스했는지 기록하며, 직접 로그 그룹을 만들거나 기존 로그 그룹을 고르고 context 변수·로그 형식·로그 그룹 대상을 선택한다. 액세스 로그 형식에는 최소한 context.requestId 또는 context.extendedRequestId 가 포함되어야 하고 모범 사례로 둘 다 넣는다. context.requestId 는 x-amzn-RequestId 헤더 값을 기록하며 클라이언트가 UUID 형식 값으로 재정의할 수 있고 UUID 형식이 아닌 재정의 값은 액세스 로그에서 UUID_REPLACED_INVALID_REQUEST_ID 로 대체된다. context.extendedRequestId 는 API Gateway 가 생성하는 고유 ID 로 x-amz-apigw-id 응답 헤더로 반환되며 호출자가 제공하거나 재정의할 수 없고 AWS Support 문제 해결에 제공해야 할 수 있다. 로그 형식으로 CLF, JSON, XML, CSV 예제를 제시한다. CloudWatch Logs 를 켜려면 apigateway.amazonaws.com 을 신뢰할 수 있는 엔터티로 하는 IAM 역할을 만들고 AmazonAPIGatewayPushToCloudWatchLogs 정책을 붙여 Account 의 cloudWatchRoleArn 에 설정해야 하며, 이 속성은 CloudWatch Logs 를 켜려는 리전마다 따로 설정해야 한다. 실행 로깅과 액세스 로깅은 서로 독립적으로 켤 수 있고, 스테이지 설정·로그·스테이지 변수를 업데이트할 때는 API 를 다시 배포할 필요가 없다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html",
+      "fetched_with": "mcp",
+      "section": "CloudWatch log formats for API Gateway / Permissions for CloudWatch logging / Set up CloudWatch API logging using the API Gateway console",
+      "primary_record": "facts/citations/M10.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "stage-variables",
+      "claim": "스테이지 변수는 REST API 의 배포 스테이지와 연결된 구성 속성으로 정의할 수 있는 키-값 쌍이다. 환경 변수처럼 작동하며 API 설정과 매핑 템플릿에서 쓸 수 있다. 배포 스테이지로 API 마다 여러 릴리스 스테이지를 관리하고, 스테이지 변수로 배포 스테이지가 서로 다른 백엔드 엔드포인트와 상호 작용하도록 구성할 수 있다. 사용 사례는 두 가지로 제시된다. ① 다른 백엔드 엔드포인트 지정 — 프로덕션 엔드포인트를 호출하면 example.com 을, beta 스테이지를 호출하면 beta.example.com 을 호출하게 할 수 있고 스테이지마다 다른 Lambda 함수 이름을 지정할 수도 있다. 단 스테이지 변수로 통합 엔드포인트의 종류 자체를 바꿀 수는 없다(한 스테이지는 HTTP 프록시, 다른 스테이지는 Lambda 프록시로 지정 불가). 스테이지 변수 값으로 Lambda 함수 이름을 지정하면 Lambda 함수 권한을 직접 구성해야 한다. ② 매핑 템플릿으로 정보 전달 — 매핑 템플릿에서 스테이지 변수에 접근해 Lambda 또는 HTTP 백엔드에 구성 파라미터를 넘길 수 있고, 예를 들어 여러 스테이지에서 같은 Lambda 함수를 재사용하면서 스테이지에 따라 다른 DynamoDB 테이블을 읽게 할 수 있다. 스테이지 변수를 쓰려면 먼저 변수를 구성하고 값을 할당한 뒤 통합 요청에서 http://${stageVariables.url} 처럼 참조하며, API Gateway 가 실행 중인 스테이지에 따라 ${} 를 런타임에 치환한다. 스테이지 변수는 자격 증명 같은 민감한 데이터에 쓰도록 의도된 것이 아니며, 통합에 민감한 데이터를 넘겨야 하면 Lambda 권한 부여자의 출력을 쓰라고 안내한다.",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/stage-variables.html",
+      "fetched_with": "mcp",
+      "section": "Use stage variables for a REST API in API Gateway / Use cases for stage variables",
+      "primary_record": "facts/citations/M10.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "resources",
+      "claim": "AWS Python SDK 팀은 boto3의 리소스(resources) 인터페이스에 새 기능을 추가할 계획이 없다. 기존 인터페이스는 boto3의 수명 주기 동안 계속 동작한다. 최신 서비스 기능은 클라이언트(client) 인터페이스를 통해 사용할 수 있다. 리소스 인스턴스는 스레드 안전하지 않으므로 스레드·프로세스 간에 공유하면 안 되고 각 스레드마다 새 세션과 리소스를 만들어야 한다.",
+      "url": "https://docs.aws.amazon.com/boto3/latest/guide/resources.html",
+      "fetched_with": "mcp",
+      "section": "Overview / Multithreading or multiprocessing with resources",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "cli-chap-authentication",
+      "claim": "AWS CLI 자격 증명 구성 방법은 권장 순서대로 다음과 같다: (1) AWS Management Console 자격 증명으로 로그인해 단기 자격 증명 사용(권장), (2) IAM Identity Center 워크포스 사용자 단기 자격 증명, (3) IAM 사용자 단기 자격 증명, (4) Amazon EC2 인스턴스 메타데이터로 인스턴스에 할당된 역할의 임시 자격 증명 조회, (5) 다른 자격 증명 방법과 함께 역할 수임, (6) IAM 사용자 장기 자격 증명(권장하지 않음), (7) 외부 위치에 자격 증명 저장(권장하지 않음). 자격 증명·구성 설정의 우선순위는 명령줄 옵션 > 환경 변수 > 역할 수임 > 웹 자격 증명 역할 수임 > AWS IAM Identity Center > credentials 파일 > 사용자 지정 프로세스 > config 파일 > 컨테이너 자격 증명(Amazon ECS 작업 IAM 역할) > Amazon EC2 인스턴스 프로파일 자격 증명 순이다.",
+      "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html",
+      "fetched_with": "mcp",
+      "section": "Authentication and access credentials for the AWS CLI / Configuration and credential precedence",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "welcome",
+      "claim": "AWS Cloud9 은 신규 고객에게 더 이상 제공되지 않는다(no longer available to new customers). 기존 AWS Cloud9 고객은 서비스를 평소와 같이 계속 사용할 수 있다. 문서 상단 배너는 마이그레이션 안내로 'How to migrate from AWS Cloud9 to AWS IDE Toolkits or AWS CloudShell' 블로그 글을 연결한다. AWS Cloud9 은 브라우저로 접근하는 통합 개발 환경(IDE)이며, 환경을 컴퓨팅 리소스에 연결하는 방식은 AWS Cloud9 이 Amazon EC2 인스턴스를 만들어 연결하는 EC2 환경과 기존 인스턴스·자체 서버에 연결하는 SSH 환경 두 가지다.",
+      "url": "https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is AWS Cloud9?",
+      "primary_record": "facts/citations/M03.json, facts/citations/M04.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "API_PasswordPolicyType",
+      "claim": "PasswordPolicyType 은 CreateUserPool·UpdateUserPool 의 요청·응답 파라미터이자 DescribeUserPool 의 응답 파라미터다. MinimumLength 는 Integer 이고 6 미만일 수 없으며 유효 범위는 6~99, 필수 아님이다. PasswordHistorySize 는 Integer 이고 유효 범위 0~24 이며 0 이거나 제공하지 않으면 암호 이력이 적용되지 않고 DescribeUserPool 응답에도 표시되지 않으며 이 설정을 켜려면 사용자 풀이 Essentials 티어 이상이어야 한다. RequireLowercase·RequireNumbers·RequireSymbols·RequireUppercase 는 각각 Boolean 이다. TemporaryPasswordValidityDays 는 Integer 이고 기본값 7, 유효 범위 0~365 이며 0 을 제출하면 null 로 취급해 기본값이 설정된다. 사용자 풀에 TemporaryPasswordValidityDays 를 설정하면 그 사용자 풀에서 레거시 파라미터 UnusedAccountValidityDays 에는 더 이상 값을 설정할 수 없다.",
+      "url": "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_PasswordPolicyType.html",
+      "fetched_with": "mcp",
+      "section": "PasswordPolicyType / Contents",
+      "primary_record": "facts/citations/M12.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "authentication-flow",
+      "claim": "자격 증명 풀은 퍼블릭 공급자 인증에 enhanced(단순화)와 basic(classic) 두 흐름을 제공한다. 자격 증명 풀이 공급자로부터 받는 인증 아티팩트는 Amazon Cognito 사용자 풀은 ID 토큰, OIDC 는 ID 토큰, SAML 2.0 은 SAML 어설션, 소셜 공급자는 액세스 토큰이다. enhanced 흐름의 작업 순서는 GetId → GetCredentialsForIdentity 두 단계다. 앱이 인증 증거(JWT 또는 SAML 어설션)를 GetId 요청에 담아 제시하면 자격 증명 풀이 identity ID 를 반환하고, 앱이 identity ID 와 같은 인증 증거를 GetCredentialsForIdentity 요청에 결합해 보내면 자격 증명 풀이 AWS 자격 증명을 반환한다. enhanced 인증은 IAM 역할 선택과 자격 증명 검색 로직을 자격 증명 풀 구성에서 관리하며 기본 역할 선택, 속성 기반 액세스 제어(ABAC), 역할 기반 액세스 제어(RBAC)를 구성할 수 있다. enhanced 인증에서 나온 AWS 자격 증명은 1시간 유효하다. basic(classic) 흐름의 작업 순서는 GetId → GetOpenIdToken → AssumeRoleWithWebIdentity 세 단계이고, 애플리케이션이 사용자가 맡을 IAM 역할을 직접 선택하며 AWS STS 가 AWS 자격 증명을 반환한다. basic 흐름은 배포하는 자격 증명을 더 세밀하게 제어하고 사용자 지정 역할 세션 기간을 요청할 수 있다. GetCredentialsForIdentity 는 기능적으로 GetOpenIdToken 다음에 AssumeRoleWithWebIdentity 를 호출하는 것과 같다. 문서는 enhanced 흐름이 개발자 노력이 가장 적은 가장 안전한 선택이라고 명시하고, 새 자격 증명 풀을 만들 때 basic(classic) 인증을 기본으로 활성화하지 않는 것을 모범 사례로 제시한다. 역할 매핑(RoleMappings)이 있는 자격 증명 풀에서 GetOpenIdToken 을 시도하면 'Basic (classic) flow is not supported with RoleMappings, please use enhanced flow.' 오류가 발생한다. enhanced 흐름은 IAM 역할이 자격 증명 풀과 같은 AWS 계정에 있어야 하지만 basic 흐름에서는 애플리케이션이 다른 계정의 역할을 요청할 수 있다.",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/authentication-flow.html",
+      "fetched_with": "mcp",
+      "section": "Identity pools authentication flow (provider artifacts table) / The enhanced (simplified) authentication flow",
+      "primary_record": "facts/citations/M12.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "cognito-sync-availability-change",
+      "claim": "Amazon Cognito Sync 는 더 이상 신규 고객에게 제공되지 않는다(no longer open to new customers). 문서는 대안으로 AWS AppSync 와 Amazon DynamoDB 를 제시한다. FAQ 는 서비스가 신규 고객을 받지 않으며 기존 고객에게는 계속 동작하지만 새 기능 개발이 없다고(no new feature development) 명시한다. 기존 고객의 워크로드에는 중단이 없고 Amazon Cognito Sync 를 그대로 계속 쓸 수 있다. 권장 대안은 GraphQL API 로 디바이스 간 실시간 데이터 동기화를 하는 AWS AppSync 와 프로필·환경 설정·설정 같은 단순 키-값 사용자 데이터 저장을 위한 DynamoDB 다. 마이그레이션에는 데이터 스키마 갱신, Amazon Cognito Sync 스토어에서 대안 서비스로의 데이터 이전, 클라이언트 애플리케이션의 API 변경이 필요하다.",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-sync-availability-change.html",
+      "fetched_with": "mcp",
+      "section": "Amazon Cognito Sync availability change / Frequently asked questions",
+      "primary_record": "facts/citations/M12.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "federation-endpoints-oauth-grants",
+      "claim": "사용자 풀 OAuth 2.0 권한 부여 서버는 세 종류의 OAuth 2.0 권한 부여(grant)에 응답해 토큰을 발급한다. 앱 클라이언트별로 지원 그랜트 유형을 설정하며, 클라이언트 자격 증명(client credentials) 그랜트는 암묵적(implicit) 또는 권한 부여 코드(authorization code) 그랜트와 같은 앱 클라이언트에서 함께 활성화할 수 없다. 권한 부여 코드 그랜트는 response_type=code 로 요청하고 코드를 토큰 엔드포인트에서 ID·액세스·refresh 토큰으로 교환한다. 문서는 권한 부여 코드 그랜트가 '가장 안전한 형태의 권한 부여 그랜트(the most secure form of authorization grant)'이고 토큰 내용을 사용자에게 직접 보여 주지 않으며, Amazon Cognito 에서 권한 부여 서버로부터 세 토큰 유형을 모두 받는 유일한 방법이라고 명시한다. 암묵적 그랜트는 response_type=token 으로 요청하고 콜백 URL 에 access_token 과 id_token 을 붙여 반환하며 토큰 엔드포인트와의 추가 상호 작용이 없고 ID·액세스 토큰만 생성한다. 문서는 암묵적 그랜트를 '레거시 권한 부여 그랜트(a legacy authorization grant)'로 명시하고, 권한 부여 코드 그랜트와 달리 사용자가 토큰을 가로채 검사할 수 있으므로 암묵적 그랜트를 통한 토큰 전달을 막으려면 앱 클라이언트가 권한 부여 코드 그랜트만 지원하도록 구성하라고 안내한다. 클라이언트 자격 증명은 머신 대 머신 액세스용 권한 부여 전용 그랜트이며 앱 클라이언트에 클라이언트 보안 암호가 있어야 하고 클라이언트 자격 증명 그랜트만 지원해야 하며 AWS 청구서에 비용을 추가한다. Amazon Cognito 는 권한 부여 코드 그랜트에서 PKCE(Proof Key for Code Exchange)를 지원한다. PKCE 는 퍼블릭 클라이언트용 OAuth 2.0 권한 부여 코드 그랜트 확장이며 가로채인 권한 부여 코드의 사용을 막는다. 앱이 code_verifier 문자열을 생성해 SHA256 해시 후 base64 로 인코딩한 값을 Authorize 엔드포인트에 code_challenge 로 보내고(code_challenge_method=S256), 토큰 교환 시 code_verifier 를 평문으로 보내면 Amazon Cognito 가 같은 해시·인코딩을 수행해 일치할 때만 토큰을 반환한다.",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/federation-endpoints-oauth-grants.html",
+      "fetched_with": "mcp",
+      "section": "OAuth 2.0 grants / Authorization code grant / Implicit grant / Client credentials / Refresh token",
+      "primary_record": "facts/citations/M12.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "user-pool-settings-attributes",
+      "claim": "Amazon Cognito 는 OpenID Connect 명세를 근거로 모든 사용자에게 표준 속성 집합을 할당한다. 기본적으로 표준·사용자 지정 속성 값은 최대 2048자 문자열이며 일부 속성에는 형식 제약이 있다. 표준 속성은 name, family_name, given_name, middle_name, nickname, preferred_username, profile, picture, website, gender, birthdate, zoneinfo, locale, updated_at, address, email, phone_number, sub 18개다. sub 를 제외한 표준 속성은 모든 사용자에게 기본적으로 선택 사항이고, 필수로 만들려면 사용자 풀 생성 과정에서 속성 옆의 Required 확인란을 선택한다. email 과 phone_number 만 확인(verify)할 수 있다. 표준 속성을 Required 로 표시하면 사용자가 값을 제공하지 않으면 등록할 수 없고, 사용자 풀을 만든 뒤에는 속성의 필수 여부를 바꿀 수 없다(You can't change required attributes after you create a user pool). birthdate 는 YYYY-MM-DD 형식의 유효한 10자 날짜여야 하고, phone_number 는 플러스(+) 기호로 시작해 국가 코드가 바로 붙어야 하며 + 와 숫자만 포함할 수 있다(예: +14325551212). username 은 name 속성과 다른 별개 속성이고 사용자 풀 안에서 고유해야 하며 사용자를 만든 뒤 값을 바꿀 수 없다. 사용자 지정 속성은 사용자 풀에 최대 50개까지 추가할 수 있고 최대 길이는 2048자를 넘을 수 없다. 사용자 지정 속성은 string·number·boolean·DateTime 으로 정의할 수 있지만 Amazon Cognito 는 ID 토큰에 항상 문자열로만 기록하고, 콘솔에서는 string 과 number 만 추가할 수 있으며 boolean·DateTime 은 CreateUserPool·UpdateUserPool 의 SchemaAttributes 로만 가능하다. 사용자 지정 속성은 사용자에게 값 제공을 요구할 수 없고, 사용자 풀에 추가한 뒤 제거·변경할 수 없다. mutable 또는 immutable 로 만들 수 있고 immutable 속성은 사용자를 만들 때만 값을 쓸 수 있다. 코드와 역할 기반 액세스 제어 규칙 설정에서 사용자 지정 속성은 표준 속성과 구분하기 위해 custom: 접두사가 필요하다. 앱 클라이언트마다 속성별 읽기·쓰기 권한을 설정할 수 있고, 새 앱 클라이언트를 만들면 기본적으로 모든 표준·사용자 지정 속성에 읽기·쓰기 권한이 부여되므로 필요한 최소 속성 집합으로 제한하는 것이 모범 사례다. dev: 접두사를 쓰는 개발자 속성(developer attributes)은 앱 클라이언트 읽기·쓰기 권한으로 대체된 레거시 기능이다.",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html",
+      "fetched_with": "mcp",
+      "section": "Standard attribute details and format restrictions / View required attributes / Customizing sign-in attributes / How to choose between alias attributes and username attributes",
+      "primary_record": "facts/citations/M12.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "invocation-async-retain-records",
+      "claim": "Lambda 는 비동기 호출 레코드를 Amazon SQS 표준 대기열, Amazon SNS 표준 주제, Amazon S3 버킷(실패 시에만), AWS Lambda 함수, Amazon EventBridge 이벤트 버스 다섯 가지 중 하나로 보낼 수 있다. 성공 이벤트와 모든 처리 시도에 실패한 이벤트에 각각 다른 대상을 구성할 수 있다. 대상별로 실행 역할에 sqs:SendMessage, sns:Publish, s3:PutObject·s3:ListBucket, lambda:InvokeFunction, events:PutEvents 권한이 필요하다. DLQ(데드 레터 대기열)는 온-실패 대상의 대안이며 함수 수준에서만 추가·제거할 수 있고 응답 세부 정보 없이 이벤트 내용만 보낸다. 온-실패 대상은 지원 대상이 더 많고 함수 응답 세부 정보를 호출 레코드에 포함한다. DLQ 는 Amazon SQS 표준 대기열 또는 Amazon SNS 표준 주제만 지원하며 FIFO 는 지원하지 않는다. DLQ 메시지 속성은 RequestID, ErrorCode(HTTP 상태 코드), ErrorMessage(오류 메시지의 첫 1KB)다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html",
+      "fetched_with": "mcp",
+      "section": "Capturing records of Lambda asynchronous invocations / Adding a destination / Adding a dead-letter queue",
+      "primary_record": "facts/citations/M09.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "lambda-runtimes",
+      "claim": "지원 런타임 표(25행)에는 Node.js 26(nodejs26.x, 퍼블릭 프리뷰)·Node.js 24·Node.js 22, Python 3.15(퍼블릭 프리뷰)·3.14·3.13·3.12·3.11·3.10, Java 25·21·17(java17.al2023)·11(java11.al2023)·8(java8.al2023)·17(java17)·11(java11)·8(java8.al22), .NET 10·.NET 9(컨테이너 전용)·.NET 8, Ruby 4.0·3.4·3.3, OS 전용 런타임(provided.al2023)이 있다. 각 언어의 주요 버전마다 별도 런타임 식별자를 가지며(예: nodejs24.x, python3.14) 주요 버전 변경은 고객이 직접 런타임 식별자를 바꿔야 한다. 지원 런타임은 모두 x86_64 와 arm64 아키텍처를 지원한다. Lambda 는 언어가 LTS(장기 지원) 단계에 도달한 뒤에만 관리형 런타임을 제공한다. Amazon Linux 2 는 2026년 6월 30일 EOL 예정이며 AL2 기반 런타임(java8.al2·java11·java17·python3.10·python3.11·provided.al2)은 표의 지원 종료일까지만 패치된다.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+      "fetched_with": "mcp",
+      "section": "Deprecated runtimes",
+      "primary_record": "facts/citations/M03.json, facts/citations/M09.json, facts/citations/M13.json",
+      "reread_on_2026_08_25": true
+    },
+    {
+      "id": "tools-to-develop-deploy-manage",
+      "claim": "현재 Lambda 개발 도구 문서는 다음을 제시한다. 로컬 개발 — AWS Toolkit for VS Code 로 로컬 함수 개발·디버깅·테스트와 Lambda 직접 배포. IaC — AWS SAM, AWS CDK, CloudFormation. GitHub Actions — 리포지토리에서 Lambda 배포 자동화(Deploy Lambda function 액션, OIDC 자격 증명). Powertools for AWS Lambda — Python·TypeScript/Node.js·Java·.NET 용 오픈 소스 개발자 툴킷으로 구조화된 로깅·트레이싱·지표, 파라미터 조회, 멱등성 패턴 제공. 워크플로·이벤트 — Lambda durable functions, AWS Step Functions, Amazon EventBridge.",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html",
+      "fetched_with": "mcp",
+      "section": "Development tools for Lambda / Local development tools / Powertools for AWS Lambda",
+      "primary_record": "facts/citations/M09.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "welcome",
+      "claim": "AWS SDK for Go V1은 지원이 종료(end-of-support)되었으며 AWS는 AWS SDK for Go V2로 마이그레이션할 것을 권장한다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What is the AWS SDK for Go (end-of-support 안내 배너)",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "getting-started",
+      "claim": "AWS SDK for Java 1.x는 2025년 12월 31일 지원이 종료(end-of-support)되었으며, AWS는 2.x로 마이그레이션할 것을 권장한다. AWS SDK for Java 2.x는 Java 8+ 기반으로 1.x 코드베이스를 전면 재작성한 버전이며 일관성, 사용 편의성, 강제된 불변성이 개선되었다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html",
+      "fetched_with": "mcp",
+      "section": "AWS SDK for Java 1.x end-of-support",
+      "primary_record": "facts/citations/M04.json, facts/citations/M05.json, facts/citations/M06.json, facts/citations/M07.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "welcome",
+      "claim": "AWS SDK for Java 1.x는 2025년 12월 31일 지원이 종료되었으며, AWS는 새 기능·가용성 개선·보안 업데이트를 계속 받으려면 AWS SDK for Java 2.x로 마이그레이션할 것을 권장한다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "Developer Guide - AWS SDK for Java 1.x (end-of-support 안내 배너)",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "migrate",
+      "claim": "AWS SDK for JavaScript v2는 지원이 종료(end-of-support)되었으며 AWS는 v3으로 마이그레이션할 것을 권장한다. v3은 v2를 전면 재작성한 메이저 버전이다.",
+      "url": "https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/migrate.html",
+      "fetched_with": "mcp",
+      "section": "Migrate to v3 of the AWS SDK for JavaScript (end-of-support 안내 배너)",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "feature-retry-behavior",
+      "claim": "재시도 모드는 standard, adaptive, legacy 세 가지다. standard 는 모든 워크로드의 기본값으로 권장되며 지터를 포함한 지수 백오프로 재시도하고, 일시적 오류(네트워크 타임아웃)에는 짧은 지연, 스로틀링 오류(ThrottlingException)에는 긴 지연을 쓴다. standard 는 재시도 할당량(토큰 버킷)을 포함해 재시도마다 토큰을 차감하고 요청 성공 시 보충하며, 토큰이 소진되면 재시도하지 않고 오류를 반환한다. 재시도 할당량은 초기 요청을 지연·차단하지 않고 재시도에만 영향을 준다. adaptive 는 standard 에 클라이언트 측 속도 제한기를 더해 스로틀링 응답을 추적하고 요청 전송 속도를 조절하며, 초기 요청도 지연·차단할 수 있다. 속도 제한기는 SDK 클라이언트 인스턴스 단위로 동작하므로 여러 리소스·테넌트를 담당하는 클라이언트에는 권장되지 않고 일반 기본값으로도 권장되지 않는다. legacy 는 standard 도입 전 각 SDK 동작이며 표준 재시도 할당량이 없고 재시도 횟수·백오프 타이밍·재시도 대상 오류·스로틀링 동작이 언어마다 다르다. legacy 는 Java, Python, Ruby, PHP, C++, CLI 에서 사용할 수 있고 .NET, Go, Kotlin, Rust, Swift, JavaScript 에는 없으며, 현재 legacy 를 쓰면 standard 로 전환하도록 권장된다. 설정은 재시도 모드(환경 변수 AWS_RETRY_MODE, config 키 retry_mode, 기본값 standard)와 최대 시도 횟수(환경 변수 AWS_MAX_ATTEMPTS, config 키 max_attempts, 기본값 3)다. max_attempts 3 은 초기 요청 1회와 최대 2회 재시도를 뜻하고 1 로 두면 재시도가 비활성화된다. DynamoDB·DynamoDB Streams 클라이언트는 max_attempts 기본값이 4 이고 기본 백오프 지연이 50ms 대신 25ms 다. 문서에 기술된 동작은 기본값이 되기 전까지 환경에 AWS_NEW_RETRIES_2026=true 를 설정해 옵트인해야 하며, 설정하지 않으면 2026년 이전 동작(백오프 타이밍, 재시도 할당량 비용, 서비스별 기본값이 다름)이 적용된다.",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html",
+      "fetched_with": "mcp",
+      "section": "Configuring retries",
+      "primary_record": "facts/citations/M04.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "version-support-matrix",
+      "claim": "AWS SDK·도구 메이저 버전의 현재 수명 주기 단계. General Availability: AWS CLI 2.x(2020-02-10), SDK for C++ 1.x, SDK for Go V2 1.x, SDK for Java 2.x, SDK for JavaScript 3.x, SDK for Kotlin 1.x, SDK for .NET 4.x(2025-04-28), SDK for PHP 3.x, SDK for Python(Boto3) 1.x, SDK for Python(Botocore) 1.x, SDK for Ruby 3.x, SDK for Rust 1.x, SDK for Swift 1.x, Tools for PowerShell 5.x. Maintenance Announcement: AWS CLI 1.x. End-of-Support: SDK for Go 1.x, SDK for Java 1.x, SDK for JavaScript 1.x·2.x, SDK for .NET 1.x·2.x·3.x, SDK for PHP 2.x, SDK for Python(Boto2) 1.x, SDK for Ruby 1.x·2.x, Tools for PowerShell 2.x·3.x·4.x. 이 문서에 등재된 공식 SDK 언어는 C++, Go, Java, JavaScript, Kotlin, .NET, PHP, Python, Ruby, Rust, Swift 이다.",
+      "url": "https://docs.aws.amazon.com/sdkref/latest/guide/version-support-matrix.html",
+      "fetched_with": "mcp",
+      "section": "AWS SDKs and Tools version lifecycle",
+      "primary_record": "facts/citations/M03.json",
+      "reread_on_2026_08_25": true
+    },
+    {
+      "id": "sam-cli-command-reference-sam-package",
+      "claim": "sam package 는 코드와 종속성의 .zip 파일을 만들어 Amazon S3 에 업로드하고(AWS SAM 이 Amazon S3 에 저장되는 모든 파일에 암호화를 활성화한다) 로컬 아티팩트 참조를 업로드된 Amazon S3 위치로 바꾼 AWS SAM 템플릿 사본을 반환한다. 기본 동작은 현재 작업 디렉터리를 프로젝트 루트로 가정하고, 먼저 sam build 로 빌드된 .aws-sam 하위 폴더의 template.yaml 을 찾고, 없으면 현재 작업 디렉터리의 template.yaml 또는 template.yml 을 찾는다. --template 을 지정하면 기본 동작을 덮어써 그 템플릿과 그것이 가리키는 로컬 리소스만 패키징한다. 문서는 참고(Note)로 'sam deploy 가 이제 sam package 의 기능을 암시적으로 수행한다(sam deploy now implicitly performs the functionality of sam package). sam deploy 명령을 직접 써서 애플리케이션을 패키징하고 배포할 수 있다'고 명시한다. --resolve-s3 는 패키징용 S3 버킷을 자동으로 만들고 --s3-bucket 과 함께 지정하면 오류가 난다. 아티팩트가 51,200바이트보다 크면 --s3-bucket 또는 --resolve-s3 중 하나가 필요하다. --output-template-file 로 패키징된 템플릿을 쓸 경로를 지정하며 지정하지 않으면 표준 출력에 쓴다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-package.html",
+      "fetched_with": "mcp",
+      "section": "sam package / Note (sam deploy now implicitly performs the functionality of sam package) / Options / Example",
+      "primary_record": "facts/citations/M13.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "serverless-policy-templates",
+      "claim": "AWS SAM 은 Lambda 함수와 AWS Step Functions 상태 머신의 권한을 애플리케이션이 쓰는 리소스로 좁히기 위해 정책 템플릿 목록에서 고를 수 있게 한다. 정책 템플릿을 쓰는 AWS Serverless Application Repository 의 AWS SAM 애플리케이션은 배포할 때 특별한 고객 확인(customer acknowledgment)이 필요하지 않다. 구문 규칙은 AWS SAM 템플릿 파일에 지정하는 모든 정책 템플릿마다 자리표시자 값을 담은 객체를 반드시 지정해야 하고, 자리표시자 값이 필요 없는 정책 템플릿은 빈 객체({})를 지정해야 한다는 것이다. 빈 객체를 주지 않으면 sam build 실행 시 \"Must specify valid parameter values for policy template '<정책-템플릿-이름>'\" 오류가 난다. 일반 IAM 정책이나 AWS 관리형 정책은 CloudFormation 으로 그대로 전달되므로 빈 객체 없이 쓸 수 있고, 한 Policies 목록에 관리형 정책(예: AmazonSQSFullAccess)과 정책 템플릿(예: DynamoDBCrudPolicy: TableName: !Ref SampleTable)을 섞어 쓸 수 있다. 정책 템플릿 표에는 79행이 있고 DynamoDB 관련 템플릿은 DynamoDBBackupFullAccessPolicy(테이블의 온디맨드 백업에 읽기·쓰기 권한), DynamoDBCrudPolicy(DynamoDB 테이블에 생성·읽기·업데이트·삭제 권한), DynamoDBReadPolicy(DynamoDB 테이블에 읽기 전용 권한), DynamoDBReconfigurePolicy(테이블 재구성 권한), DynamoDBRestoreFromBackupPolicy(백업에서 테이블 복원 권한), DynamoDBStreamReadPolicy(DynamoDB 스트림·레코드 설명·읽기 권한), DynamoDBWritePolicy(테이블에 쓰기 전용 권한) 일곱 개다. 새 정책 템플릿 추가를 요청하려면 AWS SAM GitHub 프로젝트의 develop 브랜치 policy_templates.json 소스 파일에 풀 리퀘스트를 제출하고 이유와 링크를 담은 이슈를 제출한다.",
+      "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html",
+      "fetched_with": "mcp",
+      "section": "AWS SAM policy templates / Syntax / Examples / Policy template table (DynamoDB 항목 조회) / Troubleshooting",
+      "primary_record": "facts/citations/M13.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "state-map-inline",
+      "claim": "Map 상태는 기본적으로 Inline 모드로 실행된다. Inline 모드는 JSON 배열만 입력으로 받고, 각 반복이 Map 상태를 포함한 워크플로의 컨텍스트에서 실행되어 반복의 실행 이력이 부모 워크플로 실행 이력에 추가되며, 최대 40개의 동시 반복을 지원한다. 실행 이력이 25,000개를 넘지 않고 40개보다 많은 동시 반복이 필요하지 않을 때 Inline 모드를 쓴다. Inline 모드에서는 어느 한 반복이 실패하면 Map 상태가 실패하고 모든 반복이 중지된다. ItemProcessor 필드가 이제 사용이 중단된(deprecated) Iterator 필드를 대체하며, 문서는 Iterator 를 ItemProcessor 로 바꾸도록 강력히 권장한다. 같은 방식으로 ItemSelector 필드가 사용이 중단된 Parameters 필드를 대체한다. MaxConcurrency 로 병렬 반복 수의 상한을 지정하며, 입력 배열 항목이 40개를 넘으면 동시 반복이 제한될 가능성이 커지고 더 높은 동시성이 필요하면 Distributed 모드를 고려한다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/state-map-inline.html",
+      "fetched_with": "mcp",
+      "section": "Using Map state in Inline mode / Key concepts / Inline Map state fields",
+      "primary_record": "facts/citations/M11.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "test-and-debug",
+      "claim": "Step Functions 는 상태 머신을 테스트·디버깅하는 방법으로 Test State 를 제공한다. 콘솔에서 상태 정의와 입력을 제공하면 Step Functions 가 그 상태를 실행하고 출력을 보여 주며 상태 머신을 만들지 않아도 된다. TestState API 로도 개별 상태를 테스트할 수 있고 inspectionLevel 은 INFO(기본), DEBUG, TRACE 다(TRACE 는 HTTP Task 에만 제공되며 원시 HTTP 요청·응답을 보여 준다). 데이터 흐름 시뮬레이터(Data flow simulator)는 JSONPath 구문을 테스트하기 위해 만든 콘솔 도구이며 현재 지원되지 않는다(unsupported). AWS Step Functions Local(다운로드 가능한 버전)도 기능 동등성을 제공하지 않으며 지원되지 않는다(unsupported) — 최적화 서비스 통합, 크로스 계정 액세스, 분산 맵을 지원하지 않는다. 문서는 Step Functions Local 대신 TestState API 로 배포 전에 상태 머신 로직을 단위 테스트하도록 안내한다.",
+      "url": "https://docs.aws.amazon.com/step-functions/latest/dg/test-and-debug.html",
+      "fetched_with": "mcp",
+      "section": "Testing and debugging Step Functions state machines / Test with Test State in console and API / Data flow simulator (unsupported) / Step Functions Local (unsupported)",
+      "primary_record": "facts/citations/M11.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "welcome",
+      "claim": "교재 슬라이드 26 이 인용한 Eclipse 용 AWS Toolkit 문서 경로 https://docs.aws.amazon.com/toolkit-for-eclipse/v1/user-guide/setup-credentials.html 과 https://docs.aws.amazon.com/toolkit-for-eclipse/v1/user-guide/welcome.html 은 모두 https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html 로 리다이렉트된다(HTTP 200, 최종 URL 확인). 즉 Eclipse 용 AWS Toolkit 의 별도 사용 설명서가 더 이상 제공되지 않는다. 이 항목의 주장은 URL 의 최종 도달 지점 자체이며 페이지 내용에 근거한 주장이 아니다.",
+      "url": "https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html",
+      "fetched_with": "mcp",
+      "section": "What the AWS Toolkit for JetBrains includes / Working with the AWS Toolkit for JetBrains",
+      "primary_record": "facts/citations/M03.json, facts/citations/M04.json, facts/citations/M09.json",
+      "reread_on_2026_08_25": false
+    },
+    {
+      "id": "aws-xray-interface-console",
+      "claim": "X-Ray 는 Amazon CloudWatch 콘솔 또는 X-Ray 콘솔로 사용할 수 있다. CloudWatch 콘솔에는 X-Ray 콘솔에서 다시 설계해 더 쓰기 쉽게 만든 새 X-Ray 기능이 포함되어 있고, CloudWatch 콘솔에서 CloudWatch 로그·지표와 X-Ray 추적 데이터를 함께 볼 수 있다. 문서는 'AWS 는 X-Ray 콘솔을 더 이상 개발하지 않는다(AWS is no longer developing the X-Ray console)' 고 명시한다. X-Ray Service map 과 CloudWatch ServiceLens map 은 Amazon CloudWatch 콘솔 안의 X-Ray trace map 으로 통합되었고, CloudWatch 콘솔 왼쪽 탐색 창의 X-Ray traces 아래 Trace Map 에서 연다. CloudWatch 에는 애플리케이션 서비스·클라이언트·Synthetics canary·서비스 종속성을 검색하고 모니터링하는 Application Signals 가 포함되어 있으며, 여기서 서비스 수준 목표(SLO) 기반 상태 지표를 보고 상관된 X-Ray 추적으로 내려가 자세히 문제를 해결할 수 있다. X-Ray Insights 도 CloudWatch 콘솔의 Insights 에 포함된다.",
+      "url": "https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html",
+      "fetched_with": "mcp",
+      "section": "Explore the X-Ray console",
+      "primary_record": "facts/citations/M01.json, facts/citations/M02.json, facts/citations/M14.json",
+      "reread_on_2026_08_25": false
+    }
+  ]
+}

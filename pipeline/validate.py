@@ -228,6 +228,16 @@ def check_citations_registry(tier1: set[str], tier2: set[str]) -> list[str]:
     return problems
 
 
+def item_state(item: dict) -> str | None:
+    """폐기 항목의 상태를 읽습니다.
+
+    대장 파일이 상태 키를 `state` 로 쓰기도 하고 `status` 로 쓰기도 합니다.
+    한쪽만 읽으면 다른 쪽 모듈의 ended 항목이 조용히 검사에서 빠집니다.
+    실제로 그런 일이 있었으므로 둘 다 받습니다.
+    """
+    return item.get("state") or item.get("status")
+
+
 def load_ended_terms() -> list[dict]:
     """facts/deprecations/*.yaml 에서 지원 종료(ended) 항목을 모읍니다."""
     if not DEPRECATIONS_DIR.is_dir():
@@ -235,7 +245,7 @@ def load_ended_terms() -> list[dict]:
     items: list[dict] = []
     for path in sorted(DEPRECATIONS_DIR.glob("*.yaml")):
         data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        items.extend(i for i in data.get("items", []) if i.get("state") == "ended")
+        items.extend(i for i in data.get("items", []) if item_state(i) == "ended")
     return items
 
 

@@ -15,7 +15,7 @@ verified_on: '2026-08-25'
 items:
   # ---------------------------------------------------------------- incorrect
   - id: feedback-wrong-course-name
-    status: incorrect
+    state: incorrect
     title: 과정 피드백 안내가 다른 과정 이름을 지시함
     courseware_location: 슬라이드 14 본문 4번 단계
     courseware_says: '완료한 Architecting on AWS 교육 과정을 선택하고 Evaluate 를 선택합니다'
@@ -24,7 +24,7 @@ items:
     courseware_internal: true
 
   - id: skillbuilder-course-count
-    status: incorrect
+    state: incorrect
     title: Skill Builder 무료 디지털 과정 수
     courseware_location: 슬라이드 5 본문 및 강사 노트
     courseware_says: '600여 개의 디지털 과정 / 600개가 넘는 온디맨드 디지털 과정 및 학습 플랜'
@@ -33,7 +33,7 @@ items:
     courseware_internal: false
 
   - id: cert-list-outdated
-    status: incorrect
+    state: incorrect
     title: 슬라이드에 나온 자격증 목록이 현재와 다름
     courseware_location: 슬라이드 7 강사 노트
     courseware_says: '슬라이드에는 현재 제공되는 AWS Certification이 나와 있습니다'
@@ -42,7 +42,7 @@ items:
     courseware_internal: false
 
   - id: instructor-note-duplicate-sentence
-    status: incorrect
+    state: incorrect
     title: 강사 노트가 같은 경고 문장을 연달아 두 번 반복
     courseware_location: 슬라이드 7 강사 노트
     courseware_says: '시험은 자주 업데이트되며 제공되는 시험과 각 시험의 테스트 항목에 관한 세부 정보는 변경될 수 있습니다. 그러나 시험은 자주 업데이트되며 …'
@@ -51,7 +51,7 @@ items:
     courseware_internal: true
 
   - id: subscription-note-duplicate
-    status: incorrect
+    state: incorrect
     title: 구독 필요 안내를 표현만 바꿔 두 번 적음
     courseware_location: 슬라이드 11 강사 노트
     courseware_says: '참고: 이러한 리소스 중 일부는 디지털 구독이 필요합니다. / 참고: 일부 자료에는 AWS Skill Builder 구독이 필요합니다.'
@@ -60,7 +60,7 @@ items:
     courseware_internal: true
 
   - id: followup-course-url-unlabeled
-    status: incorrect
+    state: incorrect
     title: 후속 과정 URL 하나에 과정 이름이 붙어 있지 않음
     courseware_location: 슬라이드 3 강사 노트
     courseware_says: 'Advanced Developing on AWS 뒤에 URL 두 개가 연달아 나오고 courseId=53785 URL 에는 과정 이름이 없다'
@@ -69,7 +69,7 @@ items:
     courseware_internal: true
 
   - id: untitled-slide
-    status: incorrect
+    state: incorrect
     title: 자격증 레벨 슬라이드에 제목이 없음
     courseware_location: 슬라이드 7
     courseware_says: '슬라이드 제목이 비어 있고 본문 텍스트 박스에 AWS Certification 레벨 이라고만 적혀 있다'
@@ -79,7 +79,7 @@ items:
 
   # ------------------------------------------------------------------ changed
   - id: exam-prep-step4-name
-    status: changed
+    state: changed
     title: 시험 준비 4단계의 마지막 도구 이름
     courseware_location: 슬라이드 8·12
     courseware_says: '공식 연습 시험으로 실전 시험 준비 상태를 확인합니다 (Official Practice Exam)'
@@ -89,7 +89,7 @@ items:
     courseware_internal: false
 
   - id: exam-prep-tools-expanded
-    status: changed
+    state: changed
     title: 시험 준비에 쓰는 도구 구성
     courseware_location: 슬라이드 9~12
     courseware_says: '공식 연습 문제 모음, 자습형 디지털 과정, AWS Builder Lab, AWS Cloud Quest, 공식 연습 시험'
@@ -98,7 +98,7 @@ items:
     courseware_internal: false
 
   - id: builder-labs-url
-    status: changed
+    state: changed
     title: AWS Builder Labs URL
     courseware_location: 슬라이드 10 강사 노트
     courseware_says: 'https://aws.amazon.com/training/digital/aws-builder-labs'
@@ -108,7 +108,7 @@ items:
     courseware_internal: false
 
   - id: cert-exams-url
-    status: changed
+    state: changed
     title: 시험 목록 페이지 URL
     courseware_location: 슬라이드 8·9 강사 노트
     courseware_says: 'https://aws.amazon.com/certification/exams'
@@ -118,7 +118,7 @@ items:
     courseware_internal: false
 
   - id: tech-talks-url
-    status: changed
+    state: changed
     title: Tech Talks URL
     courseware_location: 슬라이드 6 강사 노트
     courseware_says: 'https://aws.amazon.com/events/online-tech-talks/on-demand'
@@ -128,7 +128,7 @@ items:
     courseware_internal: false
 
   - id: pricing-whitepaper-url
-    status: changed
+    state: changed
     title: AWS 요금제 백서 URL
     courseware_location: 슬라이드 3 강사 노트
     courseware_says: 'https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/welcome.html'
@@ -138,7 +138,7 @@ items:
     courseware_internal: false
 
   - id: skillbuilder-url
-    status: changed
+    state: changed
     title: Skill Builder 학습 페이지 URL
     courseware_location: 슬라이드 9 강사 노트
     courseware_says: 'https://explore.skillbuilder.aws/learn'
@@ -148,7 +148,7 @@ items:
     courseware_internal: false
 
   - id: workshops-url
-    status: changed
+    state: changed
     title: AWS Workshops URL
     courseware_location: 슬라이드 6 강사 노트
     courseware_says: 'https://workshops.aws'
@@ -157,7 +157,7 @@ items:
     courseware_internal: false
 
   - id: followup-course-urls
-    status: changed
+    state: changed
     title: 후속 과정 등록 경로
     courseware_location: 슬라이드 3 강사 노트
     courseware_says: 'www.aws.training/SessionSearch?pageNumber=1&courseId=36896&languageId=1 형태의 URL'
@@ -167,7 +167,7 @@ items:
     courseware_internal: false
 
   - id: sb-classroom-structure
-    status: changed
+    state: changed
     title: Skill Builder 의 학습 방식 구성
     courseware_location: 슬라이드 5·6
     courseware_says: '무료 디지털 교육과 강의식 교육 두 갈래로 제시'
@@ -176,7 +176,7 @@ items:
     courseware_internal: false
 
   - id: dev-associate-exam-revision
-    status: changed
+    state: changed
     title: 이 과정과 직결되는 시험이 개정 중
     courseware_location: 덱에 시험 코드와 개정 일정이 없음
     courseware_says: ''
@@ -185,7 +185,7 @@ items:
     courseware_internal: false
 
   - id: security-specialty-revision
-    status: changed
+    state: changed
     title: Security - Specialty 시험 개정
     courseware_location: 슬라이드 7
     courseware_says: 'Specialty 자격증을 이름만 언급'
@@ -195,7 +195,7 @@ items:
 
   # -------------------------------------------------------------- discouraged
   - id: aws-training-portal
-    status: discouraged
+    state: discouraged
     title: www.aws.training 포털 사용
     courseware_location: 슬라이드 3·14 강사 노트 및 본문
     courseware_says: 'https://www.aws.training 에 로그인하고 SessionSearch·Details 경로로 과정을 찾는다'
@@ -206,7 +206,7 @@ items:
 
   # -------------------------------------------------------------------- ended
   - id: ml-specialty-ended
-    status: ended
+    state: ended
     title: AWS Certified Machine Learning - Specialty 제공 종료
     courseware_location: 슬라이드 7
     courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'
@@ -217,7 +217,7 @@ items:
     courseware_internal: false
 
   - id: data-analytics-specialty-ended
-    status: ended
+    state: ended
     title: AWS Certified Data Analytics - Specialty 제공 종료
     courseware_location: 슬라이드 7
     courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'
@@ -228,7 +228,7 @@ items:
     courseware_internal: false
 
   - id: database-specialty-ended
-    status: ended
+    state: ended
     title: AWS Certified Database - Specialty 제공 종료
     courseware_location: 슬라이드 7
     courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'
@@ -238,7 +238,7 @@ items:
     courseware_internal: false
 
   - id: sap-on-aws-specialty-ended
-    status: ended
+    state: ended
     title: 'AWS Certified: SAP on AWS - Specialty 제공 종료'
     courseware_location: 슬라이드 7
     courseware_says: 'Specialty 자격증이 제공되는 것으로 제시'

@@ -223,7 +223,12 @@ export const navigationTree = [
           en: 'Module 16: What Changed Since the Courseware',
         },
         type: 'item',
-        tags: [{ label: 'Updates', category: 'concept' }],
+        contentFile: 'M16-NewFeatures_Summary.md',
+        tags: [
+          { label: 'Updates', category: 'concept' },
+          { label: 'Deprecations', category: 'concept' },
+          { label: 'Migration', category: 'concept' },
+        ],
       },
     ],
   },
