@@ -168,7 +168,12 @@ export const navigationTree = [
           en: 'Module 12: Granting Access to Your Application Users',
         },
         type: 'item',
-        tags: [{ label: 'Amazon Cognito', category: 'service' }],
+        contentFile: 'M12-Access_Summary.md',
+        tags: [
+          { label: 'Amazon Cognito', category: 'service' },
+          { label: 'JWT', category: 'concept' },
+          { label: 'OAuth 2.0', category: 'concept' },
+        ],
       },
       {
         id: 'M13-DevOps_Summary',
