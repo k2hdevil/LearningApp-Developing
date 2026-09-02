@@ -49,6 +49,10 @@ const strings = {
     diagramErrorPrefix: '다이어그램을 불러올 수 없습니다',
     diagramZoom: '다이어그램 확대',
     diagramZoomClose: '확대 닫기',
+    // Cloudscape 는 Anchor navigation 과 짝지을 헤딩 문구로 "On this page" 를
+    // 지정합니다. 한국어는 지정된 문구가 없어 본문에서 쓰던 "목차" 를 씁니다.
+    outlineHeading: '목차',
+    outlineLabel: '이 문서의 목차',
     footer:
       '이 자료는 AWS T&C 공식 교육 자료가 아닙니다. 강사가 🤖 Kiro로 빌드한 보조 자료이며, ' +
       '원본 강사용 덱을 AWS 공식 문서로 검증·최신화한 결과입니다. 일부 오류가 있을 수 있으므로 ' +
@@ -79,6 +83,8 @@ const strings = {
     diagramErrorPrefix: 'Unable to load the diagram',
     diagramZoom: 'Expand diagram',
     diagramZoomClose: 'Close expanded view',
+    outlineHeading: 'On this page',
+    outlineLabel: 'On this page',
     footer:
       'This is not official AWS T&C training material. It is a supplementary resource built by ' +
       'the instructor with 🤖 Kiro, produced by verifying and updating the original instructor ' +

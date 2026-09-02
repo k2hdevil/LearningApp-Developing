@@ -10,9 +10,13 @@ import Alert from '@cloudscape-design/components/alert';
 import Badge from '@cloudscape-design/components/badge';
 import Box from '@cloudscape-design/components/box';
 
+import Grid from '@cloudscape-design/components/grid';
+
 import TreeNavigation from './components/TreeNavigation';
 import BreadcrumbNav from './components/BreadcrumbNav';
 import MarkdownRenderer from './components/MarkdownRenderer';
+import PageOutline, { useIsNarrow } from './components/PageOutline';
+import { extractOutline, stripOutlineSection } from './lib/markdownOutline';
 import { globeIcon, moonIcon, sunIcon } from './components/ThemeIcons';
 import { useDarkMode } from './contexts/DarkModeContext';
 import { useLocale } from './contexts/LocaleContext';
@@ -59,6 +63,11 @@ export default function App() {
   const [error, setError] = useState('');
 
   const activeNode = useMemo(() => findNode(navigationTree, activeItemId), [activeItemId]);
+  const isNarrow = useIsNarrow();
+
+  // 목차는 헤딩에서 만들고, 본문에서는 목차 절을 걷어내 중복을 없앱니다.
+  const outline = useMemo(() => extractOutline(content), [content]);
+  const body = useMemo(() => stripOutlineSection(content), [content]);
 
   // 주소가 실제로 열린 모듈과 다르면(해시 없음, 준비 중 모듈, 옛 본문 앵커) 맞춰 둡니다.
   // 사용자가 만든 이동이 아니므로 히스토리에 항목을 남기지 않는 replaceState 를 씁니다.
@@ -212,22 +221,63 @@ export default function App() {
               </SpaceBetween>
             }
           >
-            <Container>
-              {loading ? (
-                <Box textAlign="center" padding="xxl">
-                  <SpaceBetween size="s" alignItems="center">
-                    <Spinner size="large" />
-                    <Box variant="p">{text.loading}</Box>
+            {(() => {
+              const article = (
+                <Container>
+                  {loading ? (
+                    <Box textAlign="center" padding="xxl">
+                      <SpaceBetween size="s" alignItems="center">
+                        <Spinner size="large" />
+                        <Box variant="p">{text.loading}</Box>
+                      </SpaceBetween>
+                    </Box>
+                  ) : error ? (
+                    <Alert type="warning" header={text.contentErrorHeader}>
+                      {error}
+                    </Alert>
+                  ) : (
+                    <MarkdownRenderer content={body} />
+                  )}
+                </Container>
+              );
+
+              // 목차를 띄울 수 없는 상태(로딩·오류·헤딩 없음)면 본문만 그립니다.
+              if (loading || error || !outline.length) return article;
+
+              // 좁은 화면: Cloudscape 지침에 따라 콘텐츠 영역 첫 요소로 두고 접어 둡니다.
+              if (isNarrow) {
+                return (
+                  <SpaceBetween size="l">
+                    <PageOutline
+                      variant="expandable"
+                      anchors={outline}
+                      heading={text.outlineHeading}
+                      ariaLabel={text.outlineLabel}
+                    />
+                    {article}
                   </SpaceBetween>
-                </Box>
-              ) : error ? (
-                <Alert type="warning" header={text.contentErrorHeader}>
-                  {error}
-                </Alert>
-              ) : (
-                <MarkdownRenderer content={content} />
-              )}
-            </Container>
+                );
+              }
+
+              // 넓은 화면: 본문 옆에 두고 스크롤을 따라 붙습니다.
+              // 전환 지점은 PageOutline 의 SIDE_BY_SIDE_MIN_WIDTH 와 같은 m(1120px)입니다.
+              return (
+                <Grid
+                  gridDefinition={[
+                    { colspan: { default: 12, m: 9 } },
+                    { colspan: { default: 12, m: 3 } },
+                  ]}
+                >
+                  {article}
+                  <PageOutline
+                    variant="sticky"
+                    anchors={outline}
+                    heading={text.outlineHeading}
+                    ariaLabel={text.outlineLabel}
+                  />
+                </Grid>
+              );
+            })()}
           </ContentLayout>
         }
       />

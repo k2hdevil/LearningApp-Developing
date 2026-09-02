@@ -169,6 +169,17 @@
 - `webapp/src/components/MarkdownRenderer.jsx` → `slugify()`
 - `pipeline/validate.py` → `slugify()`
 
+페이지 목차(Cloudscape Anchor navigation)도 같은 앵커를 씁니다.
+`webapp/src/lib/markdownOutline.js` 는 `slugify()` 를 가져다 쓰므로 슬러그 규칙 자체는
+한 곳입니다. 다만 슬러그에 넣을 **텍스트를 뽑는 방식**이 갈립니다.
+
+- 본문 헤딩: `MarkdownRenderer.jsx` 의 `extractText()` — 파싱된 결과에서 텍스트를 모읍니다
+- 목차 항목: `markdownOutline.js` 의 `displayText()` — 원본 마크다운에서 표기를 걷어냅니다
+
+두 결과가 달라지면 목차 링크만 조용히 깨집니다. 렌더 검사의 `페이지 목차` 항목이 이걸
+잡으므로, 헤딩에 새로운 인라인 표기(예: 링크)를 쓰기 시작하면 `displayText()` 를 함께
+손봐야 합니다.
+
 ## 5. 게시 전 게이트
 
 `webapp/public/content/`에 파일을 넣거나 고친 뒤에는 **반드시** 실행합니다.
@@ -271,6 +282,7 @@ npm run check:render -- http://localhost:5174 # 포트가 다르면 인자로 �
 | 출처 | 5개 미만 |
 | VERIFY 마커 | 하나라도 남아 있음 |
 | 인라인 앵커 | 대상 헤딩이 없는 링크가 하나라도 있음 |
+| 페이지 목차 | 목차가 없음, 항목 3개 미만, 대상 헤딩이 없는 항목이 있음, 중첩 3단계 초과, 활성 항목이 둘 이상 |
 
 앱 동작 검사:
 
@@ -283,6 +295,7 @@ npm run check:render -- http://localhost:5174 # 포트가 다르면 인자로 �
 | 열 수 없는 해시 | 준비 중 모듈 해시가 주소에 그대로 남음 (리로드 경로·hashchange 경로 각각 확인) |
 | 뒤로 가기 | 이전 모듈로 돌아가지 않음 |
 | 본문 앵커 | 목차·상호 참조 클릭이 모듈 해시를 덮어씀 |
+| 페이지 목차 | 스크롤해도 활성 항목이 생기지 않음(스크롤 스파이 미동작), 활성 항목이 둘 이상, 목차 링크가 모듈 해시를 덮어씀 |
 
 검사 대상은 스크립트가 `navigationTree.js` 를 직접 불러와서 정합니다. `contentFile` 이 있는
 모듈은 자동으로 검사에 들어가므로 **따로 목록을 갱신할 필요가 없습니다.** 열 수 없는 해시

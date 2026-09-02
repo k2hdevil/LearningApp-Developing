@@ -120,6 +120,30 @@ const PROBE = `(() => {
     brokenAnchors: [...md.querySelectorAll('a[href^="#"]')]
       .map((a) => decodeURIComponent(a.getAttribute('href').slice(1)))
       .filter((id) => id && !document.getElementById(id)).length,
+    // 페이지 목차(Anchor navigation)는 .markdown-body 밖에 있어서 위 검사에 걸리지
+    // 않습니다. 목차의 앵커는 본문과 다른 경로(lib/markdownOutline.js)로 슬러그를
+    // 계산하므로 따로 확인해야 합니다. 두 경로가 어긋나면 목차만 조용히 깨집니다.
+    outline: (() => {
+      const nav = document.querySelector('.doa-outline');
+      if (!nav) return { present: false, items: 0, broken: 0, maxLevel: 0, active: 0 };
+      const links = [...nav.querySelectorAll('a[href^="#"]')];
+      return {
+        present: true,
+        items: links.length,
+        broken: links
+          .map((a) => decodeURIComponent(a.getAttribute('href').slice(1)))
+          .filter((id) => id && !document.getElementById(id)).length,
+        // 중첩 표현은 ol 이 겹쳐 쌓입니다. Cloudscape 는 최대 세 단계를 권합니다.
+        maxLevel: links.reduce((n, a) => {
+          let depth = 0;
+          for (let el = a; el && el !== nav; el = el.parentElement) {
+            if (el.tagName === 'OL' || el.tagName === 'UL') depth += 1;
+          }
+          return Math.max(n, depth);
+        }, 0),
+        active: nav.querySelectorAll('[class*="anchor-item-active"], [aria-current]').length,
+      };
+    })(),
     darkMode: document.body.classList.contains('awsui-dark-mode'),
     bodyColor: getComputedStyle(md).color,
     // 코드 블록 배경은 code-table 바로 위 div 가 아니라 더 바깥 래퍼에 칠해져 있습니다.
@@ -224,13 +248,28 @@ async function main() {
       if (m.verifyMarkers > 0) bad.push(`VERIFY 마커 ${m.verifyMarkers}개 잔존`);
       if (m.brokenAnchors > 0) bad.push(`깨진 앵커 ${m.brokenAnchors}개`);
 
+      // 페이지 목차. 헤딩이 h2 3개 이상인 문서라면 목차도 나와야 합니다.
+      if (!m.outline.present) {
+        bad.push('페이지 목차 없음');
+      } else {
+        if (m.outline.items < 3) bad.push(`목차 항목 ${m.outline.items}개`);
+        if (m.outline.broken > 0) bad.push(`목차 깨진 앵커 ${m.outline.broken}개`);
+        // Cloudscape 는 중첩을 최대 세 단계로 제한합니다.
+        if (m.outline.maxLevel > 3) bad.push(`목차 중첩 ${m.outline.maxLevel}단계`);
+        // 활성 항목은 많아도 하나입니다. 문서 맨 위에서는 아직 어떤 섹션도
+        // scrollSpyOffset 선을 넘지 않아 0개가 정상입니다. 스크롤에 따라 활성
+        // 항목이 실제로 바뀌는지는 아래 "페이지 목차 스크롤 스파이" 에서 봅니다.
+        if (m.outline.active > 1) bad.push(`목차 활성 항목 ${m.outline.active}개`);
+      }
+
       if (bad.length) failures += 1;
       console.log(
         `  ${bad.length ? 'FAIL' : 'OK  '} ${id.padEnd(26)} ` +
           `h2=${String(m.h2).padStart(2)} h3=${String(m.h3).padStart(2)} ` +
           `표=${String(m.tables).padStart(3)} 코드=${String(m.codeBlocks).padStart(2)} ` +
           `복사=${String(m.copyButtons).padStart(2)} 하이라이트=${String(m.highlighted).padStart(4)} ` +
-          `출처=${String(m.sources).padStart(2)} 앵커오류=${m.brokenAnchors}` +
+          `출처=${String(m.sources).padStart(2)} 앵커오류=${m.brokenAnchors} ` +
+          `목차=${String(m.outline.items).padStart(2)}/${m.outline.broken}` +
           (bad.length ? `  ← ${bad.join(', ')}` : '') +
           (!bad.length && thin.length ? `  (참고: ${thin.join(', ')})` : '')
       );
@@ -467,6 +506,69 @@ async function main() {
         failures += 1;
       } else {
         console.log('  OK   모듈 해시가 유지됨');
+      }
+    }
+
+    // 페이지 목차(Anchor navigation).
+    //
+    // 두 가지를 봅니다. 목차 링크도 모듈 해시를 덮어쓰지 않아야 하고,
+    // 내장 스크롤 스파이가 스크롤에 따라 활성 항목을 바꿔야 합니다.
+    // activeHref 를 넘기면 스크롤 스파이가 꺼지므로 이 검사가 그 회귀를 잡습니다.
+    console.log('\n  --- 페이지 목차 ---');
+    const outlineResult = await evaluate(
+      ws,
+      `(async () => {
+        const nav = document.querySelector('.doa-outline');
+        if (!nav) return { skipped: '목차를 찾지 못했습니다' };
+        const activeText = () =>
+          nav.querySelector('[class*="anchor-item-active"] a, a[aria-current]')?.textContent?.trim() ?? null;
+        const activeCount = () =>
+          nav.querySelectorAll('[class*="anchor-item-active"], a[aria-current]').length;
+
+        window.scrollTo({ top: 0 });
+        await new Promise((r) => setTimeout(r, 600));
+        const topActive = activeText();
+
+        // 문서 중간으로 내려가 활성 항목이 생기는지 봅니다.
+        window.scrollTo({ top: Math.round(document.body.scrollHeight * 0.5) });
+        await new Promise((r) => setTimeout(r, 900));
+        const midActive = activeText();
+        const midCount = activeCount();
+
+        // 목차 링크 클릭이 모듈 해시를 건드리지 않아야 합니다.
+        const links = [...nav.querySelectorAll('a[href^="#"]')];
+        const target = links[Math.min(5, links.length - 1)];
+        const before = window.location.hash;
+        const clicked = target.getAttribute('href');
+        target.click();
+        await new Promise((r) => setTimeout(r, 900));
+
+        return {
+          topActive, midActive, midCount,
+          before, clicked, after: window.location.hash,
+          scrolled: Math.round(window.scrollY),
+        };
+      })()`
+    );
+    if (outlineResult.skipped) {
+      console.log(`  FAIL ${outlineResult.skipped}`);
+      failures += 1;
+    } else {
+      console.log(`  최상단 활성 항목: ${outlineResult.topActive ?? '(없음 — 정상)'}`);
+      console.log(`  중간 활성 항목  : ${outlineResult.midActive ?? '(없음)'}`);
+      console.log(`  클릭한 앵커     : ${decodeURIComponent(outlineResult.clicked)}`);
+      console.log(`  클릭 전/후 해시 : ${outlineResult.before} → ${outlineResult.after}`);
+      if (!outlineResult.midActive) {
+        console.log('  FAIL 스크롤해도 활성 항목이 생기지 않습니다 (스크롤 스파이 미동작)');
+        failures += 1;
+      } else if (outlineResult.midCount > 1) {
+        console.log(`  FAIL 활성 항목이 ${outlineResult.midCount}개입니다`);
+        failures += 1;
+      } else if (outlineResult.after !== outlineResult.before) {
+        console.log('  FAIL 목차 앵커가 모듈 해시를 덮어썼습니다');
+        failures += 1;
+      } else {
+        console.log('  OK   스크롤 스파이 동작, 모듈 해시 유지');
       }
     }
 

@@ -1,0 +1,32 @@
+/*
+ * 페이지 목차 배치.
+ *
+ * 색은 하나도 지정하지 않습니다. Anchor navigation 이 자체 토큰으로 칠하므로
+ * 다크 모드 전환이 그대로 따라옵니다. 여기서는 위치와 여백만 다룹니다.
+ * (색을 하드코딩하면 npm run build 의 토큰 검사가 잡습니다.)
+ */
+
+/* 넓은 화면: 본문과 함께 스크롤하다 고정 헤더 아래에 붙습니다.
+   top 값은 PageOutline.jsx 의 STICKY_HEADER_OFFSET 이 인라인으로 넣습니다. */
+.doa-outline-sticky {
+  position: sticky;
+  /* 헤더에 붙은 뒤에도 목차가 화면을 넘기면 목차 안에서만 스크롤되게 합니다.
+     모듈에 따라 항목이 40개를 넘기 때문에 이 처리가 없으면 아래쪽이 잘립니다. */
+  max-height: calc(100vh - var(--doa-outline-reserved, 120px));
+  overflow-y: auto;
+  /* 스크롤이 생겼을 때 스크롤바가 항목 텍스트에 붙지 않게 띄웁니다. */
+  padding-inline-end: 4px;
+  /* 사이드 내비게이션과 달리 이 목차는 문서의 일부이므로 경계선을 두지 않고
+     본문과 같은 배경에 둡니다. */
+}
+
+/* 좁은 화면: ExpandableSection 이 자체 컨테이너를 그리므로 위치만 잡습니다. */
+.doa-outline-expandable {
+  margin-block-end: 4px;
+}
+
+/* 목차 안에서 스크롤될 때 항목이 세로로 너무 붙어 보이지 않게 아래 여백을 둡니다. */
+.doa-outline > nav,
+.doa-outline > ol {
+  padding-block-end: 4px;
+}
