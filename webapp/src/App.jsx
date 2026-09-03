@@ -10,12 +10,10 @@ import Alert from '@cloudscape-design/components/alert';
 import Badge from '@cloudscape-design/components/badge';
 import Box from '@cloudscape-design/components/box';
 
-import Grid from '@cloudscape-design/components/grid';
-
 import TreeNavigation from './components/TreeNavigation';
 import BreadcrumbNav from './components/BreadcrumbNav';
 import MarkdownRenderer from './components/MarkdownRenderer';
-import PageOutline, { useIsNarrow } from './components/PageOutline';
+import PageOutline from './components/PageOutline';
 import { extractOutline, stripOutlineSection } from './lib/markdownOutline';
 import { globeIcon, moonIcon, sunIcon } from './components/ThemeIcons';
 import { useDarkMode } from './contexts/DarkModeContext';
@@ -63,10 +61,12 @@ export default function App() {
   const [error, setError] = useState('');
 
   const activeNode = useMemo(() => findNode(navigationTree, activeItemId), [activeItemId]);
-  const isNarrow = useIsNarrow();
 
   // 목차는 헤딩에서 만들고, 본문에서는 목차 절을 걷어내 중복을 없앱니다.
-  const outline = useMemo(() => extractOutline(content), [content]);
+  //
+  // 사이드바에 두므로 h2 만 담습니다. h3 까지 넣으면 모듈당 40~90 항목이
+  // 모듈 트리 아래에 붙어 패널을 훑기 어려워집니다.
+  const outline = useMemo(() => extractOutline(content, { maxLevel: 2 }), [content]);
   const body = useMemo(() => stripOutlineSection(content), [content]);
 
   // 주소가 실제로 열린 모듈과 다르면(해시 없음, 준비 중 모듈, 옛 본문 앵커) 맞춰 둡니다.
@@ -197,7 +197,24 @@ export default function App() {
           navigationToggle: text.navigationToggle,
         }}
         navigation={
-          <TreeNavigation activeItemId={activeItemId} onNavigate={handleNavigate} />
+          <div className="doa-nav">
+            {/*
+              모듈 트리에 높이 상한을 둡니다. 모듈이 16개라 상한이 없으면 트리가
+              패널을 거의 다 차지하고 아래의 목차가 화면 밖으로 밀립니다.
+              두 블록이 각각 스크롤됩니다.
+            */}
+            <div className="doa-nav-tree">
+              <TreeNavigation activeItemId={activeItemId} onNavigate={handleNavigate} />
+            </div>
+            {/* 열려 있는 모듈의 목차. 콘텐츠를 불러오는 중이거나 실패했으면 두지 않습니다. */}
+            {!loading && !error ? (
+              <PageOutline
+                anchors={outline}
+                heading={text.outlineHeading}
+                ariaLabel={text.outlineLabel}
+              />
+            ) : null}
+          </div>
         }
         breadcrumbs={
           <BreadcrumbNav activeItemId={activeItemId} onNavigate={handleNavigate} />
@@ -221,63 +238,22 @@ export default function App() {
               </SpaceBetween>
             }
           >
-            {(() => {
-              const article = (
-                <Container>
-                  {loading ? (
-                    <Box textAlign="center" padding="xxl">
-                      <SpaceBetween size="s" alignItems="center">
-                        <Spinner size="large" />
-                        <Box variant="p">{text.loading}</Box>
-                      </SpaceBetween>
-                    </Box>
-                  ) : error ? (
-                    <Alert type="warning" header={text.contentErrorHeader}>
-                      {error}
-                    </Alert>
-                  ) : (
-                    <MarkdownRenderer content={body} />
-                  )}
-                </Container>
-              );
-
-              // 목차를 띄울 수 없는 상태(로딩·오류·헤딩 없음)면 본문만 그립니다.
-              if (loading || error || !outline.length) return article;
-
-              // 좁은 화면: Cloudscape 지침에 따라 콘텐츠 영역 첫 요소로 두고 접어 둡니다.
-              if (isNarrow) {
-                return (
-                  <SpaceBetween size="l">
-                    <PageOutline
-                      variant="expandable"
-                      anchors={outline}
-                      heading={text.outlineHeading}
-                      ariaLabel={text.outlineLabel}
-                    />
-                    {article}
+            <Container>
+              {loading ? (
+                <Box textAlign="center" padding="xxl">
+                  <SpaceBetween size="s" alignItems="center">
+                    <Spinner size="large" />
+                    <Box variant="p">{text.loading}</Box>
                   </SpaceBetween>
-                );
-              }
-
-              // 넓은 화면: 본문 옆에 두고 스크롤을 따라 붙습니다.
-              // 전환 지점은 PageOutline 의 SIDE_BY_SIDE_MIN_WIDTH 와 같은 m(1120px)입니다.
-              return (
-                <Grid
-                  gridDefinition={[
-                    { colspan: { default: 12, m: 9 } },
-                    { colspan: { default: 12, m: 3 } },
-                  ]}
-                >
-                  {article}
-                  <PageOutline
-                    variant="sticky"
-                    anchors={outline}
-                    heading={text.outlineHeading}
-                    ariaLabel={text.outlineLabel}
-                  />
-                </Grid>
-              );
-            })()}
+                </Box>
+              ) : error ? (
+                <Alert type="warning" header={text.contentErrorHeader}>
+                  {error}
+                </Alert>
+              ) : (
+                <MarkdownRenderer content={body} />
+              )}
+            </Container>
           </ContentLayout>
         }
       />
