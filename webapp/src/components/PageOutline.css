@@ -34,8 +34,23 @@
   border-block-start: 1px solid var(--doa-divider);
   margin-block-start: 12px;
   padding-block-start: 4px;
-  padding-inline: 4px;
+
+  /* 위쪽 모듈 목록과 같은 선에 글자를 맞춥니다.
+     SideNavigation 은 섹션 제목과 모듈 링크의 글자를 모두 왼쪽에서 28px 에
+     둡니다(실측). Anchor navigation 은 링크 텍스트를 담은 span 에
+     padding-left: 20px 을 이미 넣으므로, 컨테이너에서 8px 만 더하면 28px 이
+     됩니다. 오른쪽은 트리 래퍼와 같은 값으로 띄워 스크롤바 여유를 둡니다. */
+  padding-inline-start: 8px;
+  padding-inline-end: 2px;
+
   /* 남은 높이를 쓰고, 항목이 많으면 목차 안에서 스크롤합니다. */
   min-block-size: 0;
   overflow-y: auto;
+}
+
+/* 목차 제목에는 Anchor navigation 이 링크에 넣는 것과 같은 20px 을 줍니다.
+   컨테이너의 8px 과 합쳐 28px 이 되어 SideNavigation 의 섹션 제목
+   ("Developing on AWS")과 목차 항목이 모두 한 선에 섭니다. */
+.doa-outline-heading {
+  padding-inline-start: 20px;
 }

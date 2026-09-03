@@ -67,14 +67,17 @@ export default function PageOutline({ anchors, heading, ariaLabel }) {
 
   return (
     <nav className="doa-outline" aria-label={ariaLabel}>
-      <Box
-        id={headingId}
-        variant="h3"
-        padding={{ top: 'xs', bottom: 'xxs' }}
-        color="text-body-secondary"
-      >
-        {heading}
-      </Box>
+      {/* 들여쓰기는 CSS 에서 다룹니다. Box 는 타이포그래피와 색만 맡습니다. */}
+      <div className="doa-outline-heading">
+        <Box
+          id={headingId}
+          variant="h3"
+          padding={{ top: 'xs', bottom: 'xxs' }}
+          color="text-body-secondary"
+        >
+          {heading}
+        </Box>
+      </div>
       <AnchorNavigation
         anchors={anchors}
         ariaLabelledby={headingId}
