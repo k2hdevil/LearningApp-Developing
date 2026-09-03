@@ -168,16 +168,23 @@ const PROBE = `(() => {
 
 /** 사이드바에서 해당 모듈 링크를 클릭하고 렌더가 끝날 때까지 기다립니다. */
 async function openModule(ws, id) {
-  const clicked = await evaluate(
-    ws,
-    `(() => {
-      const link = document.querySelector('a[href="#${id}"]');
-      if (!link) return false;
-      link.click();
-      return true;
-    })()`
-  );
-  if (!clicked) throw new Error(`사이드바에 #${id} 링크가 없습니다`);
+  // 링크가 나타날 때까지 기다린 뒤 클릭합니다. 고정 대기로 한 번만 찾으면
+  // 콜드 스타트나 느린 머신에서 앱이 아직 마운트되지 않아 거짓 실패가 납니다.
+  let clicked = false;
+  for (let i = 0; i < 60; i += 1) {
+    clicked = await evaluate(
+      ws,
+      `(() => {
+        const link = document.querySelector('a[href="#${id}"]');
+        if (!link) return false;
+        link.click();
+        return true;
+      })()`
+    );
+    if (clicked) break;
+    await sleep(500);
+  }
+  if (!clicked) throw new Error(`사이드바에 #${id} 링크가 없습니다 (30초 대기)`);
   // fetch + 마크다운 파싱 + 하이라이팅이 끝나기를 기다린다
   for (let i = 0; i < 40; i += 1) {
     await sleep(250);
