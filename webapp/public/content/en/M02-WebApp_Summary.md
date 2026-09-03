@@ -15,7 +15,6 @@
 7. [Connection and Access: API Gateway and Amazon Cognito](#7-connection-and-access-api-gateway-and-amazon-cognito)
 8. [Observability: CloudWatch and X-Ray](#8-observability-cloudwatch-and-x-ray)
 9. [Changes from the Courseware](#9-changes-from-the-courseware)
-10. [Knowledge Check and Summary](#10-knowledge-check-and-summary)
 
 > **Notation**
 >
@@ -61,7 +60,7 @@ Courseware slide 3, carried over as written.
 
 | Item | Detail |
 |---|---|
-| Knowledge check questions | This deck has no true/false question slide. [Section 10](#10-knowledge-check-and-summary) carries only supplementary questions covering the updated content, in place of courseware questions |
+| Knowledge check questions | This deck has no true/false question slide |
 | Code | There is not a single line of source content to carry into a code block. This document has no code either |
 | Per-service detail | Each service gets one or two lines of overview. The detail moves to its own module |
 
@@ -620,60 +619,3 @@ Recorded honestly. Check these before stating them with certainty in class.
 | API Gateway integration types and the configuration Pollynotes actually uses | What was verified is the three API types and their feature differences. **Which integration type (Lambda proxy, non-proxy, and so on) and stage configuration this course's API actually uses is not in this deck.** That belongs to Module 10 and Lab 5 |
 | How the Cognito feature plan choice affects this course's labs | The Essentials default for new user pools and the per-plan feature differences were verified. **Which plan Lab 6 (the capstone) assumes is not in this deck.** Check the lab guide |
 | Per-service quotas and pricing figures | This is an overview module and does not cover per-service quotas or pricing, so this document does not carry them either. See the relevant sections of Modules 5 and 6 for storage, Modules 7 and 8 for databases, and Module 9 for compute |
-
----
-
-## 10. Knowledge Check and Summary
-
-### Knowledge Check Questions
-
-**This deck has no knowledge check slide.** Slide 13 is the wrap-up diagram and slide 14 is a `Thank you` title slide, so there are no courseware questions to carry over. Instead, only supplementary questions covering the updated content are included.
-
-### 🆕 Supplementary Questions (Covering the Updates)
-
-**Question 1**: Amazon API Gateway can create only one kind of API, a REST API.
-
-- ❌ **Answer: False** — There are three: **REST, HTTP, and WebSocket.** REST and HTTP are stateless RESTful APIs; WebSocket is for stateful full-duplex communication. AWS tells you to choose on features and price: REST if you need API keys, per-client throttling, request validation, AWS WAF integration, or private endpoints, and the cheaper HTTP if you do not. ([Section 7.2](#72-api-gateway-creates-three-kinds-of-api))
-
-> — Source: [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html)
-
-**Question 2**: Because EC2 requires continuous maintenance and Lambda costs less, AWS always recommends Lambda for application compute.
-
-- ❌ **Answer: False** — The decision guide presents compute choice as a balance across **ten factors** and says of the EC2 management overhead that where **granular control over the compute environment is necessary, the overhead is often justified.** Cost optimization is approached through instance selection (Graviton up to 40 percent better price performance), purchase plans (Savings Plans up to 72 percent, Spot up to 90 percent), and right sizing (Compute Optimizer up to 25 percent) rather than by moving to Lambda, and the guide states that **multiple compute solutions can be used in a single workload.** The basis for using Lambda in this course is the request- and event-driven CRUD workload, not cost. ([Section 6.5](#65-the-way-the-deck-contrasts-ec2-and-lambda))
-
-> — Source: [Choosing an AWS compute service](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/choosing-aws-compute-service.html)
-
-**Question 3**: A DynamoDB table created with default settings uses provisioned capacity mode.
-
-- ❌ **Answer: False** — **On-demand mode is the default and recommended throughput option.** On-demand removes capacity planning, bills per request, charges no throughput when traffic is zero, and delivers the same single-digit millisecond latency, SLA, and security as provisioned mode. This is where the lab screen may differ from older captures. ([Section 6.3](#63-the-current-default-behind-capacity-sizing))
-
-> — Source: [DynamoDB on-demand capacity mode](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html)
-
-**Question 4**: Creating an Amazon Cognito user pool only requires a pool name and sign-in options; there is no step for selecting a plan.
-
-- ❌ **Answer: False** — User pools now have feature plans: **Lite, Essentials, and Plus**, and the **default for new user pools is Essentials.** Plans apply per user pool and cannot differ per app client within a pool. In the API this is `UserPoolTier` and in the AWS CLI `--user-pool-tier`; omitting it yields Essentials. ([Section 7.5](#75-the-sign-upsign-in-pages-and-the-feature-plans-have-changed))
-
-> — Source: [User pool feature plans](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-sign-in-feature-plans.html)
-
-**Question 5**: To host the Pollynotes frontend on S3, enabling static website hosting on the bucket is the current documentation's first recommendation.
-
-- ❌ **Answer: False** — The current first recommendation is **AWS Amplify Hosting**, a fully managed service that deploys to a CloudFront-powered global CDN and generates a public HTTPS URL. When the bucket is **encrypted with SSE-KMS a CloudFront distribution is required**, and the origin must be secured with **OAC**, not OAI. ([Section 5.3](#53-the-recommended-path-for-frontend-hosting))
-
-> — Source: [Hosting a static website using Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html)
-
-**Question 6**: To view application traces in Lab 7 you must use the X-Ray console, and AWS continues to improve it.
-
-- ❌ **Answer: False** — The documentation states that **"AWS is no longer developing the X-Ray console."** The X-Ray Service map and the CloudWatch ServiceLens map have been combined into the **X-Ray trace map in the Amazon CloudWatch console.** The X-Ray service has not been discontinued; the screen path changed. ([Section 8.3](#83-the-current-state-of-the-x-ray-console))
-
-> — Source: [Use a console (X-Ray)](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html)
-
-### Summary
-
-| # | Point |
-|---|---|
-| 1 | This module is an **architecture walkthrough.** Slides 4 through 13 hold the same picture and highlight one piece at a time. Learn that one picture and you have the map for the whole course ([Section 2](#2-the-recurring-architecture-diagram)) |
-| 2 | The division of labor: **S3** for the frontend and the MP3s, **DynamoDB** for note data, **Lambda** for the CRUD business logic, **API Gateway** between them, **Cognito** for user authentication, and **CloudWatch and X-Ray** for observability. **Polly** turns notes into speech, **SAM** handles deployment, and **IAM** handles access control |
-| 3 | **No service was renamed.** What changed is framing and location. API Gateway now has three API types, DynamoDB's default capacity mode is on-demand, the first recommendation for frontend hosting is Amplify Hosting, the X-Ray console moved into CloudWatch, and Cognito user pools gained feature plans ([Section 9](#9-changes-from-the-courseware)) |
-| 4 | **Do not take the deck's two assertive sentences at face value.** The claim that the console supports everything is scoped to IaaS in the documentation and runs in the opposite direction, and the logic that you move to Lambda for cost savings because EC2 needs maintenance is not what the decision guide supports. The basis for choosing Lambda is the workload characteristics ([Section 4.2](#42-the-claim-that-the-console-supports-everything) · [Section 6.5](#65-the-way-the-deck-contrasts-ec2-and-lambda)) |
-| 5 | The courseware contradicts itself in five places (the missing slide 2 title, the Module 2 title, the Module 4 title, the connection-method counts, and the mixed diagram label languages). All are collected in [Section 9.1](#91-courseware-statements-that-do-not-match-the-facts). These are the points a learner comparing against the courseware will ask about |
-| 6 | This module keeps its depth deliberately shallow. Per-service quotas, APIs, and pricing belong to their own modules. What to take away here is which service owns what, and that mapping is [Section 2.2](#22-which-service-owns-which-element) |

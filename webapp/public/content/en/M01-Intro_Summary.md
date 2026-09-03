@@ -14,24 +14,22 @@
 6. [Accessing the Labs and Guides](#6-accessing-the-labs-and-guides)
 7. [Lab Requirements](#7-lab-requirements)
 8. [Changes from the Courseware](#8-changes-from-the-courseware)
-9. [Knowledge Check and Summary](#9-knowledge-check-and-summary)
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
-> - Items where the courseware contradicts itself are not something AWS documentation can settle. Those are flagged in the body without 🆕 or 🔄 and collected in [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts).
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 30, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
 
 ## 1. Module Overview
 
-This module is not a technical module. It is a **course administration module**. It covers what you will learn (course objectives), what you should already know (recommended prerequisites), how the three days are sequenced (the agenda), and how to reach the lab environment and the guides. This document is therefore short. A module like this has very few verifiable facts to begin with.
+This module is not a technical module. It is a **course administration module**. It covers what you will learn (course objectives), what you should already know (recommended prerequisites), how the three days are sequenced (the agenda), and how to reach the lab environment and the guides. Because it covers no technical services directly, this document is short.
 
 ### Course Objectives
 
-The three items from courseware slide 4, carried over as written.
+By the end of the course you will be able to do the following three things.
 
 | # | Objective |
 |---|---|
@@ -39,13 +37,11 @@ The three items from courseware slide 4, carried over as written.
 | 2 | Design, diagram, build, and deploy a cloud-native application using the AWS SDKs |
 | 3 | Monitor and maintain an application using AWS resources |
 
-This module has **no separate module objectives slide.** Unlike the other module decks, the *course* objectives on slide 4 play that role.
+These three are spread across the three days. Module 4 covers the first, modules 5 through 13 cover the second, and module 14 covers the third.
 
-### Where the Module Title Comes From
+### Mapping the Courseware Slides to This Document
 
-Slide 1 carries only `Developing on AWS (Korean)` and no module title. The module title comes from the **subtitle on slide 2**, `Module 1: Course Overview`. The agenda instructor notes on slide 7 call the same module `Module 1 - Course Introduction`, so the name appears two ways inside the courseware. This document follows slide 2 (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
-
-### How This Document Is Organized
+Use this when you have the courseware open alongside.
 
 | Slides | Content | In this document |
 |---|---|---|
@@ -58,19 +54,11 @@ Slide 1 carries only `Developing on AWS (Korean)` and no module title. The modul
 | 20 | Lab requirements | [Section 7](#7-lab-requirements) |
 | 1–3, 21 | Title, instructor intro, thank you | (layout only. Nothing to carry over) |
 
-### What This Deck Does Not Have
-
-| Item | Detail |
-|---|---|
-| Knowledge check questions | Unlike the other module decks, there is no true/false question slide. [Section 9](#9-knowledge-check-and-summary) therefore carries only supplementary questions about the updated content, not courseware questions |
-| Code | There is not a single line of source text to move into a code block. This document has no code either |
-| Module objectives slide | As noted above, the course objectives on slide 4 play that role |
-
 ---
 
 ## 2. Recommended Prerequisites
 
-The content of slide 5. There are no instructor notes.
+The course assumes you already have the following.
 
 | Category | Content |
 |---|---|
@@ -101,7 +89,7 @@ Both courses still exist under those names. What changed is **how you reach them
 
 ### 3.1 Application Overview
 
-Summarized from the instructor notes on slide 6.
+This is the application you build up through the labs over three days.
 
 | Item | Content |
 |---|---|
@@ -111,9 +99,9 @@ Summarized from the instructor notes on slide 6.
 | How you build it | As a developer, you build it with the **AWS SDKs in an integrated development environment (IDE)** |
 | What you learn | Hosting a static website, implementing business logic, managing APIs, controlling access to the application, and storing and processing user data |
 
-### 3.2 Elements in the Diagram
+### 3.2 What Makes Up the Architecture
 
-Slides 6 and 12 use the same architecture drawing. These are the elements pulled from the text boxes in that drawing.
+These are the elements in the full architecture diagram. You see the same drawing again on the last afternoon of the course.
 
 | Category | Elements |
 |---|---|
@@ -124,11 +112,9 @@ Slides 6 and 12 use the same architecture drawing. These are the elements pulled
 | Boundary | AWS Cloud |
 | Service labels | DynamoDB, AWS Identity and Access Management (IAM), Amazon Cognito, Amazon APIGateway, Amazon Polly, AWS X-Ray, AWS Serverless Application Model (AWS SAM), Amazon CloudWatch |
 
-Among the service labels, `Amazon APIGateway` is missing a space. The correct name is `Amazon API Gateway`, and the diagrams on slides 10 and 11 of the same courseware spell it correctly (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
+### 3.3 What Each Service Does Now 🆕
 
-### 3.3 Current Naming of the Services in the Architecture 🆕
-
-We checked every service that appears in the courseware diagrams (slides 6, 7, and 12) against current official documentation, one at a time. **No service has been renamed, and none has reached end of support.** Three of them have moved in the documentation (see [Section 3.4](#34-three-things-that-changed-since-the-courseware)).
+Here is a one-line summary of each service above, based on current official documentation. Later modules cover them one by one, so for now just get a feel for the role each one plays in the whole picture. Three of them have moved or widened since the class (see [Section 3.4](#34-three-things-that-have-changed-since-the-class)).
 
 | Service | What the current documentation says | Source |
 |---|---|---|
@@ -148,9 +134,11 @@ We checked every service that appears in the courseware diagrams (slides 6, 7, a
 
 > — Source: [What is Amazon Cognito?](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html)
 
-### 3.4 Three Things That Changed Since the Courseware 🔄
+### 3.4 Three Things That Have Changed Since the Class 🔄
 
-| Item | Courseware | Current | Source |
+These are the points that trip you up when you redo a lab or carry the work into production.
+
+| Item | At the time of the class | Now | Source |
 |---|---|---|---|
 | Voice mode | The slide 6 instructor notes say only "a selected voice mode" and offer no choices | Amazon Polly has four voice engines: **Generative, Long-form, Neural, and Standard.** Generative and Long-form were added after the courseware. You select an engine and a speech synthesis API operation, then provide input text and an audio output format | [Amazon Polly voice engines](https://docs.aws.amazon.com/polly/latest/dg/voice-engines-polly.html) |
 | The AWS X-Ray console | Slides 6 and 12 present X-Ray and CloudWatch as separate services sitting side by side | The documentation states that **"AWS is no longer developing the X-Ray console."** The X-Ray Service map and the CloudWatch ServiceLens map have been combined into the **X-Ray trace map** inside the CloudWatch console, and X-Ray Insights is included under Insights in the CloudWatch console. CloudWatch **Application Signals** was added for service-level observability. X-Ray itself has not been discontinued: **the screen path changed** | [Use a console (X-Ray)](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
@@ -162,9 +150,9 @@ We checked every service that appears in the courseware diagrams (slides 6, 7, a
 
 ## 4. Three-Day Agenda
 
-Slides 7 through 12. Each slide puts the module and lab boxes on the left and the piece of the architecture covered in that half day on the right. The **learning objective** column below comes from the instructor notes on the same slide.
+This is the sequence of modules and labs across the three days. Each half day stacks on one more piece of the architecture, so the piece covered in each half day is noted alongside.
 
-### 4.1 Day 1 Morning (Slide 7)
+### 4.1 Day 1 Morning
 
 | Item | Title | Learning objective from the instructor notes |
 |---|---|---|
@@ -176,11 +164,9 @@ Slides 7 through 12. Each slide puts the module and lab boxes on the left and th
 
 Diagram fragment: you → EC2 instance contents inside the AWS Cloud (integrated development environment (IDE), AWS tools and SDKs, AWS Command Line Interface (AWS CLI)), Amazon Simple Storage Service (Amazon S3), IAM, IAM role, AWS Security Token Service (AWS STS), AWS CloudFormation.
 
-**Lab connectivity and the IDE.** The instructor notes say there are **three IDEs** in the labs and that learners can choose one based on preference or programming language (the IDE names are not given). The connection method is inconsistent between the slide box and the instructor notes: the box says `Guacamole or Remote Desktop` (two options) and the notes say `Guacamole, Remote Desktop, or a browser-based option` (three options). Apache Guacamole is not covered by documentation on an AWS-operated domain, and lab connectivity is a course-operations matter, so this document cannot settle it (see [Section 8.5](#85-items-we-could-not-verify)).
+**The lab environment and the IDE.** The labs provide **three IDEs**, and you pick one based on preference or programming language. Connectivity uses Guacamole, Remote Desktop, or a browser-based option. Which IDEs they are and which connection path applies vary by how the class is run, so this document does not settle it (see [Section 8.5](#85-items-we-could-not-verify)).
 
-Also, the instructor notes on this slide are in Korean except for **one line, the lab 1 description**, which is in English (`실습 1 – Configure and test IAM permissions in a development environment.`). The table above carries it in the document language (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
-
-### 4.2 Day 1 Afternoon (Slide 8)
+### 4.2 Day 1 Afternoon
 
 | Item | Title | Learning objective from the instructor notes |
 |---|---|---|
@@ -190,9 +176,9 @@ Also, the instructor notes on this slide are in Korean except for **one line, th
 
 Diagram fragment: developer → AWS software development kit (AWS SDK) → Amazon S3 (two, Notes) inside the AWS Cloud.
 
-Lab 2 is the only lab whose box title and instructor note point at different labs. The diagram on the same slide draws developer → AWS SDK → Amazon S3, which lines up with **the box title** as the lab for this half day. The other labs (3, 4, and 6) have matching titles and notes (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
+For lab 2 the courseware title and description point at different labs. The diagram's developer → AWS SDK → Amazon S3 flow shows that **the title** is the lab for this half day (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
 
-### 4.3 Day 2 Morning (Slide 9)
+### 4.3 Day 2 Morning
 
 | Item | Title | Learning objective from the instructor notes |
 |---|---|---|
@@ -203,7 +189,7 @@ Lab 2 is the only lab whose box title and instructor note point at different lab
 
 Diagram fragment: DynamoDB inside the AWS Cloud — Notes table and global secondary index, data query and access.
 
-### 4.4 Day 2 Afternoon (Slide 10)
+### 4.4 Day 2 Afternoon
 
 | Item | Title | Learning objective from the instructor notes |
 |---|---|---|
@@ -213,7 +199,7 @@ Diagram fragment: DynamoDB inside the AWS Cloud — Notes table and global secon
 
 Diagram fragment: developer → Amazon Polly, Amazon S3 (two) / developer → API Gateway → AWS Lambda → DynamoDB table.
 
-### 4.5 Day 3 Morning (Slide 11)
+### 4.5 Day 3 Morning
 
 | Item | Title | Learning objective from the instructor notes |
 |---|---|---|
@@ -224,9 +210,9 @@ Diagram fragment: developer → Amazon Polly, Amazon S3 (two) / developer → AP
 
 Diagram fragment: users → Amazon Cognito → API Gateway inside the AWS Cloud → Lambda function → DynamoDB, S3 bucket, developer.
 
-**The module titles differ from the individual decks.** The agenda box reads `현대적 애플리케이션 구축` while the M11 deck title page reads `모던 애플리케이션(Modern Application) 구축`, and the box reads `애플리케이션 사용자에게 액세스 권한 부여` while the M12 deck title page reads `내 애플리케이션의 사용자에게 액세스 권한 부여하기`. Learners notice this the moment they compare the agenda with a module title page (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
+The titles given here for modules 11 and 12 differ slightly from the title pages of those modules. They are the same modules (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
 
-### 4.6 Day 3 Afternoon (Slide 12) 🔄
+### 4.6 Day 3 Afternoon 🔄
 
 | Item | Title | Learning objective from the instructor notes |
 |---|---|---|
@@ -234,9 +220,9 @@ Diagram fragment: users → Amazon Cognito → API Gateway inside the AWS Cloud 
 | Lab 7 | Observing Your Application with AWS X-Ray | Deploy, monitor, and maintain the web application using AWS resources |
 | Module 15 | Course Wrap-Up | Course summary |
 
-Diagram fragment: the same set of labels as the full Pollynotes architecture on slide 6.
+Diagram fragment: the same set of labels as the full Pollynotes architecture from Section 3. The last half day returns to the picture you started with.
 
-**The screen path for lab 7 may differ from the courseware.** The documentation states that AWS is no longer developing the X-Ray console, and that the X-Ray Service map and the CloudWatch ServiceLens map have been combined into the **X-Ray trace map in the Amazon CloudWatch console**. You open it from the CloudWatch console's left navigation pane under `X-Ray traces` → `Trace Map`. Details are in [Section 3.4](#34-three-things-that-changed-since-the-courseware).
+**Lab 7 now runs in the CloudWatch console.** 🔄 AWS is no longer developing the X-Ray console, and the X-Ray Service map and the CloudWatch ServiceLens map have been combined into the **X-Ray trace map in the Amazon CloudWatch console**. You open it from the CloudWatch console's left navigation pane under `X-Ray traces` → `Trace Map`. Details are in [Section 3.4](#34-three-things-that-have-changed-since-the-class).
 
 > — Source: [Use a console (X-Ray)](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html)
 
@@ -244,9 +230,9 @@ Diagram fragment: the same set of labels as the full Pollynotes architecture on 
 
 ## 5. Classroom Logistics
 
-Slides 13 through 15. This is about running the class, so there are no facts here to verify against AWS documentation. Carried over as written.
+Notes on how the class is run.
 
-### 5.1 In-Person Logistics (Slide 13)
+### 5.1 In-Person Logistics
 
 | Category | Item |
 |---|---|
@@ -254,16 +240,16 @@ Slides 13 through 15. This is about running the class, so there are no facts her
 | Schedule | Breaks and lunch |
 | Other | Food / mobile phones |
 
-### 5.2 Virtual Classroom Logistics (Slide 14)
+### 5.2 Virtual Classroom Logistics
 
 | Category | Item |
 |---|---|
 | Schedule | Breaks and lunch |
 | Communication | Chat / mute and unmute / camera |
 
-### 5.3 Introductions (Slide 15)
+### 5.3 Introductions
 
-Instructor notes: introductions help you understand each learner's proficiency level and what each of them wants to get out of the class.
+This round exists to gauge each learner's proficiency and what they want out of the class.
 
 | # | Question |
 |---|---|
@@ -274,19 +260,17 @@ Instructor notes: introductions help you understand each learner's proficiency l
 | 5 | Which language would you choose: Java, Python, or C#? |
 | 6 | What was your most recent purchase on Amazon.com? |
 
-The language list in question 5 is drawn on a different axis than slide 5 (`Python / .NET / Java`) — see [Section 2](#2-recommended-prerequisites).
+Question 5 is what decides your lab IDE and SDK (see [Section 2](#2-recommended-prerequisites)).
 
 ---
 
 ## 6. Accessing the Labs and Guides
 
-Slides 16 through 19. Slide 16 is a section divider (`How to access the course labs and guides` with the subtitle `AWS Builder Labs instructions`).
+The lab environment and the guides are delivered through **AWS Builder Labs**. The registration details are in the welcome email from your instructor.
 
-### 6.1 Registration (Slide 17)
+### 6.1 Registration
 
-The slide body is two lines. **You must register for AWS Builder Labs, and the registration information is in the welcome email.**
-
-Summarizing the learner-facing instructor notes, the procedure is this.
+What you do as a learner.
 
 | Step | Content |
 |---|---|
@@ -304,11 +288,9 @@ The instructor-facing notes add the following.
 | License code | If learners reach their Bookshelf account through the AWS Builder Labs dashboard using the unique learner registration link, there is **no need to purchase a license code from Gilmore** |
 | FAQ and concurrent lab limits | The notes point to the FAQ and Resources section of the `Instructor Enablement: AWS Builder Labs` guide on AWS Skill Builder. The address printed in the courseware is `https://explore.skillbuilder.aws/learn/course/internal/view/elearning/12814/instructor-enablement-aws-builder-labs` |
 
-That Skill Builder address in the courseware is an **instructor-only internal path**. We could not verify its contents for this document (see [Section 8.5](#85-items-we-could-not-verify)).
+The Skill Builder address in the table above is an **instructor-only internal path**, so we could not verify its contents for this document (see [Section 8.5](#85-items-we-could-not-verify)).
 
-### 6.2 Where the Guides Live (Slide 18)
-
-The slide has no body text, only graphics. Summarized from the instructor notes.
+### 6.2 Where the Guides Live
 
 | Item | Content |
 |---|---|
@@ -318,7 +300,7 @@ The slide has no body text, only graphics. Summarized from the instructor notes.
 | Guide store | The guides live in **eVantage Bookshelf (VitalSource)**. Clicking the link prompts learners to sign in to an existing account or choose `Create an account` |
 | How to use them | The guides can be accessed online or downloaded |
 
-### 6.3 Guide Distribution (Slide 19)
+### 6.3 Guide Distribution
 
 | Item | Content |
 |---|---|
@@ -327,13 +309,13 @@ The slide has no body text, only graphics. Summarized from the instructor notes.
 | Address | The slide lists `https://evantage.gilmoreglobal.com/` as the participant guide address, with "get the code from your instructor" |
 | Guide composition | A class without labs has only the learner guide; a class with labs has both the learner guide and the lab guide |
 
-An **important note** from the instructor-facing notes: the content of this slide applies only to a class without labs, or when learners sign in to an existing eVantage Bookshelf (VitalSource) account rather than going through the unique URL in the AWS Builder Labs portal first. **For courses that include labs, direct learners to the registration URL in the welcome email.** The instructor purchases license codes through Gilmore and sends learners a download code.
+**Note.** This path applies only to a class without labs, or when you sign in to an existing eVantage Bookshelf (VitalSource) account rather than going through the unique URL in the AWS Builder Labs portal. **Since this course includes labs, use the registration URL in the welcome email instead.**
 
-eVantage Bookshelf (VitalSource) and Gilmore Global are not AWS-operated domains, so they are not on this document's list of citable sources. The content above is therefore carried over **exactly as the courseware states it**, with no source attached (see [Section 8.5](#85-items-we-could-not-verify)).
+eVantage Bookshelf (VitalSource) and Gilmore Global are not AWS-operated domains, so the content above is carried over as the courseware states it, with no source attached (see [Section 8.5](#85-items-we-could-not-verify)).
 
 ### 6.4 Where AWS Builder Labs Sits Now 🔄
 
-The path to the class labs (unique registration URL in the welcome email → AWS Builder Labs dashboard) is the same as in the courseware. What changed is **where AWS presents AWS Builder Labs**.
+The path to the class labs (unique registration URL in the welcome email → AWS Builder Labs dashboard) is the same as it was during the class. What changed is **where AWS presents AWS Builder Labs**, and free labs you can keep using after the course have been added.
 
 | Item | What we verified |
 |---|---|
@@ -351,7 +333,7 @@ The path to the class labs (unique registration URL in the welcome email → AWS
 
 ## 7. Lab Requirements
 
-Slide 20. There are no instructor notes.
+Conditions for reaching the lab environment.
 
 | Category | Requirement |
 |---|---|
@@ -360,13 +342,13 @@ Slide 20. There are no instructor notes.
 | Network | A reliable internet connection able to browse the internet over HTTPS |
 | AWS Builder Labs registration | Disable ad and script blocking |
 
-This list is **course-operations logistics.** It is not a supported-operating-system or supported-browser requirement for a particular AWS service; it is a condition for reaching the lab environment, so it is not the kind of fact AWS official documentation verifies. It is carried over as written, with no source attached (see [Section 8.5](#85-items-we-could-not-verify)).
+This is not a supported-operating-system or supported-browser list for a particular AWS service; it is a condition for reaching the lab environment, so it is not the kind of fact AWS official documentation verifies. It is carried over as written, with no source attached (see [Section 8.5](#85-items-we-could-not-verify)).
 
 ---
 
 ## 8. Changes from the Courseware
 
-Items in the courseware (the instructor deck) that differ from current reality. Learners have the official courseware in front of them, so we leave a record of what we changed and why.
+If something in the courseware makes you think "but the book says otherwise," check here. This section collects the evidence behind the new-content and correction markers used in the sections above.
 
 M01 is a course administration module, so this section is thin. We found **no end-of-support items in this module.** What we did find are six places where the courseware contradicts itself. Those are not something AWS documentation can settle, so their source column is empty and they are carried into [Section 8.5](#85-items-we-could-not-verify).
 
@@ -377,7 +359,7 @@ M01 is a course administration module, so this section is thin. We found **no en
 | `Amazon APIGateway` (slide 6 and 12 diagrams) | Written as one word, with no space | The documented name is **`Amazon API Gateway`.** The slide 10 and 11 diagrams and the instructor notes of the same courseware spell it correctly, so the courseware is inconsistent with itself | [What is Amazon API Gateway?](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html) |
 | The IAM abbreviation (slide 7 instructor notes) | `AWS Identity and Access Management (AWS IAM)` | The documented abbreviation is **`IAM`.** The slide 6 and 7 diagrams write `(IAM)` correctly; only the slide 7 instructor notes write `(AWS IAM)` | [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
 | The module name | Slide 2 subtitle `Module 1: Course Overview` vs slide 7 instructor notes `Module 1 - Course Introduction` | Which one is right is not something documentation can settle; it is an internal courseware inconsistency. This document follows slide 2 | — (see [Section 8.5](#85-items-we-could-not-verify)) |
-| The lab 1 description (slide 7 instructor notes) | Only this one line is in English within otherwise Korean notes (`Configure and test IAM permissions in a development environment.`) | This looks like a missed translation. The table in [Section 4.1](#41-day-1-morning-slide-7) carries it in the document language | — (see [Section 8.5](#85-items-we-could-not-verify)) |
+| The lab 1 description (slide 7 instructor notes) | Only this one line is in English within otherwise Korean notes (`Configure and test IAM permissions in a development environment.`) | This looks like a missed translation. The table in [Section 4.1](#41-day-1-morning) carries it in the document language | — (see [Section 8.5](#85-items-we-could-not-verify)) |
 | Lab 2 (slide 8) | The box title is `Developing Solutions with Amazon S3`; the instructor notes on the same slide say `Identify the AWS solutions that fit a big data application workload` | The two point at different labs. The diagram on the same slide draws developer → AWS SDK → Amazon S3, which matches **the box title.** The other labs (3, 4, and 6) have matching titles and notes | — (see [Section 8.5](#85-items-we-could-not-verify)) |
 | Agenda module titles (slide 11) | `현대적 애플리케이션 구축` / `애플리케이션 사용자에게 액세스 권한 부여` | The individual deck title pages read `모던 애플리케이션(Modern Application) 구축` / `내 애플리케이션의 사용자에게 액세스 권한 부여하기`. It is an internal courseware inconsistency that surfaces when you compare the agenda with a module title page | — (see [Section 8.5](#85-items-we-could-not-verify)) |
 | Lab connectivity (slide 7) | The box says `Guacamole or Remote Desktop` (two); the instructor notes say `Guacamole, Remote Desktop, or a browser-based option` (three) | The count differs within a single slide. This is a lab-operations matter, and Guacamole is not covered by documentation on an AWS-operated domain, so we cannot establish which is current | — (see [Section 8.5](#85-items-we-could-not-verify)) |
@@ -427,41 +409,3 @@ Left here honestly. Check these before stating them as fact in class.
 | The operating system and browser list in the lab requirements (slide 20) | This is not a supported list for a particular AWS service; it is a **condition for reaching the lab environment.** It is not the kind of fact AWS official documentation verifies, so it is carried over as written |
 | The six internal courseware inconsistencies | The module name, the one English line in the lab 1 description, the lab 2 title versus description, the agenda module titles, the number of connection methods, and the axis of the language list. All of them are **internal courseware problems that external documentation cannot verify.** We only state which side we followed, in [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts) |
 | The actual procedures for labs 1 through 7 | This deck carries only lab titles and one-line objectives. The procedures are in the lab guide and are out of scope for this document |
-
----
-
-## 9. Knowledge Check and Summary
-
-### Knowledge Check
-
-**This deck has no knowledge check slide.** Unlike the other module decks, it carries no true/false questions, so there are no courseware questions to reproduce. Instead, we include only supplementary questions covering the updates above.
-
-### 🆕 Supplementary Questions (Checking the Updated Content)
-
-**Question 1**: Amazon Polly offers two voice engines to choose from, Neural and Standard.
-
-- ❌ **Answer: False** — There are four: **Generative, Long-form, Neural, and Standard.** Generative and Long-form were added after the courseware. (See [Section 3.4](#34-three-things-that-changed-since-the-courseware))
-
-> — Source: [Amazon Polly voice engines](https://docs.aws.amazon.com/polly/latest/dg/voice-engines-polly.html)
-
-**Question 2**: To view application traces in lab 7 you must use the X-Ray console, and AWS continues to improve that console.
-
-- ❌ **Answer: False** — The documentation states that **"AWS is no longer developing the X-Ray console."** The X-Ray Service map and the CloudWatch ServiceLens map have been combined into the **X-Ray trace map in the Amazon CloudWatch console.** The X-Ray service has not been discontinued; the screen path changed. (See [Section 8.3](#83-discouraged-and-end-of-support-items))
-
-> — Source: [Use a console (X-Ray)](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html)
-
-**Question 3**: The prerequisite course AWS Cloud Practitioner Essentials has been renamed and no longer exists.
-
-- ❌ **Answer: False** — It exists under the same name and has been reorganized into **13 modules** centered on cloud concepts. It is taken on AWS Skill Builder and is also offered on Coursera and edX. The classroom course address on `aws.amazon.com` moves you to Skill Builder. (See [Section 2.1](#21-where-the-two-prerequisite-courses-are-now))
-
-> — Source: [Step into the cloud: The new AWS Cloud Practitioner Essentials is here!](https://aws.amazon.com/blogs/training-and-certification/new-aws-cloud-practitioner-essentials/)
-
-### Summary
-
-| # | Key point |
-|---|---|
-| 1 | There are three course objectives: **configure IAM permissions / design, build, and deploy a cloud-native application with the AWS SDKs / monitor and maintain it using AWS resources** |
-| 2 | Over three days you build one application, **Pollynotes**, from start to finish. Each module attaches one piece of that application, and the same drawing on slides 6 and 12 ties the beginning to the end |
-| 3 | **Not one** of the 13 services in the architecture has been renamed. What changed is where they sit: the X-Ray console is no longer being developed and moves into CloudWatch, Polly's voice engines have grown to four, and Lambda's documentation is now organized around two compute primitives |
-| 4 | The lab environment and the guides start from the **unique learner registration URL in the welcome email.** That path is unchanged from the courseware. Going through it means there is no separate license code to purchase from Gilmore |
-| 5 | There are six places where the courseware contradicts itself (the module name, the lab 1 description, the lab 2 title, the agenda module titles, the number of connection methods, and the language list). All are collected in [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts). These are the points learners will ask about while comparing against the courseware |

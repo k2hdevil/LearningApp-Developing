@@ -14,7 +14,6 @@
 6. [Using Amazon S3 with the AWS CLI](#6-using-amazon-s3-with-the-aws-cli)
 7. [Using Amazon S3 with the AWS SDKs](#7-using-amazon-s3-with-the-aws-sdks)
 8. [Changes from the Courseware](#8-changes-from-the-courseware)
-9. [Knowledge Check and Summary](#9-knowledge-check-and-summary)
 
 > **Notation**
 >
@@ -898,63 +897,3 @@ Recorded honestly. Confirm these before stating them definitively in class.
 |---|---|
 | Detailed file storage list | The list on courseware slide 5 (EFS Standard, EFS Infrequent Access, FSx for Lustre, FSx for NetApp ONTAP, FSx for OpenZFS) does not match the diagram labels on the same slide (EFS, FSx for Windows File Server, FSx for Lustre). This document keeps only the service names and omits the detailed class list. Separate verification against the EFS and FSx documentation is needed |
 | `get-bucket-location` returning `null` for `us-east-1` | That a bucket is created in `us-east-1` when `LocationConstraint` is not specified was confirmed in the CreateBucket API documentation. However, the `get-bucket-location` response returning `null` was not confirmed in documentation. This needs runtime verification |
-
----
-
-## 9. Knowledge Check and Summary
-
-### Knowledge Check (True/False)
-
-**Question 1**: Data is stored as objects in an S3 bucket. Any kind of file can be an object, including text, video, images, and other binary formats.
-
-- ✅ **Answer: True**
-
-**Question 2**: S3 buckets are created globally and have no dependency on a single AWS Region.
-
-- ❌ **Answer: False** — A bucket **name** is managed in a global (more precisely, per-partition) namespace, but the bucket itself is created in a specific AWS Region. The Region cannot be changed after creation.
-
-**Question 3**: The AWS SDKs map to APIs for Amazon S3 that correspond to the underlying AWS REST API operations.
-
-- ✅ **Answer: True**
-
-**Question 4**: Enabling an S3 bucket for website hosting changes the existing endpoint.
-
-- ❌ **Answer: False** — A website endpoint is **added**; the existing REST API endpoint does not change. The two endpoints serve different purposes.
-
-**Question 5**: All objects and buckets are private by default.
-
-- ✅ **Answer: True** — The default settings block public access, and Block Public Access overrides bucket policies and object permissions.
-
-**Question 6**: An Amazon S3 access point is a unique hostname that is attached to an S3 bucket and configured with a use-case-specific access policy.
-
-- ✅ **Answer: True** — 🆕 Access points can now also be attached to FSx for NetApp ONTAP and OpenZFS volumes and to Amazon S3 recovery points in AWS Backup.
-
-### 🆕 Supplementary Questions (Covering the Updated Content)
-
-**Question 7**: When you upload an object to a newly created S3 bucket without configuring encryption, the object is stored unencrypted.
-
-- ❌ **Answer: False** — Since January 5, 2023, SSE-S3 (AES-256) is automatically applied to all new object uploads. (See [Section 3.7](#37-default-encryption))
-
-> — Source: [Default encryption FAQ](https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html)
-
-**Question 8**: Setting an object ACL on a newly created S3 bucket succeeds.
-
-- ❌ **Answer: False** — Object Ownership defaults to Bucket owner enforced, so ACLs are disabled. Requests to set an ACL fail with HTTP 400 `AccessControlListNotSupported`. (See [Section 4.4](#44-s3-object-ownership-and-acls-disabled-by-default))
-
-> — Source: [Controlling ownership of objects and disabling ACLs for your bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html)
-
-**Question 9**: If two clients send a `PUT` to the same key at the same time, S3 automatically locks the object and makes one of them wait.
-
-- ❌ **Answer: False** — S3 does not support object locking for concurrent writers; the request with the latest timestamp wins (last-writer-wins). Use conditional writes or implement locking in your application. (See [Section 3.2](#32-data-consistency-model), [Section 3.8](#38-conditional-requests))
-
-> — Source: [Amazon S3 data consistency model](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
-
-### Module Objectives Check
-
-After completing this module, you should be able to do the following:
-
-- ✅ Describe the core concepts of Amazon Simple Storage Service (Amazon S3)
-- ✅ List the options for protecting data with Amazon S3
-- ✅ Define the SDK dependencies in your code
-- ✅ Describe how to connect to the Amazon S3 service
-- ✅ Describe request and response objects

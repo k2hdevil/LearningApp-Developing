@@ -14,7 +14,6 @@
 6. [통합 개발 환경](#6-통합-개발-환경)
 7. [개발 환경 설정](#7-개발-환경-설정)
 8. [교재 대비 변경 사항](#8-교재-대비-변경-사항)
-9. [지식 확인 및 핵심 정리](#9-지식-확인-및-핵심-정리)
 
 > **표기 설명**
 >
@@ -1103,92 +1102,3 @@ AWS SDK로 AWS에 액세스하려면 AWS 계정과 AWS 보안 인증 정보가 �
 | Eclipse·Azure DevOps 도구 키트 상태 | 교재 슬라이드 33 그래픽의 Eclipse와 Azure DevOps 도구 키트 상태를 확인하지 못했습니다. 공식 "그 밖의 AWS IDE 도구 키트" 안내는 JetBrains·VS Code·Visual Studio 세 가지만 나열하지만, Eclipse 또는 Azure DevOps 도구 키트의 명시적 지원 종료 발표는 찾지 못했습니다. Eclipse가 Amazon Q Developer 지원 IDE 목록에 포함된다는 점은 확인했습니다 |
 | CreateBucket HTTP 요청 예제 | 교재 슬라이드 6의 예제(`Date` 헤더와 `Authorization: authorization string`)가 현재 Amazon S3 API 참조의 요청 예제와 일치하는지 확인하지 못했습니다. CreateBucket API 참조를 읽었으나 대조할 수 있는 동일 형태의 예제 블록을 찾지 못했습니다. 교재 예제를 그대로 유지했습니다 |
 | DynamoDB 쿼리 응답 예제 | 교재 슬라이드 7의 응답 예제(`x-amzn-RequestId`, `x-amz-crc32`, `Content-Type: application/x-amz-json-1.0`)를 공식 문서로 대조하지 못했습니다. 교재 예제를 그대로 유지했습니다 |
-
----
-
-## 9. 지식 확인 및 핵심 정리
-
-### 지식 확인 문제 (참/거짓)
-
-교재 슬라이드 39와 강사 노트의 정답을 그대로 옮깁니다.
-
-**문제 1**: 서비스 클라이언트 API는 리소스 API가 수행하는 하위 수준 호출보다 더 상위 수준의 추상화를 제공합니다.
-
-- ❌ **정답: 거짓** — 관계가 반대입니다. **리소스 API가** 클라이언트에서 수행하는 하위 수준 호출보다 더 높은 수준의 추상화를 제공합니다.
-
-**문제 2**: Amazon CloudWatch를 사용하여 CPU, 디스크 I/O, 네트워크 처리량을 모니터링할 수 있습니다.
-
-- ✅ **정답: 참**
-
-**문제 3**: 각 AWS SDK는 자동 재시도 로직을 제공합니다.
-
-- ✅ **정답: 참** — 각 AWS SDK는 지수 백오프와 함께 자동 재시도 로직을 구현합니다.
-
-**문제 4**: 500 시리즈 오류는 잘못된 구문 때문에 클라이언트가 보낸 요청을 서버가 처리할 수 없음을 나타냅니다.
-
-- ❌ **정답: 거짓** — 그것은 **400 시리즈**입니다. 400 시리즈 오류 코드는 애플리케이션에서 오류를 처리함을 나타내고, 500 시리즈는 내부 서버 오류를 나타냅니다.
-
-**문제 5**: API, SDK, AWS CLI 또는 AWS Management Console을 사용하여 AWS 리소스를 관리할 수 있습니다.
-
-- ✅ **정답: 참**
-
-**문제 6**: AWS 서비스 호출에는 AWS 서명 프로토콜의 서명 버전 4를 사용하는 권한 부여 헤더가 포함됩니다.
-
-- ✅ **정답: 참**
-
-### 🆕 보충 문제 (최신화 내용 확인)
-
-**문제 7**: 새 프로젝트에서 Python으로 S3를 다룰 때, 간편하니까 `boto3.resource('s3')`를 기본으로 쓰면 됩니다.
-
-- ❌ **정답: 거짓** — AWS Python SDK 팀은 리소스 인터페이스에 새 기능을 추가할 계획이 없습니다. 최신 서비스 기능은 클라이언트 인터페이스(`boto3.client`)로 제공되므로 신규 코드는 클라이언트를 기준으로 작성합니다. 리소스 인스턴스는 스레드 안전하지도 않습니다. ([3.4절](#34-하위-수준-api와-상위-수준-api))
-
-> — 출처: [Boto3 Resources](https://docs.aws.amazon.com/boto3/latest/guide/resources.html)
-
-**문제 8**: 교재 예제 `aws lambda create-function ... --runtime nodejs12.x` 를 그대로 실행하면 함수가 생성됩니다.
-
-- ❌ **정답: 거짓** — `nodejs12.x` 는 2023년 3월 31일 지원이 중단되었고 같은 날부터 함수 생성이 차단되었습니다. 현재 지원되는 Node.js 런타임은 `nodejs22.x`, `nodejs24.x`, `nodejs26.x` 입니다. ([4.5절](#45-예제-aws-cli로-lambda-함수-생성))
-
-> — 출처: [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html)
-
-**문제 9**: `aws s3 ls s3://mybucket --recursive` 에서 `s3://mybucket` 은 하위 명령입니다.
-
-- ❌ **정답: 거짓** — 명령 구조는 `aws <command> <subcommand> [options and parameters]` 입니다. `s3`가 command, `ls`가 subcommand, `s3://mybucket`과 `--recursive`가 파라미터입니다. ([4.3절](#43-명령-구조))
-
-> — 출처: [Command structure in the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-commandstructure.html)
-
-**문제 10**: SigV4 서명이 재전송 공격을 막는 방식은 타임스탬프를 쓰는 것입니다. 허용되는 시간 차이는 정해져 있지 않습니다.
-
-- ❌ **정답: 거짓** — 타임스탬프를 쓰는 것은 맞지만 기준이 있습니다. 대부분의 경우 요청이 요청에 포함된 타임스탬프로부터 **5분 이내**에 AWS에 도달해야 하고, 그렇지 않으면 AWS가 요청을 거부합니다. ([2.2절](#22-요청-서명과-sigv4))
-
-> — 출처: [AWS Signature Version 4 for API requests](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html)
-
-**문제 11**: AWS SDK의 자동 재시도는 모든 SDK와 버전에서 동일한 기본값을 씁니다.
-
-- ❌ **정답: 거짓** — 재시도 모드가 `standard`·`legacy`·`adaptive` 세 가지이고 기본값이 다릅니다. AWS CLI v2 기본은 `standard`(재시도 2회, 총 3회 호출, 최대 백오프 20초)이고 v1 기본은 `legacy`(재시도 4회, 총 5회 호출, DynamoDB는 총 10회)입니다. ([5.7절](#57-자동-재시도-동작))
-
-> — 출처: [AWS CLI retries in the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-retries.html)
-
-**문제 12**: 실습에서 Cloud9을 쓰니까, 수강생도 자기 AWS 계정에서 Cloud9 환경을 만들어 따라 할 수 있습니다.
-
-- ❌ **정답: 거짓** — AWS Cloud9은 신규 고객에게 더 이상 제공되지 않습니다. 기존 고객은 계속 사용할 수 있으므로 교육 계정에 배포된 실습 환경은 동작할 수 있지만, 신규 계정에서는 환경을 만들 수 없습니다. AWS는 IDE 도구 키트 또는 AWS CloudShell을 대안으로 안내합니다. ([6.3절](#63-aws-cloud9))
-
-> — 출처: [What is AWS Cloud9?](https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html)
-
-**문제 13**: 개발용 자격 증명은 IAM 사용자를 만들고 그 액세스 키를 `~/.aws/credentials`에 넣는 것이 현재 AWS 권장 방식입니다.
-
-- ❌ **정답: 거짓** — 루트 사용자보다 낫다는 점은 맞지만, IAM 사용자 **장기** 자격 증명은 "권장하지 않음"으로 분류됩니다. 권장 순서는 콘솔 자격 증명 기반 단기 자격 증명 → IAM Identity Center → IAM 단기 자격 증명 → EC2 인스턴스 메타데이터 → 역할 수임입니다. ([7.2절](#72-보안-인증-정보-설정))
-
-> — 출처: [Authentication and access credentials for the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html)
-
-**문제 14**: Kiro는 IDE 형태로만 제공됩니다.
-
-- ❌ **정답: 거짓** — Kiro는 AWS의 에이전틱 개발 시스템이며 **IDE, CLI, 자율 웹 에이전트** 세 형태로 제공됩니다. 또한 AWS는 2027년 4월 30일 Amazon Q Developer IDE 플러그인 지원을 중단하면서 유사 기능을 위해 Kiro를 안내합니다. ([6.4절](#64-amazon-q-developer와-ide-플러그인-지원-종료), [6.5절](#65-kiro-스펙-기반-개발을-통한-ai-기반-ide))
-
-> — 출처: [Kiro](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/machine-learning.html), [Amazon Q Developer IDE plugins end of support](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-developer-ide-end-of-support.html)
-
-### 모듈 학습 목표 달성 확인
-
-이 모듈을 완료하면 다음을 수행할 수 있습니다.
-
-- ✅ AWS 서비스에 프로그래밍 방식으로 액세스하는 방법 설명
-- ✅ AWS SDK 내의 프로그래밍 패턴 나열

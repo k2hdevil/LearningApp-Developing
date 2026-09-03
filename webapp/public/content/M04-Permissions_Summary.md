@@ -14,7 +14,6 @@
 6. [권한 테스트](#6-권한-테스트)
 7. [개발 환경과 IDE 구성](#7-개발-환경과-ide-구성)
 8. [교재 대비 변경 사항](#8-교재-대비-변경-사항)
-9. [지식 확인 및 핵심 정리](#9-지식-확인-및-핵심-정리)
 
 > **표기 설명**
 >
@@ -1311,95 +1310,3 @@ DNS 서버, 스위치, 로드 밸런서 같은 네트워크 구성 요소는 요
 | 교재 어젠다의 실습 구성 요소 | 슬라이드 2·38 다이어그램은 Guacamole·SSH·원격 데스크톱 연결과 CloudFormation 프로비저닝을 전제합니다. 이 실습 인프라 구성은 AWS 공식 문서의 검증 대상이 아니므로 교재 기재 그대로 옮겼습니다 |
 | `api_versions` 설정 | 교재 `~/.aws/config` 예시의 `api_versions`(`ec2 = 2015-03-01`, `cloudfront = 2015-09-17`) 항목은 현재 문서에서 확인하지 못했습니다. `retry_mode`·`max_attempts`·`s3` 하위 설정은 확인했습니다 |
 | Amazon Q Developer와 IDE 툴킷의 관계 | 현재 AWS IDE 툴킷 제품군의 구성·명칭 변화가 진행 중일 수 있습니다. 이 문서는 교재가 인용한 툴킷 문서 URL의 현재 유효성만 확인했고, 제품 전략 변화는 검증 범위에 넣지 않았습니다 |
-
----
-
-## 9. 지식 확인 및 핵심 정리
-
-### 지식 확인 문제 (참/거짓)
-
-교재 문제와 정답을 그대로 옮깁니다.
-
-**문제 1**: 권한 경계는 자격 증명 기반 정책이 사용자나 역할 같은 IAM 엔터티에 부여할 수 있는 **최소** 권한을 설정하는 데 사용됩니다.
-
-- ❌ **정답: 거짓** — 권한 경계는 자격 증명 기반 정책이 IAM 엔터티에 부여할 수 있는 **최대** 권한을 설정하는 데 사용됩니다.
-
-**문제 2**: IAM 역할은 일반적으로 AWS 리소스에 대한 액세스 권한이 없는 사용자나 서비스에 임시로 액세스 권한을 위임합니다.
-
-- ✅ **정답: 참**
-
-**문제 3**: 자격 증명 기반 정책은 리소스에서 특정 작업을 수행할 수 있는 권한을 지정된 보안 주체에 부여하고 이러한 권한이 적용되는 조건을 정의합니다.
-
-- ❌ **정답: 거짓** — **리소스 기반 정책**이 해당 리소스에서 특정 작업을 수행할 수 있는 권한을 지정된 보안 주체에 부여하고 이러한 권한이 적용되는 조건을 정의합니다.
-
-**문제 4**: AWS CLI는 AWS 리소스와 상호 작용하도록 여러 개의 프로파일을 지원합니다.
-
-- ✅ **정답: 참**
-
-**문제 5**: 임시 보안 인증 정보는 만료 후 교체하거나 명시적으로 취소할 필요가 없습니다.
-
-- ✅ **정답: 참**
-
-**문제 6**: 구성 파일과 보안 인증 정보 파일에는 운영 체제의 환경 변수에 저장할 수 있는 추가 설정이 포함되어 있습니다.
-
-- ✅ **정답: 참**
-
-### 🆕 보충 문제 (최신화 내용 확인)
-
-**문제 7**: 자격 증명 기반 정책과 권한 경계만 확인하면 요청이 허용될지 판단할 수 있습니다.
-
-- ❌ **정답: 거짓** — 평가에는 최대 9가지 정책 유형이 참여합니다. AWS Organizations의 SCP·RCP, 리소스 기반 정책, 세션 정책, VPC 엔드포인트 정책도 결과를 바꿀 수 있습니다. 어느 계층에든 명시적 거부가 있으면 거부로 확정됩니다. ([3.1절](#31-정책-유형), [5.4절](#54-aws-집행-코드의-평가-순서))
-
-> — 출처: [Policies and permissions in AWS Identity and Access Management](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
-
-**문제 8**: 계정 A의 사용자가 계정 B의 S3 버킷에 접근하려면, 계정 B의 버킷 정책에서 계정 A를 허용하기만 하면 됩니다.
-
-- ❌ **정답: 거짓** — 교차 계정 요청은 두 계정에서 각각 평가되고 **양쪽 모두 `Allow`** 여야 허용됩니다. 계정 A의 자격 증명 기반 정책도 그 리소스에 대한 요청을 허용해야 합니다. ([4.3절](#43-역할-예제-2-교차-계정-액세스))
-
-> — 출처: [Cross-account policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html)
-
-**문제 9**: AWS Organizations 안에서도 멤버 계정의 루트 사용자는 언제나 그 계정의 리소스에 접근할 수 있습니다.
-
-- ❌ **정답: 거짓** — SCP는 **각 AWS 계정 루트 사용자를 포함해** 멤버 계정 보안 주체의 권한을 제한하고, RCP도 루트 사용자를 포함한 자격 증명의 유효 권한에 영향을 줍니다. 멤버 계정의 루트 자격 증명 자체를 제거할 수도 있습니다. ([5.5절](#55-루트-사용자는-항상-허용되는가))
-
-> — 출처: [Policies and permissions in AWS Identity and Access Management](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
-
-**문제 10**: 권한 경계만 연결하면 그 경계가 허용하는 작업을 사용자가 수행할 수 있습니다.
-
-- ❌ **정답: 거짓** — 권한 경계는 **권한을 부여하지 않습니다.** 권한 정책을 반드시 별도로 연결해야 하며, 유효 권한은 두 정책의 교집합입니다. ([3.4절](#34-권한-경계))
-
-> — 출처: [Permissions boundaries for IAM entities](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
-
-**문제 11**: `sts:GetCallerIdentity`를 호출하려면 해당 작업을 허용하는 권한이 필요합니다.
-
-- ❌ **정답: 거짓** — 이 작업에는 **권한이 필요하지 않습니다.** 관리자가 명시적으로 거부해도 호출할 수 있습니다. 액세스가 거부될 때도 같은 정보가 반환되기 때문입니다. ([6.2절](#62-데모-역할-수임-테스트-aws-management-console))
-
-> — 출처: [GetCallerIdentity](https://docs.aws.amazon.com/STS/latest/APIReference/API_GetCallerIdentity.html)
-
-**문제 12**: `aws sts assume-role`로 받은 세션은 기본적으로 12시간 유효합니다.
-
-- ❌ **정답: 거짓** — `DurationSeconds`의 **기본값은 3600초(1시간)** 입니다. 유효 범위는 900~43200초이고, 역할에 설정된 최대 세션 지속 시간(1~12시간)을 넘기면 작업이 실패합니다. 역할 체이닝 상태에서는 최대 1시간으로 제한됩니다. ([4.6절](#46-역할-세션-지속-시간))
-
-> — 출처: [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html)
-
-**문제 13**: 개발 환경에서 AWS에 접근하려면 `aws configure`로 IAM 사용자의 액세스 키를 저장하는 것이 현재 권장 방법입니다.
-
-- ❌ **정답: 거짓** — 사람 사용자는 자격 증명 공급자 페더레이션으로 임시 보안 인증 정보를 사용하도록 권장되고, 중앙 집중식 관리에는 AWS IAM Identity Center가 권장됩니다. 로컬 개발에서는 `aws login`이나 AWS CloudShell도 대안입니다. ([2.4절](#24-iam-사용자와-장기-액세스-키))
-
-> — 출처: [Security best practices in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
-
-**문제 14**: 정책을 실제 환경에 적용하기 전에 검증하려면 대상 서비스에 요청을 보내 결과를 확인해야 합니다.
-
-- ❌ **정답: 거짓** — IAM 정책 시뮬레이터는 **실제 요청을 보내지 않고** 평가 결과를 알려 줍니다. 다만 결과가 실제 환경과 다를 수 있으므로 테스트 후 실제 환경에서 확인하도록 권장됩니다. IAM Access Analyzer의 정책 검증도 함께 쓸 수 있습니다. ([6.3절](#63-호출-없이-권한을-검증하는-도구))
-
-> — 출처: [IAM policy testing with the IAM policy simulator](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html)
-
-### 모듈 학습 목표 달성 확인
-
-이 모듈을 완료하면 다음을 수행할 수 있습니다.
-
-- ✅ AWS Identity and Access Management(AWS IAM) 특성과 구성 요소를 검토
-- ✅ 개발 환경을 지원하도록 권한을 구성
-- ✅ IAM 권한을 테스트하는 방법을 시연
-- ✅ 개발 환경을 지원하도록 IDE와 SDK를 구성
-- ✅ SDK를 사용하는 AWS 서비스 액세스를 시연

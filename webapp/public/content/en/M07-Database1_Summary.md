@@ -15,7 +15,6 @@
 7. [DynamoDB Service References](#7-dynamodb-service-references)
 8. [Requests and Responses](#8-requests-and-responses)
 9. [Changes from the Courseware](#9-changes-from-the-courseware)
-10. [Knowledge Check and Summary](#10-knowledge-check-and-summary)
 
 > **Notation**
 >
@@ -1377,95 +1376,3 @@ Recorded honestly. Confirm these before stating them definitively in class.
 | When the visualizer was merged in | That the current DynamoDB NoSQL Workbench documentation presents only two tools was confirmed. However, **which release** merged the visualizer into the data modeler could not be pinned down, because only part of the release history was reviewed |
 | The causal claim that "automatic partitioning meets throughput needs as data volumes and performance requirements grow" | That partitions are SSD-backed and that DynamoDB manages and allocates them automatically was confirmed. However, no documentation wording was found that supports the courseware's causal phrasing as stated, so the body includes only the allocation conditions the documentation actually describes ([Section 3.2](#32-partitions-and-data-distribution)) |
 | The `put-item` command on slide 25 | This command itself was not verified against the AWS CLI documentation. It is kept with a note that it comes from the courseware; the CLI usage pattern that was verified is the `list-tables` example in the DynamoDB local documentation ([Section 4.5](#45-aws-cli)) |
-
----
-
-## 10. Knowledge Check and Summary
-
-### Knowledge Check (True/False)
-
-The questions and answers from courseware slides 42–43, kept as they are.
-
-**Question 1**: Relational databases have no fixed schema. Different records can have different attributes.
-
-- ❌ **Answer: False** — It is **non-relational** databases that have no fixed schema. A relational database defines its schema up front.
-
-**Question 2**: Amazon DynamoDB stores data in rows and divides a table's items across multiple partitions based on the partition key value.
-
-- ❌ **Answer: False** — DynamoDB stores data in **partitions** and divides a table's items across multiple partitions based on the partition key value.
-
-**Question 3**: Each DynamoDB attribute has a name, a data type, and a value. An item whose total size is under 400 KB can have an unlimited number of attributes.
-
-- ✅ **Answer: True**
-
-**Question 4**: A read capacity unit (RCU) is the number of strongly consistent reads per second you can perform for an object of up to 4 KB.
-
-- ✅ **Answer: True**
-
-**Question 5**: To develop with Amazon DynamoDB you must access the DynamoDB web service to test your application.
-
-- ❌ **Answer: False** — With the downloadable version (DynamoDB local) you can develop and test without accessing the DynamoDB web service.
-
-**Question 6**: With the AWS SDK document interface for DynamoDB, you do not need to specify data type descriptors.
-
-- ✅ **Answer: True** — The data types are implied by the semantics of the data itself.
-
-### 🆕 Supplementary Questions (Covering the Updated Content)
-
-**Question 7**: Calling `GetItem` on a newly created DynamoDB table performs a strongly consistent read by default.
-
-- ❌ **Answer: False** — **Eventual consistency is the default for all read operations.** Set `ConsistentRead` to `true` when you need strong consistency. Strongly consistent reads are not available on global secondary indexes or Streams. (See [Section 3.9](#39-read-consistency))
-
-> — Source: [DynamoDB read consistency](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html)
-
-**Question 8**: In any DynamoDB table, the total size of the items sharing a partition key value cannot exceed 10 GB.
-
-- ❌ **Answer: False** — That constraint applies **only to tables with one or more local secondary indexes**. Without an LSI, DynamoDB splits the item collection across multiple partitions automatically. (See [Section 3.11](#311-local-secondary-index-example))
-
-> — Source: [Constraints in Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html)
-
-**Question 9**: A global secondary index can be added or deleted after the table is created, whereas a local secondary index can only be created when the table is created.
-
-- ✅ **Answer: True** — GSIs can be added to and deleted from an existing table; LSIs can only be created at table creation and cannot be added or deleted. (See [Section 3.13](#313-comparing-lsis-and-gsis))
-
-> — Source: [Improving data access with secondary indexes in DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html)
-
-**Question 10**: A newly created on-demand table handles millions of requests per second immediately as traffic grows.
-
-- ❌ **Answer: False** — A new on-demand table sustains up to **4,000 writes and 12,000 reads per second**, and beyond that it instantly accommodates up to **double the table's previous peak traffic**. Throttling can occur if you exceed double the previous peak within 30 minutes. (See [Section 3.7](#37-capacity-modes-pricing-options))
-
-> — Source: [DynamoDB on-demand capacity mode](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html)
-
-**Question 11**: You can use the Java dependencies on courseware slide 33 (`com.amazonaws.services.dynamodbv2.*`) as they are.
-
-- ❌ **Answer: False** — Those namespaces belong to AWS SDK for Java 1.x, which **reached end-of-support on December 31, 2025**. Use the 2.x `software.amazon.awssdk.*` namespaces, with the DynamoDB Enhanced Client for the higher level. (See [Section 6.2](#62-java-dependencies))
-
-> — Source: [AWS SDK for Java 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html)
-
-**Question 12**: `boto3.client('dynamodb')` and `boto3.resource('dynamodb')` return the same interface.
-
-- ❌ **Answer: False** — They are **different interfaces**. The resources interface receives no new features, and newer service features arrive through the client interface. Resource instances are not thread safe. (See [Section 6.3](#63-python-boto3-dependencies), [Section 7.2](#72-python-example-creating-a-service-client)) The comment on courseware slide 36 conflates the two.
-
-> — Source: [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html)
-
-### Key Takeaways
-
-The "Module summary" items from courseware slide 45. They differ from the module objectives on slide 3 (four items), so both are shown together.
-
-| Module objectives (slide 3) | Module summary (slide 45) |
-|---|---|
-| Describe the core components of DynamoDB | Describe the core components of DynamoDB |
-| Explore the different ways to connect to DynamoDB | Describe how to connect to DynamoDB |
-| Define the SDK dependencies and configuration in your code | Define the SDK dependencies in your code |
-| Use request and response objects | Describe how to define a request object / Describe how to read a response object |
-| — | Describe how to perform key table operations |
-| — | List troubleshooting for the most common exceptions |
-
-### Module Objectives Check
-
-After completing this module, you should be able to do the following:
-
-- ✅ Describe the core components of DynamoDB — tables, items, and attributes, partitions, primary keys, secondary indexes, and capacity units
-- ✅ Explore the different ways to connect to DynamoDB — the console, NoSQL Workbench, DynamoDB local, PartiQL, the AWS CLI, and the SDKs
-- ✅ Define the SDK dependencies and configuration in your code — Java 2.x, Python (boto3), and .NET namespaces and client creation
-- ✅ Use request and response objects — the request and response formats of the low-level API and the three components of an error

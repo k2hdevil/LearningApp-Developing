@@ -17,7 +17,6 @@
 9. [구현 모범 사례](#9-구현-모범-사례)
 10. [애플리케이션과 실습 6](#10-애플리케이션과-실습-6)
 11. [교재 대비 변경 사항](#11-교재-대비-변경-사항)
-12. [지식 확인 및 핵심 정리](#12-지식-확인-및-핵심-정리)
 
 > **표기 설명**
 >
@@ -66,9 +65,9 @@
 | 자격 증명 풀을 통해 애플리케이션에 대한 액세스 권한 부여 | 20~21 | [7장](#7-자격-증명-풀) |
 | API 액세스 보안 | 22~25 | [8장](#8-api-액세스-보안) |
 | 데모 | 26~27 | [10.4절](#104-데모-노트) |
-| 학습 내용 확인 | 28~29 | [12장](#12-지식-확인-및-핵심-정리) |
+| 학습 내용 확인 | 28~29 | (이 문서에서 다루지 않음) |
 | 실습 6: 캡스톤 - 애플리케이션 구축 완료 | 30~32 | [10장](#10-애플리케이션과-실습-6) |
-| 요약 | 33~36 | [2.4절](#24-용어-정리) · [12장](#12-지식-확인-및-핵심-정리) |
+| 요약 | 33~36 | [2.4절](#24-용어-정리) |
 
 이 덱은 **다이어그램 중심**입니다. 36장 중 코드가 등장하는 슬라이드는 슬라이드 18(JWT ID 토큰 예시) 하나뿐이고, CLI·SDK 호출 예제가 전혀 없습니다. 실질적인 본문은 슬라이드 15·18·23·25의 강사 노트에 몰려 있습니다. 이 문서는 그 강사 노트를 본문으로 끌어올린 뒤, 교재가 아예 다루지 않는 영역(인증 흐름 이름, 기능 요금제, 토큰 폐기, JWT 검증, 할당량)을 공식 문서로 채웠습니다.
 
@@ -82,7 +81,7 @@
 | 로그인 화면 이름 | "호스트된 UI" | **managed login**(최신)과 **hosted UI (classic)**(선행 버전) 두 브랜딩 버전 ([3.4절](#34-로그인-화면-managed-login-과-hosted-ui-classic)) |
 | 고급 보안 기능 | "고급 보안 기능으로 사용자를 보호합니다" | **위협 보호(threat protection)** 로 이름이 바뀌었고 **Plus 요금제** 전용입니다 ([3.8절](#38-위협-보호)) |
 | 인증 흐름 | "인증 흐름 지원" 한 줄. 흐름 이름을 하나도 제시하지 않음 | 앱 클라이언트의 `ExplicitAuthFlows` 로 허용 흐름을 골라야 하고, 교재 이후 추가된 **선택 기반 로그인(`USER_AUTH`)** 이 암호 없는 로그인·패스키의 유일한 진입 흐름입니다 ([4.7절](#47-인증-흐름)) |
-| JWT 페이로드 | "암호화된 정보" (세 곳) | ID·액세스 토큰의 페이로드는 **암호화되지 않고 base64url 로 인코딩되어 서명**만 붙습니다. 암호화되는 것은 refresh 토큰입니다. 슬라이드 29 문제 4의 정답을 **거짓으로 교정**했습니다 ([6.3절](#63-jwt-구조와-교재-예시-교정) · [12장](#12-지식-확인-및-핵심-정리)) |
+| JWT 페이로드 | "암호화된 정보" (세 곳) | ID·액세스 토큰의 페이로드는 **암호화되지 않고 base64url 로 인코딩되어 서명**만 붙습니다. 암호화되는 것은 refresh 토큰입니다. 슬라이드 29 문제 4의 정답을 **거짓으로 교정**했습니다 ([6.3절](#63-jwt-구조와-교재-예시-교정)) |
 | 자격 증명 풀 흐름 | `GetOpenIdToken` + `AssumeRoleWithWebIdentity` | 그 두 API는 **basic(classic) 흐름**입니다. 문서는 **enhanced 흐름**(`GetId` → `GetCredentialsForIdentity`)을 가장 안전하고 노력이 적은 선택으로 권장합니다 ([7.4절](#74-enhanced-흐름과-basic-classic-흐름)) |
 
 > — 출처: [User pool feature plans](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-sign-in-feature-plans.html)
@@ -1114,7 +1113,7 @@ JWT는 점(`.`)으로 구분된 **헤더 · 페이로드 · 서명** 세 섹션�
 - 무결성은 암호화가 아니라 **서명 검증**으로 보장합니다([6.8절](#68-jwt-검증)).
 - 문서는 토큰이 개인 식별 정보와 보안 모델 정보를 담을 수 있으므로 **전송 중·저장 중 모든 토큰을 보호**하는 것을 모범 사례로 제시합니다.
 
-이 교정에 따라 **슬라이드 29 문제 4의 정답을 거짓으로 바꿨습니다**([12장](#12-지식-확인-및-핵심-정리)).
+이 교정에 따라 **슬라이드 29 문제 4의 정답을 거짓으로 바꿨습니다**.
 
 > — 출처: [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
 
@@ -1858,7 +1857,7 @@ API 경로 표입니다.
 | 항목 | 교재 기재 | 확인된 내용 | 근거 |
 |---|---|---|---|
 | JWT 서명 알고리즘 (슬라이드 18) | 헤더에 `alg: RS256` 을 적으면서 서명 줄은 `HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), {secret})` | `HMACSHA256` 은 공유 비밀 키를 쓰는 **대칭 HMAC**, `RS256` 은 SHA-256을 쓰는 **RSA 비대칭 서명**입니다. 한 슬라이드 안에서 두 알고리즘이 섞여 있습니다. 문서는 사용자 풀이 **`RS256`** 을 사용한다고 명시하며, Amazon Cognito는 사용자 풀마다 RSA 키 페어를 **두 쌍** 만들어 액세스 토큰과 ID 토큰을 각각 다른 프라이빗 키로 서명합니다. 검증은 공유 비밀이 아니라 **공개 JWKS** 로 합니다 ([6.3절](#63-jwt-구조와-교재-예시-교정)) | [Understanding the identity (ID) token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html) |
-| JWT 페이로드를 "암호화된 정보"로 기술 | 슬라이드 18 강사 노트("키의 클레임에 대한 암호화된 정보"), 슬라이드 29 문제 4 정답 "참", 슬라이드 36 용어("클레임: 암호화된 사용자 정보가 있는 페이로드") — **세 곳** | Amazon Cognito는 토큰을 **base64url 로 인코딩한 문자열**로 발급하며 ID·액세스 토큰은 **평문 JSON 으로 디코딩할 수 있습니다.** 암호화되는 것은 **refresh 토큰**이며 사용자 풀만 읽을 수 있습니다. 슬라이드 18 자체가 페이로드를 평문 JSON으로 보여 주므로 교재 안에서도 어긋납니다. **슬라이드 29 문제 4의 정답을 "거짓"으로 교정**했습니다 ([6.3절](#63-jwt-구조와-교재-예시-교정) · [12장](#12-지식-확인-및-핵심-정리)) | [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html) |
+| JWT 페이로드를 "암호화된 정보"로 기술 | 슬라이드 18 강사 노트("키의 클레임에 대한 암호화된 정보"), 슬라이드 29 문제 4 정답 "참", 슬라이드 36 용어("클레임: 암호화된 사용자 정보가 있는 페이로드") — **세 곳** | Amazon Cognito는 토큰을 **base64url 로 인코딩한 문자열**로 발급하며 ID·액세스 토큰은 **평문 JSON 으로 디코딩할 수 있습니다.** 암호화되는 것은 **refresh 토큰**이며 사용자 풀만 읽을 수 있습니다. 슬라이드 18 자체가 페이로드를 평문 JSON으로 보여 주므로 교재 안에서도 어긋납니다. **슬라이드 29 문제 4의 정답을 "거짓"으로 교정**했습니다 ([6.3절](#63-jwt-구조와-교재-예시-교정)) | [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html) |
 | 규정 준수 표준 (슬라이드 9) | `PCI DSS / SOC / ISO 9001 / 표준 기반 인증(OAuth 2.0, SAML 2.0, OIDC) / 다중 인증(MFA)` | Amazon Cognito 문서가 명시하는 ISO 표준은 **ISO 27001**(정보 보안 관리 체계)이며 ISO 9001(품질 경영)이 아닙니다. 공동 책임 모델의 "클라우드의 보안"은 SOC 1-3 · PCI DSS · ISO 27001 을 준수하고 HIPAA-BAA 대상이며, 고객이 설계하는 "클라우드에서의 보안"은 SOC 1-3 · ISO 27001 · HIPAA-BAA 로는 설계할 수 있으나 **PCI DSS 로는 그럴 수 없습니다.** 또 표준 기반 인증과 MFA는 규정 준수 프로그램이 아니라 **서비스 기능**이므로 교재는 서로 다른 범주를 한 목록에 섞었습니다 ([3.7절](#37-규정-준수)) | [What is Amazon Cognito?](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html) |
 | 소셜 IdP 이름 (슬라이드 10) | `Login for Amazon` | 공식 이름은 **`Login with Amazon`** 입니다. 같은 덱의 슬라이드 9·19·24 강사 노트는 올바르게 표기하므로 교재 안에서도 표기가 갈립니다 ([4.12절](#412-서드-파티-idp-페더레이션)) | [Using social identity providers with a user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-social-idp.html) |
 | API 경로 파라미터 표기 (슬라이드 24·31) | `/notes/(id)` — **소괄호** | API Gateway 경로 파라미터 표기는 **중괄호**입니다. 문서의 PetStore 샘플 API에서 개별 리소스 경로는 `/pets/{petId}` 이고 `get-resources` 응답의 `pathPart` 도 `{petId}` 입니다 ([10.1절](#101-애플리케이션-아키텍처)) | [Set up a method request in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-settings-method-request.html) |
@@ -1946,247 +1945,3 @@ API 경로 표입니다.
 | 실습 6(캡스톤)이 전제하는 기능 요금제 | **실습 가이드가 이 덱에 없습니다.** 실습이 패스키·이메일 MFA·위협 보호처럼 요금제에 따라 갈리는 기능을 쓰는지 확인할 수 없었습니다 |
 | 슬라이드 18의 `iss` 예시 값이 사용자 풀 ID 형식 규칙에 맞는지 | 교재 예시는 `us-east-1_example` 이고 문서 예시는 `us-west-2_example` · `us-east-1_EXAMPLE` 형태입니다. **사용자 풀 ID의 형식 자체를 규정한 페이지를 찾지 못했습니다.** `sub` 에 대해서는 "형식을 엄격히 검증하지 말라"는 지침이 있으나 사용자 풀 ID 규칙은 미확인입니다 |
 | 교재 자체의 표기 오류 열 건 | 슬라이드 18의 왼쪽 큰따옴표와 `token_use` 값 한글 표기, 슬라이드 11·12 본문 중복, 슬라이드 15 제목 순서, 슬라이드 36 JWT 정의 오타, 모듈 목표 3번 대응 슬라이드 부재, 슬라이드 32 목록 누락, 용어 번역 분기, 다이어그램 레이블 공백 누락, 슬라이드 24·31 데이터 저장소 레이블은 모두 **교재 안에서 본문과 강사 노트가 어긋나거나 추출 과정에서 표기가 깨진 것**입니다. AWS 문서로 확인할 성질의 사실이 아니므로 근거 인용을 붙이지 않고 표기만 교정했습니다 |
-
----
-
-## 12. 지식 확인 및 핵심 정리
-
-### 지식 확인 문제 (참/거짓)
-
-교재 슬라이드 29의 문제를 그대로 싣습니다. **문제 4는 교재의 정답이 사실과 다르므로 교정했습니다.** 나머지 다섯 문제의 정답은 교재와 같습니다.
-
-교재 슬라이드 본문의 답 표시용 텍스트 상자가 모두 비어 있어(체크 표시가 애니메이션이나 그림으로만 들어가 있음) 정답은 강사 노트로 판별했습니다.
-
-**문제 1**: Amazon Cognito **사용자 풀**은 AWS 보안 인증 정보를 위한 인증 토큰을 교환합니다.
-
-- ❌ **정답: 거짓** — Amazon Cognito **자격 증명 풀**이 AWS 자격 증명을 위한 인증 토큰을 교환합니다. 사용자 풀은 사용자를 인증하고 ID · Access · Refresh 토큰을 발급하는 쪽입니다. ([3.2절](#32-두-구성-요소-사용자-풀과-자격-증명-풀) · [7장](#7-자격-증명-풀))
-
-**문제 2**: 사용자 및 자격 증명 풀은 인증 및 권한 부여 솔루션에 함께 사용할 수 있습니다.
-
-- ✅ **정답: 참** — 문서는 두 구성 요소가 사용자 액세스 요구에 따라 **독립적으로 또는 함께**(operate independently or in tandem) 동작한다고 기술합니다. ([3.3절](#33-둘을-함께-쓰는-흐름))
-
-**문제 3**: 그룹 멤버의 권한을 정의하려면 AWS Identity and Access Management(IAM) 역할을 Amazon Cognito 그룹에 할당하면 됩니다.
-
-- ✅ **정답: 참** — 그룹에 IAM 역할을 할당하면 우선순위가 가장 높은 그룹의 역할이 ID 토큰의 `cognito:preferred_role` 클레임에 적용됩니다. ([5.3절](#53-그룹))
-
-**문제 4**: JSON 웹 토큰(JWT) 페이로드 섹션에는 키의 클레임과 관련된 **암호화된** 정보가 포함되어 있습니다.
-
-- ❌ **정답: 거짓** 🔄 — **교재 강사 노트는 이 문제의 정답을 "참"으로 제시합니다. 그 정답이 사실과 다릅니다.**
-
-  Amazon Cognito는 토큰을 **base64url 로 인코딩한 문자열**로 발급하고, **ID 토큰과 액세스 토큰은 base64url 에서 평문 JSON 으로 디코딩할 수 있습니다.** 페이로드에 붙는 보호는 암호화가 아니라 **서명**입니다. 암호화되는 것은 **refresh 토큰**이며 사용자 풀 사용자·관리자에게 불투명하고 사용자 풀만 읽을 수 있습니다.
-
-  교재 안에서도 이 서술은 어긋납니다. **같은 슬라이드 18이 페이로드를 평문 JSON으로 그대로 보여 줍니다.** 슬라이드 36의 용어 정의("클레임: 암호화된 사용자 정보가 있는 페이로드")도 같은 문제를 가집니다.
-
-  실무에서 이 차이가 중요한 이유는 분명합니다. 페이로드는 누구든 디코딩해 읽을 수 있으므로 **비밀을 담아서는 안 되고**, 무결성은 **서명 검증**으로 확인해야 합니다. ([6.3절](#63-jwt-구조와-교재-예시-교정) · [6.8절](#68-jwt-검증) · [11.1절](#111-교재-기술이-사실과-다른-항목))
-
-> — 출처: [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
-
-**문제 5**: 타사 페더레이션을 사용할 때 개발자는 반드시 자격 증명 풀을 사용해야 합니다.
-
-- ❌ **정답: 거짓** — 타사 페더레이션은 **사용자 풀과 자격 증명 풀 모두에서** 지원됩니다. 사용자 풀은 SAML 2.0 · OIDC · 소셜 IdP를 받아 자체 토큰으로 표준화하고, 자격 증명 풀도 같은 공급자들의 클레임을 인증 증거로 받습니다. ([4.12절](#412-서드-파티-idp-페더레이션) · [7.4절](#74-enhanced-흐름과-basic-classic-흐름))
-
-**문제 6**: Amazon Cognito 자격 증명 풀은 미인증 사용자에게 AWS 보안 인증 정보를 제공할 수 있습니다.
-
-- ✅ **정답: 참** — 자격 증명 풀은 인증된 자격 증명과 인증되지 않은(게스트) 자격 증명을 모두 지원합니다. 다만 **게스트 액세스는 별도로 활성화하고 게스트용 기본 IAM 역할을 지정해야** 합니다. ([7.3절](#73-게스트-액세스))
-
-### 🆕 보충 문제 (최신화 내용 확인)
-
-**문제 7**: 사용자 풀의 JWT는 공유 비밀 키로 서명되므로 검증에도 같은 비밀 키가 필요합니다.
-
-- ❌ **정답: 거짓** — 사용자 풀은 **`RS256`**(SHA-256을 쓰는 **RSA 비대칭 서명**)을 사용합니다. 검증은 공유 비밀이 아니라 사용자 풀의 **공개 JWKS** 로 합니다. 교재 슬라이드 18이 헤더에 `alg: RS256` 을 적으면서 서명 줄에 `HMACSHA256(..., {secret})` 을 적어 두 알고리즘을 섞어 놓았습니다. ([6.3절](#63-jwt-구조와-교재-예시-교정))
-
-> — 출처: [Understanding the identity (ID) token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html)
-
-**문제 8**: 같은 로그인 세션에서 받은 ID 토큰과 액세스 토큰은 같은 키로 서명되므로 한 번만 검증하면 됩니다.
-
-- ❌ **정답: 거짓** — Amazon Cognito는 **사용자 풀마다 RSA 키 페어를 두 쌍** 만들어 액세스 토큰과 ID 토큰을 각각 다른 프라이빗 키로 서명합니다. 따라서 두 토큰의 **`kid` 값이 일치하지 않고 앱 코드에서 독립적으로 검증해야** 합니다. ([6.5절](#65-액세스-토큰의-클레임))
-
-> — 출처: [Understanding the access token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html)
-
-**문제 9**: refresh 토큰은 기본적으로 사용자가 사용자 풀에 **가입한** 후 30일이 지나면 만료됩니다.
-
-- ❌ **정답: 거짓** — 기준점은 가입이 아니라 **로그인**입니다. 문서 표현은 "사용자가 사용자 풀에 로그인한 후(signs into your user pool) 30일"입니다. 설정 범위 60분~10년은 교재 서술과 같습니다. ([6.6절](#66-토큰-유효-기간))
-
-> — 출처: [Refresh tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-refresh-token.html)
-
-**문제 10**: 사용자를 로그아웃시켜 refresh 토큰을 폐기하면 그 사용자의 액세스 토큰은 어떤 방법으로 검증해도 즉시 무효로 판정됩니다.
-
-- ❌ **정답: 거짓** — 사용자 풀 JWT는 생성 시점의 서명과 만료 시각을 담은 **자기 완결형(self-contained) 토큰**입니다. 폐기된 토큰은 토큰을 요구하는 Amazon Cognito API 호출에는 쓸 수 없지만, **서명과 만료만 검증하는 JWT 라이브러리로 검증하면 여전히 유효하게 보입니다.** API 권한 부여 설계에서 이 점을 고려해야 합니다. ([6.9절](#69-토큰-폐기))
-
-> — 출처: [Ending user sessions with token revocation](https://docs.aws.amazon.com/cognito/latest/developerguide/token-revocation.html)
-
-**문제 11**: refresh 토큰 교체를 활성화하면 기존의 `REFRESH_TOKEN_AUTH` 흐름을 그대로 쓸 수 있습니다.
-
-- ❌ **정답: 거짓** — 교체는 **`REFRESH_TOKEN_AUTH` 인증 흐름과 호환되지 않습니다.** 앱 클라이언트에서 이 흐름을 비활성화하고 **`GetTokensFromRefreshToken`** API로 갱신 요청을 보내도록 설계해야 합니다. 문서는 교체 활성화를 보안 모범 사례로 권장합니다. ([6.7절](#67-refresh-토큰-교체))
-
-> — 출처: [Refresh tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-refresh-token.html)
-
-**문제 12**: 암묵적 그랜트와 권한 부여 코드 그랜트는 보안 수준이 같으므로 앱 상황에 맞게 골라 쓰면 됩니다.
-
-- ❌ **정답: 거짓** — 문서는 암묵적 그랜트를 **레거시 권한 부여 그랜트**로 명시하고, 권한 부여 코드 그랜트와 달리 **사용자가 토큰을 가로채 검사할 수 있으므로** 앱 클라이언트가 권한 부여 코드 그랜트만 지원하도록 구성하라고 안내합니다. 권한 부여 코드 그랜트는 **세 토큰 유형을 모두 받는 유일한 방법**이기도 합니다. ([5.5절](#55-oauth-20-그랜트-세-가지))
-
-> — 출처: [OAuth 2.0 grants](https://docs.aws.amazon.com/cognito/latest/developerguide/federation-endpoints-oauth-grants.html)
-
-**문제 13**: 클라이언트 자격 증명 그랜트는 권한 부여 코드 그랜트와 같은 앱 클라이언트에서 함께 활성화할 수 있습니다.
-
-- ❌ **정답: 거짓** — 클라이언트 자격 증명 그랜트는 **암묵적 또는 권한 부여 코드 그랜트와 같은 앱 클라이언트에서 함께 활성화할 수 없습니다.** 또 앱 클라이언트에 클라이언트 보안 암호가 있어야 하고 AWS 청구서에 비용을 추가합니다. ([5.5절](#55-oauth-20-그랜트-세-가지))
-
-> — 출처: [OAuth 2.0 grants](https://docs.aws.amazon.com/cognito/latest/developerguide/federation-endpoints-oauth-grants.html)
-
-**문제 14**: 브라우저에서 실행되는 SPA용 앱 클라이언트에는 클라이언트 보안 암호를 발급해 두는 것이 안전합니다.
-
-- ❌ **정답: 거짓** — 브라우저나 모바일 디바이스에서 실행되고 신뢰할 수 있는 서버 측 리소스가 없는 **퍼블릭 클라이언트는 클라이언트 보안 암호를 갖지 않습니다.** 문서가 제시하는 퍼블릭 클라이언트 앱의 보안 모범 사례는 **권한 부여 코드 그랜트만 활성화하고 PKCE를 구현**하는 것입니다. ([4.9절](#49-앱-클라이언트-퍼블릭과-기밀) · [5.6절](#56-pkce))
-
-> — 출처: [App client types](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-client-apps.html)
-
-**문제 15**: `nickname` 과 `picture` 는 사용자 풀의 사용자 지정 속성입니다.
-
-- ❌ **정답: 거짓** — 두 속성은 OpenID Connect 명세에 근거한 **표준 속성 18개에 포함**됩니다. 교재 슬라이드 15가 사용자 지정 속성의 예로 잘못 들었습니다. 실제 사용자 지정 속성은 이름에 **`custom:` 접두사**가 붙고 사용자 풀당 최대 **50개**이며 추가 후 제거·변경할 수 없습니다. ([5.1절](#51-속성))
-
-> — 출처: [Working with user attributes](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html)
-
-**문제 16**: 사용자 풀을 만든 뒤에도 필수 속성과 로그인 식별자를 바꿀 수 있습니다.
-
-- ❌ **정답: 거짓** — **필수 속성, 사용자 이름 속성, 별칭 속성은 사용자 풀을 만든 뒤 바꿀 수 없습니다.** 현재 콘솔의 애플리케이션 중심 생성 흐름에서도 클라이언트 보안 암호, `preferred_username` 별칭 미허용, 사용자 이름 대소문자 구분 없음 세 가지가 **되돌릴 수 없는 기본 구성**으로 정해집니다. ([4.3절](#43-콘솔-생성-흐름) · [5.2절](#52-필수-속성과-확인-가능한-속성))
-
-> — 출처: [Working with user attributes](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html)
-
-**문제 17**: 사용자 풀에서 확인(verify)할 수 있는 표준 속성은 이메일 주소와 전화번호 둘뿐입니다.
-
-- ✅ **정답: 참** — 확인할 수 있는 속성은 **`email` 과 `phone_number`** 입니다. 별칭 속성은 사용자가 그 속성으로 로그인하기 전에 확인이 필요하지만 사용자 이름 속성은 그렇지 않습니다. ([5.2절](#52-필수-속성과-확인-가능한-속성))
-
-> — 출처: [Working with user attributes](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html)
-
-**문제 18**: 같은 우선순위 값을 가진 두 그룹의 IAM 역할이 다르면 그중 하나가 `cognito:preferred_role` 에 들어갑니다.
-
-- ❌ **정답: 거짓** — 같은 우선순위의 두 그룹이 **같은 역할 ARN** 을 가지면 그 역할이 쓰이지만, **역할 ARN이 다르면 `cognito:preferred_role` 클레임이 설정되지 않습니다.** 우선순위는 0이 최고이고 값이 작은 그룹이 우선합니다. ([5.3절](#53-그룹))
-
-> — 출처: [Adding groups to a user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-user-groups.html)
-
-**문제 19**: `InitiateAuth` 로 사용자를 로그인시켜 받은 액세스 토큰으로 사용자 지정 범위 기반 API 권한 부여를 할 수 있습니다.
-
-- ❌ **정답: 거짓** — `InitiateAuth` · `AdminInitiateAuth` 는 사람이 상호 작용하는 인증용이므로 **액세스 토큰에 `aws.cognito.signin.user.admin` 범위만** 담깁니다. 사용자 지정 범위가 담긴 액세스 토큰이 필요하면 **토큰 엔드포인트를 거치는 OAuth 흐름**을 써야 합니다. API Gateway 권한 부여자에 범위를 걸 때 직접 부딪히는 제약입니다. ([5.4절](#54-리소스-서버와-범위) · [8.2절](#82-http-api-jwt-권한-부여자))
-
-> — 출처: [Scopes, M2M, and resource servers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html)
-
-**문제 20**: 리소스 서버는 사용자 풀에 도메인을 구성하지 않아도 만들 수 있습니다.
-
-- ❌ **정답: 거짓** — **사용자 풀에 도메인을 구성해야** Amazon Cognito가 OAuth 2.0 권한 부여 서버와 가입·로그인 페이지를 프로비저닝합니다. 콘솔에서도 리소스 서버는 `Branding` 아래 `Domain` 메뉴에서 만듭니다. 소셜·OIDC·SAML IdP 페더레이션 로그인도 같은 이유로 도메인이 필요합니다. ([5.4절](#54-리소스-서버와-범위) · [4.12절](#412-서드-파티-idp-페더레이션))
-
-> — 출처: [Scopes, M2M, and resource servers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html)
-
-**문제 21**: 자격 증명 풀에서 사용자에게 AWS 자격 증명을 발급하는 권장 방법은 `GetOpenIdToken` 과 `AssumeRoleWithWebIdentity` 를 호출하는 것입니다.
-
-- ❌ **정답: 거짓** — 그 두 API는 **basic(classic) 흐름**입니다. 문서는 **enhanced 흐름**(`GetId` → `GetCredentialsForIdentity`)을 **개발자 노력이 가장 적은 가장 안전한 선택**으로 명시하고, 새 자격 증명 풀에서 basic 인증을 기본 활성화하지 않는 것을 모범 사례로 제시합니다. 교재 슬라이드 25가 basic 흐름 API를 제시하면서 enhanced flow 블로그를 참조합니다. ([7.4절](#74-enhanced-흐름과-basic-classic-흐름))
-
-> — 출처: [Identity pools authentication flow](https://docs.aws.amazon.com/cognito/latest/developerguide/authentication-flow.html)
-
-**문제 22**: 자격 증명 풀이 맡을 IAM 역할의 신뢰 정책에는 조건 없이 `cognito-identity.amazonaws.com` 프린시펄만 두면 됩니다.
-
-- ❌ **정답: 거짓** — **`cognito-identity.amazonaws.com:aud` 조건이 필수**이고, 이 유형의 조건 없이 역할 신뢰 정책을 저장하려 하면 **IAM이 오류를 반환합니다.** 그 밖에 `amr`(`authenticated`/`unauthenticated`/공급자)과 `sub`(identity ID) 조건을 쓸 수 있습니다. ([7.6절](#76-신뢰-정책-조건-키))
-
-> — 출처: [Role trust and permissions](https://docs.aws.amazon.com/cognito/latest/developerguide/iam-roles.html)
-
-**문제 23**: enhanced 흐름으로 맡는 역할의 신뢰 정책에 `aws:SourceIp` 조건을 넣으면 클라이언트 IP를 제한할 수 있습니다.
-
-- ❌ **정답: 거짓** — enhanced 흐름이 **애플리케이션을 대신해** `AssumeRoleWithWebIdentity` 요청을 생성하므로 요청의 소스 IP가 애플리케이션 클라이언트의 IP가 아닙니다. 따라서 **조건이 절대 충족되지 않습니다.** ([7.6절](#76-신뢰-정책-조건-키))
-
-> — 출처: [Role trust and permissions](https://docs.aws.amazon.com/cognito/latest/developerguide/iam-roles.html)
-
-**문제 24**: 자격 증명 풀은 사용자 프로필을 저장하므로 사용자 디렉터리로 쓸 수 있습니다.
-
-- ❌ **정답: 거짓** — 문서의 비교 표에서 `User directory — Store user profiles for authentication` 은 **사용자 풀에만** 체크됩니다. 자격 증명 풀이 저장하는 것은 **외부 디렉터리의 프로필에 연결하는 UUID(identity)** 이며, 이 UUID는 사용자 풀 또는 자격 증명 풀 **단위로 고유**하고 형식을 엄격히 검증해서는 안 됩니다. ([7.2절](#72-사용자-프로필을-저장하지-않는다))
-
-> — 출처: [Common Amazon Cognito terms and concepts](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-terms.html)
-
-**문제 25**: API Gateway 메서드에 `execute-api:Invoke` 를 허용하는 IAM 정책만 붙이면 그 메서드는 IAM 자격 증명으로만 호출할 수 있습니다.
-
-- ❌ **정답: 거짓** — IAM 정책이 효력을 갖게 하려면 메서드의 **`authorizationType` 을 `AWS_IAM` 으로 설정해야** 합니다. **그렇게 하지 않으면 해당 메서드가 퍼블릭으로 액세스 가능해집니다.** 정책만 써 두고 메서드 설정을 빠뜨리면 정책이 아무 일도 하지 않는 채로 API가 열립니다. ([8.3절](#83-iam-권한-부여))
-
-> — 출처: [Control access for invoking an API](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html)
-
-**문제 26**: HTTP API의 JWT 권한 부여자는 HMAC 기반 서명 알고리즘도 지원합니다.
-
-- ❌ **정답: 거짓** — JWT 권한 부여자는 **RSA 기반 알고리즘만 지원**합니다. 또 API Gateway가 공개 키를 **2시간 캐시**할 수 있으므로 키 교체 시 이전 키와 새 키가 모두 유효한 유예 기간을 두는 것이 모범 사례입니다. ([8.2절](#82-http-api-jwt-권한-부여자))
-
-> — 출처: [Control access to HTTP APIs with JWT authorizers in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html)
-
-**문제 27**: Lambda 권한 부여자는 토큰 기반(`TOKEN`) 유형을 쓰는 것이 권장됩니다.
-
-- ❌ **정답: 거짓** — 문서는 **여러 자격 증명 소스를 쓸 수 있고 캐시 키를 분리할 수 있다는 이유로 `REQUEST` 권한 부여자를 권장**합니다. Lambda 권한 부여자의 이전 명칭은 **사용자 지정 권한 부여자(custom authorizer)** 입니다. ([8.4절](#84-lambda-권한-부여자))
-
-> — 출처: [Use API Gateway Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html)
-
-**문제 28**: 페더레이션 사용자에게도 Amazon Cognito가 SMS·TOTP 같은 두 번째 인증 요소를 제공합니다.
-
-- ❌ **정답: 거짓** — MFA는 **사용자 풀의 로컬 사용자**에 대한 보안을 높입니다. 페더레이션 사용자의 경우 Amazon Cognito가 **모든 인증 프로세스를 IdP에 위임하므로 추가 인증 요소를 제공하지 않습니다.** 두 번째 요소는 SMS · 이메일 · TOTP 세 가지이고, MFA 필수 설정은 암호 없는 로그인(OTP)과 상호 배타적입니다. ([4.5절](#45-다중-인증-mfa))
-
-> — 출처: [Adding MFA to a user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-mfa.html)
-
-**문제 29**: 사용자 디바이스를 기억하도록 설정하면 신뢰 기간이 지나면 Amazon Cognito가 자동으로 다시 MFA를 요구합니다.
-
-- ❌ **정답: 거짓** — 신뢰 기간이 끝나면 **애플리케이션이 디바이스 상태를 `not remembered` 로 바꾸고** 사용자가 다시 MFA로 로그인하게 해야 합니다. 이 만료 날짜는 사용자 지정 속성에 저장하는 방식으로 **직접 구현**합니다. 또 기억된 디바이스는 **MFA가 활성화된 사용자 풀에서만** MFA를 대체할 수 있습니다. ([4.6절](#46-디바이스-기억))
-
-> — 출처: [Working with user devices in your user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-device-tracking.html)
-
-**문제 30**: 위협 보호(이전 고급 보안 기능)는 모든 기능 요금제에서 쓸 수 있습니다.
-
-- ❌ **정답: 거짓** — 위협 보호는 **Plus 기능 요금제**에서 제공됩니다. `USER_SRP_AUTH` 흐름에서는 적응형 인증만 켤 수 있고 **페더레이션 로그인에는 쓸 수 없습니다.** 또 위협 보호는 요청 속도 제한을 적용하지 않으므로 대량 트래픽 공격 방어에는 **AWS WAF 웹 ACL** 을 함께 써야 합니다. ([3.8절](#38-위협-보호))
-
-> — 출처: [Advanced security with threat protection](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-settings-threat-protection.html)
-
-**문제 31**: Lambda 트리거는 비동기로 호출되므로 처리 시간에 제약이 없습니다.
-
-- ❌ **정답: 거짓** — **Custom sender 트리거를 제외하면 Amazon Cognito는 Lambda 함수를 동기적으로 호출하고 함수는 5초 안에 응답해야 하며, 이 5초 시간 초과 값은 변경할 수 없습니다.** 함수가 요청·응답 파라미터를 반환하지 않거나 오류를 반환하면 인증 이벤트가 성공하지 않습니다. ([4.11절](#411-lambda-트리거))
-
-> — 출처: [Customizing user pool workflows with Lambda triggers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html)
-
-**문제 32**: 실습이나 데모에서 사용자 여러 명을 만들어도 Amazon Cognito 기본 이메일 구성으로 확인 메일을 보내는 데 문제가 없습니다.
-
-- ❌ **정답: 거짓** — 기본 이메일 구성의 한도는 **AWS 계정당 하루 50통이고 조정할 수 없습니다.** 문서는 일반적인 프로덕션 환경에서 기본 한도가 필요한 전송량보다 낮으므로 **Amazon SES 구성**을 쓰라고 안내합니다. 또 기본 구성에서는 하드 바운스 주소가 AWS 관리 억제 목록에 추가되고 **그 목록에서 제거할 수 없습니다.** ([4.10절](#410-sms-와-이메일-전송))
-
-> — 출처: [Email settings for Amazon Cognito user pools](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-email.html)
-
-**문제 33**: 사용자 풀 하나에 담을 수 있는 사용자 수와 사용자 지정 속성 수는 모두 할당량 증액을 요청할 수 있습니다.
-
-- ❌ **정답: 거짓** — 사용자 풀당 사용자 수 **40,000,000명**은 조정 가능하지만, **사용자 지정 속성 50개와 그룹 10,000개는 조정할 수 없습니다.** 과금 단위는 **월간 활성 사용자(MAU)** 이고 `AdminGetUser` 도 MAU에 기여합니다. ([3.9절](#39-서비스-할당량과-과금-단위) · [5.1절](#51-속성))
-
-> — 출처: [Quotas in Amazon Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/quotas.html)
-
-**문제 34**: 새 상태의 프로젝트에서 사용자 데이터를 디바이스 간에 동기화하려면 Amazon Cognito Sync를 쓰면 됩니다.
-
-- ❌ **정답: 거짓** — **Amazon Cognito Sync는 더 이상 신규 고객에게 제공되지 않습니다.** 기존 고객은 계속 쓸 수 있지만 새 기능 개발이 없습니다. 문서가 제시하는 대안은 **AWS AppSync**(GraphQL 기반 실시간 동기화)와 **Amazon DynamoDB**(단순 키-값 사용자 데이터)입니다. ([3.10절](#310-amazon-cognito-sync))
-
-> — 출처: [Amazon Cognito Sync availability change](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-sync-availability-change.html)
-
-### 모듈 학습 목표 달성 확인
-
-이 모듈을 마치면 다음을 수행할 수 있습니다.
-
-- ✅ Amazon Cognito를 사용한 인증 프로세스 탐색
-- ✅ 사용자 액세스 관리 및 서버리스 API 권한 부여
-- ✅ Amazon Cognito 구현 모범 사례 관찰 — **교재에 대응 슬라이드가 없어 [9장](#9-구현-모범-사례)에 공식 문서로 채웠습니다**
-- ✅ Amazon Cognito 통합을 시연하고 JWT 토큰 검토
-
-### 한 장 요약
-
-| 주제 | 기억할 것 |
-|---|---|
-| 두 구성 요소 | **사용자 풀** = 누구인지(사용자 디렉터리 + OIDC IdP + 권한 부여 서버). **자격 증명 풀** = AWS에 무엇을 할 수 있는지(임시 AWS 자격 증명). 독립적으로 또는 함께 씁니다 |
-| 로그인 화면 | **managed login**(최신)과 **hosted UI (classic)**(선행 버전). managed login은 자체 서비스 프로필 관리를 지원하지 않아 앱 코드로 구현합니다. 쿠키는 1시간 |
-| 기능 요금제 | **Lite · Essentials(신규 기본값) · Plus.** 사용자 풀 단위. 패스키(Lite 제외), 이메일 MFA·암호 이력(Essentials 이상), 위협 보호(Plus), 액세스 토큰 사용자 지정(Lite 제외 + 이벤트 v2) |
-| 되돌릴 수 없는 결정 | 필수 속성, 사용자 이름 속성, 별칭 속성, 사용자 지정 속성 추가, 개발자 공급자 이름. 모두 **생성 후 변경 불가** |
-| 인증 흐름 | `ExplicitAuthFlows` 로 허용 흐름 선택. **암호 없는 로그인·패스키는 `ALLOW_USER_AUTH`(선택 기반 로그인) 전용.** SRP가 모범 사례 |
-| 토큰 3종 | **ID**(인증, 자격 증명 클레임) / **Access**(권한 부여, 그룹·범위) / **Refresh**(갱신·폐기). ID·Access는 5분~1일, Refresh는 기본 30일(**로그인 후** 기준)·60분~10년 |
-| 페이로드 | **암호화되지 않습니다.** base64url 인코딩 + 서명. 암호화되는 것은 refresh 토큰. **비밀을 담지 마세요** |
-| 서명 | **`RS256`.** 액세스 토큰과 ID 토큰이 **서로 다른 RSA 키**로 서명되어 `kid` 가 다르므로 **독립적으로 검증** |
-| JWT 검증 | `jwks_uri` 에서 공개 키를 받아 `kid` 매칭 → `exp` · `aud`/`client_id` · `iss` · `token_use` 확인. `kid` 를 캐시 키로 캐시·갱신. Node.js는 `aws-jwt-verify` |
-| 폐기 | `RevokeToken` / `/oauth2/revoke` / `GlobalSignOut` / `AdminUserGlobalSignOut`. `origin_jti` 가 식별자. **폐기된 토큰도 서명·만료만 검증하면 유효하게 보입니다** |
-| 그룹과 범위 | 그룹 우선순위 **0이 최고**, 동률에 역할이 다르면 `cognito:preferred_role` 미설정. 범위는 예약·사용자 지정·OIDC 세 종류. **`InitiateAuth` 토큰에는 예약 범위만** |
-| OAuth 그랜트 | **권한 부여 코드 + PKCE** 가 권장. **암묵적은 레거시.** 클라이언트 자격 증명은 다른 두 그랜트와 공존 불가 |
-| 자격 증명 풀 흐름 | **enhanced**(`GetId` → `GetCredentialsForIdentity`, 1시간)가 권장. basic(classic)은 3단계이고 비권장. `RoleMappings` 가 있으면 basic이 오류 |
-| 신뢰 정책 | **`cognito-identity.amazonaws.com:aud` 필수**(없으면 IAM이 저장 거부). `amr` 로 인증/게스트·공급자 구분. **enhanced 역할에 `aws:SourceIp` 금지** |
-| API 앞에 세울 것 | REST는 **사용자 풀 권한 부여자**(`Authorization` 헤더), HTTP는 **JWT 권한 부여자**(RSA만, 키 2시간 캐시), 그 밖에 **`AWS_IAM`**(SigV4)과 **Lambda 권한 부여자**(`REQUEST` 권장) |
-| 가장 위험한 누락 | 메서드의 **`authorizationType` 을 설정하지 않으면 그 메서드가 퍼블릭으로 열립니다** |
-| 할당량 | 사용자 풀당 사용자 4천만 명(조정 가능), **사용자 지정 속성 50개·그룹 10,000개(조정 불가)**, 기본 이메일 **하루 50통(조정 불가)**. 과금은 **MAU** |
-| Lambda 트리거 | Custom sender 외에는 **동기 호출, 5초 제한(변경 불가)** |

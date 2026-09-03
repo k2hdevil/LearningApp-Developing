@@ -14,7 +14,6 @@
 6. [AWS CLI로 Amazon S3 사용](#6-aws-cli로-amazon-s3-사용)
 7. [AWS SDK로 Amazon S3 사용](#7-aws-sdk로-amazon-s3-사용)
 8. [교재 대비 변경 사항](#8-교재-대비-변경-사항)
-9. [지식 확인 및 핵심 정리](#9-지식-확인-및-핵심-정리)
 
 > **표기 설명**
 >
@@ -897,63 +896,3 @@ Server: AmazonS3
 |---|---|
 | 파일 스토리지 세부 목록 | 교재 슬라이드 5의 목록(EFS Standard·EFS Infrequent Access·FSx for Lustre·FSx for NetApp ONTAP·FSx for OpenZFS)과 같은 슬라이드 다이어그램 레이블(EFS·FSx for Windows File Server·FSx for Lustre)이 서로 불일치합니다. 이 문서에서는 서비스명만 남기고 세부 목록은 제외했습니다. EFS·FSx 문서로 별도 검증이 필요합니다 |
 | `get-bucket-location`이 `us-east-1`에서 `null`을 반환하는 동작 | `LocationConstraint`를 지정하지 않으면 `us-east-1`에 생성된다는 것은 CreateBucket API 문서로 확인했습니다. 다만 `get-bucket-location`의 응답이 `null`로 오는 동작 자체는 문서로 확인하지 못했습니다. 실행 검증이 필요합니다 |
-
----
-
-## 9. 지식 확인 및 핵심 정리
-
-### 지식 확인 문제 (참/거짓)
-
-**문제 1**: 데이터는 S3 버킷에 객체로 저장됩니다. 텍스트, 동영상, 이미지, 다른 바이너리 형식 등 어떤 종류의 파일도 객체가 될 수 있습니다.
-
-- ✅ **정답: 참**
-
-**문제 2**: S3 버킷은 전역적으로 생성되며 하나의 AWS 리전에 대한 종속성이 없습니다.
-
-- ❌ **정답: 거짓** — 버킷 **이름**은 전역(정확히는 파티션) 네임스페이스에서 관리되지만, 버킷 자체는 특정 AWS 리전에 생성됩니다. 생성 후 리전은 변경할 수 없습니다.
-
-**문제 3**: AWS SDK는 기본 AWS REST API 작업에 해당하는 Amazon S3용 API에 매핑됩니다.
-
-- ✅ **정답: 참**
-
-**문제 4**: 웹 사이트 호스팅을 위해 S3 버킷을 활성화하면 기존의 엔드포인트가 변경됩니다.
-
-- ❌ **정답: 거짓** — 웹 사이트 엔드포인트가 **추가**될 뿐이고 기존 REST API 엔드포인트는 변경되지 않습니다. 두 엔드포인트는 용도가 다릅니다.
-
-**문제 5**: 모든 객체와 버킷은 기본적으로 프라이빗(비공개)입니다.
-
-- ✅ **정답: 참** — 기본 설정이 퍼블릭 액세스를 차단하며, 퍼블릭 액세스 차단 설정은 버킷 정책과 객체 권한을 재정의합니다.
-
-**문제 6**: Amazon S3 액세스 포인트는 S3 버킷에 연결되고 사용 사례별 액세스 정책으로 구성된 고유한 호스트 이름입니다.
-
-- ✅ **정답: 참** — 🆕 현재는 버킷 외에 FSx for NetApp ONTAP·OpenZFS 볼륨, AWS Backup의 S3 복구 지점에도 연결할 수 있습니다.
-
-### 🆕 보충 문제 (최신화 내용 확인)
-
-**문제 7**: 새로 만든 S3 버킷에 객체를 업로드할 때, 암호화를 설정하지 않으면 객체는 암호화되지 않은 상태로 저장됩니다.
-
-- ❌ **정답: 거짓** — 2023년 1월 5일부터 모든 신규 객체 업로드에 SSE-S3(AES-256)가 자동 적용됩니다. ([3.7절](#37-기본-암호화))
-
-> — 출처: [Default encryption FAQ](https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html)
-
-**문제 8**: 새로 만든 S3 버킷에서 객체 ACL을 설정하려고 하면 성공합니다.
-
-- ❌ **정답: 거짓** — Object Ownership 기본값이 '버킷 소유자 적용'이라 ACL이 비활성화되어 있습니다. ACL 설정 요청은 HTTP 400 `AccessControlListNotSupported`로 실패합니다. ([4.4절](#44-s3-object-ownership과-acl-기본-비활성화))
-
-> — 출처: [Controlling ownership of objects and disabling ACLs for your bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html)
-
-**문제 9**: 같은 키에 두 클라이언트가 동시에 PUT을 보내면 S3가 자동으로 잠금을 걸어 한쪽을 대기시킵니다.
-
-- ❌ **정답: 거짓** — S3는 동시 쓰기에 대한 객체 잠금을 지원하지 않고, 타임스탬프가 가장 늦은 요청이 이깁니다(last-writer-wins). 필요하면 조건부 쓰기를 사용하거나 애플리케이션에 잠금을 구현합니다. ([3.2절](#32-데이터-일관성-모델), [3.8절](#38-조건부-요청))
-
-> — 출처: [Amazon S3 data consistency model](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
-
-### 모듈 학습 목표 달성 확인
-
-이 모듈을 완료하면 다음을 수행할 수 있습니다.
-
-- ✅ Amazon Simple Storage Service(Amazon S3)의 기본 개념을 설명
-- ✅ Amazon S3를 사용하여 데이터를 보호하는 옵션을 나열
-- ✅ 코드의 SDK 종속성을 정의
-- ✅ Amazon S3 서비스에 연결하는 방법을 설명
-- ✅ 요청 및 응답 객체를 설명

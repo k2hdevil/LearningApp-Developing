@@ -17,7 +17,6 @@
 9. [Implementation Best Practices](#9-implementation-best-practices)
 10. [The Application and Lab 6](#10-the-application-and-lab-6)
 11. [Changes from the Courseware](#11-changes-from-the-courseware)
-12. [Knowledge Check and Summary](#12-knowledge-check-and-summary)
 
 > **Notation**
 >
@@ -66,9 +65,9 @@ The courseware divides 36 slides into ten sections. This document follows the sa
 | Granting access to your application through identity pools | 20–21 | [Section 7](#7-identity-pools) |
 | Securing API access | 22–25 | [Section 8](#8-securing-api-access) |
 | Demonstration | 26–27 | [Section 10.4](#104-demonstration-notes) |
-| Checking your knowledge | 28–29 | [Section 12](#12-knowledge-check-and-summary) |
+| Checking your knowledge | 28–29 | (not covered in this document) |
 | Lab 6: Capstone - Completing the application build | 30–32 | [Section 10](#10-the-application-and-lab-6) |
-| Summary | 33–36 | [Section 2.4](#24-terminology) · [Section 12](#12-knowledge-check-and-summary) |
+| Summary | 33–36 | [Section 2.4](#24-terminology) |
 
 This deck is **diagram driven**. Of the 36 slides only one contains code (slide 18, the JWT ID token example), and there are no CLI or SDK call examples at all. The substantive material is concentrated in the instructor notes for slides 15, 18, 23, and 25. This document promotes those instructor notes into the body, then fills in the areas the courseware does not address at all (authentication flow names, feature plans, token revocation, JWT verification, quotas) from official documentation.
 
@@ -82,7 +81,7 @@ A great deal has been added to or changed in Amazon Cognito since the courseware
 | Name of the sign-in page | "hosted UI" | Two branding versions: **managed login** (current) and **hosted UI (classic)** (the predecessor) ([Section 3.4](#34-sign-in-pages-managed-login-and-hosted-ui-classic)) |
 | Advanced security features | "Protect your users with advanced security features" | Renamed **threat protection** and available only on the **Plus plan** ([Section 3.8](#38-threat-protection)) |
 | Authentication flows | One line, "supports authentication flows." No flow name is given | You must choose the permitted flows through the app client's `ExplicitAuthFlows`, and the **choice-based sign-in (`USER_AUTH`)** added after the courseware is the only entry point for passwordless sign-in and passkeys ([Section 4.7](#47-authentication-flows)) |
-| JWT payload | "encrypted information" (three places) | The payload of an ID or access token is **not encrypted. It is base64url encoded and signed.** What is encrypted is the refresh token. **The answer to question 4 on slide 29 has been corrected to false** ([Section 6.3](#63-jwt-structure-and-corrections-to-the-courseware-example) · [Section 12](#12-knowledge-check-and-summary)) |
+| JWT payload | "encrypted information" (three places) | The payload of an ID or access token is **not encrypted. It is base64url encoded and signed.** What is encrypted is the refresh token. **The answer to question 4 on slide 29 has been corrected to false** ([Section 6.3](#63-jwt-structure-and-corrections-to-the-courseware-example)) |
 | Identity pool flow | `GetOpenIdToken` + `AssumeRoleWithWebIdentity` | Those two APIs are the **basic (classic) flow**. The documentation recommends the **enhanced flow** (`GetId` → `GetCredentialsForIdentity`) as the most secure choice with the least developer effort ([Section 7.4](#74-the-enhanced-flow-and-the-basic-classic-flow)) |
 
 > — Source: [User pool feature plans](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-sign-in-feature-plans.html)
@@ -1114,7 +1113,7 @@ The payload example above is itself plaintext JSON, so **slide 18 contradicts it
 - Integrity is guaranteed by **signature verification**, not encryption ([Section 6.8](#68-verifying-a-jwt)).
 - The documentation presents **protecting all tokens in transit and in storage** as a best practice, because tokens can carry personally identifiable information and security model information.
 
-Following this correction, **the answer to question 4 on slide 29 has been changed to false** ([Section 12](#12-knowledge-check-and-summary)).
+Following this correction, **the answer to question 4 on slide 29 has been changed to false**.
 
 > — Source: [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
 
@@ -1858,7 +1857,7 @@ The first ten items were verified against external documentation. The last ten a
 | Item | Courseware statement | Verified content | Source |
 |---|---|---|---|
 | JWT signature algorithm (slide 18) | The header says `alg: RS256` while the signature line says `HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), {secret})` | `HMACSHA256` is a **symmetric HMAC** using a shared secret key and `RS256` is an **RSA asymmetric signature** using SHA-256. Two algorithms are mixed within one slide. The documentation states that user pools use **`RS256`**, and Amazon Cognito creates **two** RSA key pairs per user pool, signing the access token and the ID token with different private keys. Verification uses the **public JWKS**, not a shared secret ([Section 6.3](#63-jwt-structure-and-corrections-to-the-courseware-example)) | [Understanding the identity (ID) token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html) |
-| Describing the JWT payload as "encrypted information" | The instructor notes for slide 18 ("encrypted information about the claims of the key"), the answer "true" for question 4 on slide 29, and the terminology on slide 36 ("claims: a payload with encrypted user information") — **three places** | Amazon Cognito issues tokens as **base64url encoded strings**, and ID and access tokens **can be decoded into plaintext JSON.** What is encrypted is the **refresh token**, readable only by the user pool. Slide 18 itself shows the payload as plaintext JSON, so it contradicts itself. **The answer to question 4 on slide 29 has been corrected to "false"** ([Section 6.3](#63-jwt-structure-and-corrections-to-the-courseware-example) · [Section 12](#12-knowledge-check-and-summary)) | [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html) |
+| Describing the JWT payload as "encrypted information" | The instructor notes for slide 18 ("encrypted information about the claims of the key"), the answer "true" for question 4 on slide 29, and the terminology on slide 36 ("claims: a payload with encrypted user information") — **three places** | Amazon Cognito issues tokens as **base64url encoded strings**, and ID and access tokens **can be decoded into plaintext JSON.** What is encrypted is the **refresh token**, readable only by the user pool. Slide 18 itself shows the payload as plaintext JSON, so it contradicts itself. **The answer to question 4 on slide 29 has been corrected to "false"** ([Section 6.3](#63-jwt-structure-and-corrections-to-the-courseware-example)) | [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html) |
 | Compliance standards (slide 9) | `PCI DSS / SOC / ISO 9001 / standards-based authentication (OAuth 2.0, SAML 2.0, OIDC) / multi-factor authentication (MFA)` | The ISO standard the Amazon Cognito documentation names is **ISO 27001** (information security management systems), not ISO 9001 (quality management). Security **of** the cloud is compliant with SOC 1-3, PCI DSS, and ISO 27001 and is HIPAA-BAA eligible, while security **in** the cloud can be designed to comply with SOC 1-3, ISO 27001, and HIPAA-BAA **but not PCI DSS.** Standards-based authentication and MFA are **service features**, not compliance programs, so the courseware mixes two categories in one list ([Section 3.7](#37-compliance)) | [What is Amazon Cognito?](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html) |
 | Social IdP name (slide 10) | `Login for Amazon` | The official name is **`Login with Amazon`**. The instructor notes for slides 9, 19, and 24 in the same deck write it correctly, so the spelling is inconsistent within the courseware ([Section 4.12](#412-third-party-idp-federation)) | [Using social identity providers with a user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-social-idp.html) |
 | API path parameter notation (slides 24 and 31) | `/notes/(id)` — **parentheses** | API Gateway path parameters use **braces.** In the documentation's PetStore sample API the individual resource path is `/pets/{petId}` and the `pathPart` in the `get-resources` response is `{petId}` ([Section 10.1](#101-application-architecture)) | [Set up a method request in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-settings-method-request.html) |
@@ -1946,247 +1945,3 @@ We record these honestly. Confirm them before stating them definitively in class
 | The feature plan Lab 6 (the capstone) assumes | **The lab guide is not part of this deck.** We could not confirm whether the lab uses features that depend on the plan, such as passkeys, email MFA, or threat protection |
 | Whether the `iss` example value on slide 18 conforms to the user pool ID format rules | The courseware example is `us-east-1_example` and the documentation examples are of the form `us-west-2_example` and `us-east-1_EXAMPLE`. **We could not find a page that specifies the format of a user pool ID itself.** For `sub` there is guidance not to validate the format strictly, but the user pool ID rules remain unverified |
 | Ten courseware notation errors | The left double quotation mark and the `token_use` value notation on slide 18, the duplicated bodies of slides 11 and 12, the title ordering on slide 15, the JWT definition typo on slide 36, the absence of a slide for module objective 3, the incomplete list on slide 32, the terminology translation splits, the missing spaces in diagram labels, and the data store label on slides 24 and 31 are all cases where **the courseware body and instructor notes disagree, or the notation broke during extraction.** They are not the kind of fact AWS documentation can verify, so we corrected only the notation without attaching a source citation |
-
----
-
-## 12. Knowledge Check and Summary
-
-### Knowledge Check Questions (True/False)
-
-The questions from courseware slide 29, carried over as is. **Question 4 has been corrected because the courseware's answer does not match the facts.** The answers to the other five match the courseware.
-
-The answer indicator text boxes in the courseware slide body are all empty (the check marks are present only as animation or images), so the answers were determined from the instructor notes.
-
-**Question 1**: An Amazon Cognito **user pool** exchanges authentication tokens for AWS credentials.
-
-- ❌ **Answer: False** — An Amazon Cognito **identity pool** exchanges authentication tokens for AWS credentials. The user pool is the side that authenticates users and issues ID, Access, and Refresh tokens. ([Section 3.2](#32-two-components-user-pools-and-identity-pools) · [Section 7](#7-identity-pools))
-
-**Question 2**: User pools and identity pools can be used together in an authentication and authorization solution.
-
-- ✅ **Answer: True** — The documentation states that the two components **operate independently or in tandem** depending on your user access needs. ([Section 3.3](#33-using-both-together))
-
-**Question 3**: To define the permissions of group members you can assign an AWS Identity and Access Management (IAM) role to an Amazon Cognito group.
-
-- ✅ **Answer: True** — When you assign an IAM role to a group, the role of the highest-priority group is applied to the ID token's `cognito:preferred_role` claim. ([Section 5.3](#53-groups))
-
-**Question 4**: The payload section of a JSON web token (JWT) contains **encrypted** information related to the claims of the key.
-
-- ❌ **Answer: False** 🔄 — **The courseware instructor notes give the answer to this question as "true." That answer does not match the facts.**
-
-  Amazon Cognito issues tokens as **base64url encoded strings**, and **ID and access tokens can be decoded from base64url into plaintext JSON.** The protection applied to the payload is a **signature**, not encryption. What is encrypted is the **refresh token**, which is opaque to user pool users and administrators and readable only by the user pool.
-
-  The statement also contradicts the courseware itself. **The same slide 18 shows the payload as plaintext JSON.** The terminology definition on slide 36 ("claims: a payload with encrypted user information") has the same problem.
-
-  Why this difference matters in practice is clear. Anyone can decode and read the payload, so **do not put secrets in it**, and confirm integrity through **signature verification.** ([Section 6.3](#63-jwt-structure-and-corrections-to-the-courseware-example) · [Section 6.8](#68-verifying-a-jwt) · [Section 11.1](#111-courseware-statements-that-do-not-match-the-facts))
-
-> — Source: [Understanding user pool JSON web tokens (JWTs)](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html)
-
-**Question 5**: When using third-party federation, developers must use an identity pool.
-
-- ❌ **Answer: False** — Third-party federation is supported by **both user pools and identity pools.** A user pool accepts SAML 2.0, OIDC, and social IdPs and standardizes on its own tokens, and an identity pool also accepts claims from those same providers as authentication evidence. ([Section 4.12](#412-third-party-idp-federation) · [Section 7.4](#74-the-enhanced-flow-and-the-basic-classic-flow))
-
-**Question 6**: An Amazon Cognito identity pool can provide AWS credentials to unauthenticated users.
-
-- ✅ **Answer: True** — An identity pool supports both authenticated and unauthenticated (guest) identities. However, **guest access must be enabled separately and a default IAM role for guests must be specified.** ([Section 7.3](#73-guest-access))
-
-### 🆕 Supplementary Questions (Verifying Updated Content)
-
-**Question 7**: A user pool JWT is signed with a shared secret key, so verification needs that same secret key.
-
-- ❌ **Answer: False** — User pools use **`RS256`** (an **RSA asymmetric signature** with SHA-256). Verification uses the user pool's **public JWKS**, not a shared secret. Courseware slide 18 mixes two algorithms by writing `alg: RS256` in the header and `HMACSHA256(..., {secret})` on the signature line. ([Section 6.3](#63-jwt-structure-and-corrections-to-the-courseware-example))
-
-> — Source: [Understanding the identity (ID) token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html)
-
-**Question 8**: The ID token and access token from the same sign-in session are signed with the same key, so verifying once is enough.
-
-- ❌ **Answer: False** — Amazon Cognito creates **two RSA key pairs per user pool** and signs the access token and the ID token with different private keys. As a result the **`kid` values do not match and your app code must verify them independently.** ([Section 6.5](#65-access-token-claims))
-
-> — Source: [Understanding the access token](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html)
-
-**Question 9**: A refresh token expires 30 days after the user **signs up** for the user pool by default.
-
-- ❌ **Answer: False** — The reference point is **sign-in**, not sign-up. The documentation's wording is "30 days after the user signs into your user pool." The configurable range of 60 minutes to 10 years matches the courseware. ([Section 6.6](#66-token-validity))
-
-> — Source: [Refresh tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-refresh-token.html)
-
-**Question 10**: Once you sign a user out and revoke their refresh token, their access tokens are immediately judged invalid by any verification method.
-
-- ❌ **Answer: False** — A user pool JWT is a **self-contained token** carrying the signature and expiration time from the moment it was created. A revoked token cannot be used for Amazon Cognito API calls that require a token, but **it still appears valid when verified with a JWT library that only checks the signature and expiration.** Account for this in API authorization design. ([Section 6.9](#69-token-revocation))
-
-> — Source: [Ending user sessions with token revocation](https://docs.aws.amazon.com/cognito/latest/developerguide/token-revocation.html)
-
-**Question 11**: With refresh token rotation enabled you can keep using the existing `REFRESH_TOKEN_AUTH` flow.
-
-- ❌ **Answer: False** — Rotation is **not compatible with the `REFRESH_TOKEN_AUTH` authentication flow.** You must disable that flow on the app client and design the application to send refresh requests through the **`GetTokensFromRefreshToken`** API. The documentation recommends enabling rotation as a security best practice. ([Section 6.7](#67-refresh-token-rotation))
-
-> — Source: [Refresh tokens](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-refresh-token.html)
-
-**Question 12**: The implicit grant and the authorization code grant have equivalent security, so you can pick whichever fits your app.
-
-- ❌ **Answer: False** — The documentation marks the implicit grant a **legacy authorization grant** and advises configuring the app client to support only the authorization code grant, because **a user can intercept and inspect the tokens** unlike with the authorization code grant. The authorization code grant is also **the only way to receive all three token types.** ([Section 5.5](#55-the-three-oauth-20-grants))
-
-> — Source: [OAuth 2.0 grants](https://docs.aws.amazon.com/cognito/latest/developerguide/federation-endpoints-oauth-grants.html)
-
-**Question 13**: The client credentials grant can be enabled on the same app client as the authorization code grant.
-
-- ❌ **Answer: False** — The client credentials grant **cannot be enabled on the same app client as the implicit or authorization code grant.** It also requires the app client to have a client secret and adds cost to your AWS bill. ([Section 5.5](#55-the-three-oauth-20-grants))
-
-> — Source: [OAuth 2.0 grants](https://docs.aws.amazon.com/cognito/latest/developerguide/federation-endpoints-oauth-grants.html)
-
-**Question 14**: It is safer to issue a client secret for an app client used by a browser-based SPA.
-
-- ❌ **Answer: False** — A **public client**, which runs in a browser or mobile device with no trusted server-side resource, **does not have a client secret.** The security best practices the documentation gives for public client apps are **enabling only the authorization code grant and implementing PKCE.** ([Section 4.9](#49-app-clients-public-and-confidential) · [Section 5.6](#56-pkce))
-
-> — Source: [App client types](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-client-apps.html)
-
-**Question 15**: `nickname` and `picture` are custom attributes in a user pool.
-
-- ❌ **Answer: False** — Both are among the **18 standard attributes** based on the OpenID Connect specification. Courseware slide 15 gives them incorrectly as examples of custom attributes. Real custom attributes carry a **`custom:` prefix**, are limited to **50** per user pool, and cannot be removed or changed after being added. ([Section 5.1](#51-attributes))
-
-> — Source: [Working with user attributes](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html)
-
-**Question 16**: You can change the required attributes and sign-in identifiers after creating a user pool.
-
-- ❌ **Answer: False** — **Required attributes, username attributes, and alias attributes cannot be changed after the user pool is created.** In the current console's application-centric creation flow, three more items are fixed as **default configuration that cannot be reversed**: the client secret, `preferred_username` alias not allowed, and username case insensitivity. ([Section 4.3](#43-the-console-creation-flow) · [Section 5.2](#52-required-and-verifiable-attributes))
-
-> — Source: [Working with user attributes](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html)
-
-**Question 17**: The only standard attributes that can be verified in a user pool are the email address and the phone number.
-
-- ✅ **Answer: True** — The attributes that can be verified are **`email` and `phone_number`.** An alias attribute requires verification before the user can sign in with it, while a username attribute does not. ([Section 5.2](#52-required-and-verifiable-attributes))
-
-> — Source: [Working with user attributes](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html)
-
-**Question 18**: If two groups with the same precedence value have different IAM roles, one of them goes into `cognito:preferred_role`.
-
-- ❌ **Answer: False** — If two groups with the same precedence have the **same role ARN** that role is used, but **if the role ARNs differ the `cognito:preferred_role` claim is not set.** Zero is the top precedence value and a lower value takes precedence. ([Section 5.3](#53-groups))
-
-> — Source: [Adding groups to a user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-user-groups.html)
-
-**Question 19**: You can use an access token obtained by signing a user in with `InitiateAuth` for custom-scope-based API authorization.
-
-- ❌ **Answer: False** — Because `InitiateAuth` and `AdminInitiateAuth` are for human-interactive authentication, the **access token carries only the `aws.cognito.signin.user.admin` scope.** If you need an access token carrying custom scopes you must use an **OAuth flow that goes through the token endpoint.** This is the constraint you hit directly when adding scopes to an API Gateway authorizer. ([Section 5.4](#54-resource-servers-and-scopes) · [Section 8.2](#82-http-api-jwt-authorizer))
-
-> — Source: [Scopes, M2M, and resource servers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html)
-
-**Question 20**: You can create a resource server without configuring a domain on the user pool.
-
-- ❌ **Answer: False** — **You must configure a domain on the user pool** for Amazon Cognito to provision the OAuth 2.0 authorization server and the sign-up and sign-in pages. In the console, resource servers are created under `Branding` → `Domain`. Social, OIDC, and SAML federated sign-in requires a domain for the same reason. ([Section 5.4](#54-resource-servers-and-scopes) · [Section 4.12](#412-third-party-idp-federation))
-
-> — Source: [Scopes, M2M, and resource servers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html)
-
-**Question 21**: The recommended way to issue AWS credentials to a user from an identity pool is to call `GetOpenIdToken` and `AssumeRoleWithWebIdentity`.
-
-- ❌ **Answer: False** — Those two APIs are the **basic (classic) flow.** The documentation names the **enhanced flow** (`GetId` → `GetCredentialsForIdentity`) **the most secure choice with the least developer effort** and presents not enabling basic authentication by default on new identity pools as a best practice. Courseware slide 25 presents basic flow APIs while referencing an enhanced flow blog post. ([Section 7.4](#74-the-enhanced-flow-and-the-basic-classic-flow))
-
-> — Source: [Identity pools authentication flow](https://docs.aws.amazon.com/cognito/latest/developerguide/authentication-flow.html)
-
-**Question 22**: The trust policy of an IAM role an identity pool will assume needs only the `cognito-identity.amazonaws.com` principal, with no condition.
-
-- ❌ **Answer: False** — The **`cognito-identity.amazonaws.com:aud` condition is required**, and **attempting to save a role trust policy without a condition of this type makes IAM return an error.** You can also use the `amr` condition (`authenticated`/`unauthenticated`/provider) and the `sub` condition (identity ID). ([Section 7.6](#76-trust-policy-condition-keys))
-
-> — Source: [Role trust and permissions](https://docs.aws.amazon.com/cognito/latest/developerguide/iam-roles.html)
-
-**Question 23**: Adding an `aws:SourceIp` condition to the trust policy of a role assumed through the enhanced flow lets you restrict the client IP.
-
-- ❌ **Answer: False** — Because the enhanced flow generates the `AssumeRoleWithWebIdentity` request **on behalf of the application**, the source IP is not the application client's IP. Therefore **the condition can never be satisfied.** ([Section 7.6](#76-trust-policy-condition-keys))
-
-> — Source: [Role trust and permissions](https://docs.aws.amazon.com/cognito/latest/developerguide/iam-roles.html)
-
-**Question 24**: An identity pool stores user profiles, so it can be used as a user directory.
-
-- ❌ **Answer: False** — In the documentation's comparison table, `User directory — Store user profiles for authentication` is checked **only for user pools.** What an identity pool stores is a **UUID (identity) that links to a profile in an external directory**, and that UUID is **unique per pool** and must not have its format validated strictly. ([Section 7.2](#72-it-does-not-store-user-profiles))
-
-> — Source: [Common Amazon Cognito terms and concepts](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-terms.html)
-
-**Question 25**: Attaching an IAM policy that allows `execute-api:Invoke` to an API Gateway method means that method can only be called with IAM credentials.
-
-- ❌ **Answer: False** — For the IAM policy to take effect you must **set the method's `authorizationType` to `AWS_IAM`. If you do not, that method becomes publicly accessible.** Writing the policy and forgetting the method setting leaves the API open with the policy doing nothing. ([Section 8.3](#83-iam-authorization))
-
-> — Source: [Control access for invoking an API](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html)
-
-**Question 26**: An HTTP API JWT authorizer also supports HMAC-based signature algorithms.
-
-- ❌ **Answer: False** — A JWT authorizer supports **only RSA-based algorithms.** In addition, because API Gateway may cache the public key for **two hours**, the best practice when rotating keys is to allow a grace period in which both the old and new keys are valid. ([Section 8.2](#82-http-api-jwt-authorizer))
-
-> — Source: [Control access to HTTP APIs with JWT authorizers in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html)
-
-**Question 27**: The recommended Lambda authorizer type is token based (`TOKEN`).
-
-- ❌ **Answer: False** — The documentation **recommends the `REQUEST` authorizer because it can use multiple identity sources and separate cache keys.** The previous name for a Lambda authorizer was a **custom authorizer.** ([Section 8.4](#84-lambda-authorizers))
-
-> — Source: [Use API Gateway Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html)
-
-**Question 28**: Amazon Cognito also provides second factors such as SMS and TOTP for federated users.
-
-- ❌ **Answer: False** — MFA strengthens security for **local users in the user pool.** For federated users Amazon Cognito **delegates the entire authentication process to the IdP and does not provide an additional factor.** The second factors are SMS, email, and TOTP, and setting MFA to required is mutually exclusive with passwordless sign-in (OTP). ([Section 4.5](#45-multi-factor-authentication-mfa))
-
-> — Source: [Adding MFA to a user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-mfa.html)
-
-**Question 29**: If you configure devices to be remembered, Amazon Cognito automatically requires MFA again once the trust period expires.
-
-- ❌ **Answer: False** — When the trust period ends, **the application must change the device status to `not remembered`** and have the user sign in with MFA again. The expiration date is **implemented yourself**, for example by storing it in a custom attribute. A remembered device can also replace MFA **only in a user pool where MFA is enabled.** ([Section 4.6](#46-remembered-devices))
-
-> — Source: [Working with user devices in your user pool](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-device-tracking.html)
-
-**Question 30**: Threat protection (formerly advanced security features) is available on all feature plans.
-
-- ❌ **Answer: False** — Threat protection is available on the **Plus feature plan.** With the `USER_SRP_AUTH` flow you can enable only adaptive authentication, and **it cannot be used with federated sign-in.** Threat protection also does not apply request rate limits, so you must pair it with an **AWS WAF web ACL** to defend against high-volume traffic attacks. ([Section 3.8](#38-threat-protection))
-
-> — Source: [Advanced security with threat protection](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-settings-threat-protection.html)
-
-**Question 31**: Lambda triggers are invoked asynchronously, so there is no constraint on processing time.
-
-- ❌ **Answer: False** — **Except for the Custom sender trigger, Amazon Cognito invokes Lambda functions synchronously and the function must respond within 5 seconds, and this 5-second timeout cannot be changed.** If the function does not return the request and response parameters, or returns an error, the authentication event does not succeed. ([Section 4.11](#411-lambda-triggers))
-
-> — Source: [Customizing user pool workflows with Lambda triggers](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html)
-
-**Question 32**: Creating several users in a lab or demonstration causes no problem sending confirmation emails with the Amazon Cognito default email configuration.
-
-- ❌ **Answer: False** — The default email configuration is limited to **50 per AWS account per day, and it is not adjustable.** The documentation advises using an **Amazon SES configuration** because in a typical production environment the default is lower than the volume you need. In addition, with the default configuration a hard-bouncing address is added to an AWS-managed suppression list and **you cannot remove it from that list.** ([Section 4.10](#410-sms-and-email-delivery))
-
-> — Source: [Email settings for Amazon Cognito user pools](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-email.html)
-
-**Question 33**: Both the number of users and the number of custom attributes in a single user pool can be raised through a quota increase request.
-
-- ❌ **Answer: False** — The 40,000,000 users per user pool is adjustable, but **50 custom attributes and 10,000 groups are not adjustable.** The billing unit is **monthly active users (MAU)**, and `AdminGetUser` contributes to MAU. ([Section 3.9](#39-service-quotas-and-billing-unit) · [Section 5.1](#51-attributes))
-
-> — Source: [Quotas in Amazon Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/quotas.html)
-
-**Question 34**: For a brand-new project you can use Amazon Cognito Sync to synchronize user data across devices.
-
-- ❌ **Answer: False** — **Amazon Cognito Sync is no longer open to new customers.** Existing customers can continue to use it but there is no new feature development. The alternatives the documentation presents are **AWS AppSync** (real-time synchronization with GraphQL) and **Amazon DynamoDB** (simple key-value user data). ([Section 3.10](#310-amazon-cognito-sync))
-
-> — Source: [Amazon Cognito Sync availability change](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-sync-availability-change.html)
-
-### Module Objectives Achieved
-
-After completing this module, you should be able to do the following:
-
-- ✅ Explore the authentication process using Amazon Cognito
-- ✅ Manage user access and authorize serverless APIs
-- ✅ Observe Amazon Cognito implementation best practices — **the courseware has no corresponding slide, so [Section 9](#9-implementation-best-practices) fills it from official documentation**
-- ✅ Demonstrate Amazon Cognito integration and review JWT tokens
-
-### One-Page Summary
-
-| Topic | What to remember |
-|---|---|
-| The two components | **User pool** = who they are (user directory + OIDC IdP + authorization server). **Identity pool** = what they can do in AWS (temporary AWS credentials). Use them independently or together |
-| The sign-in page | **managed login** (current) and **hosted UI (classic)** (the predecessor). managed login does not support self-service profile management, so implement that in app code. The cookie lasts one hour |
-| Feature plans | **Lite, Essentials (the new default), and Plus.** Per user pool. Passkeys (not Lite), email MFA and password history (Essentials or higher), threat protection (Plus), access token customization (not Lite plus event v2) |
-| Decisions you cannot reverse | Required attributes, username attributes, alias attributes, adding a custom attribute, and the developer provider name. All **unchangeable after creation** |
-| Authentication flows | Choose the permitted flows in `ExplicitAuthFlows`. **Passwordless sign-in and passkeys are exclusive to `ALLOW_USER_AUTH` (choice-based sign-in).** SRP is the best practice |
-| The three tokens | **ID** (authentication, identity claims) / **Access** (authorization, groups and scopes) / **Refresh** (renewal and revocation). ID and Access are 5 minutes to 1 day; Refresh defaults to 30 days (measured from **sign-in**) with a range of 60 minutes to 10 years |
-| The payload | **Not encrypted.** base64url encoded plus a signature. What is encrypted is the refresh token. **Do not put secrets in it** |
-| The signature | **`RS256`.** The access token and the ID token are signed with **different RSA keys** so their `kid` values differ and they must be **verified independently** |
-| Verifying a JWT | Fetch the public keys from `jwks_uri` and match `kid`, then check `exp`, `aud`/`client_id`, `iss`, and `token_use`. Cache and refresh keys using `kid` as the cache key. For Node.js, `aws-jwt-verify` |
-| Revocation | `RevokeToken` / `/oauth2/revoke` / `GlobalSignOut` / `AdminUserGlobalSignOut`. `origin_jti` is the identifier. **A revoked token still appears valid if you check only the signature and expiration** |
-| Groups and scopes | Group precedence: **zero is the top**, and with a tie and different roles `cognito:preferred_role` is not set. Scopes come in three kinds: reserved, custom, and OIDC. **A token from `InitiateAuth` carries only the reserved scope** |
-| OAuth grants | **Authorization code plus PKCE** is recommended. **Implicit is legacy.** Client credentials cannot coexist with the other two |
-| Identity pool flow | **enhanced** (`GetId` → `GetCredentialsForIdentity`, one hour) is recommended. basic (classic) is three steps and discouraged. With `RoleMappings` present, basic errors out |
-| Trust policies | **`cognito-identity.amazonaws.com:aud` is required** (IAM refuses to save without it). `amr` distinguishes authenticated from guest and identifies the provider. **No `aws:SourceIp` on enhanced flow roles** |
-| What to put in front of an API | REST uses a **user pool authorizer** (`Authorization` header), HTTP uses a **JWT authorizer** (RSA only, keys cached two hours), and beyond those there are **`AWS_IAM`** (SigV4) and **Lambda authorizers** (`REQUEST` recommended) |
-| The most dangerous omission | **If you do not set a method's `authorizationType`, that method is publicly open** |
-| Quotas | 40 million users per user pool (adjustable), **50 custom attributes and 10,000 groups (not adjustable)**, default email **50 per day (not adjustable)**. Billing is by **MAU** |
-| Lambda triggers | Except for Custom sender, invocation is **synchronous with a 5-second limit (not changeable)** |

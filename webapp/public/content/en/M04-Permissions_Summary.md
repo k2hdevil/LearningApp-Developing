@@ -14,7 +14,6 @@
 6. [Testing Permissions](#6-testing-permissions)
 7. [Development Environment and IDE Configuration](#7-development-environment-and-ide-configuration)
 8. [Changes from the Courseware](#8-changes-from-the-courseware)
-9. [Knowledge Check and Summary](#9-knowledge-check-and-summary)
 
 > **Notation**
 >
@@ -1311,95 +1310,3 @@ Left here honestly. Confirm these before stating them definitively in class.
 | The lab components in the courseware agenda | The slide 2 and 38 diagrams assume Guacamole, SSH, and Remote Desktop connections and CloudFormation provisioning. This lab infrastructure is not covered by official AWS documentation, so it is carried over as the courseware states it |
 | The `api_versions` setting | The `api_versions` entries in the courseware `~/.aws/config` example (`ec2 = 2015-03-01`, `cloudfront = 2015-09-17`) could not be confirmed in current documentation. The `retry_mode`, `max_attempts`, and `s3` sub-settings in the same example were confirmed |
 | The relationship between Amazon Q Developer and the IDE toolkits | The composition and naming of the AWS IDE toolkit family may be in flux. This document verified only the current validity of the toolkit documentation URLs the courseware cites, and did not treat product strategy changes as in scope |
-
----
-
-## 9. Knowledge Check and Summary
-
-### Knowledge Check (True/False)
-
-The courseware questions and answers, carried over verbatim.
-
-**Question 1**: A permissions boundary is used to set the **minimum** permissions that an identity-based policy can grant to an IAM entity such as a user or role.
-
-- ❌ **Answer: False** — A permissions boundary sets the **maximum** permissions that an identity-based policy can grant to an IAM entity.
-
-**Question 2**: IAM roles generally delegate temporary access to users or services that do not have access to AWS resources.
-
-- ✅ **Answer: True**
-
-**Question 3**: An identity-based policy grants a specified principal permission to perform specific actions on a resource and defines the conditions under which those permissions apply.
-
-- ❌ **Answer: False** — A **resource-based policy** grants a specified principal permission to perform specific actions on that resource and defines the conditions under which those permissions apply.
-
-**Question 4**: The AWS CLI supports multiple profiles for interacting with AWS resources.
-
-- ✅ **Answer: True**
-
-**Question 5**: Temporary credentials do not need to be rotated or explicitly revoked after they expire.
-
-- ✅ **Answer: True**
-
-**Question 6**: The config and credentials files contain additional settings that can be stored in the operating system's environment variables.
-
-- ✅ **Answer: True**
-
-### 🆕 Supplementary Questions (Checking the Updated Material)
-
-**Question 7**: You can determine whether a request will be allowed by looking only at identity-based policies and permissions boundaries.
-
-- ❌ **Answer: False** — Up to nine policy types participate in evaluation. AWS Organizations SCPs and RCPs, resource-based policies, session policies, and VPC endpoint policies can all change the outcome. An explicit deny at any layer fixes the decision as deny. (See [Section 3.1](#31-policy-types) and [Section 5.4](#54-how-the-aws-enforcement-code-evaluates-a-request))
-
-> — Source: [Policies and permissions in AWS Identity and Access Management](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
-
-**Question 8**: For a user in Account A to access an S3 bucket in Account B, the bucket policy in Account B only needs to allow Account A.
-
-- ❌ **Answer: False** — A cross-account request is evaluated in both accounts and is allowed only when **both return `Allow`.** The identity-based policy in Account A must also allow the request to that resource. (See [Section 4.3](#43-role-example-2-cross-account-access))
-
-> — Source: [Cross-account policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html)
-
-**Question 9**: Even inside AWS Organizations, a member account's root user can always access resources in that account.
-
-- ❌ **Answer: False** — SCPs limit permissions for principals in member accounts **including each AWS account root user**, and RCPs also affect the effective permissions for identities including the root user. You can also remove the root credentials from a member account entirely. (See [Section 5.5](#55-is-the-root-user-always-allowed))
-
-> — Source: [Policies and permissions in AWS Identity and Access Management](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
-
-**Question 10**: Attaching only a permissions boundary lets a user perform the actions that boundary allows.
-
-- ❌ **Answer: False** — A permissions boundary **does not grant permissions.** You must attach a permissions policy separately, and the effective permissions are the intersection of the two. (See [Section 3.4](#34-permissions-boundaries))
-
-> — Source: [Permissions boundaries for IAM entities](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
-
-**Question 11**: Calling `sts:GetCallerIdentity` requires a permission that allows that action.
-
-- ❌ **Answer: False** — **No permissions are required** for this operation. You can perform it even if an administrator explicitly denies it, because the same information is returned when access is denied. (See [Section 6.2](#62-demo-testing-role-assumption-in-the-aws-management-console))
-
-> — Source: [GetCallerIdentity](https://docs.aws.amazon.com/STS/latest/APIReference/API_GetCallerIdentity.html)
-
-**Question 12**: A session obtained with `aws sts assume-role` is valid for 12 hours by default.
-
-- ❌ **Answer: False** — The **default for `DurationSeconds` is 3600 seconds (1 hour).** The valid range is 900 to 43200 seconds, and exceeding the role's maximum session duration setting (1 to 12 hours) causes the operation to fail. Role chaining caps it at one hour. (See [Section 4.6](#46-role-session-duration))
-
-> — Source: [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html)
-
-**Question 13**: Storing an IAM user's access keys with `aws configure` is the currently recommended way to access AWS from a development environment.
-
-- ❌ **Answer: False** — Human users are recommended to use temporary credentials through federation with an identity provider, and AWS IAM Identity Center is recommended for centralized management. For local development, `aws login` and AWS CloudShell are also alternatives. (See [Section 2.4](#24-iam-users-and-long-term-access-keys))
-
-> — Source: [Security best practices in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
-
-**Question 14**: To validate a policy before applying it to a live environment, you must send a request to the target service and observe the result.
-
-- ❌ **Answer: False** — The IAM policy simulator returns the evaluation result **without sending a real request.** Because results can differ from the live environment, AWS recommends confirming there after testing. IAM Access Analyzer policy validation can be used alongside it. (See [Section 6.3](#63-validating-permissions-without-making-a-call))
-
-> — Source: [IAM policy testing with the IAM policy simulator](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html)
-
-### Confirming the Module Objectives
-
-After completing this module, you should be able to do the following:
-
-- ✅ Review the features and components of AWS Identity and Access Management (AWS IAM)
-- ✅ Configure permissions to support a development environment
-- ✅ Demonstrate how to test IAM permissions
-- ✅ Configure an IDE and SDK to support a development environment
-- ✅ Demonstrate access to AWS services using an SDK

@@ -14,7 +14,6 @@
 6. [Integrated Development Environments](#6-integrated-development-environments)
 7. [Setting Up Your Development Environment](#7-setting-up-your-development-environment)
 8. [Changes from the Courseware](#8-changes-from-the-courseware)
-9. [Knowledge Check and Summary](#9-knowledge-check-and-summary)
 
 > **Notation**
 >
@@ -1104,92 +1103,3 @@ Recorded honestly. Confirm these before stating them definitively in class.
 | The status of the Eclipse and Azure DevOps toolkits | The status of the Eclipse and Azure DevOps toolkits in the graphic on courseware slide 33 could not be verified. The official "Additional IDE Toolkits from AWS" note lists only JetBrains, VS Code, and Visual Studio, but no explicit end-of-support announcement for the Eclipse or Azure DevOps toolkits was found. It was confirmed that Eclipse is in the Amazon Q Developer supported IDE list |
 | The CreateBucket HTTP request example | Whether the example on courseware slide 6 (a `Date` header and `Authorization: authorization string`) matches the current request example in the Amazon S3 API reference could not be verified. The CreateBucket API reference was read, but no example block in the same form was found to compare against. The courseware example is kept as-is |
 | The DynamoDB query response example | The response example on courseware slide 7 (`x-amzn-RequestId`, `x-amz-crc32`, `Content-Type: application/x-amz-json-1.0`) could not be checked against official documentation. The courseware example is kept as-is |
-
----
-
-## 9. Knowledge Check and Summary
-
-### Knowledge Check (True/False)
-
-These are the questions and answers from courseware slide 39 and its instructor notes, kept as written.
-
-**Question 1**: The service client API provides a higher level of abstraction than the low-level calls made by the resource API.
-
-- ❌ **Answer: False** — The relationship is the other way around. **The resource API** provides a higher level of abstraction than the low-level calls made by clients.
-
-**Question 2**: You can use Amazon CloudWatch to monitor CPU, disk I/O, and network throughput.
-
-- ✅ **Answer: True**
-
-**Question 3**: Each AWS SDK provides automatic retry logic.
-
-- ✅ **Answer: True** — Each AWS SDK implements automatic retry logic with exponential backoff.
-
-**Question 4**: A 500 series error indicates that the server cannot process a request sent by the client because of bad syntax.
-
-- ❌ **Answer: False** — That describes the **400 series**. A 400 series error code indicates that your application handles the error, while a 500 series code indicates an internal server error.
-
-**Question 5**: You can manage AWS resources using the API, an SDK, the AWS CLI, or the AWS Management Console.
-
-- ✅ **Answer: True**
-
-**Question 6**: Calls to AWS services include an authorization header that uses Signature Version 4 of the AWS signing protocol.
-
-- ✅ **Answer: True**
-
-### 🆕 Supplementary Questions (Covering the Updated Content)
-
-**Question 7**: When working with Amazon S3 in Python on a new project, it is fine to default to `boto3.resource('s3')` because it is simpler.
-
-- ❌ **Answer: False** — The AWS Python SDK team does not intend to add new features to the resources interface. Newer service features are delivered through the client interface (`boto3.client`), so write new code against the client. Resource instances are also not thread safe. (See [Section 3.4](#34-low-level-and-high-level-apis))
-
-> — Source: [Boto3 Resources](https://docs.aws.amazon.com/boto3/latest/guide/resources.html)
-
-**Question 8**: Running the courseware example `aws lambda create-function ... --runtime nodejs12.x` as written creates the function.
-
-- ❌ **Answer: False** — `nodejs12.x` was deprecated on March 31, 2023, and function creation was blocked the same day. The currently supported Node.js runtimes are `nodejs22.x`, `nodejs24.x`, and `nodejs26.x`. (See [Section 4.5](#45-example-creating-a-lambda-function-with-the-aws-cli))
-
-> — Source: [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html)
-
-**Question 9**: In `aws s3 ls s3://mybucket --recursive`, `s3://mybucket` is a subcommand.
-
-- ❌ **Answer: False** — The command structure is `aws <command> <subcommand> [options and parameters]`. `s3` is the command, `ls` is the subcommand, and `s3://mybucket` and `--recursive` are parameters. (See [Section 4.3](#43-command-structure))
-
-> — Source: [Command structure in the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-commandstructure.html)
-
-**Question 10**: SigV4 protects against replay attacks by using a time stamp, but there is no defined limit on the allowed time difference.
-
-- ❌ **Answer: False** — It does use a time stamp, but there is a criterion. In most cases a request must reach AWS **within five minutes** of the time stamp in the request, otherwise AWS denies the request. (See [Section 2.2](#22-request-signing-and-sigv4))
-
-> — Source: [AWS Signature Version 4 for API requests](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html)
-
-**Question 11**: Automatic retries in the AWS SDKs use the same defaults across all SDKs and versions.
-
-- ❌ **Answer: False** — There are three retry modes (`standard`, `legacy`, `adaptive`) and the defaults differ. AWS CLI v2 defaults to `standard` (2 retries, 3 total attempts, 20-second maximum backoff) and v1 defaults to `legacy` (4 retries, 5 total attempts, 10 for DynamoDB). (See [Section 5.7](#57-automatic-retry-behavior))
-
-> — Source: [AWS CLI retries in the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-retries.html)
-
-**Question 12**: Because the lab uses Cloud9, learners can create a Cloud9 environment in their own AWS account and follow along.
-
-- ❌ **Answer: False** — AWS Cloud9 is no longer available to new customers. Existing customers can continue to use it, so a lab environment deployed in a training account may work, but a new account cannot create an environment. AWS points to the IDE toolkits or AWS CloudShell as alternatives. (See [Section 6.3](#63-aws-cloud9))
-
-> — Source: [What is AWS Cloud9?](https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html)
-
-**Question 13**: The current AWS recommendation for development credentials is to create an IAM user and put its access keys in `~/.aws/credentials`.
-
-- ❌ **Answer: False** — Better than the root user, yes, but IAM user **long-term** credentials are classified as "not recommended." The recommended order is console-credential-based short-term credentials → IAM Identity Center → IAM short-term credentials → EC2 instance metadata → assume role. (See [Section 7.2](#72-configuring-credentials))
-
-> — Source: [Authentication and access credentials for the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html)
-
-**Question 14**: Kiro is available only as an IDE.
-
-- ❌ **Answer: False** — Kiro is an agentic development system from AWS available as an **IDE, a CLI, and an autonomous web agent**. AWS also points to Kiro for similar capabilities as it discontinues support for Amazon Q Developer IDE plugins on April 30, 2027. (See [Section 6.4](#64-amazon-q-developer-and-ide-plugin-end-of-support), [Section 6.5](#65-kiro-an-ai-powered-ide-with-spec-driven-development))
-
-> — Source: [Kiro](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/machine-learning.html), [Amazon Q Developer IDE plugins end of support](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/q-developer-ide-end-of-support.html)
-
-### Module Objectives Check
-
-After completing this module, you should be able to do the following:
-
-- ✅ Describe how to access AWS services programmatically
-- ✅ List the programming patterns in the AWS SDKs
