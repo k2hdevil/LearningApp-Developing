@@ -184,7 +184,21 @@ async function openModule(ws, id) {
     if (clicked) break;
     await sleep(500);
   }
-  if (!clicked) throw new Error(`사이드바에 #${id} 링크가 없습니다 (30초 대기)`);
+  if (!clicked) {
+    const diag = await evaluate(
+      ws,
+      `JSON.stringify({
+        href: location.href,
+        ready: document.readyState,
+        rootKids: document.querySelector('#root')?.children.length ?? null,
+        anchors: document.querySelectorAll('a[href^="#M"]').length,
+        sample: [...document.querySelectorAll('a[href^="#M"]')].slice(0,3)
+          .map(a => a.getAttribute('href')),
+        bodyHead: document.body?.innerText?.slice(0,150) ?? null,
+      })`
+    );
+    throw new Error(`사이드바에 #${id} 링크가 없습니다 (30초 대기)\n  진단: ${diag}`);
+  }
   // fetch + 마크다운 파싱 + 하이라이팅이 끝나기를 기다린다
   for (let i = 0; i < 40; i += 1) {
     await sleep(250);
