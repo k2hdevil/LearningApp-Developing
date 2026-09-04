@@ -10,15 +10,12 @@
 2. [Recommended Prerequisites](#2-recommended-prerequisites)
 3. [The Application You Build: Pollynotes](#3-the-application-you-build-pollynotes)
 4. [Three-Day Agenda](#4-three-day-agenda)
-5. [Classroom Logistics](#5-classroom-logistics)
-6. [Accessing the Labs and Guides](#6-accessing-the-labs-and-guides)
-7. [Lab Requirements](#7-lab-requirements)
-8. [Changes from the Courseware](#8-changes-from-the-courseware)
+5. [Changes from the Courseware](#5-changes-from-the-courseware)
 
 > **Notation**
 >
 > - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
-> - 🔄 Material that has changed since the class and has been corrected here. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 5](#5-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 30, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -39,21 +36,6 @@ By the end of the course you will be able to do the following three things.
 
 These three are spread across the three days. Module 4 covers the first, modules 5 through 13 cover the second, and module 14 covers the third.
 
-### Mapping the Courseware Slides to This Document
-
-Use this when you have the courseware open alongside.
-
-| Slides | Content | In this document |
-|---|---|---|
-| 4 | Course objectives | Section 1 |
-| 5 | Recommended prerequisites | [Section 2](#2-recommended-prerequisites) |
-| 6 | Course overview — the Pollynotes architecture | [Section 3](#3-the-application-you-build-pollynotes) |
-| 7–12 | Day 1–3 agenda (morning and afternoon) | [Section 4](#4-three-day-agenda) |
-| 13–15 | Logistics, virtual classroom logistics, introductions | [Section 5](#5-classroom-logistics) |
-| 16–19 | How to access the course labs and guides | [Section 6](#6-accessing-the-labs-and-guides) |
-| 20 | Lab requirements | [Section 7](#7-lab-requirements) |
-| 1–3, 21 | Title, instructor intro, thank you | (layout only. Nothing to carry over) |
-
 ---
 
 ## 2. Recommended Prerequisites
@@ -66,7 +48,7 @@ The course assumes you already have the following.
 | Prerequisite course | Complete AWS Technical Essentials |
 | Languages | Working knowledge of a top-tier programming language — Python, .NET, Java |
 
-The introductions question on slide 15 asks the same thing as `Java, Python, C#`. `.NET` is a platform name and `C#` is a language on that platform, so the two lists are drawn on different axes. Because this feeds directly into the lab IDE and SDK choice, it is worth settling which axis you ask about at the start of class (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
+The introductions question on slide 15 asks the same thing as `Java, Python, C#`. `.NET` is a platform name and `C#` is a language on that platform, so the two lists are drawn on different axes. Because this feeds directly into the lab IDE and SDK choice, it is worth settling which axis you ask about at the start of class (see [Section 5.1](#51-courseware-statements-that-do-not-match-the-facts)).
 
 ### 2.1 Where the Two Prerequisite Courses Are Now 🔄
 
@@ -81,7 +63,7 @@ Both courses still exist under those names. What changed is **how you reach them
 
 > — Source: [Propel your technical career with AWS Technical Essentials course](https://aws.amazon.com/blogs/training-and-certification/propel-your-technical-career-with-aws-technical-essentials-course/)
 
-**Where the course pages live.** The classroom course pages on `aws.amazon.com` now **move you to AWS Skill Builder.** [AWS Cloud Practitioner Essentials](https://aws.amazon.com/training/classroom/aws-cloud-practitioner-essentials/) · [AWS Technical Essentials](https://aws.amazon.com/training/classroom/aws-technical-essentials/) · [Developing on AWS](https://aws.amazon.com/training/classroom/developing-on-aws/) all answer with HTTP 200, but the request is redirected to the course page on Skill Builder. We verified the response code and the redirect target, and no further: these pages are client-rendered, so we could not read their body (see [Section 8.5](#85-items-we-could-not-verify)).
+**Where the course pages live.** The classroom course pages on `aws.amazon.com` now **move you to AWS Skill Builder.** [AWS Cloud Practitioner Essentials](https://aws.amazon.com/training/classroom/aws-cloud-practitioner-essentials/) · [AWS Technical Essentials](https://aws.amazon.com/training/classroom/aws-technical-essentials/) · [Developing on AWS](https://aws.amazon.com/training/classroom/developing-on-aws/) all answer with HTTP 200, but the request is redirected to the course page on Skill Builder. We verified the response code and the redirect target, and no further: these pages are client-rendered, so we could not read their body (see [Section 5.5](#55-items-we-could-not-verify)).
 
 ---
 
@@ -164,7 +146,7 @@ This is the sequence of modules and labs across the three days. Each half day st
 
 Diagram fragment: you → EC2 instance contents inside the AWS Cloud (integrated development environment (IDE), AWS tools and SDKs, AWS Command Line Interface (AWS CLI)), Amazon Simple Storage Service (Amazon S3), IAM, IAM role, AWS Security Token Service (AWS STS), AWS CloudFormation.
 
-**The lab environment and the IDE.** The labs provide **three IDEs**, and you pick one based on preference or programming language. Connectivity uses Guacamole, Remote Desktop, or a browser-based option. Which IDEs they are and which connection path applies vary by how the class is run, so this document does not settle it (see [Section 8.5](#85-items-we-could-not-verify)).
+**The lab environment and the IDE.** The labs provide **three IDEs**, and you pick one based on preference or programming language. Connectivity uses Guacamole, Remote Desktop, or a browser-based option. Which IDEs they are and which connection path applies vary by how the class is run, so this document does not settle it (see [Section 5.5](#55-items-we-could-not-verify)).
 
 ### 4.2 Day 1 Afternoon
 
@@ -176,7 +158,7 @@ Diagram fragment: you → EC2 instance contents inside the AWS Cloud (integrated
 
 Diagram fragment: developer → AWS software development kit (AWS SDK) → Amazon S3 (two, Notes) inside the AWS Cloud.
 
-For lab 2 the courseware title and description point at different labs. The diagram's developer → AWS SDK → Amazon S3 flow shows that **the title** is the lab for this half day (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
+For lab 2 the courseware title and description point at different labs. The diagram's developer → AWS SDK → Amazon S3 flow shows that **the title** is the lab for this half day (see [Section 5.1](#51-courseware-statements-that-do-not-match-the-facts)).
 
 ### 4.3 Day 2 Morning
 
@@ -210,7 +192,7 @@ Diagram fragment: developer → Amazon Polly, Amazon S3 (two) / developer → AP
 
 Diagram fragment: users → Amazon Cognito → API Gateway inside the AWS Cloud → Lambda function → DynamoDB, S3 bucket, developer.
 
-The titles given here for modules 11 and 12 differ slightly from the title pages of those modules. They are the same modules (see [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts)).
+The titles given here for modules 11 and 12 differ slightly from the title pages of those modules. They are the same modules (see [Section 5.1](#51-courseware-statements-that-do-not-match-the-facts)).
 
 ### 4.6 Day 3 Afternoon 🔄
 
@@ -227,145 +209,26 @@ Diagram fragment: the same set of labels as the full Pollynotes architecture fro
 > — Source: [Use a console (X-Ray)](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html)
 
 ---
-
-## 5. Classroom Logistics
-
-Notes on how the class is run.
-
-### 5.1 In-Person Logistics
-
-| Category | Item |
-|---|---|
-| Facility | Emergency exits / fire alarm protocol / security |
-| Schedule | Breaks and lunch |
-| Other | Food / mobile phones |
-
-### 5.2 Virtual Classroom Logistics
-
-| Category | Item |
-|---|---|
-| Schedule | Breaks and lunch |
-| Communication | Chat / mute and unmute / camera |
-
-### 5.3 Introductions
-
-This round exists to gauge each learner's proficiency and what they want out of the class.
-
-| # | Question |
-|---|---|
-| 1 | Your name |
-| 2 | What do you do? |
-| 3 | What do you want to get out of this class? |
-| 4 | What is your AWS proficiency? |
-| 5 | Which language would you choose: Java, Python, or C#? |
-| 6 | What was your most recent purchase on Amazon.com? |
-
-Question 5 is what decides your lab IDE and SDK (see [Section 2](#2-recommended-prerequisites)).
-
----
-
-## 6. Accessing the Labs and Guides
-
-The lab environment and the guides are delivered through **AWS Builder Labs**. The registration details are in the welcome email from your instructor.
-
-### 6.1 Registration
-
-What you do as a learner.
-
-| Step | Content |
-|---|---|
-| 1 | Check your inbox for the **welcome email** from your instructor |
-| 2 | Find the **unique learner registration URL** for this class in that email |
-| 3 | Use that URL to create an account or sign in to an existing AWS Builder Labs account |
-| 4 | Access the lab environment, the lab guide, and the learner guide in AWS Builder Labs |
-
-The instructor-facing notes add the following.
-
-| Item | Content |
-|---|---|
-| Welcome email | The instructor must send a welcome email before class starts and include the unique learner registration URL that AWS Builder Labs generated for the class |
-| Recommended account creation | If learners create their AWS Builder Labs account with an **Amazon Retail or Partner Central sign-in**, the license code is applied automatically. This method is strongly recommended |
-| License code | If learners reach their Bookshelf account through the AWS Builder Labs dashboard using the unique learner registration link, there is **no need to purchase a license code from Gilmore** |
-| FAQ and concurrent lab limits | The notes point to the FAQ and Resources section of the `Instructor Enablement: AWS Builder Labs` guide on AWS Skill Builder. The address printed in the courseware is `https://explore.skillbuilder.aws/learn/course/internal/view/elearning/12814/instructor-enablement-aws-builder-labs` |
-
-The Skill Builder address in the table above is an **instructor-only internal path**, so we could not verify its contents for this document (see [Section 8.5](#85-items-we-could-not-verify)).
-
-### 6.2 Where the Guides Live
-
-| Item | Content |
-|---|---|
-| Instructor demo | Sign in to the **instructor management view** on the AWS Builder Labs class details page, then switch to **Student View** to demonstrate how to reach the guides |
-| Preloading | If the learner labs are **not preloaded, the labs show as unavailable** |
-| Button location | The lab guide and learner guide buttons are in the **upper right** of the AWS Builder Labs dashboard, and they are greyed out and disabled before the class starts |
-| Guide store | The guides live in **eVantage Bookshelf (VitalSource)**. Clicking the link prompts learners to sign in to an existing account or choose `Create an account` |
-| How to use them | The guides can be accessed online or downloaded |
-
-### 6.3 Guide Distribution
-
-| Item | Content |
-|---|---|
-| Distribution path | The course participant guides are provided through the **eVantage Bookshelf (VitalSource)** application |
-| Procedure | Go to eVantage Bookshelf (VitalSource) → create an account or sign in to an existing one → use the code your instructor provided to reach the guides for the class |
-| Address | The slide lists `https://evantage.gilmoreglobal.com/` as the participant guide address, with "get the code from your instructor" |
-| Guide composition | A class without labs has only the learner guide; a class with labs has both the learner guide and the lab guide |
-
-**Note.** This path applies only to a class without labs, or when you sign in to an existing eVantage Bookshelf (VitalSource) account rather than going through the unique URL in the AWS Builder Labs portal. **Since this course includes labs, use the registration URL in the welcome email instead.**
-
-eVantage Bookshelf (VitalSource) and Gilmore Global are not AWS-operated domains, so the content above is carried over as the courseware states it, with no source attached (see [Section 8.5](#85-items-we-could-not-verify)).
-
-### 6.4 Where AWS Builder Labs Sits Now 🔄
-
-The path to the class labs (unique registration URL in the welcome email → AWS Builder Labs dashboard) is the same as it was during the class. What changed is **where AWS presents AWS Builder Labs**, and free labs you can keep using after the course have been added.
-
-| Item | What we verified |
-|---|---|
-| Where it is presented | AWS Builder Labs is presented as one of the **immersive learning** experiences in AWS Skill Builder. Requesting `aws.amazon.com/training/digital/aws-builder-labs/` takes you to the immersive learning page |
-| Scale | More than **200** guided, interactive labs in AWS Console environments with step-by-step instructions for learning AWS services |
-| Not in the courseware | An **AI-powered Learning Assistant** that answers queries and explains code within the lab's context |
-| Other experiences on the same page | AWS Cloud Quest, AWS SimuLearn, AWS Industry Quest, Lab Maker, AWS Jam, Microcredentials |
-| Free learning plan | The `Introduction to AWS Cloud – AWS Builder Labs` learning plan offers 10 foundational labs for free (Amazon VPC, Amazon S3, Amazon EC2, AWS IAM, AWS KMS, a basic environment audit, Amazon DynamoDB, Amazon CloudFront, AWS Lambda, Amazon API Gateway) |
-
-> — Source: [Immersive learning (AWS Skill Builder)](https://aws.amazon.com/training/digital/immersive-learning/)
-
-> — Source: [Begin your AWS journey with new free AWS Builder Labs learning plan on AWS Skill Builder](https://aws.amazon.com/blogs/training-and-certification/begin-your-aws-journey-with-new-free-aws-builder-labs-learning-plan-on-aws-skill-builder/)
-
----
-
-## 7. Lab Requirements
-
-Conditions for reaching the lab environment.
-
-| Category | Requirement |
-|---|---|
-| Operating system | Windows / macOS / Linux: Ubuntu, SUSE, or Red Hat |
-| Recommended web browsers | Google Chrome / Mozilla Firefox / Microsoft Edge |
-| Network | A reliable internet connection able to browse the internet over HTTPS |
-| AWS Builder Labs registration | Disable ad and script blocking |
-
-This is not a supported-operating-system or supported-browser list for a particular AWS service; it is a condition for reaching the lab environment, so it is not the kind of fact AWS official documentation verifies. It is carried over as written, with no source attached (see [Section 8.5](#85-items-we-could-not-verify)).
-
----
-
-## 8. Changes from the Courseware
+## 5. Changes from the Courseware
 
 If something in the courseware makes you think "but the book says otherwise," check here. This section collects the evidence behind the new-content and correction markers used in the sections above.
 
-M01 is a course administration module, so this section is thin. We found **no end-of-support items in this module.** What we did find are six places where the courseware contradicts itself. Those are not something AWS documentation can settle, so their source column is empty and they are carried into [Section 8.5](#85-items-we-could-not-verify).
+M01 is a course administration module, so this section is thin. We found **no end-of-support items in this module.** What we did find are six places where the courseware contradicts itself. Those are not something AWS documentation can settle, so their source column is empty and they are carried into [Section 5.5](#55-items-we-could-not-verify).
 
-### 8.1 Courseware Statements That Do Not Match the Facts
+### 5.1 Courseware Statements That Do Not Match the Facts
 
 | Item | What the courseware says | What we verified | Source |
 |---|---|---|---|
 | `Amazon APIGateway` (slide 6 and 12 diagrams) | Written as one word, with no space | The documented name is **`Amazon API Gateway`.** The slide 10 and 11 diagrams and the instructor notes of the same courseware spell it correctly, so the courseware is inconsistent with itself | [What is Amazon API Gateway?](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html) |
 | The IAM abbreviation (slide 7 instructor notes) | `AWS Identity and Access Management (AWS IAM)` | The documented abbreviation is **`IAM`.** The slide 6 and 7 diagrams write `(IAM)` correctly; only the slide 7 instructor notes write `(AWS IAM)` | [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
-| The module name | Slide 2 subtitle `Module 1: Course Overview` vs slide 7 instructor notes `Module 1 - Course Introduction` | Which one is right is not something documentation can settle; it is an internal courseware inconsistency. This document follows slide 2 | — (see [Section 8.5](#85-items-we-could-not-verify)) |
-| The lab 1 description (slide 7 instructor notes) | Only this one line is in English within otherwise Korean notes (`Configure and test IAM permissions in a development environment.`) | This looks like a missed translation. The table in [Section 4.1](#41-day-1-morning) carries it in the document language | — (see [Section 8.5](#85-items-we-could-not-verify)) |
-| Lab 2 (slide 8) | The box title is `Developing Solutions with Amazon S3`; the instructor notes on the same slide say `Identify the AWS solutions that fit a big data application workload` | The two point at different labs. The diagram on the same slide draws developer → AWS SDK → Amazon S3, which matches **the box title.** The other labs (3, 4, and 6) have matching titles and notes | — (see [Section 8.5](#85-items-we-could-not-verify)) |
-| Agenda module titles (slide 11) | `현대적 애플리케이션 구축` / `애플리케이션 사용자에게 액세스 권한 부여` | The individual deck title pages read `모던 애플리케이션(Modern Application) 구축` / `내 애플리케이션의 사용자에게 액세스 권한 부여하기`. It is an internal courseware inconsistency that surfaces when you compare the agenda with a module title page | — (see [Section 8.5](#85-items-we-could-not-verify)) |
-| Lab connectivity (slide 7) | The box says `Guacamole or Remote Desktop` (two); the instructor notes say `Guacamole, Remote Desktop, or a browser-based option` (three) | The count differs within a single slide. This is a lab-operations matter, and Guacamole is not covered by documentation on an AWS-operated domain, so we cannot establish which is current | — (see [Section 8.5](#85-items-we-could-not-verify)) |
-| The language list | Slide 5 says `Python / .NET / Java`; slide 15 says `Java, Python, C#` | `.NET` is a platform and `C#` is a language on it, so the lists are drawn on different axes. This feeds directly into the lab IDE and SDK choice | — (see [Section 8.5](#85-items-we-could-not-verify)) |
+| The module name | Slide 2 subtitle `Module 1: Course Overview` vs slide 7 instructor notes `Module 1 - Course Introduction` | Which one is right is not something documentation can settle; it is an internal courseware inconsistency. This document follows slide 2 | — (see [Section 5.5](#55-items-we-could-not-verify)) |
+| The lab 1 description (slide 7 instructor notes) | Only this one line is in English within otherwise Korean notes (`Configure and test IAM permissions in a development environment.`) | This looks like a missed translation. The table in [Section 4.1](#41-day-1-morning) carries it in the document language | — (see [Section 5.5](#55-items-we-could-not-verify)) |
+| Lab 2 (slide 8) | The box title is `Developing Solutions with Amazon S3`; the instructor notes on the same slide say `Identify the AWS solutions that fit a big data application workload` | The two point at different labs. The diagram on the same slide draws developer → AWS SDK → Amazon S3, which matches **the box title.** The other labs (3, 4, and 6) have matching titles and notes | — (see [Section 5.5](#55-items-we-could-not-verify)) |
+| Agenda module titles (slide 11) | `현대적 애플리케이션 구축` / `애플리케이션 사용자에게 액세스 권한 부여` | The individual deck title pages read `모던 애플리케이션(Modern Application) 구축` / `내 애플리케이션의 사용자에게 액세스 권한 부여하기`. It is an internal courseware inconsistency that surfaces when you compare the agenda with a module title page | — (see [Section 5.5](#55-items-we-could-not-verify)) |
+| Lab connectivity (slide 7) | The box says `Guacamole or Remote Desktop` (two); the instructor notes say `Guacamole, Remote Desktop, or a browser-based option` (three) | The count differs within a single slide. This is a lab-operations matter, and Guacamole is not covered by documentation on an AWS-operated domain, so we cannot establish which is current | — (see [Section 5.5](#55-items-we-could-not-verify)) |
+| The language list | Slide 5 says `Python / .NET / Java`; slide 15 says `Java, Python, C#` | `.NET` is a platform and `C#` is a language on it, so the lists are drawn on different axes. This feeds directly into the lab IDE and SDK choice | — (see [Section 5.5](#55-items-we-could-not-verify)) |
 
-### 8.2 Changed Behavior and Defaults
+### 5.2 Changed Behavior and Defaults
 
 | Item | What the courseware says | Current | Source |
 |---|---|---|---|
@@ -375,7 +238,7 @@ M01 is a course administration module, so this section is thin. We found **no en
 | Where AWS Builder Labs is presented | Presents it purely as the class lab portal | It is presented as one of the **immersive learning** experiences in AWS Skill Builder, alongside more than 200 labs and an **AI-powered Learning Assistant.** The path to the class labs itself is unchanged | [Immersive learning (AWS Skill Builder)](https://aws.amazon.com/training/digital/immersive-learning/) |
 | The AWS CloudFormation name | `AWS CloudFormation` | The current documentation title and body use **`CloudFormation`** without the prefix. Both forms are in circulation, but this is what the documentation body uses | [What is CloudFormation?](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) |
 
-### 8.3 Discouraged and End-of-Support Items
+### 5.3 Discouraged and End-of-Support Items
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
@@ -383,7 +246,7 @@ M01 is a course administration module, so this section is thin. We found **no en
 
 There are no **end-of-support** items in this module.
 
-### 8.4 Added After the Courseware
+### 5.4 Added After the Courseware
 
 | Item | Summary | Source |
 |---|---|---|
@@ -394,7 +257,7 @@ There are no **end-of-support** items in this module.
 | The AWS Builder Labs Learning Assistant | An AI-powered assistant that answers queries and explains code within the lab's context. The same page also presents Lab Maker, AWS SimuLearn, AWS Jam, and Microcredentials | [Immersive learning (AWS Skill Builder)](https://aws.amazon.com/training/digital/immersive-learning/) |
 | The free AWS Builder Labs learning plan | The `Introduction to AWS Cloud – AWS Builder Labs` learning plan offers 10 foundational labs for free. A subscription unlocks the full catalog of 200 Builder Labs, 200 SimuLearns, and 17 Jam Journeys | [Begin your AWS journey with new free AWS Builder Labs learning plan on AWS Skill Builder](https://aws.amazon.com/blogs/training-and-certification/begin-your-aws-journey-with-new-free-aws-builder-labs-learning-plan-on-aws-skill-builder/) |
 
-### 8.5 Items We Could Not Verify
+### 5.5 Items We Could Not Verify
 
 Left here honestly. Check these before stating them as fact in class.
 
@@ -407,5 +270,5 @@ Left here honestly. Check these before stating them as fact in class.
 | Apache Guacamole, Remote Desktop, and browser-based access (slide 7) | Lab connectivity is a course-operations matter, and Guacamole is not covered by documentation on an AWS-operated domain. **We could not determine** whether to resolve the difference between the slide box (two options) and the instructor notes (three options) in favor of either |
 | The three IDEs offered in the labs (slide 7 instructor notes) | The notes say only that "there are three IDEs in the labs and learners can choose an IDE based on preference or programming language" and **do not name them.** We did not guess names that are absent from the source |
 | The operating system and browser list in the lab requirements (slide 20) | This is not a supported list for a particular AWS service; it is a **condition for reaching the lab environment.** It is not the kind of fact AWS official documentation verifies, so it is carried over as written |
-| The six internal courseware inconsistencies | The module name, the one English line in the lab 1 description, the lab 2 title versus description, the agenda module titles, the number of connection methods, and the axis of the language list. All of them are **internal courseware problems that external documentation cannot verify.** We only state which side we followed, in [Section 8.1](#81-courseware-statements-that-do-not-match-the-facts) |
+| The six internal courseware inconsistencies | The module name, the one English line in the lab 1 description, the lab 2 title versus description, the agenda module titles, the number of connection methods, and the axis of the language list. All of them are **internal courseware problems that external documentation cannot verify.** We only state which side we followed, in [Section 5.1](#51-courseware-statements-that-do-not-match-the-facts) |
 | The actual procedures for labs 1 through 7 | This deck carries only lab titles and one-line objectives. The procedures are in the lab guide and are out of scope for this document |

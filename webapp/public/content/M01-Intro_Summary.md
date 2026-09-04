@@ -10,15 +10,12 @@
 2. [수강 전 권장 사항](#2-수강-전-권장-사항)
 3. [과정에서 만드는 애플리케이션: Pollynotes](#3-과정에서-만드는-애플리케이션-pollynotes)
 4. [3일 어젠다](#4-3일-어젠다)
-5. [강의 진행 안내](#5-강의-진행-안내)
-6. [실습 및 가이드 액세스](#6-실습-및-가이드-액세스)
-7. [실습 요구 사항](#7-실습-요구-사항)
-8. [교재 대비 변경 사항](#8-교재-대비-변경-사항)
+5. [교재 대비 변경 사항](#5-교재-대비-변경-사항)
 
 > **표기 설명**
 >
 > - 🆕 강의에서 다루지 않은 내용. AWS 공식 문서로 확인해 더한 항목입니다.
-> - 🔄 강의 당시와 달라져 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [8장](#8-교재-대비-변경-사항)에 모아 두었습니다.
+> - 🔄 강의 당시와 달라져 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [5장](#5-교재-대비-변경-사항)에 모아 두었습니다.
 > - 검증일: 2026년 8월 30일. 이후 문서가 갱신될 수 있으니 시험·실무 적용 전에는 링크된 원문을 확인하세요.
 
 ---
@@ -39,21 +36,6 @@
 
 이 세 가지는 3일에 걸쳐 나뉘어 나옵니다. 1번은 모듈 4, 2번은 모듈 5~13, 3번은 모듈 14가 각각 담당합니다.
 
-### 교재 슬라이드와 이 문서의 대응
-
-교재를 함께 펴 놓고 보실 때 참고하세요.
-
-| 슬라이드 | 내용 | 이 문서 |
-|---|---|---|
-| 4 | 과정 목표 | 1장 |
-| 5 | 수강 전 권장 사항 | [2장](#2-수강-전-권장-사항) |
-| 6 | 과정 개요 — Pollynotes 아키텍처 | [3장](#3-과정에서-만드는-애플리케이션-pollynotes) |
-| 7~12 | 1~3일 차 어젠다(오전·오후) | [4장](#4-3일-어젠다) |
-| 13~15 | 안내 사항, 가상 수업 안내 사항, 자기 소개 | [5장](#5-강의-진행-안내) |
-| 16~19 | 과정 실습 및 가이드에 액세스하는 방법 | [6장](#6-실습-및-가이드-액세스) |
-| 20 | 실습 요구 사항 | [7장](#7-실습-요구-사항) |
-| 1~3, 21 | 표지, 강사 소개, 감사합니다 | (레이아웃만. 옮길 원문 없음) |
-
 ---
 
 ## 2. 수강 전 권장 사항
@@ -66,7 +48,7 @@
 | 선수 과정 | AWS Technical Essentials 이수 |
 | 언어 | 최상위 프로그래밍 언어에 대한 기본 지식 — Python, .NET, Java |
 
-실습에서 쓸 언어는 **Python · .NET(C#) · Java** 중에서 고릅니다. 이 선택이 실습 IDE와 SDK를 결정하므로 첫날 오전에 정해 두는 편이 좋습니다. 교재는 두 곳에서 `.NET` 과 `C#` 을 섞어 적는데, `.NET` 은 플랫폼이고 `C#` 은 그 플랫폼의 언어입니다([8.1절](#81-교재-기술이-사실과-다른-항목)).
+실습에서 쓸 언어는 **Python · .NET(C#) · Java** 중에서 고릅니다. 이 선택이 실습 IDE와 SDK를 결정하므로 첫날 오전에 정해 두는 편이 좋습니다. 교재는 두 곳에서 `.NET` 과 `C#` 을 섞어 적는데, `.NET` 은 플랫폼이고 `C#` 은 그 플랫폼의 언어입니다([5.1절](#51-교재-기술이-사실과-다른-항목)).
 
 ### 2.1 두 선수 과정의 현재 이름과 위치 🔄
 
@@ -81,7 +63,7 @@
 
 > — 출처: [Propel your technical career with AWS Technical Essentials course](https://aws.amazon.com/blogs/training-and-certification/propel-your-technical-career-with-aws-technical-essentials-course/)
 
-**과정 페이지 위치.** `aws.amazon.com` 의 강의실 과정 페이지는 지금 **AWS Skill Builder로 이동합니다.** [AWS Cloud Practitioner Essentials](https://aws.amazon.com/training/classroom/aws-cloud-practitioner-essentials/) · [AWS Technical Essentials](https://aws.amazon.com/training/classroom/aws-technical-essentials/) · [Developing on AWS](https://aws.amazon.com/training/classroom/developing-on-aws/) 세 주소 모두 HTTP 200으로 응답하지만 요청이 Skill Builder의 과정 페이지로 리다이렉트됩니다. 확인한 것은 응답 코드와 리다이렉트 대상까지이며, 이 페이지들은 클라이언트 렌더링이라 본문은 읽지 못했습니다([8.5절](#85-검증하지-못한-항목)).
+**과정 페이지 위치.** `aws.amazon.com` 의 강의실 과정 페이지는 지금 **AWS Skill Builder로 이동합니다.** [AWS Cloud Practitioner Essentials](https://aws.amazon.com/training/classroom/aws-cloud-practitioner-essentials/) · [AWS Technical Essentials](https://aws.amazon.com/training/classroom/aws-technical-essentials/) · [Developing on AWS](https://aws.amazon.com/training/classroom/developing-on-aws/) 세 주소 모두 HTTP 200으로 응답하지만 요청이 Skill Builder의 과정 페이지로 리다이렉트됩니다. 확인한 것은 응답 코드와 리다이렉트 대상까지이며, 이 페이지들은 클라이언트 렌더링이라 본문은 읽지 못했습니다([5.5절](#55-검증하지-못한-항목)).
 
 ---
 
@@ -164,7 +146,7 @@
 
 다이어그램 조각: 본인 → AWS 클라우드 안의 EC2 인스턴스 콘텐츠(통합 개발 환경(IDE), AWS 도구 및 SDK, AWS Command Line Interface(AWS CLI)), Amazon Simple Storage Service(Amazon S3), IAM, IAM 역할, AWS Security Token Service(AWS STS), AWS CloudFormation.
 
-**실습 환경과 IDE.** 실습에는 **IDE 세 가지**가 준비되어 있고 선호도나 프로그래밍 언어에 따라 고를 수 있습니다. 환경 접속은 Guacamole·원격 데스크톱·브라우저 기반 옵션이 쓰입니다. 어느 IDE인지와 접속 경로는 강의 운영에 따라 달라지므로 이 문서에서 확정하지 않았습니다([8.5절](#85-검증하지-못한-항목)).
+**실습 환경과 IDE.** 실습에는 **IDE 세 가지**가 준비되어 있고 선호도나 프로그래밍 언어에 따라 고를 수 있습니다. 환경 접속은 Guacamole·원격 데스크톱·브라우저 기반 옵션이 쓰입니다. 어느 IDE인지와 접속 경로는 강의 운영에 따라 달라지므로 이 문서에서 확정하지 않았습니다([5.5절](#55-검증하지-못한-항목)).
 
 ### 4.2 1일 차 오후
 
@@ -176,7 +158,7 @@
 
 다이어그램 조각: 개발자 → AWS 소프트웨어 개발 키트(AWS SDK) → AWS 클라우드 안의 Amazon S3(두 개, Notes).
 
-실습 2는 교재가 제목과 설명에서 서로 다른 실습을 가리킵니다. 다이어그램의 개발자 → AWS SDK → Amazon S3 흐름으로 보아 **제목 쪽**이 이 반나절의 실습입니다([8.1절](#81-교재-기술이-사실과-다른-항목)).
+실습 2는 교재가 제목과 설명에서 서로 다른 실습을 가리킵니다. 다이어그램의 개발자 → AWS SDK → Amazon S3 흐름으로 보아 **제목 쪽**이 이 반나절의 실습입니다([5.1절](#51-교재-기술이-사실과-다른-항목)).
 
 ### 4.3 2일 차 오전
 
@@ -210,7 +192,7 @@
 
 다이어그램 조각: 사용자 → Amazon Cognito → AWS 클라우드 안의 API Gateway → Lambda 함수 → DynamoDB, S3 버킷, 개발자.
 
-여기 적힌 모듈 11·12의 제목은 각 모듈 표지의 제목과 조금씩 다릅니다. 같은 모듈이니 혼동하지 마세요([8.1절](#81-교재-기술이-사실과-다른-항목)).
+여기 적힌 모듈 11·12의 제목은 각 모듈 표지의 제목과 조금씩 다릅니다. 같은 모듈이니 혼동하지 마세요([5.1절](#51-교재-기술이-사실과-다른-항목)).
 
 ### 4.6 3일 차 오후 🔄
 
@@ -227,145 +209,26 @@
 > — 출처: [Use a console (X-Ray)](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html)
 
 ---
-
-## 5. 강의 진행 안내
-
-강의 운영에 관한 안내입니다.
-
-### 5.1 대면 강의 안내 사항
-
-| 구분 | 항목 |
-|---|---|
-| 시설 | 비상구 / 화재 경보 프로토콜 / 보안 |
-| 일정 | 휴식 및 점심 시간 |
-| 그 외 | 음식 / 휴대전화 |
-
-### 5.2 가상 수업 안내 사항
-
-| 구분 | 항목 |
-|---|---|
-| 일정 | 휴식 및 점심 시간 |
-| 소통 | 채팅 / 음소거·음소거 해제 / 카메라 |
-
-### 5.3 자기 소개
-
-수강생의 숙련도와 각자 기대하는 바를 파악하기 위한 순서입니다.
-
-| # | 질문 |
-|---|---|
-| 1 | 이름 |
-| 2 | 어떤 일을 하고 있습니까? |
-| 3 | 이 수업을 통해 무엇을 얻고 싶습니까? |
-| 4 | AWS 숙련도는 어떻게 됩니까? |
-| 5 | Java, Python, C# 중 어떤 언어를 선택하시겠습니까? |
-| 6 | Amazon.com에서 가장 최근 구매한 것은 무엇입니까? |
-
-5번 질문이 실습 IDE와 SDK 선택으로 이어집니다([2장](#2-수강-전-권장-사항) 참조).
-
----
-
-## 6. 실습 및 가이드 액세스
-
-실습 환경과 가이드는 **AWS Builder Labs**를 통해 제공됩니다. 등록 정보는 강사가 보낸 환영 이메일에 있습니다.
-
-### 6.1 등록
-
-수강생이 하는 일입니다.
-
-| 단계 | 내용 |
-|---|---|
-| 1 | 받은 편지함에서 강사가 보낸 **환영 이메일**을 확인한다 |
-| 2 | 이메일에서 이 강의의 **고유한 수강생 등록 URL**을 찾는다 |
-| 3 | 그 URL로 계정을 생성하거나 기존 AWS Builder Labs 계정에 로그인한다 |
-| 4 | AWS Builder Labs에서 실습 환경, 실습 가이드, 수강생 가이드에 액세스한다 |
-
-강사가 미리 준비하는 일입니다. 등록이 막히면 이 중 어디가 빠졌는지 확인하면 됩니다.
-
-| 항목 | 내용 |
-|---|---|
-| 환영 이메일 | 강사는 강의 시작 전에 환영 이메일을 보내고, 그 안에 AWS Builder Labs에서 생성한 강의의 고유한 수강생 등록 URL을 포함해야 한다 |
-| 계정 생성 권장 | 수강생이 **Amazon Retail 또는 Partner Central 로그인**으로 AWS Builder Labs 계정을 만들면 라이선스 코드가 자동 적용된다. 이 방법이 적극 권장된다 |
-| 라이선스 코드 | 고유한 수강생 등록 링크로 AWS Builder Labs 대시보드를 통해 Bookshelf 계정에 액세스하면 **Gilmore에서 라이선스 코드를 구매할 필요가 없다** |
-| FAQ·동시 실습 한도 | AWS Skill Builder의 `Instructor Enablement: AWS Builder Labs` 가이드 FAQ 및 리소스 섹션을 참조하라고 안내한다. 교재에 적힌 주소는 `https://explore.skillbuilder.aws/learn/course/internal/view/elearning/12814/instructor-enablement-aws-builder-labs` 이다 |
-
-위 표의 Skill Builder 주소는 **강사 전용 내부 경로**여서 이 문서에서는 내용을 확인하지 못했습니다([8.5절](#85-검증하지-못한-항목)).
-
-### 6.2 가이드 위치
-
-| 항목 | 내용 |
-|---|---|
-| 강사 시연 | AWS Builder Labs 강의 세부 정보 페이지의 **강사 관리 보기**에 로그인한 뒤 **Student View**로 전환해 가이드 액세스 방법을 시연한다 |
-| 사전 로드 | 수강생용 실습을 **미리 로드하지 않으면 실습을 사용할 수 없다고 표시**된다 |
-| 버튼 위치 | 실습 가이드·수강생 가이드 버튼은 AWS Builder Labs 대시보드의 **오른쪽 상단**에 있고, 강좌 시작 전에는 회색으로 비활성화되어 있다 |
-| 가이드 저장소 | 가이드는 **eVantage Bookshelf(VitalSource)** 에 있다. 링크를 클릭하면 기존 계정에 로그인하거나 `Create an account` 를 선택하라는 메시지가 표시된다 |
-| 사용 방식 | 온라인으로 액세스하거나 다운로드할 수 있다 |
-
-### 6.3 가이드 배포처
-
-| 항목 | 내용 |
-|---|---|
-| 배포 경로 | 교육 과정 참가자 가이드는 **eVantage Bookshelf(VitalSource)** 애플리케이션을 통해 제공된다 |
-| 절차 | eVantage Bookshelf(VitalSource)로 이동 → 계정 생성 또는 기존 계정 로그인 → 강사가 제공한 코드로 강의용 가이드에 액세스 |
-| 주소 | 참가자 가이드는 `https://evantage.gilmoreglobal.com/` 에서 받고, 접근 코드는 강사에게 요청한다 |
-| 가이드 구성 | 실습이 없는 강의는 수강생 가이드만, 실습이 있는 강의는 수강생 가이드와 실습 가이드가 있다 |
-
-**주의.** 이 경로는 실습이 없는 강의이거나, AWS Builder Labs 포털의 고유 URL을 쓰지 않고 기존 eVantage Bookshelf(VitalSource) 계정으로 로그인하는 경우에만 적용됩니다. **실습이 포함된 이 과정은 환영 이메일의 등록 URL을 쓰는 편이 낫습니다.**
-
-eVantage Bookshelf(VitalSource)와 Gilmore Global은 AWS가 운영하는 도메인이 아니라서, 위 내용은 교재에 적힌 대로만 옮기고 출처를 붙이지 않았습니다([8.5절](#85-검증하지-못한-항목)).
-
-### 6.4 AWS Builder Labs의 현재 위치 🔄
-
-실습에 접근하는 경로(환영 이메일의 고유 등록 URL → AWS Builder Labs 대시보드)는 강의 때와 같습니다. 달라진 것은 **AWS가 AWS Builder Labs를 소개하는 자리**이고, 과정이 끝난 뒤에도 계속 쓸 수 있는 무료 실습이 생겼습니다.
-
-| 항목 | 확인한 내용 |
-|---|---|
-| 소개 위치 | AWS Builder Labs는 AWS Skill Builder의 **몰입형 학습(immersive learning)** 경험 중 하나로 제시됩니다. `aws.amazon.com/training/digital/aws-builder-labs/` 로 들어가면 몰입형 학습 페이지로 이동합니다 |
-| 규모 | AWS 콘솔 환경에서 단계별 지침으로 AWS 서비스를 배우는 **200개 이상**의 가이드형 대화식 실습 |
-| 교재에 없는 기능 | 실습 문맥 안에서 질문에 답하고 코드를 설명해 주는 **AI 기반 Learning Assistant** |
-| 같은 페이지의 다른 경험 | AWS Cloud Quest, AWS SimuLearn, AWS Industry Quest, Lab Maker, AWS Jam, Microcredentials |
-| 무료 학습 계획 | `Introduction to AWS Cloud – AWS Builder Labs` 학습 계획에서 기초 수준 실습 10개가 무료로 제공됩니다(Amazon VPC, Amazon S3, Amazon EC2, AWS IAM, AWS KMS, 환경 기본 감사, Amazon DynamoDB, Amazon CloudFront, AWS Lambda, Amazon API Gateway) |
-
-> — 출처: [Immersive learning (AWS Skill Builder)](https://aws.amazon.com/training/digital/immersive-learning/)
-
-> — 출처: [Begin your AWS journey with new free AWS Builder Labs learning plan on AWS Skill Builder](https://aws.amazon.com/blogs/training-and-certification/begin-your-aws-journey-with-new-free-aws-builder-labs-learning-plan-on-aws-skill-builder/)
-
----
-
-## 7. 실습 요구 사항
-
-실습 환경에 접속하기 위한 조건입니다.
-
-| 구분 | 요구 사항 |
-|---|---|
-| 운영 체제 | Windows / macOS / Linux: Ubuntu, SUSE 또는 Red Hat |
-| 권장 웹 브라우저 | Google Chrome / Mozilla Firefox / Microsoft Edge |
-| 네트워크 | HTTPS를 사용하여 인터넷을 탐색할 수 있는 안정적인 인터넷 연결 |
-| AWS Builder Labs 등록 | 광고 및 스크립트 차단 비활성화 |
-
-특정 AWS 서비스의 지원 목록이 아니라 실습 환경 접속 조건이라서 AWS 공식 문서로 검증할 성질의 사실이 아닙니다. 그대로 옮기고 출처를 붙이지 않았습니다([8.5절](#85-검증하지-못한-항목)).
-
----
-
-## 8. 교재 대비 변경 사항
+## 5. 교재 대비 변경 사항
 
 교재를 함께 보다가 "책에는 이렇게 적혀 있는데" 싶은 지점이 생기면 이 장에서 확인하세요. 앞 장에서 신규·교정으로 표시한 항목의 근거를 모아 둔 곳입니다.
 
-M01은 과정 운영 모듈이라 이 장이 얇습니다. 확인 결과 **이 모듈에서 지원이 종료된 항목은 없었습니다.** 대신 교재 내부에서 표기가 어긋나는 항목이 여섯 개 있고, 이들은 AWS 문서로 판별할 대상이 아니어서 근거 열을 비우고 [8.5절](#85-검증하지-못한-항목)로 넘겼습니다.
+M01은 과정 운영 모듈이라 이 장이 얇습니다. 확인 결과 **이 모듈에서 지원이 종료된 항목은 없었습니다.** 대신 교재 내부에서 표기가 어긋나는 항목이 여섯 개 있고, 이들은 AWS 문서로 판별할 대상이 아니어서 근거 열을 비우고 [5.5절](#55-검증하지-못한-항목)로 넘겼습니다.
 
-### 8.1 교재 기술이 사실과 다른 항목
+### 5.1 교재 기술이 사실과 다른 항목
 
 | 항목 | 교재 기재 | 확인된 내용 | 근거 |
 |---|---|---|---|
 | `Amazon APIGateway` (슬라이드 6·12 다이어그램) | 공백 없이 한 단어로 표기 | 문서상 정확한 이름은 **`Amazon API Gateway`** 입니다. 같은 교재의 슬라이드 10·11 다이어그램과 강사 노트는 올바르게 적고 있어 교재 안에서 표기가 엇갈립니다 | [What is Amazon API Gateway?](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html) |
 | IAM 약어 (슬라이드 7 강사 노트) | `AWS Identity and Access Management(AWS IAM)` | 문서상 약어는 **`IAM`** 입니다. 슬라이드 6·7 다이어그램은 `(IAM)` 으로 올바르게 적고 슬라이드 7 강사 노트만 `(AWS IAM)` 으로 적습니다 | [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) |
-| 모듈 이름 | 슬라이드 2 부제 `모듈 1: 과정 개요` vs 슬라이드 7 강사 노트 `모듈 1 - 과정 소개` | 어느 쪽이 맞는지는 문서로 판별할 대상이 아닌 교재 내부 불일치입니다. 이 문서는 슬라이드 2를 따랐습니다 | — ([8.5절](#85-검증하지-못한-항목)) |
-| 실습 1 설명 (슬라이드 7 강사 노트) | 한국어 노트 중 이 한 줄만 영어 (`Configure and test IAM permissions in a development environment.`) | 번역 누락으로 보입니다. [4.1절](#41-1일-차-오전) 표에는 한국어로 옮겨 적었습니다 | — ([8.5절](#85-검증하지-못한-항목)) |
-| 실습 2 (슬라이드 8) | 상자 제목은 `Amazon S3를 사용한 솔루션 개발`, 같은 슬라이드 강사 노트는 `빅 데이터 애플리케이션 워크로드에 적합한 AWS 솔루션 파악` | 하나의 실습을 서로 다르게 가리킵니다. 같은 슬라이드 다이어그램이 개발자 → AWS SDK → Amazon S3 흐름을 그려 **상자 제목 쪽**과 맞습니다. 다른 실습(3·4·6)은 제목과 노트가 대응합니다 | — ([8.5절](#85-검증하지-못한-항목)) |
-| 어젠다 모듈 제목 (슬라이드 11) | `현대적 애플리케이션 구축` / `애플리케이션 사용자에게 액세스 권한 부여` | 개별 덱 표지는 `모던 애플리케이션(Modern Application) 구축` / `내 애플리케이션의 사용자에게 액세스 권한 부여하기` 입니다. 어젠다와 모듈 표지를 대조하면 드러나는 교재 내부 불일치입니다 | — ([8.5절](#85-검증하지-못한-항목)) |
-| 실습 환경 접속 방법 (슬라이드 7) | 상자는 `Guacamole 또는 원격 데스크톱` 두 가지, 강사 노트는 `Guacamole, 원격 데스크톱 또는 브라우저 기반 옵션` 세 가지 | 같은 슬라이드 안에서 개수가 다릅니다. 실습 환경 운영 사항이고 Apache Guacamole은 AWS 운영 도메인의 문서 대상이 아니어서 어느 쪽이 현재 방법인지 확정할 수 없습니다 | — ([8.5절](#85-검증하지-못한-항목)) |
-| 언어 목록 | 슬라이드 5는 `Python / .NET / Java`, 슬라이드 15는 `Java, Python, C#` | `.NET` 은 플랫폼, `C#` 은 그 플랫폼의 언어라서 표기 축이 다릅니다. 실습 IDE·SDK 선택과 직결되는 항목입니다 | — ([8.5절](#85-검증하지-못한-항목)) |
+| 모듈 이름 | 슬라이드 2 부제 `모듈 1: 과정 개요` vs 슬라이드 7 강사 노트 `모듈 1 - 과정 소개` | 어느 쪽이 맞는지는 문서로 판별할 대상이 아닌 교재 내부 불일치입니다. 이 문서는 슬라이드 2를 따랐습니다 | — ([5.5절](#55-검증하지-못한-항목)) |
+| 실습 1 설명 (슬라이드 7 강사 노트) | 한국어 노트 중 이 한 줄만 영어 (`Configure and test IAM permissions in a development environment.`) | 번역 누락으로 보입니다. [4.1절](#41-1일-차-오전) 표에는 한국어로 옮겨 적었습니다 | — ([5.5절](#55-검증하지-못한-항목)) |
+| 실습 2 (슬라이드 8) | 상자 제목은 `Amazon S3를 사용한 솔루션 개발`, 같은 슬라이드 강사 노트는 `빅 데이터 애플리케이션 워크로드에 적합한 AWS 솔루션 파악` | 하나의 실습을 서로 다르게 가리킵니다. 같은 슬라이드 다이어그램이 개발자 → AWS SDK → Amazon S3 흐름을 그려 **상자 제목 쪽**과 맞습니다. 다른 실습(3·4·6)은 제목과 노트가 대응합니다 | — ([5.5절](#55-검증하지-못한-항목)) |
+| 어젠다 모듈 제목 (슬라이드 11) | `현대적 애플리케이션 구축` / `애플리케이션 사용자에게 액세스 권한 부여` | 개별 덱 표지는 `모던 애플리케이션(Modern Application) 구축` / `내 애플리케이션의 사용자에게 액세스 권한 부여하기` 입니다. 어젠다와 모듈 표지를 대조하면 드러나는 교재 내부 불일치입니다 | — ([5.5절](#55-검증하지-못한-항목)) |
+| 실습 환경 접속 방법 (슬라이드 7) | 상자는 `Guacamole 또는 원격 데스크톱` 두 가지, 강사 노트는 `Guacamole, 원격 데스크톱 또는 브라우저 기반 옵션` 세 가지 | 같은 슬라이드 안에서 개수가 다릅니다. 실습 환경 운영 사항이고 Apache Guacamole은 AWS 운영 도메인의 문서 대상이 아니어서 어느 쪽이 현재 방법인지 확정할 수 없습니다 | — ([5.5절](#55-검증하지-못한-항목)) |
+| 언어 목록 | 슬라이드 5는 `Python / .NET / Java`, 슬라이드 15는 `Java, Python, C#` | `.NET` 은 플랫폼, `C#` 은 그 플랫폼의 언어라서 표기 축이 다릅니다. 실습 IDE·SDK 선택과 직결되는 항목입니다 | — ([5.5절](#55-검증하지-못한-항목)) |
 
-### 8.2 동작·기본값이 변경된 항목
+### 5.2 동작·기본값이 변경된 항목
 
 | 항목 | 교재 기재 | 현재 | 근거 |
 |---|---|---|---|
@@ -375,7 +238,7 @@ M01은 과정 운영 모듈이라 이 장이 얇습니다. 확인 결과 **이 �
 | AWS Builder Labs 소개 위치 | 강의 실습 포털로만 제시 | AWS Skill Builder의 **몰입형 학습** 경험 중 하나로 제시되며 200개 이상의 실습과 **AI 기반 Learning Assistant**가 함께 안내됩니다. 강의 실습 접근 경로 자체는 교재와 같습니다 | [Immersive learning (AWS Skill Builder)](https://aws.amazon.com/training/digital/immersive-learning/) |
 | AWS CloudFormation 표기 | `AWS CloudFormation` | 현재 문서의 제목과 본문은 접두사 없는 **`CloudFormation`** 을 씁니다. 두 표기 모두 통용되지만 문서 본문 표기는 이쪽입니다 | [What is CloudFormation?](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) |
 
-### 8.3 비권장·지원 종료된 항목
+### 5.3 비권장·지원 종료된 항목
 
 | 항목 | 상태 | 대체 | 근거 |
 |---|---|---|---|
@@ -383,7 +246,7 @@ M01은 과정 운영 모듈이라 이 장이 얇습니다. 확인 결과 **이 �
 
 지원이 **종료**된 항목은 이 모듈에 없습니다.
 
-### 8.4 교재 이후 추가된 항목
+### 5.4 교재 이후 추가된 항목
 
 | 항목 | 요약 | 근거 |
 |---|---|---|
@@ -394,7 +257,7 @@ M01은 과정 운영 모듈이라 이 장이 얇습니다. 확인 결과 **이 �
 | AWS Builder Labs의 Learning Assistant | 실습 문맥 안에서 질문에 답하고 코드를 설명하는 AI 기반 도우미. 같은 페이지에 Lab Maker, AWS SimuLearn, AWS Jam, Microcredentials 등도 함께 제시됩니다 | [Immersive learning (AWS Skill Builder)](https://aws.amazon.com/training/digital/immersive-learning/) |
 | AWS Builder Labs 무료 학습 계획 | `Introduction to AWS Cloud – AWS Builder Labs` 학습 계획에서 기초 수준 실습 10개를 무료로 제공합니다. 구독하면 200개 Builder Labs, 200개 SimuLearn, 17개 Jam Journey 전체 카탈로그를 이용할 수 있습니다 | [Begin your AWS journey with new free AWS Builder Labs learning plan on AWS Skill Builder](https://aws.amazon.com/blogs/training-and-certification/begin-your-aws-journey-with-new-free-aws-builder-labs-learning-plan-on-aws-skill-builder/) |
 
-### 8.5 검증하지 못한 항목
+### 5.5 검증하지 못한 항목
 
 정직하게 남겨 둡니다. 강의에서 단정적으로 말하기 전에 확인하세요.
 
@@ -407,5 +270,5 @@ M01은 과정 운영 모듈이라 이 장이 얇습니다. 확인 결과 **이 �
 | Apache Guacamole·원격 데스크톱·브라우저 기반 접속 (슬라이드 7) | 실습 환경 접속 방법은 강의 운영 사항이고 Guacamole도 AWS 운영 도메인의 문서 대상이 아닙니다. 슬라이드 상자(2가지)와 강사 노트(3가지)의 차이를 어느 쪽으로 정리해야 하는지 **확인하지 못했습니다** |
 | 실습에 제공되는 세 가지 IDE (슬라이드 7 강사 노트) | 노트는 "실습에는 세 가지 IDE가 있으며 수강생은 선호도 또는 프로그래밍 언어에 따라 IDE를 선택할 수 있습니다"라고만 적고 **IDE 이름을 적지 않습니다.** 원문에 없는 이름을 이 문서에서 추측해 넣지 않았습니다 |
 | 실습 요구 사항의 운영 체제·브라우저 목록 (슬라이드 20) | 특정 AWS 서비스의 지원 목록이 아니라 **실습 환경 접속 조건**입니다. AWS 공식 문서로 검증할 성질의 사실이 아니어서 그대로 옮겼습니다 |
-| 교재 내부 표기 불일치 6건 | 모듈 이름, 실습 1 설명의 영어 한 줄, 실습 2 제목과 설명, 어젠다 모듈 제목, 접속 방법 개수, 언어 목록 축. 모두 **외부 문서로 검증할 대상이 아닌 교재 내부 문제**입니다. 어느 쪽을 따랐는지만 [8.1절](#81-교재-기술이-사실과-다른-항목)에 밝혔습니다 |
+| 교재 내부 표기 불일치 6건 | 모듈 이름, 실습 1 설명의 영어 한 줄, 실습 2 제목과 설명, 어젠다 모듈 제목, 접속 방법 개수, 언어 목록 축. 모두 **외부 문서로 검증할 대상이 아닌 교재 내부 문제**입니다. 어느 쪽을 따랐는지만 [5.1절](#51-교재-기술이-사실과-다른-항목)에 밝혔습니다 |
 | 실습 1~7의 실제 절차 | 이 덱에는 실습 제목과 한 줄 목표만 있습니다. 절차는 실습 가이드에 있고 이 문서의 대상이 아닙니다 |
