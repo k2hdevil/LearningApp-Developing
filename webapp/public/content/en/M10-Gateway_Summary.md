@@ -18,9 +18,9 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content that differs from the original instructor deck and has been corrected. What changed and how is collected in [Chapter 9](#9-changes-from-the-courseware).
-> - Items where the courseware contradicts itself from slide to slide cannot be settled with external documentation, so they carry no marker. They are flagged in the body and collected in [Chapter 9](#9-changes-from-the-courseware).
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Chapter 9](#9-changes-from-the-courseware) for what changed and how.
+> - Items that cannot be settled with external documentation carry no marker; they are flagged in the body and collected in [Chapter 9](#9-changes-from-the-courseware).
 > - Verified on August 30, 2026. Documentation may be updated after this date, so check the linked originals before relying on this for an exam or production work.
 
 ---
@@ -45,25 +45,25 @@ After completing this module, you should be able to do the following:
 | **Module 10** | **Managing the APIs** — API Gateway components, integrations, request and response handling, API design as code, testing, deployment |
 | Lab 5 | Developing solutions with Amazon API Gateway (user, Amazon API Gateway, DynamoDB table) |
 
-Earlier modules built the backend database storage system and configured compute processing. Now you configure how users reach those services over the internet. The courseware sums up this role as "Amazon API Gateway connects all the services in the application together."
+Earlier modules built the backend database storage system and configured compute processing. Now you configure how users reach those services over the internet. Amazon API Gateway connects all the services in the application together.
 
 ### What This Module Covers
 
-The courseware deck has ten sections. This document follows the same order.
+This document is organized in the following order.
 
-| Courseware section | Slides | This document |
-|---|---|---|
-| What is Amazon API Gateway? | 5–10 | [Chapter 2](#2-what-is-amazon-api-gateway) |
-| Working with API Gateway | 11–14 | [Chapter 3](#3-working-with-api-gateway) |
-| Request and response handling | 15–20 | [Chapter 4](#4-request-and-response-handling) |
-| API design as code | 21–22 | [Chapter 5](#5-api-design-as-code) |
-| Testing the API | 23–28 | [Chapter 6](#6-testing-the-api) |
-| Deploying the API | 29–37 | [Chapter 7](#7-deploying-the-api) |
-| Demo / knowledge check / Lab 5 / summary | 37–45 | [Section 7.7](#77-demo-topics) |
+| Topic | This document |
+|---|---|
+| What is Amazon API Gateway? | [Chapter 2](#2-what-is-amazon-api-gateway) |
+| Working with API Gateway | [Chapter 3](#3-working-with-api-gateway) |
+| Request and response handling | [Chapter 4](#4-request-and-response-handling) |
+| API design as code | [Chapter 5](#5-api-design-as-code) |
+| Testing the API | [Chapter 6](#6-testing-the-api) |
+| Deploying the API | [Chapter 7](#7-deploying-the-api) |
+| Demo / Lab 5 | [Section 7.7](#77-demo-topics) |
 
-Observability (logging, metrics, tracing), which the courseware does not cover, is collected in [Chapter 8](#8-observability-logging-metrics-tracing). The courseware diagrams show Amazon CloudWatch and AWS X-Ray as application components but never explain them in the body.
+Observability (logging, metrics, tracing) is collected in [Chapter 8](#8-observability-logging-metrics-tracing). The application architecture shows Amazon CloudWatch and AWS X-Ray as components, but the earlier chapters do not explain them.
 
-The example application's API resources and methods are as follows (courseware slide 9).
+The example application's API resources and methods are as follows.
 
 | Resource | Method | Function |
 |---|---|---|
@@ -87,7 +87,7 @@ API Gateway handles all the tasks involved in accepting and processing thousands
 
 ### 2.2 API Gateway Creates Three Kinds of API 🔄
 
-The diagram on courseware slide 6 reads "REST, HTTP, or WebSocket API" and the instructor notes list all three. This part matches the current documentation. Module 2 needed a correction because its diagram labeled only `REST API`; Module 10 presents all three from the start.
+API Gateway can create three kinds of API: **REST, HTTP, and WebSocket.**
 
 | API type | How the documentation characterizes it |
 |---|---|
@@ -95,13 +95,13 @@ The diagram on courseware slide 6 reads "REST, HTTP, or WebSocket API" and the i
 | HTTP | Stateless. A RESTful API product **designed with minimal features so that it can be offered at a lower price** |
 | WebSocket | **Stateful.** Follows the WebSocket protocol to enable two-way communication and routes incoming messages based on message content |
 
-🔄 The part that needs correcting is the slide 7 instructor notes. The courseware says "Use HTTP APIs to create RESTful APIs with **lower latency** and lower cost than REST APIs." The axes the current comparison document presents are **feature count and price**; latency does not appear as a comparison item. The lower-cost statement matches the documentation ("HTTP APIs are designed with minimal features so that they can be offered at a lower price"). The latency comparison could not be verified in that document, so it is recorded in [Section 9.5](#95-items-we-could-not-verify).
+🔄 The claim that an "HTTP API has **lower latency** than a REST API" is common but needs care. The axes the current comparison document presents are **feature count and price**; latency does not appear as a comparison item. The lower-cost statement matches the documentation ("HTTP APIs are designed with minimal features so that they can be offered at a lower price"). The latency comparison could not be verified in that document, so it is recorded in [Section 9.5](#95-items-we-could-not-verify).
 
 > — Source: [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html)
 
 ### 2.3 Choosing Between REST APIs and HTTP APIs 🆕
 
-The slide 7 instructor notes end with "The application uses a REST API" and never address the choice. The documentation **does not recommend one over the other**; it tells you to choose based on which features you need.
+Neither one is uniformly better. The documentation **does not recommend one over the other**; it tells you to choose based on which features you need.
 
 | Features needed | Choice |
 |---|---|
@@ -131,13 +131,13 @@ Here is the main feature comparison. It is worth noting that most of the feature
 | Integrations | Mock integrations, response streaming | Yes | No |
 | Integrations | AWS Cloud Map private integrations | No | Yes |
 
-**This course's use of a REST API is not a wrong choice.** Request validation, mapping templates, caching, canary releases, and usage plans — most of what this module covers — exist only on REST APIs.
+**There is a reason this module uses a REST API.** Request validation, mapping templates, caching, canary releases, and usage plans — most of what this module covers — exist only on REST APIs.
 
 > — Source: [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html)
 
 ### 2.4 Working with WebSocket APIs 🔄
 
-A WebSocket API is a **stateful frontend** for AWS services (such as Lambda or DynamoDB) or for an HTTP endpoint. Because it is two-way, the service can push data to the client without the client explicitly requesting it. The courseware cites chat applications, collaboration platforms, multiplayer games, and financial trading platforms as examples.
+A WebSocket API is a **stateful frontend** for AWS services (such as Lambda or DynamoDB) or for an HTTP endpoint. Because it is two-way, the service can push data to the client without the client explicitly requesting it. Common uses include chat applications, collaboration platforms, multiplayer games, and financial trading platforms.
 
 Incoming JSON messages are directed to backend integrations based on the routes you configure, and **non-JSON messages are directed to the `$default` route** you configure. A route includes a **route key**, which is the value expected once the route selection expression is evaluated. `routeSelectionExpression` is **an attribute defined at the API level** and specifies a JSON property expected to be present in the message payload.
 
@@ -150,7 +150,7 @@ Incoming JSON messages are directed to backend integrations based on the routes 
 
 The service uses the route whose `routeKey` **exactly matches** the evaluated value. If none match and a `$default` route exists, that route is selected; if there is no `$default` route, the service returns an error. For WebSocket-based APIs the expression should be of the form `$request.body.{path_to_body_element}`.
 
-🆕 Constraints the courseware does not cover.
+🆕 Constraints to keep in mind.
 
 | Item | Documentation content |
 |---|---|
@@ -167,26 +167,26 @@ The service uses the route whose `routeKey` **exactly matches** the evaluated va
 
 A REST API is a collection of HTTP resources and methods integrated with backend HTTP endpoints, Lambda functions, or other AWS services, and you can **deploy that collection in one or more stages**. Typically API resources are organized in a resource tree according to application logic, and each resource exposes one or more methods with unique HTTP verbs supported by API Gateway.
 
-The courseware explains that in the example application `GET`, `POST`, and `DELETE` are used to validate requests and transform the responses returned from Lambda functions.
+In the example application, `GET`, `POST`, and `DELETE` validate requests and transform the responses returned from Lambda functions.
 
 > — Source: [Amazon API Gateway concepts](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html)
 
 ### 2.6 API Gateway Developer Features
 
-Courseware slide 10 presents eight developer features. Here they are with pointers to where this document covers each in detail.
+The eight developer features of API Gateway, with pointers to where this document covers each in detail.
 
-| Courseware feature | Summary | Detail |
+| Feature | Summary | Detail |
 |---|---|---|
 | Hosting multiple versions | A stage is a named reference to a deployment, which is a snapshot of the API. Stage settings enable caching, customize request throttling, configure logging, define stage variables, and attach a canary release for testing | [Section 7.1](#71-api-gateway-stages) |
 | Configuring API keys | Configuring usage plans and API keys lets customers access APIs based on agreed request rates and quotas | [Section 7.6](#76-throttling-and-usage-plans) |
 | Throttle limits | Prevents the API from being overwhelmed by too many requests | [Section 7.6](#76-throttling-and-usage-plans) |
 | Access control and management | Standard IAM roles and policies, resource policies, CORS, Lambda authorizers | [Section 3.4](#34-valid-method-authorization-values) |
 | Data transformation | A method request can select from several payload types in the corresponding integration request depending on backend needs, and the backend can return an integration response payload different from what the frontend expects | [Chapter 4](#4-request-and-response-handling) |
-| SDK generation | Supported languages are Java, JavaScript, Java for Android, Objective-C or Swift for iOS, and Ruby. **This matches the current documentation exactly** | [Section 5.3](#53-importing-and-exporting-api-definitions) |
+| SDK generation | Supported languages are Java, JavaScript, Java for Android, Objective-C or Swift for iOS, and Ruby | [Section 5.3](#53-importing-and-exporting-api-definitions) |
 | Mock integrations | Generates responses directly from API Gateway without an integration backend | [Section 6.3](#63-mock-integrations) |
 | Response caching | Reduces the number of calls made to the endpoint and improves request latency | [Section 7.5](#75-response-caching) |
 
-For access control the courseware lists only four items. 🆕 The current documentation's list is broader.
+The access-control mechanisms are, 🆕 as of the current documentation, as broad as the following.
 
 | Purpose | Mechanism |
 |---|---|
@@ -199,7 +199,7 @@ For access control the courseware lists only four items. 🆕 The current docume
 
 ### 2.7 Private REST APIs and AWS WAF 🆕
 
-The slide 10 instructor notes mention private REST APIs and VPC endpoint policies under security, and AWS WAF integration under control, one sentence each. Both statements match the current documentation, and the following is added.
+Access control also includes private REST APIs (VPC endpoint policies) and AWS WAF integration. Here are the details of each.
 
 **Private REST APIs.** You access them through an interface VPC endpoint, an endpoint network interface you create in your VPC, and interface endpoints are powered by **AWS PrivateLink**. You can also use Direct Connect to establish a connection from an on-premises network to the Amazon VPC and reach the private API over it. In all cases traffic is isolated from the public internet and does not leave the Amazon network.
 
@@ -225,7 +225,14 @@ Security is a **shared responsibility** between AWS and you. The shared responsi
 
 ### 3.1 How API Gateway Works in the Application
 
-This is the flow on courseware slide 12. On the request side API Gateway performs **authorization, configuration, instrumentation, transformation, and mapping**; on the response side it performs **configuration, transformation, and mapping**. The slide note is blunt: "Note: configuration is the developer's responsibility."
+On the request side API Gateway performs **authorization, configuration, instrumentation, transformation, and mapping**; on the response side it performs **configuration, transformation, and mapping**. This configuration is the developer's responsibility.
+
+```text
+                      request direction ─────────────▶
+  client ─▶ [authorization · config · instrumentation · transform · map] ─▶ backend (integration endpoint)
+  client ◀─ [               config · transform · map                   ] ◀─ backend
+                      ◀───────────────── response direction
+```
 
 When you create an API method you must integrate the method with an endpoint in the backend. The backend endpoint is also called the **integration endpoint** and can be a Lambda function, an HTTP webpage, or an AWS service action.
 
@@ -234,7 +241,7 @@ When you create an API method you must integrate the method with an endpoint in 
 | Integration request setup | Verifying messages for any authorization / configuring how the client-submitted method request is forwarded to the backend / configuring how request data is transformed into integration request data if needed / specifying which Lambda function to invoke / specifying the HTTP server to forward the incoming request to, or the AWS service action to invoke |
 | Integration response setup (**non-proxy integrations only**) | Configuring how the result returned from the backend is passed to a method response of a given status code / configuring how specified integration response parameters are transformed into preconfigured method response parameters / configuring how the integration response body is mapped to the method response body according to a body mapping template |
 
-The courseware statement that integration response setup applies only to non-proxy integrations matches the current documentation. With a proxy integration you set neither the integration request nor the integration response.
+Integration response setup applies to **non-proxy integrations only**. With a proxy integration you set neither the integration request nor the integration response.
 
 > — Source: [Choose an API Gateway API integration type](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html)
 
@@ -242,7 +249,7 @@ The courseware statement that integration response setup applies only to non-pro
 
 A REST API consists of resources and methods. A **resource** is a logical entity that an application can access through a resource path, and a **method** is the client-side interface a client uses to call the API to access backend resources.
 
-An **API endpoint** is the hostname of an API deployed to a specific Region, of the form `{api-id}.execute-api.{region}.amazonaws.com`. This matches courseware slide 13 exactly.
+An **API endpoint** is the hostname of an API deployed to a specific Region, of the form `{api-id}.execute-api.{region}.amazonaws.com`.
 
 ```http
 GET https://{api-id}.execute-api.{region}.amazonaws.com/notes
@@ -250,13 +257,13 @@ GET https://{api-id}.execute-api.{region}.amazonaws.com/notes
 
 The hierarchy is API endpoint → resource → method → resource configuration (request, response, integration). Typical methods are `GET`, `POST`, `HEAD`, and `DELETE`, and you can choose others including `ANY`.
 
-The slide 13 instructor notes say "In this example the API resources are listed as `/notes`, `/notes/search`, and **`/notes/list`**," but the diagram on the same slide has only `/notes` and `/notes/search`, and the method list on slide 9 has no `/notes/list` either. This is **a statement the courseware contradicts internally**, and AWS documentation cannot settle which is the correct design for this application. This document uses the two resources from the diagram and slide 9 ([Section 9.1](#91-courseware-statements-that-do-not-match-the-facts)).
+The example application's API resources are the two resources `/notes` and `/notes/search` (matching the method list in [Chapter 1](#1-module-overview)). Some source material shows a third resource, `/notes/list`, but it conflicts with the method list, so this document uses the two resources ([Section 9.1](#91-differences-from-the-courseware)).
 
 > — Source: [Amazon API Gateway concepts](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html)
 
 ### 3.3 Endpoint Types and the Default 🔄
 
-The courseware's names and characteristics for the three endpoint types match the current documentation.
+The names and characteristics of the three endpoint types are as follows.
 
 | Type | Content |
 |---|---|
@@ -264,13 +271,13 @@ The courseware's names and characteristics for the three endpoint types match th
 | Regional | Intended for clients in the same Region. When a client running on an EC2 instance calls an API in the same Region, or when the API serves a small number of clients with high demands, it reduces connection overhead. A custom domain name is specific to the Region where the API is deployed and can be used with Route 53 for latency-based routing. Passes header names through as-is |
 | Private | Accessible only from your Amazon VPC through an interface VPC endpoint (ENI) created in your VPC. Passes header names through as-is |
 
-🔄 What needs correcting is the default. The slide 13 instructor notes state "In endpoint type, **the Regional API endpoint is selected by default**." The current documentation, describing edge-optimized endpoints, states **"This is the default endpoint type for API Gateway REST APIs,"** and the concepts page also defines an edge-optimized API endpoint as "the default hostname of an API Gateway API." If most of your clients are in the same Region, select the Regional type explicitly.
+🔄 The default deserves care. The **default endpoint type for a REST API is edge-optimized.** The current documentation, describing edge-optimized endpoints, states **"This is the default endpoint type for API Gateway REST APIs,"** and the concepts page also defines an edge-optimized API endpoint as "the default hostname of an API Gateway API" (the claim that "Regional is the default" is not accurate). If most of your clients are in the same Region, select the Regional type explicitly.
 
 > — Source: [API endpoint types for REST APIs in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html)
 
 ### 3.4 Valid Method Authorization Values 🔄
 
-The slide 13 note reads "You control method access through authorization. The default is set to none or AWS_IAM," and the instructor notes list only two valid values. 🔄 In the `PutMethod` API reference, `authorizationType` is a **required parameter** and there are four valid values.
+You control method access through authorization. It is easy to assume there are only two valid values (`none`, `AWS_IAM`), but 🔄 in the `PutMethod` API reference, `authorizationType` is a **required parameter** and there are four valid values.
 
 | Value | Meaning |
 |---|---|
@@ -279,9 +286,9 @@ The slide 13 note reads "You control method access through authorization. The de
 | `CUSTOM` | A custom authorizer, that is, a **Lambda authorizer** |
 | `COGNITO_USER_POOLS` | An **Amazon Cognito user pool** authorizer |
 
-`authorizerId` specifies the `Authorizer` to use when the type is `CUSTOM` or `COGNITO_USER_POOLS`. `apiKeyRequired` is a Boolean, matching the courseware guidance "To require an API key to call the method, set API Key Required to true."
+`authorizerId` specifies the `Authorizer` to use when the type is `CUSTOM` or `COGNITO_USER_POOLS`. `apiKeyRequired` is a Boolean; to require an API key to call the method, set it to `true`.
 
-**Lambda authorizers.** 🆕 The documentation states that this feature was **formerly known as a custom authorizer**. You will meet that name in older material. There are two types.
+**Lambda authorizers.** 🆕 This feature was **formerly known as a custom authorizer**. You will meet that name in older material. There are two types.
 
 | Type | Identity source | Characteristics |
 |---|---|---|
@@ -306,7 +313,7 @@ You choose an integration type according to the type of integration endpoint you
 | Non-proxy | Data mapping is your responsibility | You must configure both the integration request and the integration response | You can choose the passthrough behavior | `AWS`, `HTTP` |
 | Mock | Useful for API testing | Returns a response without sending the request to a backend | Not applicable (no backend is called) | `MOCK` |
 
-The table on courseware slide 14 puts `MOCK` in both the Passthrough column and the integration type column for the Mock row, which breaks the meaning of the column. The table above corrects that cell ([Section 9.1](#91-courseware-statements-that-do-not-match-the-facts)).
+A Mock integration does not call a backend, so passthrough does not apply (some source material mislabels this cell; the table above corrects it — [Section 9.1](#91-differences-from-the-courseware)).
 
 Definitions by type.
 
@@ -318,15 +325,15 @@ Definitions by type.
 | `HTTP_PROXY` | **HTTP proxy integration.** Lets a client access backend HTTP endpoints with a single API method. You set neither the integration request nor the integration response; requests and responses pass through |
 | `MOCK` | API Gateway returns a response without sending the request to a backend. Lets you test the integration setup without incurring backend charges and enables collaborative development |
 
-🔄 Three places where the courseware differs.
+🔄 Three points that are often confused.
 
-| Item | Courseware | Current documentation |
-|---|---|---|
-| Lambda integration recommendation | Lists Lambda proxy and Lambda custom as equals | **Lambda proxy is "the preferred integration type to call a Lambda function through API Gateway."** The setup is simple and can evolve with the backend without tearing down the existing setup. Lambda custom integration is for reusing mapping templates across endpoints with similar input and output format requirements and is recommended for more advanced scenarios |
-| `HTTP` and `HTTP_PROXY` definitions | "Integrates with HTTP endpoints, including private HTTP endpoints in a VPC" | Both types are **backend HTTP endpoint** integrations. Private integrations are a **separate setup**: `HTTP_PROXY` + `connectionType=VPC_LINK` + a VPC link V2. VPC link V2 can target both an NLB and an ALB, and `connectionId` can be supplied through a stage variable |
-| Purpose of Mock integrations | Testing | Beyond testing and collaborative development, they are also used to **return CORS-related headers**. The API Gateway console integrates the `OPTIONS` method with a mock integration to support CORS, and gateway responses are another example of mock integrations |
+| Item | What is actually true |
+|---|---|
+| Lambda integration recommendation | **Lambda proxy is "the preferred integration type to call a Lambda function through API Gateway."** The setup is simple and can evolve with the backend without tearing down the existing setup. Lambda custom integration is for reusing mapping templates across endpoints with similar input and output format requirements and is recommended for more advanced scenarios |
+| `HTTP` and `HTTP_PROXY` definitions | Both types are **backend HTTP endpoint** integrations. Private integrations are a **separate setup**: `HTTP_PROXY` + `connectionType=VPC_LINK` + a VPC link V2. VPC link V2 can target both an NLB and an ALB, and `connectionId` can be supplied through a stage variable |
+| Purpose of Mock integrations | Beyond testing and collaborative development, they are also used to **return CORS-related headers**. The API Gateway console integrates the `OPTIONS` method with a mock integration to support CORS, and gateway responses are another example of mock integrations |
 
-**Integrations that HTTP APIs support.** 🔄 The slide 14 instructor notes list "Lambda proxy / AWS services / private resources in a VPC / **Mock** and HTTP proxy integrations." The integrations table in the REST versus HTTP comparison document marks **Mock integrations as REST API only**. The remaining items are correct.
+**Integrations that HTTP APIs support.** 🔄 HTTP APIs support Lambda proxy, AWS services, private resources in a VPC, and HTTP proxy integrations. However, **Mock integrations are REST API only** (per the integrations table in the REST versus HTTP comparison document).
 
 > — Source: [Choose an API Gateway API integration type](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html)
 > — Source: [Set up a private integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-private-integration.html)
@@ -334,7 +341,7 @@ Definitions by type.
 
 ### 3.6 Lambda Proxy Integration Input and Output Formats 🆕
 
-The courseware describes `AWS_PROXY` only as "integrates the API method request with the Lambda function-invoking action using the client request as-is." In practice there are **fixed input and output formats**, and not honoring them makes the call fail.
+`AWS_PROXY` integrates the client request with the Lambda function-invoking action as-is. In practice there are **fixed input and output formats**, and not honoring them makes the call fail.
 
 The request data passed includes request headers, query string parameters, URL path variables, the payload, and API configuration data (current deployment stage name, stage variables, user identity, authorization context). **The order of the request parameters is not preserved.**
 
@@ -393,21 +400,21 @@ Proxy integration requires the client to know more about backend requirements, s
 
 If a method request has a payload and there is no mapping template defined for the `Content-Type` header, the client-supplied payload can pass through to the backend without transformation. This process is known as **integration passthrough**.
 
-🔄 The slide 14 instructor notes describe this as "two conditions." The current documentation describes it as **a setting with three options** and marks the recommended value.
+🔄 Passthrough behavior is **a setting with three options**, and one is recommended.
 
 | Console label | `passthroughBehavior` | Behavior |
 |---|---|---|
-| When no template matches the request Content-Type header | `WHEN_NO_MATCH` | Passes the body through untransformed when the method request content type does not match any content type associated with the mapping templates (courseware condition ①) |
-| When there are no templates defined (**recommended**) | `WHEN_NO_TEMPLATES` | Passes the body through untransformed only when no mapping template is defined in the integration request. If a template is defined and the content type does not match, the request is rejected with **`415 Unsupported Media Type`** (courseware condition ②) |
+| When no template matches the request Content-Type header | `WHEN_NO_MATCH` | Passes the body through untransformed when the method request content type does not match any content type associated with the mapping templates |
+| When there are no templates defined (**recommended**) | `WHEN_NO_TEMPLATES` | Passes the body through untransformed only when no mapping template is defined in the integration request. If a template is defined and the content type does not match, the request is rejected with **`415 Unsupported Media Type`** |
 | Never | `NEVER` | Does not pass through even when no mapping template is defined, and rejects unmapped content types with `415` |
 
-When there is no `Content-Type` header, API Gateway defaults to `application/json`. The courseware statement that API Gateway passes the entire request to the backend for proxy integrations and that passthrough behavior cannot be modified is correct.
+When there is no `Content-Type` header, API Gateway defaults to `application/json`. For proxy integrations API Gateway passes the entire request to the backend, and passthrough behavior cannot be modified.
 
 > — Source: [Method request behavior for payloads without mapping templates for REST APIs in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/integration-passthrough-behaviors.html)
 
 ### 3.8 REST API Quotas 🆕
 
-The courseware does not cover quotas. These are the values you run into during design.
+These are the quota values you run into during design.
 
 | Item | Default quota | Increase |
 |---|---|---|
@@ -443,7 +450,7 @@ The management operations themselves also have quotas, none of which can be incr
 
 ### 4.1 Request and Response Handling Flow
 
-This is the flow on courseware slide 16.
+Requests and responses go through the following steps.
 
 | Direction | Steps |
 |---|---|
@@ -456,7 +463,7 @@ The two directions a mapping template maps are **method request → the correspo
 
 ### 4.2 Three Choices for Data Transformation 🆕
 
-The courseware explains request and response handling across five slides, all centered on mapping templates. Mapping templates still work exactly as described and the courseware is not wrong, but **the recommended order in the current documentation is different.**
+Request and response handling is widely known to be done with mapping templates, and mapping templates still work exactly as described. But **the recommended order in the current documentation is different.**
 
 | Rank | Method | What the documentation says |
 |---|---|---|
@@ -471,7 +478,7 @@ API Gateway performs a mapping template transformation **only when a mapping tem
 
 ### 4.3 Example: Request Model
 
-A model defines the data structure of a payload and is expressed using **JSON schema draft 4**. Here are the request payload and model from courseware slide 17.
+A model defines the data structure of a payload and is expressed using **JSON schema draft 4**. Here are the example application's request payload and model.
 
 ```json
 {
@@ -508,7 +515,7 @@ A model defines the data structure of a payload and is expressed using **JSON sc
 }
 ```
 
-The three uses of a model in the courseware instructor notes match the current documentation.
+A model has three uses.
 
 | Use | Content |
 |---|---|
@@ -516,7 +523,7 @@ The three uses of a model in the courseware instructor notes match the current d
 | Creating mapping templates | Convenient for generating a sample mapping template to start from. Note, however, that **a model is not required to create a mapping template** |
 | Generating a strongly typed SDK | In strongly typed languages such as Java, Objective-C, or Swift the model corresponds to a **user-defined data type (UDT)**. If no model is provided, API Gateway uses the empty model to create a default UDT |
 
-🆕 Capabilities the courseware does not cover. You can restrict allowed values with `enum` and constrain numeric ranges with `minimum` and `maximum`. Long models can use the reference primitive (`$ref`) to point at reusable definitions in `definitions`, and can reference a model in another API through the `apigateway.amazonaws.com` model path. The model size limit per API is 400 KB.
+🆕 Capabilities worth knowing. You can restrict allowed values with `enum` and constrain numeric ranges with `minimum` and `maximum`. Long models can use the reference primitive (`$ref`) to point at reusable definitions in `definitions`, and can reference a model in another API through the `apigateway.amazonaws.com` model path. The model size limit per API is 400 KB.
 
 > — Source: [Data models for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings-models.html)
 
@@ -529,7 +536,7 @@ You can configure API Gateway to perform basic validation of an API request **be
 | Request parameters | Checks that required request parameters in the URI, query string, and headers are included and not blank. 🆕 **API Gateway only checks the existence of a parameter and does not check the type or format** |
 | Request payload | Checks that the applicable payload adheres to the configured JSON schema for the given content type. If no matching content type is found, request validation is not performed. To use the same model regardless of content type, set the data model's content type to `$default` |
 
-Here is the request validator configuration from courseware slide 18. 🔄 The courseware writes the two values as the strings `"false"` and `"true"`, but in the `RequestValidator` API reference both fields are **Boolean**, so they go without quotes. The string `"false"` can be treated as truthy in JSON and behave contrary to intent.
+Here is an example request validator configuration. 🔄 In the `RequestValidator` API reference both fields are **Boolean**, so they go without quotes. Writing them as the string `"false"` can be treated as truthy in JSON and behave contrary to intent.
 
 ```json
 {
@@ -539,7 +546,7 @@ Here is the request validator configuration from courseware slide 18. 🔄 The c
 }
 ```
 
-The request on courseware slide 18 is an example where the required parameter `q1` must be set and non-blank.
+Here is an example request where the required parameter `q1` must be set and non-blank.
 
 ```http
 GET /testStage/validation?q1=StudentA HTTP/1.1
@@ -548,7 +555,7 @@ Content-Type: application/json
 Accept: application/json
 ```
 
-The method request payload on the same slide writes the array element key as **`Notes`** rather than `Note`. Because `NotesInputModel` on slide 17 requires `Note` in each array element, validating this payload against that model fails with `400`. This is **a statement the courseware contradicts internally**, so this document follows the slide 17 model and uses `Note` ([Section 9.1](#91-courseware-statements-that-do-not-match-the-facts)).
+The method request payload to validate writes the array element key as **`Note`**, because `NotesInputModel` in [Section 4.3](#43-example-request-model) requires `Note` in each array element. Some source material writes this key as `Notes`, and validating that payload against this model fails with `400` ([Section 9.1](#91-differences-from-the-courseware)).
 
 ```json
 {
@@ -569,7 +576,7 @@ The method request payload on the same slide writes the array element key as **`
 
 A mapping template is a script expressed in **Velocity Template Language (VTL)** and applied to a payload using **JSONPath** based on the `Content-Type` header. Directives begin with the `#` symbol.
 
-What a mapping template does (courseware slide 19 instructor notes) matches the current documentation.
+A mapping template does the following.
 
 - Matches the payload to an API-specified format
 - Maps parameters one to one
@@ -577,9 +584,9 @@ What a mapping template does (courseware slide 19 instructor notes) matches the 
 
 The last item is realized by using a regular expression such as `2\d{2}` as a key in the `responses` object of `x-amazon-apigateway-integration`. In the low-level API, `selectionPattern` on the integration response plays the same role.
 
-🔄 The template on courseware slide 19 will not fill in values if you run it as-is. It declares `$inputRoot` with `#set` but never uses it, and it references `$elem` **without an iteration directive**. In the official examples, collection iteration always begins with `#foreach` and closes with `#end`.
+🔄 The commonly seen template below will not fill in values if you run it as-is. It declares `$inputRoot` with `#set` but never uses it, and it references `$elem` **without an iteration directive**. In the official examples, collection iteration always begins with `#foreach` and closes with `#end`.
 
-The courseware original (run as-is, the `Notes` values come out empty):
+The problematic form (run as-is, the `Notes` values come out empty):
 
 ```text
 #set($inputRoot = $input.path('$'))
@@ -631,7 +638,7 @@ The same template produces different payloads depending on the value of the `env
 
 ### 4.6 Mapping Templates: Response Direction
 
-Courseware slide 20 is an example of transforming a JSON payload into XML in the response direction and stripping environment information the response does not need. The backend payload is as follows.
+In the response direction you can transform a JSON payload into XML and strip environment information the response does not need. The backend payload is as follows.
 
 ```json
 {
@@ -640,7 +647,7 @@ Courseware slide 20 is an example of transforming a JSON payload into XML in the
 }
 ```
 
-The courseware template leaves `$elem` undefined for the same reason as in [Section 4.5](#45-mapping-templates-request-direction). Here is the corrected form.
+The commonly seen original template also leaves `$elem` undefined for the same reason as in [Section 4.5](#45-mapping-templates-request-direction). Here is the corrected form.
 
 ```text
 ## Take the root of the integration response body into $inputRoot
@@ -664,7 +671,7 @@ The courseware template leaves `$elem` undefined for the same reason as in [Sect
 
 ### 4.7 Variables Available in Mapping Templates 🆕
 
-The courseware uses only `$input.path('$')` and `$stageVariables.environment`. There are four families of variables available.
+There are four families of variables available in mapping templates.
 
 **`$input` — method request payload and parameters**
 
@@ -707,11 +714,11 @@ If the JSON input contains unescaped characters that JavaScript cannot parse, AP
 
 ### 5.1 From Swagger to OpenAPI 🔄
 
-Courseware slide 22 is titled "Designing APIs with Swagger," its YAML begins with `swagger: "2.0"`, and the instructor notes list "Swagger features." 🔄 The current documentation calls this **"Develop REST APIs using OpenAPI in API Gateway"** and states support for **OpenAPI v2.0** (equivalent to Swagger 2.0) and **OpenAPI v3.0**. The extensions page is titled "OpenAPI extensions for API Gateway" (the URL path still contains `swagger-extensions`).
+Known by the name "Swagger," 🔄 this feature is now called **"Develop REST APIs using OpenAPI in API Gateway"** and supports **OpenAPI v2.0** (equivalent to Swagger 2.0) and **OpenAPI v3.0**. The extensions page is titled "OpenAPI extensions for API Gateway" (the URL path still contains `swagger-extensions`).
 
-The features the courseware lists changed only in name; the content is the same.
+The features changed only in name; the content is the same.
 
-| Courseware feature | Current documentation |
+| Feature | Current documentation |
 |---|---|
 | API definition as code / portable API definition | You can import a REST API from and export it to an external definition file |
 | JSON / YAML | On export, set the `Accept` header to `application/json` or `application/yaml` |
@@ -719,7 +726,7 @@ The features the courseware lists changed only in name; the content is the same.
 | API Gateway extensions | The `x-amazon-apigateway-*` extensions. There are now more than 20 |
 | Standalone or as part of an AWS CloudFormation template | Still valid |
 
-Rewriting the courseware YAML excerpt in OpenAPI 3.0 form gives the following.
+Writing the example API definition in OpenAPI 3.0 form gives the following.
 
 ```yaml
 openapi: "3.0.1"
@@ -742,14 +749,14 @@ paths:
             statusCode: "200"
 ```
 
-The courseware excerpt has no `type` property to establish the integration type. The excerpt does contain `...`, so it may simply be elided, but in a real definition `type` determines the nature of the integration and must always be specified.
+It is easy to omit the `type` property that establishes the integration type, but `type` determines the nature of the integration and must always be specified.
 
 > — Source: [Develop REST APIs using OpenAPI in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html)
 > — Source: [OpenAPI extensions for API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html)
 
 ### 5.2 The x-amazon-apigateway-integration Extension 🆕
 
-The courseware presents extensions as a single bullet. `x-amazon-apigateway-integration` is an extended property of the OpenAPI Operation object, and the result is an API Gateway `Integration` object. Here are the main properties.
+`x-amazon-apigateway-integration` is an extended property of the OpenAPI Operation object, and the result is an API Gateway `Integration` object. Here are the main properties.
 
 | Property | Content |
 |---|---|
@@ -798,9 +805,9 @@ aws apigateway get-export \
     latestswagger2.json
 ```
 
-**SDK generation.** The supported language list on courseware slide 10 (Java, JavaScript, Java for Android, Objective-C or Swift for iOS, Ruby) **matches the current documentation exactly.** You generate the SDK after creating, testing, and deploying the API to a stage, and it must be deployed at least once. The AWS CLI can also generate SDKs.
+**SDK generation.** The supported languages are Java, JavaScript, Java for Android, Objective-C or Swift for iOS, and Ruby. You generate the SDK after creating, testing, and deploying the API to a stage, and it must be deployed at least once. The AWS CLI can also generate SDKs.
 
-Matching the courseware's "rich third-party resources when using tooling," the export documentation supports Postman extensions. Postman itself is a third-party tool that AWS does not operate, at `www.postman.com`.
+The export documentation supports Postman extensions. Postman itself is a third-party tool that AWS does not operate, at `www.postman.com`.
 
 > — Source: [Export a REST API from API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-export-api.html)
 > — Source: [Generate SDKs for REST APIs in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-generate-sdk.html)
@@ -811,7 +818,7 @@ Matching the courseware's "rich third-party resources when using tooling," the e
 
 ### 6.1 Calling a REST API
 
-Start with the note on slide 24: **"Note: to call the API URL you must first deploy it to API Gateway."** When calling a deployed API, the client submits requests to the URL of the API Gateway component service for API execution, named **`execute-api`**.
+**To call the API URL you must first deploy it to API Gateway.** When calling a deployed API, the client submits requests to the URL of the API Gateway component service for API execution, named **`execute-api`**.
 
 ```text
 https://{restapi_id}.execute-api.{region}.amazonaws.com/{stage_name}/
@@ -827,7 +834,7 @@ You can test a REST API with the invoke URL, the API Gateway console, or a third
 
 ### 6.2 Testing with the API Gateway Console 🔄
 
-🔄 The slide 25 instructor notes say "To call a REST API in the API Gateway console, choose TEST in the Client box of the Method Execution pane." The Method Execution pane and the Client box belong to the previous console UI. Here is the current procedure.
+🔄 The guidance "choose TEST in the Client box of the Method Execution pane" reflects the previous console UI. Here is the current procedure.
 
 1. Sign in to the API Gateway console
 2. Choose a REST API
@@ -838,7 +845,7 @@ You can test a REST API with the invoke URL, the API Gateway console, or a third
 
 The results shown are Request (the resource path that was called), Status (the response HTTP status code), Latency (ms) (the time between receipt of the request and the returned response), Response body, Response headers, and Logs. Depending on the mapping, the status code, response body, and response headers might differ from what the Lambda function or HTTP proxy sent.
 
-The caution on courseware slide 26 matches the current documentation's Important paragraph sentence for sentence. **Testing a method with the console is the same as calling the method outside of the console.** For example, if you use the console to call a method that deletes an API's resources and the call succeeds, those resources really are deleted. Changes may be impossible to undo.
+An important caution: **Testing a method with the console is the same as calling the method outside of the console.** For example, if you use the console to call a method that deletes an API's resources and the call succeeds, those resources really are deleted. Changes may be impossible to undo.
 
 🆕 One thing to add is the logs. The Logs in the test result are **simulated** CloudWatch Logs entries that would have been written if the method were called outside the console. The logs are simulated, but **the results of the method call are real.**
 
@@ -846,7 +853,7 @@ The caution on courseware slide 26 matches the current documentation's Important
 
 ### 6.3 Mock Integrations
 
-Mock integrations generate API responses directly from API Gateway without an integration backend. The three benefits the courseware lists (testing without a completed backend / testing various scenarios before production deployment / speeding up API development) match the current documentation, and the documentation adds provisioning a **landing page** that gives an overview of and navigation to your API.
+Mock integrations generate API responses directly from API Gateway without an integration backend. The three benefits are testing without a completed backend, testing various scenarios before production deployment, and speeding up API development, and the documentation adds provisioning a **landing page** that gives an overview of and navigation to your API.
 
 The API developer decides how API Gateway responds to a mock integration request. You configure the method's integration request and integration response to associate a response with a given status code.
 
@@ -877,7 +884,7 @@ You can also have the method return the **default integration response** (the on
 
 🆕 A caution from the documentation: mock integrations **are not intended to support large response templates.** For that use case, consider a Lambda integration instead.
 
-This is why the answer to courseware knowledge check question 3 ("Mock integrations only respond with a 200 status code for API methods") is false.
+In other words, a mock integration does not respond only with a 200 status code; as the examples above show, it can also return 500 or a conditional status code.
 
 > — Source: [Mock integrations for REST APIs in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-mock-integration.html)
 
@@ -896,7 +903,7 @@ aws apigateway test-invoke-method \
 
 Among the request parameters, `--rest-api-id`, `--resource-id`, and `--http-method` are required. Use `--path-with-query-string` to specify path and query string parameters, and `--body`, `--headers`, and `--stage-variables` to simulate the body, headers, and stage variables.
 
-The response fields match the output on courseware slide 28 exactly.
+The response fields are as follows.
 
 | Field | Type | Content |
 |---|---|---|
@@ -917,14 +924,14 @@ The errors are `BadRequestException` (400), `UnauthorizedException` (401), `NotF
 
 ### 7.1 API Gateway Stages
 
-**A stage is a named reference to a deployment, which is a snapshot of the API.** This definition matches the courseware and the current documentation sentence for sentence. To deploy an API you must **create an API deployment and associate it with a stage.**
+**A stage is a named reference to a deployment, which is a snapshot of the API.** To deploy an API you must **create an API deployment and associate it with a stage.**
 
 | Concept | Definition |
 |---|---|
 | API deployment | A **point-in-time snapshot** of your API Gateway API. To be available for clients to use, it must be associated with one or more stages |
 | API stage | A **logical reference** to a lifecycle state of your API (for example `dev`, `prod`, `beta`, `v2`). Stages are identified by API ID and stage name |
 
-The five things you can do with stage settings also match the courseware.
+The five things you can do with stage settings are as follows.
 
 - Enable caching ([Section 7.5](#75-response-caching))
 - Customize request throttling ([Section 7.6](#76-throttling-and-usage-plans))
@@ -932,7 +939,7 @@ The five things you can do with stage settings also match the courseware.
 - Define stage variables ([Section 7.2](#72-using-stage-variables))
 - Attach a canary release for testing ([Section 7.3](#73-canary-releases))
 
-🔄 The courseware says "When the deployment process finishes, the **Stage Editor pane** appears," and that you use Stage Editor for four settings. In the current console, stage settings live in the **Stages** pane, and after choosing a stage they are split across two places.
+🔄 The guidance that "a **Stage Editor pane** appears when deployment finishes" reflects the previous console. In the current console, stage settings live in the **Stages** pane, and after choosing a stage they are split across two places.
 
 | Location | Settings |
 |---|---|
@@ -945,7 +952,7 @@ The invoke URL appears in the **Invoke URL** field of the stage details. Stage n
 
 ### 7.2 Using Stage Variables 🔄
 
-Stage variables are **name-value pairs** you define as configuration attributes associated with a deployment stage of a REST API. They **act like environment variables** and can be used **in your API setup and mapping templates**. Everything courseware slide 31 states matches the current documentation.
+Stage variables are **name-value pairs** you define as configuration attributes associated with a deployment stage of a REST API. They **act like environment variables** and can be used **in your API setup and mapping templates**.
 
 | Use case | Content |
 |---|---|
@@ -965,19 +972,19 @@ Here is where stage variables can be used.
 | Cognito user pool (`COGNITO_USER_POOLS`) | `arn:aws:cognito-idp:<region>:<account_id>:userpool/${stageVariables.variable_name}` |
 | AWS integration credentials | `arn:aws:iam::<account_id>:${stageVariables.variable_name}` |
 
-The diagram on courseware slide 31 shows `/notes` calling either `list_function:PROD` or `list_function:DEV`. That is the pattern of using a stage variable in the Lambda **alias** position.
+For example, `/notes` can call either `list_function:PROD` or `list_function:DEV`, using a stage variable in the Lambda **alias** position.
 
-🔄 The courseware instructor notes write this as `list_function:{$stageVariables.environment}`. The documented notation is `function:<function_name>:${stageVariables.<version_variable_name>}`, so the braces must come **after** the dollar sign.
+🔄 The notation deserves care here. The correct notation is `function:<function_name>:${stageVariables.<version_variable_name>}`, so the braces must come **after** the dollar sign.
 
 ```text
-## Courseware notation (braces in the wrong place)
+## Incorrect notation (braces in the wrong place)
 list_function:{$stageVariables.environment}
 
-## Documented notation
+## Correct notation
 list_function:${stageVariables.environment}
 ```
 
-🆕 Constraints the courseware does not cover.
+🆕 Constraints to keep in mind.
 
 | Item | Content |
 |---|---|
@@ -1004,13 +1011,13 @@ aws lambda add-permission \
 
 A canary release is a software development strategy in which a new version of an API is deployed for testing purposes while the base version remains deployed as the production release for normal operations **on the same stage**. Total API traffic is separated **at random** into the production release and the canary release with a pre-configured ratio.
 
-| Courseware item | Content |
+| Benefit | Content |
 |---|---|
 | Reduced deployment risk | Because canary traffic is kept small and the selection is random, most users are not adversely affected by potential bugs in the new version, and no single user is adversely affected all the time |
 | Test performance | You can adjust the canary traffic percentage to optimize test coverage or performance |
 | Parallel development | The updated API features are only visible to API traffic through the canary |
 
-As in the example architecture on courseware slide 32, the **canary version receives 10%** of traffic and the remaining **90% is routed to the stable version.**
+For example, you can configure it so the **canary version receives 10%** of traffic and the remaining **90% is routed to the stable version.**
 
 **Structure.** 🔄 In API Gateway, a canary release deployment means **attaching `canarySettings` to the stage** where the production release is deployed. The stage is associated with the initial deployment and the canary with subsequent deployments; at the beginning both point to the same API version.
 
@@ -1025,7 +1032,7 @@ Once a canary release is enabled, the deployment stage **cannot be associated wi
 
 🆕 Logging is also separated. When you enable API execution logging, the canary release generates its own logs and metrics for all canary requests and reports them to both the production stage log group and a canary-specific log group. The canary log group name carries a `/Canary` suffix. Access logging behaves the same way. These separate logs help when validating new API changes and deciding whether to promote.
 
-**Promotion.** 🔄 Courseware slides 33 and 36 state only the outcome: "you can promote the canary version and send 100% of traffic to this API version." The actual mechanism has three steps.
+**Promotion.** 🔄 Promoting the canary sends 100% of traffic to that version. The actual mechanism has three steps.
 
 1. Reset the stage's `deploymentId` with the canary's `deploymentId`. This updates the stage's API snapshot with the canary's, making the test version the production release
 2. Update stage variables with the canary stage variables, if any. Without this, the new API version may produce unexpected results
@@ -1051,15 +1058,15 @@ aws apigateway update-stage \
 
 ### 7.4 Canary Release Steps 🔄
 
-🔄 The steps on courseware slides 34 through 36 describe creating the canary on a **new stage**, and the diagrams draw a "stable stage" and a "new canary stage" as separate stages. In the documentation the canary is not a separate stage but **`canarySettings` on the same stage.** The slide 32 instructor notes say "on the same stage," so the courseware contradicts itself here as well. Here are the steps aligned with the documentation.
+🔄 It is easy to assume the canary goes on a **new stage**, but the canary is not a separate stage — it is **`canarySettings` on the same stage.** Here are the correct steps.
 
-| Step | Courseware statement | Aligned with the documentation |
-|---|---|---|
-| 1/3 | Make functional changes / **deploy to a new stage** / if needed enable caching, set stage variables, enable logging with CloudWatch / **enable canary on the new stage** | Make functional changes / add `canarySettings` **to the existing stage** to enable the canary / if needed set `useStageCache` and `stageVariableOverrides`, and enable execution and access logging |
-| 2/3 | Set the percentage of requests for the canary / **redeploy the API to the canary-enabled stage** | Set the percentage with `percentTraffic` (for example 10) / create a new deployment and associate it with the canary. The canary then points at the new deployment while the stage points at the existing one |
-| 3/3 | **Promote the canary** | Copy the deployment ID and stage variables to the stage and set `percentTraffic` to 0.0. To turn the canary off completely, remove `canarySettings` |
+| Step | Content |
+|---|---|
+| 1/3 | Make functional changes / add `canarySettings` **to the existing stage** to enable the canary / if needed set `useStageCache` and `stageVariableOverrides`, and enable execution and access logging |
+| 2/3 | Set the percentage with `percentTraffic` (for example 10) / create a new deployment and associate it with the canary. The canary then points at the new deployment while the stage points at the existing one |
+| 3/3 | **Promote the canary** — copy the deployment ID and stage variables to the stage and set `percentTraffic` to 0.0. To turn the canary off completely, remove `canarySettings` |
 
-The code example in the slide 34 instructor notes has three notation problems. It writes `percentTraffic` as `"10"`, `useStageCache` as `"False“`, and `metricsEnabled` as `"true"` — **all as strings** — the closing quote on the `useStageCache` value is a left double quotation mark, and the last line has no closing brace. 🔄 `percentTraffic` is a Double, and `useStageCache` and `metricsEnabled` are Booleans.
+Canary settings code often has notation problems: writing `percentTraffic`, `useStageCache`, or `metricsEnabled` as strings, broken quotation marks, or a missing closing brace. 🔄 `percentTraffic` is a Double, and `useStageCache` and `metricsEnabled` are Booleans, so write them as below.
 
 ```json
 {
@@ -1089,7 +1096,7 @@ Keys in `methodSettings` are `{resource_path}/{http_method}` for an individual m
 
 ### 7.5 Response Caching 🆕
 
-The courseware presents caching only as one bullet in the developer feature list ("reduces the number of calls made to the endpoint and improves request latency"). That statement is correct, and the values you actually configure follow. Caching is a **REST API only** feature and is enabled **per stage**.
+Caching reduces the number of calls made to the endpoint and improves request latency. It is a **REST API only** feature and is enabled **per stage**. The values you configure follow.
 
 | Item | Value |
 |---|---|
@@ -1135,7 +1142,7 @@ aws apigateway update-stage \
 
 **Both throttles and quotas are applied on a best-effort basis and should be thought of as targets rather than guaranteed request ceilings.** API Gateway throttles requests using the **token bucket algorithm**, where a token counts for a request. When submissions exceed the steady-state request rate and burst limits, clients may receive **`429 Too Many Requests`**.
 
-🔄 The slide 10 instructor notes present throttling as "two basic types of settings" (server-side throttling limits, per-client throttling limits). The current documentation presents **four** and specifies the order in which they apply.
+🔄 It is easy to think of throttling as just two types (server-side and per-client), but the current documentation presents **four** and specifies the order in which they apply.
 
 | Type | Scope | Increase |
 |---|---|---|
@@ -1165,7 +1172,7 @@ The order of application is **per-client and per-method limits in a usage plan �
 | Aggregation scope | Applied to requests for individual API keys **aggregated across all API stages** within a usage plan |
 | Propagation time | After you add an API key to a usage plan, the update might take a few minutes to complete |
 
-🆕 Two warnings the documentation states explicitly are absent from the courseware.
+🆕 Two warnings the documentation states explicitly.
 
 | Warning | Content |
 |---|---|
@@ -1178,7 +1185,7 @@ The order of application is **per-client and per-method limits in a usage plan �
 
 ### 7.7 Demo Topics
 
-Courseware slide 37 tells you to use your own demo or borrow the one from Lab 5, and lists the console properties to cover.
+The console properties the demo covers, with pointers to where this document explains each.
 
 | Demo item | This document |
 |---|---|
@@ -1197,7 +1204,7 @@ Courseware slide 37 tells you to use your own demo or borrow the one from Lab 5,
 
 ## 8. Observability: Logging, Metrics, Tracing 🆕
 
-The courseware diagrams (slides 3 and 9) show Amazon CloudWatch and AWS X-Ray as application components, and slide 34 says to "enable logging with CloudWatch" during the canary step. Since the body never explains these features, they are collected in this chapter. Everything here is **REST API only** or more broadly supported on REST APIs ([Section 2.3](#23-choosing-between-rest-apis-and-http-apis)).
+The application architecture shows Amazon CloudWatch and AWS X-Ray as components, and the canary step enables logging with CloudWatch. Since the earlier chapters do not explain these features in detail, they are collected in this chapter. Everything here is **REST API only** or more broadly supported on REST APIs ([Section 2.3](#23-choosing-between-rest-apis-and-http-apis)).
 
 ### 8.1 Execution Logging and Access Logging 🆕
 
@@ -1292,7 +1299,7 @@ With AWS X-Ray you can trace and analyze user requests as they travel through yo
 
 ### 8.4 Enhanced Observability Variables 🆕
 
-This is the content of the AWS Compute Blog post that the slide 10 instructor notes cite under latency. API Gateway divides requests into **phases**, which appear in the following order depending on the features configured for the application.
+API Gateway divides request processing into **phases**, which appear in the following order depending on the features configured for the application. You can inspect each phase's latency with enhanced observability variables.
 
 | Phase | When it appears | What it does |
 |---|---|---|
@@ -1317,31 +1324,31 @@ The authorizer and integration phases have additional `$context.phase.requestId`
 
 ## 9. Changes from the Courseware
 
-These are items in the courseware (the instructor deck) that differ from current fact. Because learners have the official courseware in hand, we leave a record of what was changed and why.
+Since learners may have the official courseware in front of them, this section gathers in one place where this material diverges from it. The evidence behind every item marked new or corrected in the sections above is here.
 
-### 9.1 Courseware Statements That Do Not Match the Facts
+### 9.1 Differences from the Courseware
 
 | Item | Courseware statement | What was verified | Source |
 |---|---|---|---|
-| Default endpoint type (slide 13) | "In endpoint type, the Regional API endpoint is selected by default" | The endpoint types page, describing edge-optimized endpoints, states **"This is the default endpoint type for API Gateway REST APIs,"** and the concepts page defines edge-optimized as "the default hostname of an API Gateway API." The names and characteristics of the three types are correct | [API endpoint types](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html) |
-| Valid method authorization values (slide 13) | Valid values `NONE` and `AWS_IAM`. "The default is set to none or AWS_IAM" | `authorizationType` is a **required parameter** and there are **four** valid values: `NONE`, `AWS_IAM`, `CUSTOM` (Lambda authorizer), and `COGNITO_USER_POOLS`. The documentation never says one of the two is a default | [PutMethod](https://docs.aws.amazon.com/apigateway/latest/api/API_PutMethod.html) |
-| Mock integrations on HTTP APIs (slide 14) | HTTP APIs support "Mock and HTTP proxy integrations" | The integrations table in the comparison document marks **Mock integrations as REST API only.** The remaining items (Lambda proxy, AWS services, private resources in a VPC, HTTP proxy) are correct | [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) |
-| Request validator value types (slide 18) | `"validateRequestBody": "false"`, `"validateRequestParameters": "true"` | Both fields are **Boolean** flags. The string `"false"` can be treated as truthy in JSON and behave contrary to intent | [RequestValidator](https://docs.aws.amazon.com/apigateway/latest/api/API_RequestValidator.html) |
-| `$elem` in mapping templates (slides 19, 20) | Declares `$inputRoot` with `#set` but never uses it, and references `$elem` without an iteration directive | In the official examples, collection iteration is always expressed with **`#foreach` ... `#end`** and commas are inserted with `$foreach.hasNext`. Pasting the courseware template as-is leaves the values unfilled. Note, however, that the mapping template concepts page in the AWS documentation contains the same notation, so no sentence in the documentation declares this pattern an error ([Section 9.5](#95-items-we-could-not-verify)) | [Mapping template examples](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-variable-examples.html) |
-| canary and methodSettings value types (slide 34) | `"percentTraffic": "10"`, `"useStageCache": "False“`, `"metricsEnabled": "true"` | `percentTraffic` is a **Double** (0.0–100.0); `useStageCache` and `metricsEnabled` are **Booleans.** The courseware code also has a left double quotation mark as a closing quote and no closing brace on the last line | [CanarySettings](https://docs.aws.amazon.com/apigateway/latest/api/API_CanarySettings.html) |
-| Creating the canary on a new stage (slides 34–36) | "Deploy to a new stage," "enable Canary on the new stage." The diagrams also separate a "stable stage" from a "new canary stage" | The canary is not a separate stage but **`canarySettings` on the same stage.** Once enabled, the stage cannot be associated with another non-canary deployment until the canary is disabled and the settings removed. This also contradicts the slide 32 note ("on the same stage") | [Canary release deployment](https://docs.aws.amazon.com/apigateway/latest/developerguide/canary-release.html) |
-| Lambda alias notation for a stage variable (slide 31) | `list_function:{$stageVariables.environment}` | The documented notation is `function:<function_name>:${stageVariables.<version_variable_name>}`, so the braces must come **after** the dollar sign. The correct form is `list_function:${stageVariables.environment}` | [Stage variables reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html) |
-| `/notes/list` in the resource list (slide 13) | The instructor notes list three: `/notes`, `/notes/search`, `/notes/list` | The diagram on the same slide has only `/notes` and `/notes/search`, and the method list on slide 9 has no `/notes/list`. This is an internal contradiction in the courseware, and AWS documentation cannot settle which is correct. This document follows the diagram | — ([Section 9.5](#95-items-we-could-not-verify)) |
-| Mock row of the slide 14 table | `MOCK` appears in both the Passthrough column and the integration type column | The same column for the proxy and non-proxy rows contains passthrough behavior statements, so the column meaning is broken. This is a notation error in the courseware itself | — ([Section 9.5](#95-items-we-could-not-verify)) |
-| Payload key on slide 18 | The array element key is `Notes` rather than `Note` | `NotesInputModel` on slide 17 requires `Note` in each array element, so this payload fails validation with `400`. This is an internal contradiction in the courseware | — ([Section 9.5](#95-items-we-could-not-verify)) |
-| URLs cited in the instructor notes | Spaces in the middle of URLs, as in `https://docs.aws.amazon.com/ko_kr/ apigateway/...` | Several citations have a space between `ko_kr/` and `apigateway`, so they cannot be opened as copied. With the spaces removed, all 11 links point to pages that are still valid today | — ([Section 9.5](#95-items-we-could-not-verify)) |
+| Default endpoint type | "In endpoint type, the Regional API endpoint is selected by default" | The endpoint types page, describing edge-optimized endpoints, states **"This is the default endpoint type for API Gateway REST APIs,"** and the concepts page defines edge-optimized as "the default hostname of an API Gateway API." The names and characteristics of the three types are correct | [API endpoint types](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html) |
+| Valid method authorization values | Valid values `NONE` and `AWS_IAM`. "The default is set to none or AWS_IAM" | `authorizationType` is a **required parameter** and there are **four** valid values: `NONE`, `AWS_IAM`, `CUSTOM` (Lambda authorizer), and `COGNITO_USER_POOLS`. The documentation never says one of the two is a default | [PutMethod](https://docs.aws.amazon.com/apigateway/latest/api/API_PutMethod.html) |
+| Mock integrations on HTTP APIs | HTTP APIs support "Mock and HTTP proxy integrations" | The integrations table in the comparison document marks **Mock integrations as REST API only.** The remaining items (Lambda proxy, AWS services, private resources in a VPC, HTTP proxy) are correct | [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) |
+| Request validator value types | `"validateRequestBody": "false"`, `"validateRequestParameters": "true"` | Both fields are **Boolean** flags. The string `"false"` can be treated as truthy in JSON and behave contrary to intent | [RequestValidator](https://docs.aws.amazon.com/apigateway/latest/api/API_RequestValidator.html) |
+| `$elem` in mapping templates | Declares `$inputRoot` with `#set` but never uses it, and references `$elem` without an iteration directive | In the official examples, collection iteration is always expressed with **`#foreach` ... `#end`** and commas are inserted with `$foreach.hasNext`. Pasting this template as-is leaves the values unfilled. Note, however, that the mapping template concepts page in the AWS documentation contains the same notation, so no sentence in the documentation declares this pattern an error ([Section 9.5](#95-items-we-could-not-verify)) | [Mapping template examples](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-variable-examples.html) |
+| canary and methodSettings value types | `"percentTraffic": "10"`, `"useStageCache": "False“`, `"metricsEnabled": "true"` | `percentTraffic` is a **Double** (0.0–100.0); `useStageCache` and `metricsEnabled` are **Booleans.** The code also has a left double quotation mark as a closing quote and no closing brace on the last line | [CanarySettings](https://docs.aws.amazon.com/apigateway/latest/api/API_CanarySettings.html) |
+| Creating the canary on a new stage | "Deploy to a new stage," "enable Canary on the new stage." The diagrams also separate a "stable stage" from a "new canary stage" | The canary is not a separate stage but **`canarySettings` on the same stage.** Once enabled, the stage cannot be associated with another non-canary deployment until the canary is disabled and the settings removed. This also contradicts another note in the same material ("on the same stage") | [Canary release deployment](https://docs.aws.amazon.com/apigateway/latest/developerguide/canary-release.html) |
+| Lambda alias notation for a stage variable | `list_function:{$stageVariables.environment}` | The documented notation is `function:<function_name>:${stageVariables.<version_variable_name>}`, so the braces must come **after** the dollar sign. The correct form is `list_function:${stageVariables.environment}` | [Stage variables reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/aws-api-gateway-stage-variables-reference.html) |
+| `/notes/list` in the resource list | One note lists three: `/notes`, `/notes/search`, `/notes/list` | The diagram in the same material has only `/notes` and `/notes/search`, and the method list has no `/notes/list`. This is an internal contradiction in the original, and AWS documentation cannot settle which is correct. This document follows the diagram | — ([Section 9.5](#95-items-we-could-not-verify)) |
+| Mock row of the integration types table | `MOCK` appears in both the Passthrough column and the integration type column | The same column for the proxy and non-proxy rows contains passthrough behavior statements, so the column meaning is broken. This is a notation error in the original itself | — ([Section 9.5](#95-items-we-could-not-verify)) |
+| Payload key in the validation example | The array element key is `Notes` rather than `Note` | `NotesInputModel` requires `Note` in each array element, so this payload fails validation with `400`. This is an internal contradiction in the original | — ([Section 9.5](#95-items-we-could-not-verify)) |
+| Cited URL spaces | Spaces in the middle of URLs, as in `https://docs.aws.amazon.com/ko_kr/ apigateway/...` | Several citations have a space between `ko_kr/` and `apigateway`, so they cannot be opened as copied. With the spaces removed, all 11 links point to pages that are still valid today | — ([Section 9.5](#95-items-we-could-not-verify)) |
 
 ### 9.2 Changed Behavior and Defaults
 
 | Item | Courseware statement | Current | Source |
 |---|---|---|---|
 | Specification name | "Designing APIs with Swagger," `swagger: "2.0"`, "Swagger features" | The documentation calls it **"Develop REST APIs using OpenAPI in API Gateway"** and supports **OpenAPI v2.0 and v3.0.** The extensions page is titled "OpenAPI extensions for API Gateway." The export paths split into `exports/oas30` and `exports/swagger` | [Develop REST APIs using OpenAPI](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html) |
-| Authorizer naming | "Lambda authorizer" (the current name, so correct) | The documentation writes **"Lambda authorizer (formerly known as a custom authorizer)."** The courseware does not cover the two types (`REQUEST` and `TOKEN`), the documentation's preference for `REQUEST`, or the `CUSTOM` method authorization value | [Use API Gateway Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html) |
+| Authorizer naming | "Lambda authorizer" (the current name, so correct) | The documentation writes **"Lambda authorizer (formerly known as a custom authorizer)."** It helps to also know the two types (`REQUEST` and `TOKEN`), the documentation's preference for `REQUEST`, and the `CUSTOM` method authorization value | [Use API Gateway Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html) |
 | Number of throttling setting types | "**Two** basic types of throttling-related settings" | **Four**: AWS throttling limits / per-account limits / per-API, per-stage limits / per-client limits. The order of application is specified, and throttles and quotas are best-effort targets rather than hard limits | [Throttle requests to your REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html) |
 | Integration passthrough | "Two conditions" | A **setting** with three options: `WHEN_NO_MATCH` / `WHEN_NO_TEMPLATES` (**recommended**) / `NEVER`. The latter two reject unmapped content types with `415 Unsupported Media Type` | [Method request behavior for payloads without mapping templates](https://docs.aws.amazon.com/apigateway/latest/developerguide/integration-passthrough-behaviors.html) |
 | Console test path | "Choose TEST in the Client box of the Method Execution pane" | **Resources pane → choose the method → Test tab → Test.** The Method Execution pane and Client box belong to the previous console UI | [Use the API Gateway console to test a REST API method](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-test-method.html) |
@@ -1355,37 +1362,37 @@ These are items in the courseware (the instructor deck) that differ from current
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
-| Using mapping templates as the main path for data transformation (slides 16–20) | Discouraged | The documented order is **① proxy integration → ② parameter mapping (no VTL) → ③ mapping template transformations.** Use mapping templates when you need to change the body or perform conditional overrides and cannot use a proxy integration | [Data transformations for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html) |
-| Using API keys to control API access (slides 10, 13) | Discouraged | Use **IAM roles, Lambda authorizers, and Amazon Cognito user pools** for access control, because one API key in a usage plan grants access to every API in that plan. Use API keys only to identify clients and associate them with usage plans | [Usage plans and API keys](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) |
-| Using usage plan quotas to control cost and access (slide 10) | Discouraged | Throttles and quotas are best-effort targets, not hard limits. Use **AWS Budgets** to monitor costs and **AWS WAF** to block requests | [Usage plans and API keys](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) |
-| Passing sensitive configuration through stage variables (slide 31) | Discouraged | Stage variables are not for sensitive data such as credentials. Pass sensitive data to integrations through the **output of a Lambda authorizer.** Passing non-sensitive configuration is still a legitimate use | [Use stage variables for a REST API](https://docs.aws.amazon.com/apigateway/latest/developerguide/stage-variables.html) |
-| Enabling Data tracing on a production stage (slide 34) | Discouraged | Use execution logging at the **Errors only or Errors and info logs** level and turn Data tracing on only temporarily while troubleshooting. It can log sensitive data | [Set up CloudWatch logging for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html) |
+| Using mapping templates as the main path for data transformation | Discouraged | The documented order is **① proxy integration → ② parameter mapping (no VTL) → ③ mapping template transformations.** Use mapping templates when you need to change the body or perform conditional overrides and cannot use a proxy integration | [Data transformations for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html) |
+| Using API keys to control API access | Discouraged | Use **IAM roles, Lambda authorizers, and Amazon Cognito user pools** for access control, because one API key in a usage plan grants access to every API in that plan. Use API keys only to identify clients and associate them with usage plans | [Usage plans and API keys](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) |
+| Using usage plan quotas to control cost and access | Discouraged | Throttles and quotas are best-effort targets, not hard limits. Use **AWS Budgets** to monitor costs and **AWS WAF** to block requests | [Usage plans and API keys](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) |
+| Passing sensitive configuration through stage variables | Discouraged | Stage variables are not for sensitive data such as credentials. Pass sensitive data to integrations through the **output of a Lambda authorizer.** Passing non-sensitive configuration is still a legitimate use | [Use stage variables for a REST API](https://docs.aws.amazon.com/apigateway/latest/developerguide/stage-variables.html) |
+| Enabling Data tracing on a production stage | Discouraged | Use execution logging at the **Errors only or Errors and info logs** level and turn Data tracing on only temporarily while troubleshooting. It can log sensitive data | [Set up CloudWatch logging for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html) |
 
-### 9.4 Added After the Courseware
+### 9.4 What This Material Adds
 
-| Item | Summary | Source |
-|---|---|---|
-| REST API vs HTTP API selection criteria | Choose based on feature count and price. Request validation, mapping templates, caching, canary releases, usage plans, test invocations, execution logs, and X-Ray — most of what this module covers — are **REST API only.** HTTP API only features are automatic deployments, JWT authorizers, and AWS Cloud Map private integrations | [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) |
-| Lambda proxy integration recommendation | The documentation highly recommends Lambda proxy as "the preferred integration type to call a Lambda function through API Gateway." Lambda custom integration is for the advanced scenario of reusing mapping templates across endpoints | [Choose an API Gateway API integration type](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html) |
-| Lambda proxy input and output formats | Input event keys (`resource`, `path`, `httpMethod`, `headers`, `multiValueHeaders`, `queryStringParameters`, `requestContext`, `body`, `isBase64Encoded`, and so on) and the output format (`isBase64Encoded`, `statusCode`, `headers`, `multiValueHeaders`, `body`). A different format returns **`502 Bad Gateway`**. The `{proxy+}` + `ANY` combination | [Lambda proxy integrations](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html) |
-| HTTP API payload format versions | `1.0` and `2.0`. The console defaults to the latest version, but the CLI, CloudFormation, and SDKs **require** it. `2.0` has no `multiValueHeaders`, adds `rawPath` and `cookies`, and infers a response from valid JSON without a `statusCode` | [Create AWS Lambda proxy integrations for HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) |
-| Parameter mapping | Modifies path, query string, and header values in the integration request and response **without VTL.** It cannot modify the body. Used for static CORS header values | [Data transformations for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html) |
-| The full set of mapping template variables | `$input` (`body`, `json`, `path`, `params`), `$context` (52 entries), `$stageVariables` (three notations), `$util` (`escapeJavaScript`, `parseJson`, `urlEncode`, `urlDecode`, `base64Encode`, `base64Decode`) | [Variables for data transformations](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html) |
-| Scope of request validation | Parameters are checked for **existence only**, not type or format. Failure returns `400` and publishes results to CloudWatch Logs. Use `$default` to apply one model regardless of content type | [Request validation for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html) |
-| Model capabilities | `enum` to restrict allowed values, `minimum` and `maximum` to constrain ranges, the reference primitive to point at `definitions` or external models. Model size per API is 400 KB | [Data models for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings-models.html) |
-| WebSocket API constraints | No `$` prefix in custom route keys, authorization on `$connect` only (values `NONE`, `AWS_IAM`, `CUSTOM`, applied API-wide), `401`/`403` when `$connect` fails, `$disconnect` is best-effort with no delivery guarantee | [Create routes for WebSocket APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/websocket-api-develop-routes.html) |
-| Caching details | Default TTL 300 seconds / maximum 3600 / `TTL=0` disables, maximum cacheable response 1,048,576 bytes, eight capacity choices (0.5–237 GB), **only `GET` cached by default**, cache keys required, invalidation with `Cache-Control: max-age=0` (no cross-account), hourly billing | [Cache settings for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html) |
-| REST API quotas | Integration timeout **50 ms–29 seconds**, payload **10 MB**, idle connection 310 seconds, per API 300 resources / 10 stages / 10 authorizers / 400 KB model size, 600 Regional APIs / 120 edge-optimized | [Quotas for configuring and running a REST API](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-execution-service-limits-table.html) |
-| Account-level throttle quotas | **10,000 RPS** per account per Region, maximum bucket capacity **5,000 requests.** Thirteen Regions default to 2,500 RPS / 1,250 burst. The burst quota cannot be adjusted by customers | [Amazon API Gateway quotas](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html) |
-| The distinction between execution and access logging | Execution logging is managed by API Gateway with log group name `API-Gateway-Execution-Logs_{rest-api-id}/{stage_name}`. Access logging has the developer choose the log group and format (CLF, JSON, XML, CSV) and must include `$context.requestId` or `$context.extendedRequestId`. The two are enabled independently | [Set up CloudWatch logging for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html) |
-| CloudWatch metrics | Seven metrics — `4XXError`, `5XXError`, `CacheHitCount`, `CacheMissCount`, `Count`, `IntegrationLatency`, `Latency` — sent every minute. Method-level dimensions require detailed metrics and incur **additional charges** | [Amazon API Gateway dimensions and metrics](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-metrics-and-dimensions.html) |
-| X-Ray tracing | Supported on all REST API endpoint types, enabled per stage, sampling rules, and **trace pass-through** when called from a service already being traced | [Trace user requests to REST APIs using X-Ray](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-xray.html) |
-| Enhanced observability variables | `$context.phase.property` variables for the WAF → Authenticate → Authorizer → Authorize → Integration phases. For Lambda integrations, `integrationStatus` (service status) versus `status` (function code status) | [Troubleshooting Amazon API Gateway with enhanced observability variables](https://aws.amazon.com/blogs/compute/troubleshooting-amazon-api-gateway-with-enhanced-observability-variables/) |
-| AWS WAF evaluation precedence | AWS WAF rules are evaluated **before** resource policies, IAM policies, Lambda authorizers, and Cognito authorizers. Request body inspection is limited to the first 64 KB and the web ACL is associated with an API stage | [Use AWS WAF to protect your REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-aws-waf.html) |
-| Private API details | Powered by AWS PrivateLink, reachable over Direct Connect, turning on private DNS blocks access to the default endpoint for public APIs, **only TLS 1.2**, HTTP/2 requests enforced to HTTP/1.1 | [Private REST APIs in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-private-apis.html) |
-| `x-amazon-apigateway-integration` properties | `type` (lowercase, such as `aws_proxy`), `payloadFormatVersion`, `timeoutInMillis` (50–29,000 ms), `responseTransferMode` (`BUFFERED`, `STREAM`), `connectionType`, `passthroughBehavior`, `contentHandling`, and others | [x-amazon-apigateway-integration object](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html) |
-| Other uses of Mock integrations | Provisioning a landing page, returning CORS headers (the console configures the `OPTIONS` method as a mock integration), and gateway responses. **Not suited to large response templates**, for which you use a Lambda integration | [Mock integrations for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-mock-integration.html) |
-| Developer portal and Quick create | The developer portal (an application where API providers share APIs and documentation with consumers, grouping APIs into products; REST API only) and Quick create (creates an HTTP API with a Lambda or HTTP integration, a default catch-all route, and an auto-deploying default stage) | [Amazon API Gateway concepts](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html) |
+| Item | Summary | Why it was added | Source |
+|---|---|---|---|
+| REST API vs HTTP API selection criteria | Choose based on feature count and price. Request validation, mapping templates, caching, canary releases, usage plans, test invocations, execution logs, and X-Ray — most of what this module covers — are **REST API only.** HTTP API only features are automatic deployments, JWT authorizers, and AWS Cloud Map private integrations | Understanding why this module uses a REST API requires knowing the feature differences between the two | [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) |
+| Lambda proxy integration recommendation | The documentation highly recommends Lambda proxy as "the preferred integration type to call a Lambda function through API Gateway." Lambda custom integration is for the advanced scenario of reusing mapping templates across endpoints | The current guidance on which Lambda integration to reach for first is clear | [Choose an API Gateway API integration type](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html) |
+| Lambda proxy input and output formats | Input event keys (`resource`, `path`, `httpMethod`, `headers`, `multiValueHeaders`, `queryStringParameters`, `requestContext`, `body`, `isBase64Encoded`, and so on) and the output format (`isBase64Encoded`, `statusCode`, `headers`, `multiValueHeaders`, `body`). A different format returns **`502 Bad Gateway`**. The `{proxy+}` + `ANY` combination | Not honoring the format returns a 502, so this is essential to actually use proxy integration | [Lambda proxy integrations](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html) |
+| HTTP API payload format versions | `1.0` and `2.0`. The console defaults to the latest version, but the CLI, CloudFormation, and SDKs **require** it. `2.0` has no `multiValueHeaders`, adds `rawPath` and `cookies`, and infers a response from valid JSON without a `statusCode` | Not specifying it fails on CLI or IaC, and the two versions have different formats that are easy to confuse | [Create AWS Lambda proxy integrations for HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) |
+| Parameter mapping | Modifies path, query string, and header values in the integration request and response **without VTL.** It cannot modify the body. Used for static CORS header values | It is the transformation option to consider before mapping templates but is not well known | [Data transformations for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/rest-api-data-transformations.html) |
+| The full set of mapping template variables | `$input` (`body`, `json`, `path`, `params`), `$context` (52 entries), `$stageVariables` (three notations), `$util` (`escapeJavaScript`, `parseJson`, `urlEncode`, `urlDecode`, `base64Encode`, `base64Decode`) | An example using only two variables is not enough to write a real mapping template | [Variables for data transformations](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html) |
+| Scope of request validation | Parameters are checked for **existence only**, not type or format. Failure returns `400` and publishes results to CloudWatch Logs. Use `$default` to apply one model regardless of content type | Assuming validation checks types leads to unexpected values reaching the backend | [Request validation for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html) |
+| Model capabilities | `enum` to restrict allowed values, `minimum` and `maximum` to constrain ranges, the reference primitive to point at `definitions` or external models. Model size per API is 400 KB | Constraining value ranges beyond basic validation requires these extensions | [Data models for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings-models.html) |
+| WebSocket API constraints | No `$` prefix in custom route keys, authorization on `$connect` only (values `NONE`, `AWS_IAM`, `CUSTOM`, applied API-wide), `401`/`403` when `$connect` fails, `$disconnect` is best-effort with no delivery guarantee | When designing WebSocket, the authorization location and `$disconnect` reliability commonly trip people up | [Create routes for WebSocket APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/websocket-api-develop-routes.html) |
+| Caching details | Default TTL 300 seconds / maximum 3600 / `TTL=0` disables, maximum cacheable response 1,048,576 bytes, eight capacity choices (0.5–237 GB), **only `GET` cached by default**, cache keys required, invalidation with `Cache-Control: max-age=0` (no cross-account), hourly billing | Actually turning caching on needs concrete values for TTL, capacity, keys, and billing | [Cache settings for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html) |
+| REST API quotas | Integration timeout **50 ms–29 seconds**, payload **10 MB**, idle connection 310 seconds, per API 300 resources / 10 stages / 10 authorizers / 400 KB model size, 600 Regional APIs / 120 edge-optimized | You run into these limits during design | [Quotas for configuring and running a REST API](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-execution-service-limits-table.html) |
+| Account-level throttle quotas | **10,000 RPS** per account per Region, maximum bucket capacity **5,000 requests.** Thirteen Regions default to 2,500 RPS / 1,250 burst. The burst quota cannot be adjusted by customers | Understanding throttling requires knowing the account-level defaults | [Amazon API Gateway quotas](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html) |
+| The distinction between execution and access logging | Execution logging is managed by API Gateway with log group name `API-Gateway-Execution-Logs_{rest-api-id}/{stage_name}`. Access logging has the developer choose the log group and format (CLF, JSON, XML, CSV) and must include `$context.requestId` or `$context.extendedRequestId`. The two are enabled independently | Confusing the two logging types means you do not get the logs you want | [Set up CloudWatch logging for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html) |
+| CloudWatch metrics | Seven metrics — `4XXError`, `5XXError`, `CacheHitCount`, `CacheMissCount`, `Count`, `IntegrationLatency`, `Latency` — sent every minute. Method-level dimensions require detailed metrics and incur **additional charges** | Operating an API means knowing what you can observe and which metrics cost money | [Amazon API Gateway dimensions and metrics](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-metrics-and-dimensions.html) |
+| X-Ray tracing | Supported on all REST API endpoint types, enabled per stage, sampling rules, and **trace pass-through** when called from a service already being traced | X-Ray appears in the architecture but the earlier chapters do not cover it | [Trace user requests to REST APIs using X-Ray](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-xray.html) |
+| Enhanced observability variables | `$context.phase.property` variables for the WAF → Authenticate → Authorizer → Authorize → Integration phases. For Lambda integrations, `integrationStatus` (service status) versus `status` (function code status) | They are used to pin down which phase latency comes from and troubleshoot | [Troubleshooting Amazon API Gateway with enhanced observability variables](https://aws.amazon.com/blogs/compute/troubleshooting-amazon-api-gateway-with-enhanced-observability-variables/) |
+| AWS WAF evaluation precedence | AWS WAF rules are evaluated **before** resource policies, IAM policies, Lambda authorizers, and Cognito authorizers. Request body inspection is limited to the first 64 KB and the web ACL is associated with an API stage | Without the order, you cannot explain why WAF blocks a request a resource policy allows | [Use AWS WAF to protect your REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-aws-waf.html) |
+| Private API details | Powered by AWS PrivateLink, reachable over Direct Connect, turning on private DNS blocks access to the default endpoint for public APIs, **only TLS 1.2**, HTTP/2 requests enforced to HTTP/1.1 | These are hard-to-reverse constraints when you use a private API | [Private REST APIs in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-private-apis.html) |
+| `x-amazon-apigateway-integration` properties | `type` (lowercase, such as `aws_proxy`), `payloadFormatVersion`, `timeoutInMillis` (50–29,000 ms), `responseTransferMode` (`BUFFERED`, `STREAM`), `connectionType`, `passthroughBehavior`, `contentHandling`, and others | Actually authoring an API definition as code requires knowing the extension's properties | [x-amazon-apigateway-integration object](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html) |
+| Other uses of Mock integrations | Provisioning a landing page, returning CORS headers (the console configures the `OPTIONS` method as a mock integration), and gateway responses. **Not suited to large response templates**, for which you use a Lambda integration | You need to know that mock integrations are not just for testing, and their limits | [Mock integrations for REST APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-mock-integration.html) |
+| Developer portal and Quick create | The developer portal (an application where API providers share APIs and documentation with consumers, grouping APIs into products; REST API only) and Quick create (creates an HTTP API with a Lambda or HTTP integration, a default catch-all route, and an auto-deploying default stage) | These two features from the concepts page broaden the API operation and creation flows | [Amazon API Gateway concepts](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html) |
 
 ### 9.5 Items We Could Not Verify
 
@@ -1393,15 +1400,15 @@ We leave these honestly. Confirm them before stating anything definitively in cl
 
 | Item | Status |
 |---|---|
-| "HTTP APIs have lower latency than REST APIs" (slide 7) | The axes the official comparison document presents are **feature count and price**; latency does not appear as a comparison item. The lower-cost statement was verified ("designed with minimal features so that they can be offered at a lower price"). **No sentence supporting the lower-latency claim was found in that document.** We do not declare the courseware wrong, only that we could not verify it |
-| What the console preselects as the endpoint type | What the documentation confirms is that **edge-optimized is the default endpoint type for REST APIs.** The courseware talks about the console UI, saying Regional is selected by default in the endpoint type control. **Which item the current console preselects could not be confirmed from the documentation.** In practice, choose the endpoint type explicitly |
-| The `$elem` notation in mapping templates (slides 19, 20) | We confirmed that collection iteration in the official examples is expressed with `#foreach` ... `#end`. However, **the mapping template concepts page in the AWS documentation also contains a `$elem` reference without `#foreach`**, so no sentence in the documentation declares this pattern an error. This document corrects it to a working form, but there is no basis for saying "the documentation forbids it" |
+| "HTTP APIs have lower latency than REST APIs" | The axes the official comparison document presents are **feature count and price**; latency does not appear as a comparison item. The lower-cost statement was verified ("designed with minimal features so that they can be offered at a lower price"). **No sentence supporting the lower-latency claim was found in that document.** We do not declare it wrong, only that we could not verify it |
+| What the console preselects as the endpoint type | What the documentation confirms is that **edge-optimized is the default endpoint type for REST APIs.** A console-UI note says Regional is selected by default in the endpoint type control, but **which item the current console preselects could not be confirmed from the documentation.** In practice, choose the endpoint type explicitly |
+| The `$elem` notation in mapping templates | We confirmed that collection iteration in the official examples is expressed with `#foreach` ... `#end`. However, **the mapping template concepts page in the AWS documentation also contains a `$elem` reference without `#foreach`**, so no sentence in the documentation declares this pattern an error. This document corrects it to a working form, but there is no basis for saying "the documentation forbids it" |
 | The separator in the execution log group name | The logging setup page writes `API-Gateway-Execution-Logs_{rest-api-id}/{stage_name}` (underscore) while the canary page writes `API-Gateway-Execution-Logs/{rest-api-id}/{stage-name}` (slash), so **the two pages disagree.** Which is the actual name cannot be settled from the documentation, so the body uses the logging setup page's notation. Check the actual log group name in the console |
-| `/notes/list` in the slide 13 resource list | Inside the courseware, the instructor notes disagree with the diagram and slide 9. **AWS documentation cannot settle** which is the correct design for this application. This document followed the majority evidence of the diagram and slide 9 |
-| The Passthrough cell of the Mock row in the slide 14 table | A notation error that breaks the column meaning. This is not the kind of fact AWS documentation verifies but an error in the courseware itself, so we corrected only the cell and attached no source citation |
-| The `Notes` key in the slide 18 payload | An internal contradiction in the courseware for the same reason. Corrected to `Note` to match the slide 17 model |
-| The broken quotation mark and missing brace in the slide 34 code example | The value types (Double, Boolean) were confirmed from the API reference, but the broken quotation character and the missing brace are not subjects of documentation verification — they are notation errors in the courseware |
-| The broken Korean translation in the slide 8 WebSocket instructor notes | Sentences are duplicated and garbled. **This is a translation quality problem, not a factual error**, so we summarized only within the range where the meaning is clear |
-| Lab 5 workflow (slides 41–42) | The original deck has only diagram elements (Amazon API Gateway, AWS Cloud, user, DynamoDB table) with no explanatory text. With no source text to summarize, this document does not cover it |
-| The console screenshots on slides 25–26 | The original deck has only images with no text. The console procedure was rewritten from the current official documentation ([Section 6.2](#62-testing-with-the-api-gateway-console)) |
+| `/notes/list` in the resource list | Inside the original material, one note disagrees with the diagram and the method list. **AWS documentation cannot settle** which is the correct design for this application. This document followed the majority evidence of the diagram and the method list |
+| The Passthrough cell of the Mock row in the integration types table | A notation error that breaks the column meaning. This is not the kind of fact AWS documentation verifies but an error in the original itself, so we corrected only the cell and attached no source citation |
+| The `Notes` key in the validation payload | An internal contradiction in the original for the same reason. Corrected to `Note` to match the model |
+| The broken quotation mark and missing brace in the canary code example | The value types (Double, Boolean) were confirmed from the API reference, but the broken quotation character and the missing brace are not subjects of documentation verification — they are notation errors in the original |
+| The broken Korean translation in the WebSocket description | Sentences are duplicated and garbled in the original. **This is a translation quality problem, not a factual error**, so we summarized only within the range where the meaning is clear |
+| Lab 5 workflow | The original deck has only diagram elements (Amazon API Gateway, AWS Cloud, user, DynamoDB table) with no explanatory text. With no source text to summarize, this document does not cover it |
+| The console screenshot procedure | The original material has only images with no text. The console procedure was rewritten from the current official documentation ([Section 6.2](#62-testing-with-the-api-gateway-console)) |
 | Performance and pricing figures per cache capacity | The eight capacity choices, hourly billing, and Free Tier exclusion were confirmed from the documentation. **Specific performance and pricing per capacity are pointed to the pricing page by the documentation and were not retrieved for this document** |
