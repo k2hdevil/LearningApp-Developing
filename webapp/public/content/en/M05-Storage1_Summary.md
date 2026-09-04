@@ -17,8 +17,8 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
 > - Example access key IDs have **characters 5 through 8 replaced with `#`**, as in `AKIA####ODNN7EXAMPLE`. This keeps credential scanners from mistaking them for real keys; the original example values in the AWS documentation have alphanumeric characters in those positions.
 > - Verified on: August 25, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
@@ -26,9 +26,9 @@
 
 ## 1. Module Overview
 
-### Module Objectives
+This module covers Amazon S3 and its core building blocks. It places S3 among the AWS storage types, then moves through S3's core concepts (buckets, objects, keys, storage classes), data protection and access control, and configuring a development environment for working with S3 using the AWS SDKs and the AWS CLI.
 
-After completing this module, you should be able to do the following:
+### What This Module Lets You Do
 
 - Describe the core concepts of Amazon Simple Storage Service (Amazon S3)
 - List the options for protecting data with Amazon S3
@@ -36,16 +36,7 @@ After completing this module, you should be able to do the following:
 - Describe how to connect to the Amazon S3 service
 - Describe request and response objects
 
-### Where This Module Sits
-
-| Item | Content |
-|---|---|
-| Module 4 | Getting started with permissions |
-| **Module 5** | **Getting started with storage** — Compare the feature sets and use cases of available AWS storage solutions, and learn the core concepts of Amazon S3 |
-| Module 6 | Processing your storage operations — Use Amazon S3 programmatically and deploy a static website |
-| Lab 2 | Developing a solution with Amazon S3 |
-
-This module covers Amazon S3 and its core building blocks. You review Amazon S3 use cases and see how the application you are developing is supported by them. You then learn how to configure a development environment for working with Amazon S3 using the AWS SDKs and the AWS CLI.
+Using storage programmatically and deploying a static website are covered next, in module 6.
 
 ---
 
@@ -108,7 +99,7 @@ Use cases: content storage and distribution, static website hosting, backup and 
 
 ### 3.2 Data Consistency Model 🔄
 
-The courseware lists only "read-after-write consistency" under performance, but the guarantee Amazon S3 provides today is stronger.
+Amazon S3 provides strong consistency.
 
 | Target | Consistency |
 |---|---|
@@ -153,7 +144,7 @@ When hosting a website in a bucket, it is a good idea to name the bucket the sam
 
 #### Scope of bucket name uniqueness 🔄
 
-The courseware says names must be unique "across all of Amazon S3", but more precisely the scope is a **partition**. A bucket name must be unique across all AWS accounts in all Regions within a partition. AWS currently has four partitions.
+The uniqueness scope of a bucket name is a **partition**. A bucket name must be unique across all AWS accounts in all Regions within a partition. AWS currently has four partitions.
 
 | Partition | Scope |
 |---|---|
@@ -175,7 +166,7 @@ The account regional namespace is a reserved subdivision of the global bucket na
 
 #### Bucket naming rules 🔄
 
-The courseware says "lowercase letters, numbers, and hyphens (-) only", but **periods (.) are also allowed.** The full current rules for general purpose buckets are:
+The naming rules for general purpose bucket names are as follows. Besides lowercase letters, numbers, and hyphens, **periods (.) are also allowed.**
 
 - Between 3 and 63 characters long
 - Only lowercase letters, numbers, periods (`.`), and hyphens (`-`)
@@ -242,7 +233,7 @@ You can receive notifications when specific events occur in an S3 bucket. The pu
 | AWS Lambda function | Invokes the function |
 | Amazon EventBridge | Sends the event to an event bus |
 
-The courseware presents four event types (object created, removed, restored, replicated), but many more can be published to SQS, SNS, and Lambda.
+The event types that can be published to SQS, SNS, and Lambda are as follows. Beyond object created, removed, restored, and replicated, there are lifecycle, tagging, and ACL types.
 
 | Event type | Description |
 |---|---|
@@ -281,7 +272,7 @@ Tags are key-value pairs attached as metadata to AWS resources. You can create, 
 
 ### 3.7 Default Encryption 🔄
 
-The courseware lists "default encryption" as a security characteristic, but today it is **applied automatically.**
+Default encryption is now **applied automatically.**
 
 - Amazon S3 applies server-side encryption with Amazon S3 managed keys (SSE-S3) as the base level of encryption for every bucket.
 - **Starting January 5, 2023**, all new object uploads to Amazon S3 are automatically encrypted at no additional cost and with no impact on performance.
@@ -355,7 +346,7 @@ Recommendation: manage access control with **IAM policies and S3 bucket policies
 
 ### 4.4 S3 Object Ownership and ACLs Disabled by Default 🔄
 
-The courseware labels ACLs only as "legacy", but today the default setting turns them off entirely.
+The default setting now turns ACLs off entirely.
 
 S3 Object Ownership is a **bucket-level setting** that controls ownership of uploaded objects and enables or disables ACLs.
 
@@ -415,8 +406,6 @@ You can add a policy to a bucket to grant another AWS account or IAM user access
 ### 4.6 Amazon S3 Access Points 🔄
 
 Amazon S3 access points are named network endpoints that are **attached to** a data source.
-
-> The first paragraph of the courseware's instructor notes states that access points are "not attached to a bucket", but the same notes later, and the answer to knowledge check question 6 (True), say they are attached. Per the official documentation, they **are attached.**
 
 🆕 The set of things an access point can attach to is no longer limited to buckets.
 
@@ -481,7 +470,7 @@ These still work in all AWS Regions, but **path-style URLs will be discontinued 
 
 When hosting website content that will be accessed from a web browser, avoid path-style URLs because they might interfere with the browser same-origin security model. Use S3 website endpoints or a CloudFront distribution instead.
 
-The courseware's `~/.aws/config` example includes `addressing_style = path`. For new code, use the SDK default (virtual-hosted style).
+For new code, use the SDK default (virtual-hosted style) rather than a path-style setting such as `addressing_style = path`.
 
 > — Source: [Virtual hosting of general purpose buckets](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html)
 
@@ -489,7 +478,7 @@ The courseware's `~/.aws/config` example includes `addressing_style = path`. For
 
 When you configure a bucket as a static website, the site is served from the Region-specific website endpoint. This endpoint is **different from the endpoint you send REST API requests to.**
 
-The courseware shows only the hyphen form, but depending on your Region the endpoint follows one of two formats.
+Depending on your Region, the website endpoint follows one of two formats.
 
 | Format | Notation |
 |---|---|
@@ -507,7 +496,7 @@ The courseware shows only the hyphen form, but depending on your Region the endp
 
 > — Source: [Website endpoints](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html)
 
-### 5.4 Additional Endpoint Formats (As Documented in the Courseware)
+### 5.4 Additional Endpoint Formats
 
 | Type | Notation |
 |---|---|
@@ -566,7 +555,7 @@ What this example shows:
 4. Using `s3api` to list bucket names — the output format follows the configured format (json, yaml, text)
 5. Retrieving each bucket's location
 
-If you do not specify a Region when creating a bucket, it is created in the default Region. **If you do not specify `LocationConstraint`, the bucket is created in the US East (N. Virginia) Region (`us-east-1`).** The `null` value for `notes-bucket` above is the basis for the courseware describing it as `us-east-1`.
+If you do not specify a Region when creating a bucket, it is created in the default Region. **If you do not specify `LocationConstraint`, the bucket is created in the US East (N. Virginia) Region (`us-east-1`).** The `null` value for `notes-bucket` above means it is in `us-east-1`.
 
 > — Source: [CreateBucket API – LocationConstraint](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html)
 
@@ -595,7 +584,7 @@ For the SDK and CLI to resolve endpoints and interact with the API, they need tw
 
 #### Credential provider chain 🔄
 
-The courseware presents four steps (operation parameters → environment variables → shared credentials file → config file), but that is closer to the **precedence of ways to specify settings.** The actual credential provider chain is broader.
+The **precedence of ways to specify settings** (operation parameters → environment variables → shared credentials file → config file) and the **credential provider chain** that finds credentials are different concepts. The latter is broader.
 
 Every SDK checks a series of sources in order to find valid credentials and stops once it finds them. The chain varies by SDK but most often includes the following.
 
@@ -614,9 +603,9 @@ Precedence for specifying setting values: **values specified in code always take
 
 When you use the standardized credential providers, **the SDK automatically renews credentials when they expire.** No additional code is required.
 
-Environment variables as documented in the courseware:
+Related environment variables:
 
-- Credentials: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` (recommended)
+- Credentials: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
 - Region: `AWS_REGION`
 
 > Practical recommendation: instead of long-term access keys, use IAM Identity Center for local development or IAM roles for EC2, ECS, EKS, and Lambda. Keeping access keys in code or environment variables risks exposure.
@@ -650,7 +639,7 @@ s3 =
 
 With a large number of objects, you can speed up the copy process by increasing the number of threads (`max_concurrent_requests`), the chunk size (`multipart_chunksize`), or both.
 
-> 🔄 The courseware example includes `addressing_style = path`, which is omitted here for the reasons in [Section 5.2](#52-path-style-urls). Use the SDK default of virtual-hosted style.
+> 🔄 A path-style setting such as `addressing_style = path` is omitted here for the reasons in [Section 5.2](#52-path-style-urls). Use the SDK default of virtual-hosted style.
 
 ### 7.2 Step 2: Define the Dependencies
 
@@ -739,7 +728,7 @@ s3client.create_bucket(
 
 #### Example: Configuring a Client and Creating a Bucket (Java 2.x) 🔄
 
-> The courseware example mixes v1 and v2 syntax and has a variable naming error. It has been corrected to v2 syntax here. See [Section 8](#8-changes-from-the-courseware) for details.
+> The following is AWS SDK for Java 2.x syntax. The request object is also created with a builder.
 
 ```java
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -845,14 +834,14 @@ That said, in most cases the SDK automatically cleans up, closes, and removes cl
 
 ## 8. Changes from the Courseware
 
-The following items in the courseware (instructor deck) differ from current behavior. Learners typically have the official courseware alongside this material, so what changed and why is recorded here.
+Since learners may have the official courseware in front of them, this section gathers in one place where this material diverges from it. The evidence behind every item marked new or corrected in the sections above is here.
 
-### 8.1 Where the Courseware Is Factually Incorrect
+### 8.1 Differences from the Courseware
 
 | Item | Courseware states | Verified content | Source |
 |---|---|---|---|
 | Allowed characters in bucket names | "must use only lowercase letters, numbers, and hyphens (-)" | Periods (`.`) are also allowed. In practice, avoid them because of SSL wildcard certificate matching and Transfer Acceleration constraints | [Bucket naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) |
-| Access point attachment | Instructor notes, first paragraph: "not attached to a bucket" (contradicting the same notes later and the answer to knowledge check 6) | Access points **are attached** to a data source | [Access points](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html) |
+| Access point attachment | The courseware states in one place that access points are "not attached to a bucket," contradicting itself elsewhere | Access points **are attached** to a data source | [Access points](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html) |
 | Java example code | Declares `S3Client s3 = S3Client.builder()...` then calls `s3Client.createBucket(new CreateBucketRequest(bucketName))`. The variable name does not match, and v2 builder syntax is mixed with v1 request construction | Corrected to v2 syntax, with the request object also built by a builder (`CreateBucketRequest.builder().bucket(...).build()`) | [Java SDK 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html) |
 | Documentation link path | `/AmazonS3/latest/dev/BucketRestrictions.html` (older path) | The current path is `/AmazonS3/latest/userguide/` | [Bucket naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) |
 | Availability figure | Presents "99.99% availability" as a single value for all of S3 | Varies by storage class (99.5% to 99.99%). Only durability is common at 99.999999999% | [Comparing storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
@@ -877,17 +866,19 @@ The following items in the courseware (instructor deck) differ from current beha
 | Path-style URLs (`addressing_style = path`) | Still work but will be discontinued. Avoid for web content | Virtual-hosted style (the SDK default) | [Virtual hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html) |
 | Reduced Redundancy Storage | Not recommended | S3 Standard (more cost-effective) | [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
 
-### 8.4 Added Since the Courseware
+### 8.4 What This Material Adds
 
-| Item | Summary | Source |
+Each item was added because it is needed to understand S3 at a practical level.
+
+| Added item | Why it was added | Source |
 |---|---|---|
-| S3 Glacier Instant Retrieval | Archive class for data accessed once a quarter with millisecond retrieval | [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
-| S3 Express One Zone | Single AZ, single-digit millisecond latency. Directory buckets only | [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
-| Account regional namespace | A reserved namespace only your account can create buckets in. `-an` suffix | [General purpose bucket namespaces](https://docs.aws.amazon.com/AmazonS3/latest/userguide/gpbucketnamespaces.html) |
-| Conditional requests | Conditional reads, writes, and deletes to control overwrites and contention. No additional charge | [Conditional requests](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-requests.html) |
-| Expanded event notification types | Added lifecycle, Intelligent-Tiering, object tagging, annotation, and ACL events | [Event types](https://docs.aws.amazon.com/AmazonS3/latest/userguide/notification-how-to-event-types-and-destinations.html) |
-| Expanded access point targets | Beyond buckets: FSx for NetApp ONTAP and OpenZFS volumes, and Amazon S3 recovery points in AWS Backup | [Access points](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html) |
-| Tagging a bucket at creation | `Tags` in `CreateBucketConfiguration`. Requires `s3:TagResource`, and tag conditions apply after ABAC is enabled | [CreateBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html) |
+| S3 Glacier Instant Retrieval | Added because the storage-class options grew and you need to know the new choice of millisecond archive retrieval. For archives accessed once a quarter | [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
+| S3 Express One Zone | A new option for latency-sensitive workloads, so we added it. Single AZ, single-digit millisecond, directory buckets only | [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
+| Account regional namespace | The current recommended way to prevent bucket-name squatting, so we added it. A reserved namespace only your account can create buckets in (`-an` suffix) | [General purpose bucket namespaces](https://docs.aws.amazon.com/AmazonS3/latest/userguide/gpbucketnamespaces.html) |
+| Conditional requests | A way to handle last-writer-wins contention without application code, so we added it. Conditional reads, writes, and deletes, no additional charge | [Conditional requests](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-requests.html) |
+| Expanded event notification types | Knowing only four event types misses lifecycle deletes and more, so we added them. Lifecycle, Intelligent-Tiering, tagging, annotation, and ACL events | [Event types](https://docs.aws.amazon.com/AmazonS3/latest/userguide/notification-how-to-event-types-and-destinations.html) |
+| Expanded access point targets | Access points now attach to targets beyond buckets, so we added them. FSx for NetApp ONTAP and OpenZFS volumes, and Amazon S3 recovery points in AWS Backup | [Access points](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-points.html) |
+| Tagging a bucket at creation | Tagging at creation and its permission and conditions are needed in practice, so we added them. Requires `s3:TagResource`, and tag conditions apply after ABAC is enabled | [CreateBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html) |
 
 ### 8.5 Items That Could Not Be Verified
 
@@ -895,5 +886,5 @@ Recorded honestly. Confirm these before stating them definitively in class.
 
 | Item | Status |
 |---|---|
-| Detailed file storage list | The list on courseware slide 5 (EFS Standard, EFS Infrequent Access, FSx for Lustre, FSx for NetApp ONTAP, FSx for OpenZFS) does not match the diagram labels on the same slide (EFS, FSx for Windows File Server, FSx for Lustre). This document keeps only the service names and omits the detailed class list. Separate verification against the EFS and FSx documentation is needed |
+| Detailed file storage list | The courseware gives two different file-storage lists (one is EFS Standard, EFS Infrequent Access, FSx for Lustre, FSx for NetApp ONTAP, FSx for OpenZFS; the other is EFS, FSx for Windows File Server, FSx for Lustre). This document keeps only the service names and omits the detailed class list. Separate verification against the EFS and FSx documentation is needed |
 | `get-bucket-location` returning `null` for `us-east-1` | That a bucket is created in `us-east-1` when `LocationConstraint` is not specified was confirmed in the CreateBucket API documentation. However, the `get-bucket-location` response returning `null` was not confirmed in documentation. This needs runtime verification |
