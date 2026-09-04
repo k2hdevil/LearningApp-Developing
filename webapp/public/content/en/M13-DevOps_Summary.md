@@ -20,11 +20,12 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 11](#11-changes-from-the-courseware) for what changed and how.
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 11](#11-changes-from-the-courseware) for what changed and how.
 > - Verified on: September 1, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
-> - Terminology has been standardized. This document writes out **continuous integration**, **continuous delivery**, and **continuous deployment**, and uses only one abbreviation, **CI**. It also uses **infrastructure as code**, **change set**, and **deployment configuration** consistently. The courseware words the module objectives differently on slide 3 and slide 32, and the process counts on slide 7 and slide 9 do not match ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
-> - Where courseware templates and CLI examples appear in this document, **broken notation and deprecated runtimes have been corrected.** Each section includes a table stating exactly what was changed.
+> - Terminology has been standardized. This document writes out **continuous integration**, **continuous delivery**, and **continuous deployment**, and uses only one abbreviation, **CI**. It also uses **infrastructure as code**, **change set**, and **deployment configuration** consistently.
+> - Items that cannot be settled with external documentation carry no marker; they are pointed out in the body and gathered in [Section 11](#11-changes-from-the-courseware).
+> - Where templates and CLI examples appear in this document, **broken notation and deprecated runtimes have been corrected.** Each section includes a table stating exactly what was changed.
 
 ---
 
@@ -39,13 +40,13 @@ After completing this module, you should be able to do the following:
 - Construct an AWS Serverless Application Model (AWS SAM) template to deploy a serverless application
 - Describe the various AWS SAM deployment strategies
 
-The courseware carries these four items on slide 3 (Module objectives) and slide 32 (Module summary), but **the wording is not identical.** Item 2 splits between "DevOps **does**  … development **practices**" and "**in** DevOps … development **methods**," and item 3 differs in how the abbreviation is written. This document standardizes on the slide 3 wording ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+Some source material words these four items differently in two places. Item 2 splits between "DevOps **does** … development **practices**" and "**in** DevOps … development **methods**," and item 3 differs in how the abbreviation is written. This document standardizes on a single wording ([Section 11.1](#111-differences-from-the-courseware)).
 
-And **the deck contains nothing that corresponds to the fourth objective.** The objective is "Describe the various **AWS SAM** deployment strategies," yet the body of the deployment strategies section (slides 25–26) is three words — `Canary`, `Linear`, `All-at-once` — and the entire instructor note is about AWS CodeDeploy. **Nowhere in the deck is there any mention of how to declare a deployment strategy in a SAM template.** This document fills that gap in [Section 10](#10-deployment-strategies) from official documentation. It is the largest gap in this module.
+The practical content behind the fourth objective, "Describe the various **AWS SAM** deployment strategies" — namely **how to declare a deployment strategy in a SAM template** — is covered in [Section 10](#10-deployment-strategies) from official documentation. That section handles deployment types, compute platforms, and predefined configurations first, then fills in how to declare them in a SAM template.
 
 ### Where This Module Sits
 
-The courseware places this module last on day 3. It is where the serverless application built in module 11 and the user authentication attached in module 12 **actually get deployed.**
+This module comes last on day 3. It is where the serverless application built in module 11 and the user authentication attached in module 12 **actually get deployed.**
 
 | Item | Content |
 |---|---|
@@ -54,42 +55,41 @@ The courseware places this module last on day 3. It is where the serverless appl
 | **Module 13** | **Deploying your application** — identifying the AWS services and features used to deploy a web application |
 | Lab 6 | Capstone - completing the application build |
 
-Slide 2 (Agenda) labels module 12 as "Granting access to application users," while the subtitle on the M12 deck cover is "Granting Access to Your Application Users." The same module carries different names across the two decks ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+The name of module 12 appears slightly differently across materials — "Granting access to application users" and "Granting Access to Your Application Users" ([Section 11.1](#111-differences-from-the-courseware)).
 
 ### What This Module Covers
 
-The courseware divides 33 slides into seven sections. This document follows the same order.
+This module covers seven topics in the following order.
 
-| Courseware section | Slides | This document |
-|---|---|---|
-| Cover · Agenda · Module objectives | 1–3 | [Section 1](#1-module-overview) |
-| Deployment planning and approaches | 4–10 | [Section 2](#2-devops) · [Section 3](#3-infrastructure-as-code-and-deployment-tools) |
-| AWS Serverless Application Model (AWS SAM) | 11–17 | [Section 4](#4-aws-sam) · [Section 5](#5-the-sam-template) · [Section 6](#6-sam-resource-types-and-connectors) · [Section 7](#7-api-access-control) |
-| Deploying with AWS SAM | 18–24 | [Section 8](#8-installing-the-sam-cli-and-local-testing) · [Section 9](#9-building-and-deploying) |
-| Deployment strategies | 25–26 | [Section 10](#10-deployment-strategies) |
-| Demonstration: AWS SAM | 27–28 | [Section 9.9](#99-the-demonstration-procedure) |
-| Checkpoint | 29–30 | (not covered in this document) |
-| Summary | 31–33 | [Section 1.2](#12-terminology) |
+| Topic | This document |
+|---|---|
+| Cover · Agenda · Module objectives | [Section 1](#1-module-overview) |
+| Deployment planning and approaches | [Section 2](#2-devops) · [Section 3](#3-infrastructure-as-code-and-deployment-tools) |
+| AWS Serverless Application Model (AWS SAM) | [Section 4](#4-aws-sam) · [Section 5](#5-the-sam-template) · [Section 6](#6-sam-resource-types-and-connectors) · [Section 7](#7-api-access-control) |
+| Deploying with AWS SAM | [Section 8](#8-installing-the-sam-cli-and-local-testing) · [Section 9](#9-building-and-deploying) |
+| Deployment strategies | [Section 10](#10-deployment-strategies) |
+| Demonstration: AWS SAM | [Section 9.9](#99-the-demonstration-procedure) |
+| Summary | [Section 1.2](#12-terminology) |
 
-**The first and second halves of this deck are very different in character.** Slides 4–10 cover DevOps concepts, with diagram labels backed by long instructor notes. Slides 11–26 cover AWS SAM in practice, with YAML templates and CLI commands. Code and CLI appear on seven slides — 14, 15, 20, 21, 22, 23, and 24 — and there is exactly **one table** in the whole deck (slide 17, comparing access control mechanisms).
+**The first and second halves of this module are very different in character.** The first half covers DevOps concepts, while the second half covers AWS SAM in practice, with YAML templates and CLI commands.
 
-This module has no lab. There is only a demonstration (slides 27–28), and **slide 28 has no instructor notes at all.** This document fills that gap with a command-level procedure in [Section 9.9](#99-the-demonstration-procedure).
+This module has no lab, only a demonstration. This document fills that gap with a command-level procedure in [Section 9.9](#99-the-demonstration-procedure).
 
 ### 1.1 The Biggest Changes in This Module 🆕
 
-A lot has been added to and changed in AWS SAM since the courseware was written. Here are the nine you will hit first in class. The evidence for each is in the relevant section.
+A lot has been added to and changed in AWS SAM over the years. Here are the nine you will hit first in class. The evidence for each is in the relevant section.
 
-| What changed | Courseware | Current |
+| What changed | Commonly taught | Current |
 |---|---|---|
-| SAM deployment strategies | Required by module objective 4, but **AWS SAM never appears in the deployment strategies section** | Declared with **`AutoPublishAlias` + `DeploymentPreference`**(`Type` · `Alarms` · `Hooks`) on `AWS::Serverless::Function`. There are nine predefined `Type` values, and the SAM spelling is **`AllAtOnce`**, not `All-at-once` ([Section 10.4](#104-declaring-deployment-strategy-in-a-sam-template)) |
+| SAM deployment strategies | Required by module objective 4, but **AWS SAM rarely appears in the deployment strategies material** | Declared with **`AutoPublishAlias` + `DeploymentPreference`**(`Type` · `Alarms` · `Hooks`) on `AWS::Serverless::Function`. There are nine predefined `Type` values, and the SAM spelling is **`AllAtOnce`**, not `All-at-once` ([Section 10.4](#104-declaring-deployment-strategy-in-a-sam-template)) |
 | `Transform` value | `AWS::serverless-2016-10-31` — **lowercase `s`** | **`AWS::Serverless-2016-10-31`**(capital `S`). This declaration is **required** in an AWS SAM template file and is what identifies a CloudFormation template as an AWS SAM template ([Section 5.2](#52-the-transform-declaration)) |
 | `Globals` section | "Sets the **global variables** to be used within the AWS SAM template" | It is the section where you declare **properties that several resources have in common** once and let them inherit. The section that parameterizes values is **`Parameters`** ([Section 5.3](#53-the-globals-section)) |
-| `sam build --use-container` | Instructor note: "Some languages (for example .NET or Python) cannot use this option" | **The current `sam build` reference contains no statement that any language or runtime cannot use it.** On the contrary, the `--build-image` description gives a Python build image used together with `--use-container` as its example. The only stated restriction is **incompatibility with `--build-in-source`** ([Section 9.2](#92-sam-build-and-container-builds)) |
-| `sam package` | Presents `sam build && sam package --s3-bucket <bucket_name>` as a pre-deployment step | Documentation states in a Note that **`sam deploy` now implicitly performs the functionality of `sam package`.** The bucket can be created automatically with **`--resolve-s3`** ([Section 9.3](#93-sam-package-is-no-longer-a-separate-step)) |
+| `sam build --use-container` | Sometimes explained as "Some languages (for example .NET or Python) cannot use this option" | **The current `sam build` reference contains no statement that any language or runtime cannot use it.** On the contrary, the `--build-image` description gives a Python build image used together with `--use-container` as its example. The only stated restriction is **incompatibility with `--build-in-source`** ([Section 9.2](#92-sam-build-and-container-builds)) |
+| `sam package` | Presented as a pre-deployment step: `sam build && sam package --s3-bucket <bucket_name>` | Documentation states in a Note that **`sam deploy` now implicitly performs the functionality of `sam package`.** The bucket can be created automatically with **`--resolve-s3`** ([Section 9.3](#93-sam-package-is-no-longer-a-separate-step)) |
 | Configuration file | `sam deploy --template-file deploy.yml` with the comment "# Deploy using a configuration file" | `--template-file` specifies the **template**. The configuration file is **`--config-file`**(default `samconfig.toml`) and is the output of `sam deploy --guided` ([Section 9.4](#94-sam-deploy-and-samconfigtoml)) |
-| SAM resource types | **6** | **13.** Since the courseware, `Application` · `CapacityProvider` · **`Connector`** · `GraphQLApi` · `WebSocketApi` · `MicrovmImage` · `NetworkConnector` have been added ([Section 6.1](#61-thirteen-resource-types)) |
+| SAM resource types | **6** | **13.** Seven more have since been added: `Application` · `CapacityProvider` · **`Connector`** · `GraphQLApi` · `WebSocketApi` · `MicrovmImage` · `NetworkConnector` ([Section 6.1](#61-thirteen-resource-types)) |
 | SAM CLI commands | **7** | **24.** These include `validate` · `sync` · `delete` · `list` · `logs` · `traces` · `publish` · `pipeline` · `remote invoke`, and `sam local` has **6** subcommands rather than 3 ([Section 8.3](#83-twenty-four-cli-commands)) |
-| Lambda runtimes | Slides 14 · 15 · 22 use `python3.8`; slide 21 uses `python3.9` | **Both are deprecated.** `python3.8` on October 14, 2024 and `python3.9` on December 15, 2025 ([Section 11.3](#113-discouraged-and-unsupported-items)) |
+| Lambda runtimes | Examples use `python3.8` and `python3.9` | **Both are deprecated.** `python3.8` on October 14, 2024 and `python3.9` on December 15, 2025 ([Section 11.3](#113-discouraged-and-unsupported-items)) |
 
 > — Source: [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html)
 
@@ -101,7 +101,7 @@ A lot has been added to and changed in AWS SAM since the courseware was written.
 
 ### 1.2 Terminology 🆕
 
-**This deck has no terminology slide.** M12 had term definitions on slide 36, but M13 goes straight from the module summary to "Thank you." There is no place that defines DevOps, continuous integration, infrastructure as code, change set, or deployment configuration, so this terminology section was built from official documentation definitions.
+Terms that first appear in this module — DevOps, continuous integration, infrastructure as code, change set, deployment configuration — are defined here from official documentation.
 
 | Term | Definition |
 |---|---|
@@ -132,9 +132,9 @@ A lot has been added to and changed in AWS SAM since the courseware was written.
 
 ### 2.1 Problems with Traditional Software Deployment
 
-Slide 5 presents six problems with traditional deployment. This list is the starting point for the whole module, and each of the tools and strategies covered later targets one of these problems. The last column points to where this document addresses it.
+Traditional deployment carries six problems. This list is the starting point for the whole module, and each of the tools and strategies covered later targets one of these problems. The last column points to where this document addresses it.
 
-| # | Problem in the courseware | Instructor note | Where this document addresses it |
+| # | Problem | Description | Where this document addresses it |
 |---|---|---|---|
 | 1 | Inconsistent packaging | If software is not built consistently using the same system, packaging will not be consistent either. That is especially true when it is built on a developer laptop | [Section 9.2](#92-sam-build-and-container-builds) container builds |
 | 2 | Inconsistent software deployment | A weak official deployment mechanism creates consistency problems too | [Section 9.4](#94-sam-deploy-and-samconfigtoml) configuration-file-based deployment |
@@ -143,13 +143,13 @@ Slide 5 presents six problems with traditional deployment. This list is the star
 | 5 | Potential for human error | Any process that a person must run manually is prone to error | [Section 9.5](#95-change-sets-and-rollback) reviewing change sets |
 | 6 | Manual approvals | Non-automated approval processes can slow deployment down | [Section 2.3](#23-the-three-devops-processes) continuous delivery |
 
-The courseware raises these six problems and looks to DevOps for answers. However, **nothing anywhere in the deck addresses item 4, "no rollback plan."** How to configure rollback never appears. This document fills that gap with the CloudFormation rollback options in [Section 9.5](#95-change-sets-and-rollback) and the alarm-based automatic rollback in [Section 10.8](#108-rollback-paths-in-one-place).
+The answers to these six problems come from DevOps. In particular, how to configure item 4, "no rollback plan," is covered by the CloudFormation rollback options in [Section 9.5](#95-change-sets-and-rollback) and the alarm-based automatic rollback in [Section 10.8](#108-rollback-paths-in-one-place).
 
 ### 2.2 DevOps Culture
 
-Slide 6 presents DevOps culture as eight items. **The slide body labels and the instructor note headings differ in three places** (for example, body "Focus on customer needs" versus note "Customer-needs focused"), so this document standardizes on **the body labels** ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+DevOps culture comes down to eight items. Some source material names the same item slightly differently (for example "Focus on customer needs" versus "Customer-needs focused"), so this document standardizes on one name ([Section 11.1](#111-differences-from-the-courseware)).
 
-| # | Item | Instructor note |
+| # | Item | Description |
 |---|---|---|
 | 1 | Focus on customer needs | Aligns people, processes, and tools, and drives development that puts the customer above all else. **Feedback loops** keep teams in constant contact with customers so they can adjust |
 | 2 | Build a highly collaborative environment | Integrates development and operations to **remove silos**, align goals, and reach shared objectives |
@@ -160,9 +160,9 @@ Slide 6 presents DevOps culture as eight items. **The slide body labels and the 
 | 7 | Release frequently | Gains the **agility** to respond quickly to customer needs and business goals |
 | 8 | Continuous improvement | Carefully defined **metrics** help the team monitor progress and evaluate processes and tools |
 
-The AWS product page "What is DevOps?" that the instructor note cites as a reference **still responds**, and its title is `What is DevOps?`. What its `DevOps Cultural Philosophy` section describes points in the same direction as several of the eight items.
+What the `DevOps Cultural Philosophy` section of the AWS product page `What is DevOps?` describes points in the same direction as several of the eight items above.
 
-| Documentation statement | Corresponding courseware item |
+| Documentation statement | Corresponding item |
 |---|---|
 | Removes the barriers between two traditionally siloed teams, development and operations. The two teams work together to optimize both developer productivity and operational reliability | Item 2, build a highly collaborative environment |
 | They communicate frequently, increase efficiency, and work to improve the quality of the services they deliver to customers | Item 1, focus on customer needs |
@@ -174,17 +174,17 @@ The AWS product page "What is DevOps?" that the instructor note cites as a refer
 
 ### 2.3 The Three DevOps Processes 🔄
 
-Slide 7 presents continuous integration, continuous delivery, and continuous deployment, and the instructor note defines each in one line. **Two items were corrected.**
+DevOps splits into three processes: continuous integration, continuous delivery, and continuous deployment. **Two items are corrected.**
 
-| Process | Courseware instructor note | Verified content |
+| Process | Commonly given description | Verified content |
 |---|---|---|
 | Continuous integration (CI) | Builds the software and then deploys it to a non-production environment for automated testing | Points in the same direction. Documentation describes team members using a version control system to frequently integrate their work into the same location, with each change built and verified to **detect integration errors as quickly as possible**, and states that it **focuses on automatically building and testing code** |
-| Continuous delivery | **Must go through a manual approval step** before deploying to production | 🔄 **A manual approval is not a required condition.** Documentation states that before the final push to production, **a person, an automated test, or a business rule** determines when that final push happens. It also states that while every successful change can be released to production immediately, **not every change has to be released right away** |
+| Continuous delivery | Sometimes described as **having to go through a manual approval step** before deploying to production | 🔄 **A manual approval is not a required condition.** Documentation states that before the final push to production, **a person, an automated test, or a business rule** determines when that final push happens. It also states that while every successful change can be released to production immediately, **not every change has to be released right away** |
 | Continuous deployment (CD) | A fully automated pipeline from build to production deployment | 🔄 **This statement could not be verified.** The CodePipeline documentation we consulted defines continuous integration and continuous delivery but does not define continuous deployment ([Section 11.5](#115-items-we-could-not-verify)) |
 
-**The abbreviations also cause a problem inside the courseware itself.** The instructor note assigns `CI` to continuous integration and `CD` to continuous deployment, and gives continuous delivery no abbreviation. Since both `continuous delivery` and `continuous deployment` are abbreviated `CD` in English, that assignment invites confusion. **This document uses only the abbreviation `CI` and writes the other two out in full.**
+**The abbreviations also warrant care.** Assigning `CI` to continuous integration and `CD` to continuous deployment invites confusion, because both `continuous delivery` and `continuous deployment` are abbreviated `CD` in English. **This document uses only the abbreviation `CI` and writes the other two out in full.**
 
-Also, slide 7 presents three processes, while the six DevOps practices on slide 9 (see [Section 2.5](#25-devops-practices)) **do not include continuous deployment.** Two slides covering the same family of concepts have different item counts ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+These three processes are covered here, yet the six DevOps practices in [Section 2.5](#25-devops-practices) **do not include continuous deployment** — the same family of concepts sometimes carries different item counts ([Section 11.1](#111-differences-from-the-courseware)).
 
 The difference between the two concepts, as a table:
 
@@ -199,9 +199,9 @@ The difference between the two concepts, as a table:
 
 ### 2.4 Why Adopt DevOps
 
-Slide 8 presents six benefits of DevOps. **We could not secure evidence for these six items in this verification pass.** The reference URL responded, but the body we retrieved did not include the benefits section. The table below is therefore **the courseware wording as-is**, not verified against official documentation ([Section 11.5](#115-items-we-could-not-verify)).
+DevOps has six benefits. **We could not secure evidence for these six items in this verification pass.** The reference URL responded, but the body we retrieved did not include the benefits section. The table below therefore reproduces the source material's wording as-is, not verified against official documentation ([Section 11.5](#115-items-we-could-not-verify)).
 
-| # | Benefit | Courseware instructor note |
+| # | Benefit | Description |
 |---|---|---|
 | 1 | Speed | Innovate faster for customers and adapt better to market changes. For example, **microservices and continuous delivery** let teams own their services and release updates more quickly |
 | 2 | Rapid delivery | Improve the frequency and pace of releases. **Continuous integration and continuous delivery are practices that automate the software release process from build to deployment** |
@@ -210,13 +210,13 @@ Slide 8 presents six benefits of DevOps. **We could not secure evidence for thes
 | 5 | Improved collaboration | Build more effective teams under a DevOps cultural model that emphasizes values such as **ownership and accountability**. For example, reduce the **handover period** between development and operations teams, or write code with the environment it runs in in mind |
 | 6 | Security | Move quickly while retaining control and preserving compliance. **Automated compliance policies, fine-grained controls, and configuration management techniques** let you adopt a DevOps model without giving up security. For example, **infrastructure as code and policy as code** let you define and track compliance at scale |
 
-Of the six, the practices named in items 3 (monitoring and logging), 4 (infrastructure as code), and 6 (configuration management) come back in [Section 2.5](#25-devops-practices). In other words slide 8 is the "why" and slide 9 is the "with what."
+Of the six, the practices named in items 3 (monitoring and logging), 4 (infrastructure as code), and 6 (configuration management) come back in [Section 2.5](#25-devops-practices). In other words, if these benefits are the "why," the practices in the next section are the "with what."
 
 ### 2.5 DevOps Practices 🔄
 
-Slide 9 presents six DevOps practices. In the original text boxes, **the space before the conjunction is missing** in the Korean labels for "Monitoring and logging" and "Communication and collaboration," and "Infrastructure as code" is split across two lines. This document renders them normally ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+There are six DevOps practices. Some source material renders the Korean labels for "Monitoring and logging" and "Communication and collaboration" **with the space before the conjunction missing**, and splits "Infrastructure as code" across two lines. This document renders them normally ([Section 11.1](#111-differences-from-the-courseware)).
 
-| # | Practice | Definition in the instructor note |
+| # | Practice | Definition |
 |---|---|---|
 | 1 | Continuous integration | A practice where developers regularly **merge code changes into a central repository** after automated builds and tests run. The goals are ① find and resolve bugs faster ② improve software quality ③ shorten the time to validate and release new updates |
 | 2 | Continuous delivery | A practice where code changes for release to production are **automatically built, tested, and prepared**. It extends continuous integration by deploying all code changes to a test or production environment after the build stage. Implemented properly, you always have a **build artifact** that has passed a standardized test process and can be deployed immediately |
@@ -225,11 +225,11 @@ Slide 9 presents six DevOps practices. In the original text boxes, **the space b
 | 5 | Monitoring and logging | Monitor metrics and logs to see how application and infrastructure performance affects the end-user experience. Gain **insight into root causes**, and because services must run around the clock, **active monitoring** matters |
 | 6 | Communication and collaboration | One of the **key cultural aspects** of DevOps. Tooling and automation bring development and operations workflows and responsibilities together so that collaboration happens. Teams use chat applications, issue tracking systems, project tracking systems, and wikis |
 
-🔄 **The documentation presents one more.** The `What is DevOps?` page presents **configuration management** alongside infrastructure as code as an infrastructure automation practice, and states that these two practices help keep compute resources **elastic**. The six-item list in the courseware does not include configuration management.
+🔄 **The documentation presents one more.** The `What is DevOps?` page presents **configuration management** alongside infrastructure as code as an infrastructure automation practice, and states that these two practices help keep compute resources **elastic**. The six-item list above does not include configuration management.
 
 Separating what the documentation confirms from what it does not:
 
-| Courseware item | Confirmed in documentation |
+| Item | Confirmed in documentation |
 |---|---|
 | Continuous integration | Confirmed |
 | Continuous delivery | Confirmed |
@@ -237,9 +237,9 @@ Separating what the documentation confirms from what it does not:
 | Infrastructure as code | Confirmed, but **we did not consult a standalone IaC definition page** — only the mention on the `What is DevOps?` page ([Section 11.5](#115-items-we-could-not-verify)) |
 | Monitoring and logging | Confirmed. The documentation describes it as helping engineers track application and infrastructure performance so they can respond to problems quickly |
 | Communication and collaboration | Corresponds to the cultural philosophy section's statements about removing silos and communicating frequently |
-| — | 🆕 **Configuration management** — presented by the documentation but absent from the courseware list |
+| — | 🆕 **Configuration management** — a seventh practice presented by the documentation |
 
-The documentation also states that **the combination of microservices and increased release frequency** greatly increases the number of deployments and creates operational challenges, and that DevOps practices such as continuous integration and continuous delivery address them. The courseware lists the six practices side by side without explaining this causal link.
+The documentation also states that **the combination of microservices and increased release frequency** greatly increases the number of deployments and creates operational challenges, and that DevOps practices such as continuous integration and continuous delivery address them.
 
 > — Source: [What is DevOps?](https://aws.amazon.com/devops/what-is-devops/)
 
@@ -249,7 +249,7 @@ The documentation also states that **the combination of microservices and increa
 
 ### 3.1 Infrastructure as Code
 
-The courseware explains infrastructure as code as one of the six practices on slide 9, and confirms it again in knowledge check question 2 on slide 30 ("Infrastructure as code is an important DevOps practice" — true). But **the courseware explains IaC only as a concept and never connects it to tools.** CloudFormation appears only as a name in the tool list on slide 10, and nowhere in the deck does it say that AWS SAM is an IaC tool.
+Infrastructure as code is one of the DevOps practices, and an important one. On its own as a concept, though, it does not connect to tools. CloudFormation appears as a name in the tool list, and AWS SAM is itself an IaC tool.
 
 Per the documentation, the IaC connections for this module are as follows.
 
@@ -260,7 +260,7 @@ Per the documentation, the IaC connections for this module are as follows.
 | Why it connects to version control | Because templates are text files, you can **track infrastructure changes with a version control system** the way you manage revisions of source code, and if you need to reverse an infrastructure change you can use **a previous version of the template** |
 | Where AWS SAM sits | AWS SAM is an **open-source framework for building serverless applications with infrastructure as code** |
 
-That third row is the first answer to problem 4 ("no rollback plan") from [Section 2.1](#21-problems-with-traditional-software-deployment). The courseware instructor note introduces CloudFormation without covering this point.
+That third row is the first answer to problem 4 ("no rollback plan") from [Section 2.1](#21-problems-with-traditional-software-deployment). Being able to revert to a previous version of the template is the starting point for rollback.
 
 > — Source: [What is CloudFormation?](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
 
@@ -268,9 +268,9 @@ That third row is the first answer to problem 4 ("no rollback plan") from [Secti
 
 ### 3.2 AWS Tools for DevOps
 
-Slide 10 lists nine tools and the instructor note describes eight of them in one line each (the ninth is "and many more"). The table separates what we verified from what we did not.
+There are nine AWS tools for DevOps (eight described in one line each, with the ninth being "and many more"). The table separates what we verified from what we did not.
 
-| Service | Courseware instructor note | Verification status |
+| Service | Description | Verification status |
 |---|---|---|
 | AWS CodeBuild | Builds and tests code with continuous scaling on a pay-as-you-go model | **Verified.** Documentation describes CodeBuild as a **fully managed build service in the cloud** that compiles source code, runs unit tests, and produces artifacts ready to deploy, and states that you **pay only for the build minutes you consume** |
 | AWS CodeArtifact | Secure, scalable, and cost-effective software artifact management | **Not verified** ([Section 11.5](#115-items-we-could-not-verify)) |
@@ -282,9 +282,9 @@ Slide 10 lists nine tools and the instructor note describes eight of them in one
 | AWS X-Ray | Analyzes and debugs production or distributed applications | **Not verified** ([Section 11.5](#115-items-we-could-not-verify)) |
 | And many more | (no description) | — |
 
-The courseware's CloudFormation sentence repeats an adverb of the same meaning ("easily … easily create"). The table above cleans that up ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+The CloudFormation description above cleans up a sentence in the source material that repeats an adverb of the same meaning ("easily … easily create") ([Section 11.1](#111-differences-from-the-courseware)).
 
-The `DevOps pipeline example` in the CodePipeline documentation shows how these three services actually fit together. It is the evidence behind knowledge check question 3 on slide 30 ("AWS CodePipeline can orchestrate AWS CodeBuild and AWS CodeDeploy" — true).
+The `DevOps pipeline example` in the CodePipeline documentation shows how these three services actually fit together. It is the evidence that **AWS CodePipeline can orchestrate AWS CodeBuild and AWS CodeDeploy.**
 
 | Stage | Action | Documentation statement |
 |---|---|---|
@@ -304,7 +304,7 @@ The documentation states that CodeBuild can be **added to a CodePipeline pipelin
 
 ### 3.3 Comparing IaC Tools 🆕
 
-The courseware explains the relationship between AWS SAM and CloudFormation only as "it transforms" ([Section 4.3](#43-how-it-works-transformation)) and never mentions the AWS CDK. The documentation offers **guidance on when to use which**.
+The relationship between AWS SAM and CloudFormation is often summarized only as "it transforms" ([Section 4.3](#43-how-it-works-transformation)), with no mention of the AWS CDK. The documentation offers **guidance on when to use which**.
 
 | Situation | Documentation guidance |
 |---|---|
@@ -330,20 +330,20 @@ The documentation presents five AWS SAM use scenarios.
 | Serverless CI/CD | The `sam pipeline` family of commands corresponds to this ([Section 8.3](#83-twenty-four-cli-commands)) |
 | Migration | Move resources created in the console to infrastructure as code |
 
-The second and fifth scenarios are absent from the courseware.
+The second and fifth scenarios are less commonly taught.
 
 > — Source: [What is the AWS Serverless Application Model (AWS SAM)?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
 ### 3.4 No Source Repository in the List 🆕
 
-Slide 9 defines continuous integration as "regularly merging code changes into a **central repository**." Yet **there is not a single source repository service in the tool list on slide 10.** The deck never answers what that central repository should be.
+Continuous integration is defined as "regularly merging code changes into a **central repository**." Yet **there is not a single source repository service in the DevOps tool list.** What that central repository should be does not emerge from the list alone.
 
 The `DevOps pipeline example` in the CodePipeline documentation we consulted configures the source stage as a **GitHub repository** with a GitHub source action. In other words, the central repository in the current documentation's example is GitHub.
 
 | Item | Status |
 |---|---|
 | Source in the documentation example | A GitHub repository plus a GitHub source action. A commit push is detected and a pipeline execution starts |
-| AWS CodeCommit | **Not verified.** We tried the developer guide, the FAQ, and documentation search, but found no notice that it is closed to new customers. We did not fill this in by guessing ([Section 11.5](#115-items-we-could-not-verify)). Note that CodeCommit **does not appear** in the tool list on slide 10 |
+| AWS CodeCommit | **Not verified.** We tried the developer guide, the FAQ, and documentation search, but found no notice that it is closed to new customers. We did not fill this in by guessing ([Section 11.5](#115-items-we-could-not-verify)). Note that CodeCommit **does not appear** in the DevOps tool list |
 
 > — Source: [What is AWS CodePipeline?](https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html)
 
@@ -353,7 +353,7 @@ The `DevOps pipeline example` in the CodePipeline documentation we consulted con
 
 ### 4.1 What AWS SAM Is
 
-The body of slide 12 is one line: "AWS SAM is an open-source framework used to deploy serverless applications." The documentation narrows that slightly.
+In one line, AWS SAM is "an open-source framework used to deploy serverless applications." The documentation narrows that slightly.
 
 | Item | Documentation statement |
 |---|---|
@@ -362,37 +362,37 @@ The body of slide 12 is one line: "AWS SAM is an open-source framework used to d
 | What the SAM template is | **An extension of CloudFormation** that provides simplified syntax for defining serverless resources |
 | What a project is | The directory `sam init` creates. It holds the AWS SAM template, application code, and other configuration files |
 
-The documentation's "**building** with infrastructure as code" is broader than the courseware's "used to deploy." SAM is not only a deployment tool; it covers the whole cycle of authoring, building, deploying, testing, and monitoring ([Section 8.3](#83-twenty-four-cli-commands)).
+The documentation's "**building** with infrastructure as code" is broader than "used to deploy." SAM is not only a deployment tool; it covers the whole cycle of authoring, building, deploying, testing, and monitoring ([Section 8.3](#83-twenty-four-cli-commands)).
 
 > — Source: [What is the AWS Serverless Application Model (AWS SAM)?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
 ### 4.2 The Two Components
 
-Slide 12 splits AWS SAM into two components. The documentation presents the same two.
+AWS SAM splits into two components.
 
-| Component | Courseware instructor note | Documentation statement |
+| Component | Description | Documentation statement |
 |---|---|---|
 | AWS SAM template specification | Provides efficient syntax for describing the **functions, APIs, permissions, configuration, and events** that make up a serverless application. Treats it as a deployable, versioned **single entity** | **An extension of CloudFormation** that provides simplified syntax for defining serverless resources |
 | AWS SAM CLI | A tool for building the serverless application defined in an AWS SAM template | A command line tool that helps with the **development, local testing, and deployment** of serverless applications |
 
-The instructor note lists four things the CLI can do. **The command name for the first is nowhere in the deck.**
+The CLI can do four things. **The command name for the first is not widely known.**
 
-| # | Courseware instructor note | Corresponding command |
+| # | What it does | Corresponding command |
 |---|---|---|
-| 1 | Verify that the AWS SAM template file is written to specification | 🆕 **`sam validate`**. The courseware never gives this command name ([Section 8.5](#85-sam-validate)) |
+| 1 | Verify that the AWS SAM template file is written to specification | 🆕 **`sam validate`** ([Section 8.5](#85-sam-validate)) |
 | 2 | Invoke Lambda functions locally | `sam local invoke` ([Section 8.7](#87-sam-local-invoke-and-docker)) |
 | 3 | Step-debug Lambda functions | The `sam local` family ([Section 8.6](#86-six-sam-local-subcommands)) |
 | 4 | Package and deploy serverless applications to the AWS Cloud | `sam deploy`. **Packaging is now part of `sam deploy`** ([Section 9.3](#93-sam-package-is-no-longer-a-separate-step)) |
 
-Of the five **key features** the documentation presents, the last three are absent from the courseware.
+The documentation presents five **key features**. The last three are relatively recent additions and are covered here for the first time.
 
-| Key feature | In the courseware? |
+| Key feature | Note |
 |---|---|
-| Define infrastructure code quickly with less code | Yes |
-| Manage the entire lifecycle — author, build, deploy, test, monitor — with the AWS SAM CLI | Partly (monitoring is missing) |
-| 🆕 Quickly provision permissions between resources with **AWS SAM connectors** | No ([Section 6.3](#63-connectors)) |
-| 🆕 Continuously sync local changes to the cloud during development with **`sam sync`** | No ([Section 9.6](#96-reducing-the-development-loop-with-sam-sync)) |
-| 🆕 Locally debug and test Lambda functions and layers of **Terraform** serverless applications with the AWS SAM CLI | No |
+| Define infrastructure code quickly with less code | The SAM basics |
+| Manage the entire lifecycle — author, build, deploy, test, monitor — with the AWS SAM CLI | Includes monitoring |
+| 🆕 Quickly provision permissions between resources with **AWS SAM connectors** | [Section 6.3](#63-connectors) |
+| 🆕 Continuously sync local changes to the cloud during development with **`sam sync`** | [Section 9.6](#96-reducing-the-development-loop-with-sam-sync) |
+| 🆕 Locally debug and test Lambda functions and layers of **Terraform** serverless applications with the AWS SAM CLI | — |
 
 > — Source: [What is the AWS Serverless Application Model (AWS SAM)?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
@@ -400,9 +400,9 @@ Of the five **key features** the documentation presents, the last three are abse
 
 ### 4.3 How It Works: Transformation
 
-Slide 13 shows the transformation flow in a single diagram. **This statement matches the current documentation.**
+The transformation flow is as follows. **It matches the current documentation.**
 
-| Courseware slide 13 | Documentation verification |
+| Transformation flow | Documentation verification |
 |---|---|
 | AWS SAM **transforms** the resources in its own template (**YAML or JSON**) into the corresponding AWS CloudFormation template | Matches. The documentation lists **Transformational** as one of the specification's characteristics and states that AWS SAM performs the complex work of transforming the template into the code needed to provision infrastructure through CloudFormation |
 | It then applies the CloudFormation template to create and update AWS resources | Matches |
@@ -417,7 +417,7 @@ The four characteristics of the template specification that the documentation pr
 | An abstract, short-hand syntax | Describes the same infrastructure in fewer lines |
 | Transformational | AWS SAM expands the shorthand syntax into CloudFormation syntax |
 
-The second item is the evidence behind knowledge check question 4 on slide 30 ("An AWS SAM template is an extension of an AWS CloudFormation template" — true).
+The second item is the evidence that **an AWS SAM template is an extension of an AWS CloudFormation template.**
 
 🆕 **The documentation also states how much the transformation grows.** Its example is a **23-line** AWS SAM template with one Lambda function, one HTTP API, one `SimpleTable`, and one connector, and it states that during deployment those 23 lines are transformed into **over 200 lines** of CloudFormation syntax. It also names what each expands into.
 
@@ -429,13 +429,13 @@ The second item is the evidence behind knowledge check question 4 on slide 30 ("
 
 Resources SAM creates carry `SamResourceId` in `Metadata` and a `lambda:createdBy=SAM` tag.
 
-🔄 **The courseware does not make clear "when" the transformation happens.** The documentation states that it is performed **during deployment**, which is why the `Transform` declaration in [Section 5.2](#52-the-transform-declaration) is needed. When the template is deployed to CloudFormation, CloudFormation reads that declaration and applies the serverless transform.
+🔄 **So "when" does the transformation happen?** The documentation states that it is performed **during deployment**, which is why the `Transform` declaration in [Section 5.2](#52-the-transform-declaration) is needed. When the template is deployed to CloudFormation, CloudFormation reads that declaration and applies the serverless transform.
 
 > — Source: [How AWS SAM works](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam-overview.html)
 
 ### 4.4 When to Use AWS SAM 🆕
 
-The courseware does not summarize when to use SAM. Read together with the comparison in [Section 3.3](#33-comparing-iac-tools), the decision criteria come out as follows.
+When to use SAM comes out as follows, read together with the comparison in [Section 3.3](#33-comparing-iac-tools).
 
 | Decision point | Choice |
 |---|---|
@@ -451,7 +451,7 @@ The courseware does not summarize when to use SAM. Read together with the compar
 
 ### 4.5 AWS Serverless Application Repository 🆕
 
-The courseware does not cover this service at all. It is the path for sharing SAM applications, and both the `sam publish` command ([Section 8.3](#83-twenty-four-cli-commands)) and the `AWS::Serverless::Application` resource type ([Section 6.1](#61-thirteen-resource-types)) connect to it, so it is worth noting in a module about SAM.
+This service is the path for sharing SAM applications. Both the `sam publish` command ([Section 8.3](#83-twenty-four-cli-commands)) and the `AWS::Serverless::Application` resource type ([Section 6.1](#61-thirteen-resource-types)) connect to it, so it is worth noting in a module about SAM.
 
 | Item | Documentation statement |
 |---|---|
@@ -474,7 +474,7 @@ It also connects to [Section 5.7](#57-sam-policy-templates). The documentation s
 
 ### 5.1 Template Sections 🔄
 
-Slide 14 shows a full SAM template for the first time and annotates three lines (`Transform`, `Globals`, `Resources`). **The courseware does not distinguish which sections are required.** The documentation does.
+A SAM template is made up of several sections, and the documentation states which of them are required.
 
 | Section | Required? | Content |
 |---|---|---|
@@ -505,18 +505,18 @@ There are also rules about section order and precedence.
 | Section order | Sections can appear in any order. However, when using language extensions, **`AWS::LanguageExtensions` must come before the serverless transform (`AWS::Serverless-2016-10-31`)** |
 | Parameter value precedence | Values passed with `sam deploy`'s **`--parameter-overrides`** and entries in the **configuration file** take **precedence** over entries in the AWS SAM template file |
 
-The first line of the slide 14 template, `AWSTemplateFormatVersion: '2010-09-09'`, is not in the documentation's list of SAM template sections. However, that line appears as-is in template examples on other SAM documentation pages, so **the courseware notation is not wrong.**
+The `AWSTemplateFormatVersion: '2010-09-09'` line often seen at the top of a template is not in the documentation's list of SAM template sections. However, that line appears as-is in template examples on other SAM documentation pages, so **it is not wrong notation.**
 
-The URL `sam-specification-template-anatomy.html` that the slide 16 instructor note cites as a reference **is still valid**, and the page title is `AWS SAM template anatomy`.
+The related reference `sam-specification-template-anatomy.html` **is still valid**, and the page title is `AWS SAM template anatomy`.
 
 > — Source: [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html)
 
 ### 5.2 The Transform Declaration 🔄
 
-The second line of the slide 14 template reads as follows.
+You may see the `Transform` declaration written like this.
 
 ```yaml
-# Courseware slide 14 notation - the first letter of serverless is lowercase
+# The problematic form - the first letter of serverless is lowercase
 Transform: AWS::serverless-2016-10-31
 ```
 
@@ -527,21 +527,21 @@ The value the documentation specifies uses a **capital `S`**.
 Transform: AWS::Serverless-2016-10-31
 ```
 
-| Item | Courseware | Verified content |
+| Item | The problematic form | Verified content |
 |---|---|---|
 | Value | `AWS::serverless-2016-10-31` | **`AWS::Serverless-2016-10-31`** |
 | Required? | Not mentioned | **Required** |
 | Role | "Tells AWS CloudFormation that this is an AWS SAM template" | Same direction. The documentation states that this declaration **identifies a CloudFormation template file as an AWS SAM template file** |
 
-**The notation also splits inside the courseware.** The resource type in the same code block is `Type: AWS::Serverless::Function`, with a capital `S`. The same word is capitalized differently within one block ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+**The notation can even split within one source.** The resource type in the same code block is `Type: AWS::Serverless::Function`, with a capital `S`, so if `Transform` is written lowercase the same word is capitalized differently within one block ([Section 11.1](#111-differences-from-the-courseware)).
 
-Why this typo is dangerous in practice is clear. If the transform declaration is not recognized, `AWS::Serverless::*` resources are not expanded, which leaves CloudFormation facing an unknown resource type. **If a student copies the courseware template verbatim, the deployment fails.**
+Why this typo is dangerous in practice is clear. If the transform declaration is not recognized, `AWS::Serverless::*` resources are not expanded, which leaves CloudFormation facing an unknown resource type. **If you copy the lowercase form verbatim, the deployment fails.**
 
 > — Source: [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html)
 
 ### 5.3 The Globals Section 🔄
 
-The annotation box on slide 14 describes `Globals:` this way: "Sets the **global variables** to be used within the AWS SAM template."
+`Globals:` is sometimes described as "Sets the **global variables** to be used within the AWS SAM template."
 
 🔄 **`Globals` is not a section for declaring variables.** The documentation describes it as the section where you declare **properties that several resources have in common** once and let them inherit. For example, if several `AWS::Serverless::Function` resources have the same `Runtime`, `Memory`, `VPCConfig`, `Environment`, and `Cors` configuration, you declare it once in `Globals` and let the resources inherit it instead of duplicating the information on every resource.
 
@@ -551,10 +551,10 @@ The annotation box on slide 14 describes `Globals:` this way: "Sets the **global
 | Behavior at deployment | Inherited as resource properties | `sam deploy --guided` displays additional prompts; overridden with `--parameter-overrides` |
 | CloudFormation equivalent | **None**(AWS SAM-specific) | Exists |
 
-What the courseware put inside `Globals` is not a variable either. It is `MethodSettings` on `Api`, so it is **a common value for a resource property.** That example itself is valid: `MethodSettings` is on the list of properties supported for `Api` in `Globals`.
+What is commonly put inside `Globals` is not a variable either. It is `MethodSettings` on `Api`, so it is **a common value for a resource property.** That example itself is valid: `MethodSettings` is on the list of properties supported for `Api` in `Globals`.
 
 ```yaml
-# The Globals block from courseware slide 14 - the example itself is valid.
+# A Globals block example - the example itself is valid.
 # Every Api resource in this template inherits the MethodSettings below
 Globals:
   Api:
@@ -562,18 +562,18 @@ Globals:
       - LoggingLevel: INFO
 ```
 
-🆕 **Eight resource types inherit from `Globals`.** The courseware provides no list.
+🆕 **Eight resource types inherit from `Globals`.**
 
-| # | Resource type | On courseware slide 16? |
-|---|---|---|
-| 1 | `AWS::Serverless::Api` | Yes |
-| 2 | `AWS::Serverless::CapacityProvider` | **No** |
-| 3 | `AWS::Serverless::Function` | Yes |
-| 4 | `AWS::Serverless::HttpApi` | Yes |
-| 5 | `AWS::Serverless::SimpleTable` | Yes |
-| 6 | `AWS::Serverless::StateMachine` | Yes |
-| 7 | `AWS::Serverless::MicrovmImage` | **No** |
-| 8 | `AWS::Serverless::NetworkConnector` | **No** |
+| # | Resource type |
+|---|---|
+| 1 | `AWS::Serverless::Api` |
+| 2 | `AWS::Serverless::CapacityProvider` |
+| 3 | `AWS::Serverless::Function` |
+| 4 | `AWS::Serverless::HttpApi` |
+| 5 | `AWS::Serverless::SimpleTable` |
+| 6 | `AWS::Serverless::StateMachine` |
+| 7 | `AWS::Serverless::MicrovmImage` |
+| 8 | `AWS::Serverless::NetworkConnector` |
 
 Resources and properties not on the list are not supported. The documentation gives two reasons: ① they could open potential security issues, or ② they would make the template harder to understand.
 
@@ -586,7 +586,7 @@ The properties supported for `Api` in `Globals` are as follows.
 | `EndpointAccessMode` · `GatewayResponses` · `MethodSettings` · `MinimumCompressionSize` · `Name` |
 | `OpenApiVersion` · `PropagateTags` · `SecurityPolicy` · `TracingEnabled` · `Variables` |
 
-🆕 **The override rules differ by data type.** This is absent from the courseware and is a frequent stumbling block in practice.
+🆕 **The override rules differ by data type.** This is a frequent stumbling block in practice.
 
 | Data type | Override behavior |
 |---|---|
@@ -600,12 +600,12 @@ AWS SAM also creates an **implicit API** when you declare an API in the `Events`
 
 > — Source: [Globals section of the AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html)
 
-### 5.4 Correcting the Slide 14 Template 🔄
+### 5.4 Correcting the list Function Template 🔄
 
-Here is the slide 14 template as written. **The slide's text box has no indentation, so each line arrives as a separate paragraph.** The order is preserved and only the indentation was restored so it reads as YAML. The original carries no hierarchy information.
+Here is the list function template as commonly written. **The original text box has no indentation, so each line arrives as a separate paragraph.** The order is preserved and only the indentation was restored so it reads as YAML. The original carries no hierarchy information.
 
 ```yaml
-# Courseware slide 14 as written (indentation restored only). Before correction
+# The problematic form (indentation restored only). Before correction
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::serverless-2016-10-31
 Globals:
@@ -628,16 +628,16 @@ Resources:
             Method: get
 ```
 
-The instructor note describes the template this way: it defines a list function in AWS Lambda, specifies the runtime, the location of the function code, and the handler, attaches the `AmazonDynamoDBReadOnlyAccess` IAM policy so the function can query Amazon DynamoDB, and finally connects the function to `/notes` on an Amazon API Gateway endpoint.
+This template defines a list function in AWS Lambda, specifies the runtime, the location of the function code, and the handler, attaches the `AmazonDynamoDBReadOnlyAccess` IAM policy so the function can query Amazon DynamoDB, and finally connects the function to `/notes` on an Amazon API Gateway endpoint.
 
 **Here is exactly what was changed.**
 
-| # | Courseware notation | Correction | Reason |
+| # | Original notation | Correction | Reason |
 |---|---|---|---|
 | 1 | `Transform: AWS::serverless-2016-10-31` | `Transform: AWS::Serverless-2016-10-31` | The documented value uses a capital `S` ([Section 5.2](#52-the-transform-declaration)) |
 | 2 | `Runtime: python3.8` | `Runtime: python3.12` | The `python3.8` runtime **reached end of support on October 14, 2024** ([Section 11.3](#113-discouraged-and-unsupported-items)) |
 | 3 | `Policies: AmazonDynamoDBReadOnlyAccess` | `Policies: - DynamoDBReadPolicy: TableName: !Ref pollyNotesTable` | The managed policy grants read access to **every table in the account.** A policy template narrows it to the target table ([Section 5.7](#57-sam-policy-templates)) |
-| 4 | (absent) | Added the `pollyNotesTable` resource definition | Slide 15 uses `!Ref pollyNotesTable` but the deck contains no definition |
+| 4 | (absent) | Added the `pollyNotesTable` resource definition | The Delete function template uses `!Ref pollyNotesTable` but no definition is provided with it |
 
 The corrected template:
 
@@ -653,7 +653,7 @@ Globals:
       - LoggingLevel: INFO
 
 Resources:
-  # The table that holds the notes. Added because the courseware template
+  # The table that holds the notes. Added because the original template
   # references it without defining it
   pollyNotesTable:
     Type: AWS::Serverless::SimpleTable
@@ -677,15 +677,15 @@ Resources:
             Method: get
 ```
 
-The translation in annotation box 3 was also cleaned up. The courseware renders it as "creates an AWS Lambda function using the referenced managed IAM policy, runtime, and code-defined handler," which is structurally unclear. Split into three items:
+The function description was also cleaned up. The phrasing "creates an AWS Lambda function using the referenced managed IAM policy, runtime, and code-defined handler" is structurally unclear. Split into three items:
 
-| Courseware's compressed phrasing | Split notation |
+| Compressed phrasing | Split notation |
 |---|---|
 | Referenced managed IAM policy | The IAM policy it references (`Policies`) |
 | Runtime | The runtime (`Runtime`) |
 | Code-defined handler | The handler defined in the code (`Handler`) |
 
-For `Type: Api` under `Events`, the courseware annotation says only "creates an Amazon API Gateway and handles the necessary mappings and permissions." Per the documentation, what gets created here is an **implicit API**, and with an `HttpApi` event you get `AWS::ApiGatewayV2::Api`(logical ID `ServerlessHttpApi`) and a `$default` stage ([Section 4.3](#43-how-it-works-transformation)). To reference an explicit API resource, use `RestApiId` ([Section 7.3](#73-declaring-it-with-the-auth-property)).
+`Type: Api` under `Events` is sometimes described only as "creates an Amazon API Gateway and handles the necessary mappings and permissions." Per the documentation, what gets created here is an **implicit API**, and with an `HttpApi` event you get `AWS::ApiGatewayV2::Api`(logical ID `ServerlessHttpApi`) and a `$default` stage ([Section 4.3](#43-how-it-works-transformation)). To reference an explicit API resource, use `RestApiId` ([Section 7.3](#73-declaring-it-with-the-auth-property)).
 
 > — Source: [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html)
 
@@ -693,12 +693,12 @@ For `Type: Api` under `Events`, the courseware annotation says only "creates an 
 
 > — Source: [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html)
 
-### 5.5 Correcting the Slide 15 Template 🔄
+### 5.5 Correcting the Delete Function Template 🔄
 
-Slide 15 shows a template fragment defining a Delete function. **This slide has the highest concentration of problems.**
+The template fragment defining a Delete function **has the highest concentration of problems.**
 
 ```yaml
-# Courseware slide 15 as written (indentation restored only). Before correction
+# The problematic form (indentation restored only). Before correction
 ...
 deleteFunction:
   Type: AWS::Serverless::Function
@@ -717,19 +717,19 @@ deleteFunction:
         Properties: ...
 ```
 
-The instructor note describes it this way: "The section on the right shows an AWS SAM template defining a **Delete function** in AWS Lambda. It sets the runtime, the location of the function code, and the handler. The code location depends on the `template.yml` file that contains the AWS SAM template. In this example the code is in a folder called **`deleteFunction`**."
+It is described this way: an AWS SAM template defining a **Delete function** in AWS Lambda, setting the runtime, the location of the function code, and the handler. The code location depends on the `template.yml` file that contains the AWS SAM template, and in this example the code is said to be in a folder called **`deleteFunction`**.
 
 **Here is exactly what was changed.**
 
-| # | Courseware notation | Correction | Reason |
+| # | Original notation | Correction | Reason |
 |---|---|---|---|
 | 1 | `Role: ... DynamoDBReadRole` | `Policies: - DynamoDBCrudPolicy: TableName: !Ref pollyNotesTable` | **Deleting requires write permission.** A read role cannot delete an item |
 | 2 | `Runtime: python3.8` | `Runtime: python3.12` | The `python3.8` runtime is deprecated |
-| 3 | `Events: listNotes:` | `Events: deleteNote:` | This is a Delete function, yet the event name matches `listNotes` from slide 14. A copy-paste artifact |
-| 4 | Instructor note "a folder called `deleteFunction`" | The logical ID is `deleteFunction`; the code folder is `delete-function/` | `deleteFunction` is not a folder name but a **logical resource ID** |
+| 3 | `Events: listNotes:` | `Events: deleteNote:` | This is a Delete function, yet the event name matches `listNotes` from the list function. A copy-paste artifact |
+| 4 | "a folder called `deleteFunction`" | The logical ID is `deleteFunction`; the code folder is `delete-function/` | `deleteFunction` is not a folder name but a **logical resource ID** |
 | 5 | `Properties: ...` (truncated) | Filled in `Path` and `Method` | The original is cut off with an ellipsis |
-| 6 | `!Ref pollyNotesTable`(no definition) | Included the table resource | The reference target is absent from the deck |
-| 7 | Label "SAM template" | "AWS SAM template" | Every other slide says "AWS SAM template" |
+| 6 | `!Ref pollyNotesTable`(no definition) | Included the table resource | The reference target is not provided alongside it |
+| 7 | Label "SAM template" | "AWS SAM template" | Everywhere else says "AWS SAM template" |
 
 The corrected template:
 
@@ -762,7 +762,7 @@ Resources:
             Method: delete
 ```
 
-**The deck never explains why the permission style differs from slide 14.** Slide 14 uses `Policies`, slide 15 uses `Role`. The relationship between the two properties is covered in [Section 5.6](#56-function-permissions-policies-and-role). The short version: **if you set `Role`, `Policies` is ignored.**
+**The two functions use different permission styles.** The list function uses `Policies`, the Delete function uses `Role`. The relationship between the two properties is covered in [Section 5.6](#56-function-permissions-policies-and-role). The short version: **if you set `Role`, `Policies` is ignored.**
 
 > — Source: [AWS::Serverless::Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html)
 
@@ -770,7 +770,7 @@ Resources:
 
 ### 5.6 Function Permissions Policies and Role 🔄
 
-The courseware grants function permissions two different ways on two slides without explaining the difference or the precedence, so here it is.
+The two functions above receive permissions in different ways. Here is the difference and the precedence.
 
 | Property | Documentation statement |
 |---|---|
@@ -787,13 +787,13 @@ Setting `Role` directly makes some properties unusable.
 | `PermissionsBoundary` | Also works **only when the role is created automatically** |
 | `Tracing` | If set to `Active` or `PassThrough` and **`Role` is not set**, AWS SAM adds the `arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess` policy to the execution role it creates |
 
-🆕 **`Policies` accepts four kinds of value.** The courseware gives only a managed policy name.
+🆕 **`Policies` accepts four kinds of value.** Often only a managed policy name is known.
 
 | # | Kind of value | Example |
 |---|---|---|
 | 1 | **AWS SAM policy templates** | `DynamoDBReadPolicy` with `TableName` ([Section 5.7](#57-sam-policy-templates)) |
 | 2 | The **ARN** of an AWS managed or customer managed policy | `arn:aws:iam::aws:policy/...` |
-| 3 | The **name** of an AWS managed policy from a defined list | The courseware's `AmazonDynamoDBReadOnlyAccess` |
+| 3 | The **name** of an AWS managed policy from a defined list | `AmazonDynamoDBReadOnlyAccess` |
 | 4 | An **inline IAM policy** written as a YAML map | Written directly in the template |
 
 ```yaml
@@ -811,7 +811,7 @@ Resources:
         - DynamoDBReadPolicy:
             TableName: !Ref pollyNotesTable
 
-  # (2) The courseware slide 14 approach - a managed policy name.
+  # (2) The list function approach - a managed policy name.
   #     This opens up every table in the account
   functionB:
     Type: AWS::Serverless::Function
@@ -821,7 +821,7 @@ Resources:
       Runtime: python3.12
       Policies: AmazonDynamoDBReadOnlyAccess
 
-  # (3) The courseware slide 15 approach - an existing role ARN.
+  # (3) The Delete function approach - an existing role ARN.
   #     Setting Role makes Policies ignored, so do not use both properties together
   functionC:
     Type: AWS::Serverless::Function
@@ -832,7 +832,7 @@ Resources:
       Role: !Sub arn:aws:iam::${AWS::AccountId}:role/MyExistingExecutionRole
 ```
 
-Other `AWS::Serverless::Function` defaults are absent from the courseware too.
+Other `AWS::Serverless::Function` defaults are worth listing too.
 
 | Property | Default or rule |
 |---|---|
@@ -849,7 +849,7 @@ Specifying `DeploymentPreference` and `AutoPublishAlias` makes SAM create resour
 
 ### 5.7 SAM Policy Templates 🆕
 
-The courseware gives only one value for `Policies`, the AWS managed policy name `AmazonDynamoDBReadOnlyAccess`, and never covers policy templates. Policy templates are **the approach SAM recommends.**
+Often only one value for `Policies` is familiar — the AWS managed policy name `AmazonDynamoDBReadOnlyAccess` — but policy templates are **the approach SAM recommends.**
 
 | Item | Documentation statement |
 |---|---|
@@ -899,12 +899,12 @@ There are seven DynamoDB-related policy templates.
 | `DynamoDBBackupFullAccessPolicy` | Read and write permission to on-demand backups of a table |
 | `DynamoDBRestoreFromBackupPolicy` | Permission to restore a table from a backup |
 
-The right choices for the courseware's two functions:
+The right choices for the two functions above:
 
-| Courseware function | Permission the courseware gives | The right policy template |
+| Function | Permission originally given | The right policy template |
 |---|---|---|
-| Slide 14 `listFunction` | `AmazonDynamoDBReadOnlyAccess`(every table in the account) | `DynamoDBReadPolicy` with `TableName` |
-| Slide 15 `deleteFunction` | `DynamoDBReadRole`(a read role) | `DynamoDBCrudPolicy` or `DynamoDBWritePolicy` |
+| `listFunction` | `AmazonDynamoDBReadOnlyAccess`(every table in the account) | `DynamoDBReadPolicy` with `TableName` |
+| `deleteFunction` | `DynamoDBReadRole`(a read role) | `DynamoDBCrudPolicy` or `DynamoDBWritePolicy` |
 
 To request a new policy template, submit a pull request to the `policy_templates.json` source file on the `develop` branch of the AWS SAM GitHub project, along with an issue containing your reasoning and links.
 
@@ -912,9 +912,9 @@ To request a new policy template, submit a pull request to the `policy_templates
 
 ### 5.8 Template File Names and Relative Paths 🔄
 
-The slide 15 instructor note writes the SAM template file name as `template.yml`.
+The SAM template file name is often given only as `template.yml`.
 
-| Item | Courseware | Verified content |
+| Item | Commonly given | Verified content |
 |---|---|---|
 | Template file name | Only `template.yml` | The default for `sam build`'s `--template-file`(`--template`, `-t`) is **`template.yaml` or `template.yml`** — that is, **both** are allowed. The `sam validate` documentation states that the option is not needed if a template named **`template.yaml`, `template.yml`, or `template.json`** is in the current working directory |
 | The file name `sam init` creates | — | **Not verified.** We confirmed only the default names the CLI looks for ([Section 11.5](#115-items-we-could-not-verify)) |
@@ -940,7 +940,7 @@ Other defaults the `sam build` documentation states:
 | The cache directory for `--cached` | `.aws-sam/cache` |
 | Build artifacts | `.aws-sam/build`. The built template is `.aws-sam/build/template.yaml` |
 
-The slide 13 instructor note's "its own template (**YAML or JSON**)" is also supported by the `sam validate` `--template-file` description accepting `template.yaml`, `template.yml`, and `template.json`.
+The description "its own template (**YAML or JSON**)" is also supported by the `sam validate` `--template-file` description accepting `template.yaml`, `template.yml`, and `template.json`.
 
 > — Source: [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html)
 
@@ -954,35 +954,35 @@ The slide 13 instructor note's "its own template (**YAML or JSON**)" is also sup
 
 ### 6.1 Thirteen Resource Types 🔄
 
-Slide 16 presents six `AWS::Serverless::*` resource types. **The current documentation lists thirteen.**
+`AWS::Serverless::*` resource types are often introduced as six, but **the current documentation lists thirteen.**
 
-| # | Resource type | In the courseware? | What it is |
+| # | Resource type | In the first 6 | What it is |
 |---|---|---|---|
 | 1 | `AWS::Serverless::Api` | Yes | API Gateway REST API |
-| 2 | `AWS::Serverless::Application` | **No** 🆕 | A nested serverless application |
-| 3 | `AWS::Serverless::CapacityProvider` | **No** 🆕 | — |
-| 4 | `AWS::Serverless::Connector` | **No** 🆕 | **Configures permissions between two resources** ([Section 6.3](#63-connectors)) |
+| 2 | `AWS::Serverless::Application` | **New** 🆕 | A nested serverless application |
+| 3 | `AWS::Serverless::CapacityProvider` | **New** 🆕 | — |
+| 4 | `AWS::Serverless::Connector` | **New** 🆕 | **Configures permissions between two resources** ([Section 6.3](#63-connectors)) |
 | 5 | `AWS::Serverless::Function` | Yes | AWS Lambda function |
-| 6 | `AWS::Serverless::GraphQLApi` | **No** 🆕 | AWS AppSync family |
+| 6 | `AWS::Serverless::GraphQLApi` | **New** 🆕 | AWS AppSync family |
 | 7 | `AWS::Serverless::HttpApi` | Yes | API Gateway HTTP API |
-| 8 | `AWS::Serverless::WebSocketApi` | **No** 🆕 | — |
+| 8 | `AWS::Serverless::WebSocketApi` | **New** 🆕 | — |
 | 9 | `AWS::Serverless::LayerVersion` | Yes | Lambda layer |
-| 10 | `AWS::Serverless::MicrovmImage` | **No** 🆕 | — |
-| 11 | `AWS::Serverless::NetworkConnector` | **No** 🆕 | — |
+| 10 | `AWS::Serverless::MicrovmImage` | **New** 🆕 | — |
+| 11 | `AWS::Serverless::NetworkConnector` | **New** 🆕 | — |
 | 12 | `AWS::Serverless::SimpleTable` | Yes | DynamoDB table |
 | 13 | `AWS::Serverless::StateMachine` | Yes | AWS Step Functions state machine |
 
-**All six from the courseware are still valid.** Nothing was removed; seven were added. The ones that directly affect serverless application design are `Connector`(permissions between resources), `GraphQLApi`, `WebSocketApi`, and `Application`(nested serverless applications).
+**The original six are all still valid.** Nothing was removed; seven were added. The ones that directly affect serverless application design are `Connector`(permissions between resources), `GraphQLApi`, `WebSocketApi`, and `Application`(nested serverless applications).
 
-We also verified the last sentence of the slide 16 instructor note: "In addition to these resources, an AWS SAM template can define **any AWS CloudFormation resource.**" The documentation states the same with `AWS SAM also supports CloudFormation resource and property types`. These resources and properties are defined with AWS SAM's **shorthand syntax**.
+The sentence that follows the resource type list is also verified: "In addition to these resources, an AWS SAM template can define **any AWS CloudFormation resource.**" The documentation states the same with `AWS SAM also supports CloudFormation resource and property types`. These resources and properties are defined with AWS SAM's **shorthand syntax**.
 
 > — Source: [AWS SAM resources and properties](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-resources-and-properties.html)
 
 ### 6.2 Mapping Resources to AWS Services 🔄
 
-The slide 16 instructor note gives a mapping table, but **it covers only four of the six types.**
+The mapping of resource types to AWS services is often given for **only four of the six types.**
 
-| Mapping in the courseware instructor note | AWS service |
+| Commonly given mapping | AWS service |
 |---|---|
 | Serverless API | Amazon API Gateway |
 | Serverless Function | AWS Lambda |
@@ -1000,12 +1000,12 @@ The slide 16 instructor note gives a mapping table, but **it covers only four of
 | `AWS::Serverless::SimpleTable` | Amazon DynamoDB table. Transformation produces `AWS::DynamoDB::Table` |
 | `AWS::Serverless::StateMachine` | AWS Step Functions state machine |
 
-🔄 **The reference links do not match the slide either.** The slide 16 instructor note gives two links, and the second is "Control access to a REST API with API Gateway resource policies." That is **the subject of slide 17 (Controlling access with AWS SAM)**, while slide 16 is about the resource type list.
+🔄 **A reference link can be off-topic too.** Among the links presented with the resource type list, "Control access to a REST API with API Gateway resource policies" actually belongs to **the API access control topic in [Section 7](#7-api-access-control)**.
 
-| Courseware reference link | Status | The right place |
+| Reference link | Status | The right topic |
 |---|---|---|
-| AWS SAM template anatomy (`sam-specification-template-anatomy.html`) | **Valid.** The page title is `AWS SAM template anatomy` | Slides 14 · 16 |
-| API Gateway resource policies (`apigateway-resource-policies.html`) | **Valid.** The page title is `Control access to a REST API with API Gateway resource policies` | **Slide 17** |
+| AWS SAM template anatomy (`sam-specification-template-anatomy.html`) | **Valid.** The page title is `AWS SAM template anatomy` | Template structure |
+| API Gateway resource policies (`apigateway-resource-policies.html`) | **Valid.** The page title is `Control access to a REST API with API Gateway resource policies` | **API access control** |
 
 We also checked the content of that second page. An API Gateway resource policy is a **JSON policy document** attached to an API that controls whether specified principals (typically IAM roles or groups) can invoke it, and it can be used to allow the API to be invoked securely from users of a specific AWS account, from specified source IP address ranges or CIDR blocks, or from specified VPCs or VPC endpoints. It can be attached to any API Gateway endpoint type, and for private APIs resource policies are used together with VPC endpoint policies. Resource policies differ from IAM identity-based policies, and the two can be used together.
 
@@ -1015,7 +1015,7 @@ We also checked the content of that second page. An API Gateway resource policy 
 
 ### 6.3 Connectors 🆕
 
-The courseware offers only two ways to grant a function permissions: `Policies`(slide 14) and `Role`(slide 15). **`AWS::Serverless::Connector` is a third path added after the courseware, and it is the tool that reduces mistakes like the permission mismatch on slide 15.**
+Two ways to grant a function permissions are commonly presented: `Policies` and `Role`. **`AWS::Serverless::Connector` is a third path added later, and it is the tool that reduces mistakes like the Delete function's permission mismatch seen earlier.**
 
 | Item | Documentation statement |
 |---|---|
@@ -1080,18 +1080,18 @@ Resources:
 
 Placing all four permission approaches side by side:
 
-| Approach | What you write | Permission scope | In the courseware? |
+| Approach | What you write | Permission scope | Note |
 |---|---|---|---|
-| Managed policy name | `Policies: AmazonDynamoDBReadOnlyAccess` | **Every DynamoDB table in the account** | Slide 14 |
-| Existing role ARN | `Role: !Sub arn:aws:iam::${AWS::AccountId}:role/...` | Whatever the role's policies allow. **`Policies` is ignored** | Slide 15 |
-| Policy template | `Policies: - DynamoDBReadPolicy: TableName: ...` | Limited to the **specified table** | No 🆕 |
-| Connector | `Connectors:` block with `Destination` + `Permissions` | Declared as **intent (Read/Write)** between two resources | No 🆕 |
+| Managed policy name | `Policies: AmazonDynamoDBReadOnlyAccess` | **Every DynamoDB table in the account** | list function approach |
+| Existing role ARN | `Role: !Sub arn:aws:iam::${AWS::AccountId}:role/...` | Whatever the role's policies allow. **`Policies` is ignored** | Delete function approach |
+| Policy template | `Policies: - DynamoDBReadPolicy: TableName: ...` | Limited to the **specified table** | 🆕 |
+| Connector | `Connectors:` block with `Destination` + `Permissions` | Declared as **intent (Read/Write)** between two resources | 🆕 |
 
 > — Source: [AWS::Serverless::Connector](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html)
 
 ### 6.4 What SimpleTable Creates 🆕
 
-The courseware maps `AWS::Serverless::SimpleTable` with the single line "Serverless SimpleTable = Amazon DynamoDB." It never covers what the resource actually creates.
+`AWS::Serverless::SimpleTable` is often mapped with the single line "Serverless SimpleTable = Amazon DynamoDB." Here is what the resource actually creates.
 
 | Item | Transformation result |
 |---|---|
@@ -1110,7 +1110,7 @@ In other words `SimpleTable` is exactly what its name says: **a simple key-value
 
 ### 7.1 The Six Mechanisms
 
-Slide 17 is **the only table in this deck.** **And all six rows match the current documentation table exactly.** Saying so in class is useful.
+There are six API access control mechanisms, and **all six rows match the current documentation exactly.**
 
 | Access control mechanism | `AWS::Serverless::HttpApi` | `AWS::Serverless::Api` |
 |---|---|---|
@@ -1121,11 +1121,11 @@ Slide 17 is **the only table in this deck.** **And all six rows match the curren
 | Resource policies | **Not supported** | Supported |
 | OAuth 2.0/JWT authorizers | Supported | **Not supported** |
 
-The asterisk means the same as the courseware footnote: **you can use Amazon Cognito as a JSON Web Token (JWT) issuer for the `AWS::Serverless::HttpApi` resource type.**
+The asterisk means: **you can use Amazon Cognito as a JSON Web Token (JWT) issuer for the `AWS::Serverless::HttpApi` resource type.**
 
-The empty "IAM permissions" cell for `HttpApi` in the courseware table also matches the documentation. **HTTP APIs do not support IAM authorization; only `AWS::Serverless::Api` does.**
+The empty "IAM permissions" cell for `HttpApi` also matches the documentation. **HTTP APIs do not support IAM authorization; only `AWS::Serverless::Api` does.**
 
-Filling in the definitions of the mechanisms the courseware presents in a table and moves past:
+Filling in the definitions of the mechanisms that a table alone does not spell out:
 
 | Mechanism | Documentation definition |
 |---|---|
@@ -1133,13 +1133,13 @@ Filling in the definitions of the mechanisms the courseware presents in a table 
 | IAM permissions | The API caller must be **authenticated with IAM credentials**, and the call succeeds only when **an IAM policy is attached** to the IAM user representing the caller, to an IAM group containing that user, or to an IAM role the user assumes |
 | Resource policies | A JSON policy document attached to an API that controls whether specified principals can invoke it ([Section 6.2](#62-mapping-resources-to-aws-services)) |
 
-The URL `serverless-controlling-access-to-apis.html` that the instructor note cites **is still valid**, and the page title is `Control API access with your AWS SAM template`. The instructor note has a missing space where it refers to the `AWS::Serverless::Api` resource type ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+The related reference `serverless-controlling-access-to-apis.html` **is still valid**, and the page title is `Control API access with your AWS SAM template`. Some source material has a missing space where it refers to the `AWS::Serverless::Api` resource type ([Section 11.1](#111-differences-from-the-courseware)).
 
 > — Source: [Control API access with your AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis.html)
 
 ### 7.2 Choosing a Mechanism 🆕
 
-The courseware only lays the six mechanisms out in a table and **never covers which to choose when.** The documentation offers guidance.
+Which of the six mechanisms to choose when is guided by the documentation.
 
 | Situation | Documentation guidance |
 |---|---|
@@ -1153,7 +1153,7 @@ This guidance connects directly to the Amazon Cognito material in module 12. Mod
 
 ### 7.3 Declaring It with the Auth Property 🆕
 
-The slide 17 instructor note says only "you must enable authorization in the AWS SAM template" and **gives no property name at all.** The actual property is `Auth`, and its data type name is `ApiAuth`.
+The instruction "you must enable authorization in the AWS SAM template" **does not reveal which property to use.** The actual property is `Auth`, and its data type name is `ApiAuth`.
 
 | Location | Property |
 |---|---|
@@ -1193,13 +1193,13 @@ Resources:
             Method: get
 ```
 
-🔄 **The templates on courseware slides 14 and 15 create implicit APIs without `RestApiId`.** In other words the courseware templates have no API resource to attach authorization to. To actually apply access control you must declare an explicit API resource and reference it from the function event.
+🔄 **The list and Delete function templates seen earlier create implicit APIs without `RestApiId`.** In other words those templates have no API resource to attach authorization to. To actually apply access control you must declare an explicit API resource and reference it from the function event.
 
 > — Source: [Amazon Cognito user pool example for AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis-cognito-user-pool.html)
 
 ### 7.4 Customizing Error Responses 🆕
 
-Absent from the courseware. The documentation states that AWS SAM can **customize the content of some API Gateway error responses.**
+The documentation states that AWS SAM can **customize the content of some API Gateway error responses.**
 
 | Item | Content |
 |---|---|
@@ -1216,9 +1216,9 @@ That is one more reason the table in [Section 7.1](#71-the-six-mechanisms) separ
 
 ### 8.1 Prerequisites 🔄
 
-Slide 19 presents three setup steps in the body and the instructor note counts four. **The body and the note disagree on the step count** ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+Some material presents setup as three steps and other material counts four, so **the step count disagrees across sources** ([Section 11.1](#111-differences-from-the-courseware)).
 
-| Courseware body (3 steps) | Courseware instructor note (4 steps) |
+| 3-step description | 4-step description |
 |---|---|
 | — | 1. Create an AWS account |
 | 1. Configure AWS credentials | 2. Configure IAM permissions and AWS credentials |
@@ -1236,15 +1236,15 @@ Slide 19 presents three setup steps in the body and the instructor note counts f
 
 It also states exactly what is required.
 
-| Item | Documentation statement | Courseware |
+| Item | Documentation statement | Commonly given |
 |---|---|---|
 | An AWS account | Required | Present |
 | IAM credentials and an IAM **access key pair** | Required | "IAM permissions and AWS credentials" |
-| **AWS Command Line Interface (AWS CLI)** | Required. Used to configure AWS credentials | 🔄 **Absent from the courseware** |
+| **AWS Command Line Interface (AWS CLI)** | Required. Used to configure AWS credentials | 🔄 **Often omitted** |
 | Docker | 🔄 **This page does not list Docker as a prerequisite** | Listed as "optional" |
 | AWS Toolkit for VS Code | (Optional) step 3 | Absent 🆕 |
 
-**So when is Docker needed?** As [Section 8.7](#87-sam-local-invoke-and-docker) shows, the `sam local invoke` documentation states that the AWS SAM CLI **uses Docker to build your function in a local container and then invoke it.** In other words Docker is not on the prerequisites list but is **effectively required for local testing.** The courseware body saying only "optional" while the note adds "if you plan to test locally" conveys half of that situation.
+**So when is Docker needed?** As [Section 8.7](#87-sam-local-invoke-and-docker) shows, the `sam local invoke` documentation states that the AWS SAM CLI **uses Docker to build your function in a local container and then invoke it.** In other words Docker is not on the prerequisites list but is **effectively required for local testing.** Saying only "optional," or only "if you plan to test locally," conveys half of that situation.
 
 The details on AWS Toolkit for VS Code in step 3:
 
@@ -1254,7 +1254,7 @@ The details on AWS Toolkit for VS Code in step 3:
 | What it provides | **Visual debugging, CodeLens integration, and a streamlined deployment workflow** |
 | Prerequisites | **Visual Studio Code 1.73.0 or later** and the **YAML language support extension** |
 
-This item connects to the explanation for knowledge check question 5 on slide 30. That explanation says "there are various AWS toolkits that work with a variety of IDE and runtime combinations," yet **the deck has no slide covering toolkits** ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)). Note that this document verified **only AWS Toolkit for VS Code** and did not consult a full list of AWS toolkits for IDEs ([Section 11.5](#115-items-we-could-not-verify)).
+The statement "there are various AWS toolkits that work with a variety of IDE and runtime combinations" comes up, yet material that covers those toolkits in depth is scarce ([Section 11.1](#111-differences-from-the-courseware)). Note that this document verified **only AWS Toolkit for VS Code** and did not consult a full list of AWS toolkits for IDEs ([Section 11.5](#115-items-we-could-not-verify)).
 
 ```bash
 # Verify the installation
@@ -1267,14 +1267,14 @@ sam --version
 
 ### 8.2 Changes in the Installation Path 🔄
 
-The courseware does not cover installation details and gives only a reference URL. **That URL is still valid.**
+Installation details are often given only as a reference URL. **That URL is still valid.**
 
 | Item | Status |
 |---|---|
-| The courseware reference URL (`serverless-sam-cli-install.html`) | **Valid.** It serves the `Install the AWS SAM CLI` page |
+| The reference URL (`serverless-sam-cli-install.html`) | **Valid.** It serves the `Install the AWS SAM CLI` page |
 | The canonical path inside current documentation | `install-sam-cli.html`. The prerequisites page and the `sam deploy` and `sam local` pages all link to this one |
 
-🔄 **Two constraints have appeared in the installation path that are absent from the courseware.**
+🔄 **Two new constraints have appeared in the installation path.**
 
 | Change | Content |
 |---|---|
@@ -1294,52 +1294,52 @@ The documentation also describes the per-operating-system installation methods.
 
 ### 8.3 Twenty-Four CLI Commands 🔄
 
-The courseware covers **seven** commands: `sam init`, `sam build`, `sam local invoke`, `sam local start-api`, `sam local generate-event`, `sam package`, and `sam deploy`. **The current command reference page lists twenty-four.**
+The commonly learned set is **seven** commands: `sam init`, `sam build`, `sam local invoke`, `sam local start-api`, `sam local generate-event`, `sam package`, and `sam deploy`. **The current command reference page lists twenty-four.**
 
-| Command | In the courseware? | What it does |
+| Command | In the core 7 | What it does |
 |---|---|---|
 | `sam build` | Yes | Prepares the application for the next step (local testing or deployment) ([Section 9.2](#92-sam-build-and-container-builds)) |
-| `sam delete` | **No** 🆕 | Deletes the stack, artifacts, and template file ([Section 9.8](#98-cleaning-up)) |
+| `sam delete` | **New** 🆕 | Deletes the stack, artifacts, and template file ([Section 9.8](#98-cleaning-up)) |
 | `sam deploy` | Yes | Deploys the application with CloudFormation ([Section 9.4](#94-sam-deploy-and-samconfigtoml)) |
 | `sam init` | Yes | Initializes a new serverless application ([Section 8.4](#84-sam-init)) |
-| `sam list` | **No** 🆕 | Shows resources, endpoints, and stack outputs ([Section 9.7](#97-verifying-deployment-results)) |
-| `sam local callback` | **No** 🆕 | — |
-| `sam local execution` | **No** 🆕 | — |
+| `sam list` | **New** 🆕 | Shows resources, endpoints, and stack outputs ([Section 9.7](#97-verifying-deployment-results)) |
+| `sam local callback` | **New** 🆕 | — |
+| `sam local execution` | **New** 🆕 | — |
 | `sam local generate-event` | Yes | Generates sample events ([Section 8.8](#88-sam-local-generate-event)) |
 | `sam local invoke` | Yes | Invokes a function locally **once** ([Section 8.7](#87-sam-local-invoke-and-docker)) |
 | `sam local start-api` | Yes | Runs functions behind a **local HTTP server** |
-| `sam local start-lambda` | **No** 🆕 | A local HTTP server **for use with the AWS CLI and SDKs** |
-| `sam logs` | **No** 🆕 | — |
+| `sam local start-lambda` | **New** 🆕 | A local HTTP server **for use with the AWS CLI and SDKs** |
+| `sam logs` | **New** 🆕 | — |
 | `sam package` | Yes | Packages artifacts ([Section 9.3](#93-sam-package-is-no-longer-a-separate-step)) |
-| `sam pipeline bootstrap` | **No** 🆕 | Prepares a CI/CD pipeline |
-| `sam pipeline init` | **No** 🆕 | Initializes a CI/CD pipeline |
-| `sam publish` | **No** 🆕 | Publishes to the AWS Serverless Application Repository ([Section 4.5](#45-aws-serverless-application-repository)) |
-| `sam remote callback` | **No** 🆕 | — |
-| `sam remote execution` | **No** 🆕 | — |
-| `sam remote invoke` | **No** 🆕 | Invokes a resource deployed in the cloud directly ([Section 8.9](#89-invoking-cloud-resources-directly)) |
-| `sam remote test-event` | **No** 🆕 | — |
-| `sam sync` | **No** 🆕 | Syncs local changes to the cloud ([Section 9.6](#96-reducing-the-development-loop-with-sam-sync)) |
-| `sam traces` | **No** 🆕 | — |
-| `sam validate` | **No** 🆕 | Validates the template ([Section 8.5](#85-sam-validate)) |
+| `sam pipeline bootstrap` | **New** 🆕 | Prepares a CI/CD pipeline |
+| `sam pipeline init` | **New** 🆕 | Initializes a CI/CD pipeline |
+| `sam publish` | **New** 🆕 | Publishes to the AWS Serverless Application Repository ([Section 4.5](#45-aws-serverless-application-repository)) |
+| `sam remote callback` | **New** 🆕 | — |
+| `sam remote execution` | **New** 🆕 | — |
+| `sam remote invoke` | **New** 🆕 | Invokes a resource deployed in the cloud directly ([Section 8.9](#89-invoking-cloud-resources-directly)) |
+| `sam remote test-event` | **New** 🆕 | — |
+| `sam sync` | **New** 🆕 | Syncs local changes to the cloud ([Section 9.6](#96-reducing-the-development-loop-with-sam-sync)) |
+| `sam traces` | **New** 🆕 | — |
+| `sam validate` | **New** 🆕 | Validates the template ([Section 8.5](#85-sam-validate)) |
 
-Five of the courseware's gaps are worth calling out.
+Five commands missing from the core seven are worth calling out.
 
 | Command | Why it matters |
 |---|---|
-| `sam validate` | This is the capability the slide 12 instructor note cites — "verify that the template file is written to specification" — **without naming the command** |
+| `sam validate` | This is **the actual command name** for the capability "verify that the template file is written to specification" |
 | `sam sync` | A separate path that shortens the development loop |
-| `sam delete` | The demonstration (slide 28) creates resources and stops, so **a cleanup step** is needed |
-| `sam remote invoke` | The courseware covers **local testing only** |
-| `sam list` | The CLI path for the demo item "show the resources created" |
+| `sam delete` | The demonstration creates resources and stops, so **a cleanup step** is needed |
+| `sam remote invoke` | The core seven cover **local testing only** |
+| `sam list` | The CLI path for "show the resources created" |
 
 > — Source: [AWS SAM CLI command reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html)
 
 ### 8.4 sam init 🔄
 
-Slide 22 gives five `sam init` examples and covers three options (`--runtime`, `--app-template`, `--location`). **All three still exist.**
+`sam init` is often introduced with five examples and three options (`--runtime`, `--app-template`, `--location`). **All three still exist.**
 
 ```bash
-# Courseware slide 22 as written. python3.8 is a deprecated runtime
+# The problematic form. python3.8 is a deprecated runtime
 # Start a new SAM project using the Python 3.8 runtime
 $ sam init --runtime python3.8
 # Start a new SAM project using a built-in app template
@@ -1359,18 +1359,18 @@ $ sam init --location /path/to/template/folder
 sam init --runtime python3.12
 # Specify a built-in app template
 sam init --runtime python3.12 --app-template hello-world
-# A function packaged as a container image (not in the courseware)
+# A function packaged as a container image (a lesser-known option)
 sam init --runtime python3.12 --package-type Image
-# The arm64 architecture (not in the courseware)
+# The arm64 architecture (a lesser-known option)
 sam init --runtime python3.12 --architecture arm64
 # Custom template locations - .zip files, HTTP/HTTPS, local paths, Git, Mercurial
 sam init --location /path/to/template.zip
 ```
 
-| # | Courseware notation | Correction | Reason |
+| # | Original notation | Correction | Reason |
 |---|---|---|---|
 | 1 | `--runtime python3.8` | `--runtime python3.12` | `python3.8` is deprecated. **The `--runtime` allowed-value list still includes `python3.8`**, but a function created with it uses a deprecated runtime |
-| 2 | The `$` prompt | Removed | The prompt character was dropped to make copy-paste easier. The courseware uses `>>` on slide 21 and `$` on slides 22–24 ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)) |
+| 2 | The `$` prompt | Removed | The prompt character was dropped to make copy-paste easier. Source material mixes `>>` and `$` prompts ([Section 11.1](#111-differences-from-the-courseware)) |
 
 The full list of values `--runtime` accepts. It applies only when `--package-type` is `Zip`.
 
@@ -1398,7 +1398,7 @@ The full list of values `--runtime` accepts. It applies only when `--package-typ
 | `--application-insights` / `--no-application-insights` | The default is **`--no-application-insights`** |
 | Also | `--no-interactive` · `--no-input` · `--extra-content` · `--config-env` · `--config-file` · `--save-params` · `--debug` |
 
-**The interactive flow is longer than the courseware shows too.** Slide 21 stops at the first prompt.
+**The interactive flow does not stop at the first prompt.** Only the first prompt is often shown, but it continues past that.
 
 ```text
 Which template source would you like to use?
@@ -1421,9 +1421,9 @@ What package type would you like to use?
 Project name [sam-app]:
 ```
 
-The first prompt the courseware shows ("Which template source would you like to use? / 1 - AWS Quick Start Templates / 2 - Custom Template Location") **matches the current documentation example.** The demo item "quick templates" on slide 28 also refers to these `AWS Quick Start Templates` (the two slides use different wording).
+The first prompt ("Which template source would you like to use? / 1 - AWS Quick Start Templates / 2 - Custom Template Location") **matches the current documentation example.** The demo item "quick templates" also refers to these `AWS Quick Start Templates` (just different wording).
 
-🆕 **The creation summary includes `samconfig.toml`.** That file is entirely absent from the courseware ([Section 9.4](#94-sam-deploy-and-samconfigtoml)).
+🆕 **The creation summary includes `samconfig.toml`.** That file is worth calling out ([Section 9.4](#94-sam-deploy-and-samconfigtoml)).
 
 | Summary item | Value |
 |---|---|
@@ -1436,16 +1436,16 @@ The first prompt the courseware shows ("Which template source would you like to 
 
 The documentation notes that next steps are in `sam-app/README.md`.
 
-The project structure diagram on slide 21 also has notation problems.
+The project structure diagram also has common notation problems.
 
-| Courseware notation | Correction | Reason |
+| Original notation | Correction | Reason |
 |---|---|---|
 | `_init_.py` | `__init__.py` | A Python package initialization file has **two** underscores on each side |
 | `Tests` | `tests` | `events` and `hello_world` are lowercase while only `Tests` is capitalized |
 
-**That said, we could not verify the directory structure `sam init` actually creates.** We verified only the creation summary ([Section 11.5](#115-items-we-could-not-verify)). The two items above point out notation problems inside the courseware; they are not assertions about the folder names in the generated output.
+**That said, we could not verify the directory structure `sam init` actually creates.** We verified only the creation summary ([Section 11.5](#115-items-we-could-not-verify)). The two items above point out notation problems in the source material; they are not assertions about the folder names in the generated output.
 
-The Init item in the slide 21 instructor note is also not a grammatical sentence: "You can select built-in applications a template or a custom template" appears to be a typo for "You can select a built-in application **template** or a custom template" ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+The Init description "You can select built-in applications a template or a custom template" is not a grammatical sentence: it appears to be a typo for "You can select a built-in application **template** or a custom template" ([Section 11.1](#111-differences-from-the-courseware)).
 
 > — Source: [sam init](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-init.html)
 
@@ -1455,7 +1455,7 @@ The Init item in the slide 21 instructor note is also not a grammatical sentence
 
 ### 8.5 sam validate 🆕
 
-The slide 12 instructor note lists "verify that the AWS SAM template file is written to specification" as the first thing the CLI can do. **The command name for that is nowhere in the deck.** It is `sam validate`.
+"Verify that the AWS SAM template file is written to specification" is listed as the first thing the CLI can do, but **the command name for that is not well known.** It is `sam validate`.
 
 | Item | Content |
 |---|---|
@@ -1481,20 +1481,20 @@ sam validate --template-file ./template.yaml
 
 ### 8.6 Six sam local Subcommands 🔄
 
-Slide 20 presents three `sam local` subcommands. **There are now six.**
+`sam local` is often introduced with three subcommands. **There are now six.**
 
-| Subcommand | In the courseware? | What it does |
+| Subcommand | In the core 3 | What it does |
 |---|---|---|
 | `sam local generate-event` | Yes | Generates AWS service events for local testing |
 | `sam local invoke` | Yes | Invokes a Lambda function locally **once** |
 | `sam local start-api` | Yes | Runs Lambda functions behind a **local HTTP server** |
-| `sam local start-lambda` | **No** 🆕 | Runs Lambda functions behind a local HTTP server **for use with the AWS CLI and SDKs** |
-| `sam local callback` | **No** 🆕 | — |
-| `sam local execution` | **No** 🆕 | — |
+| `sam local start-lambda` | **New** 🆕 | Runs Lambda functions behind a local HTTP server **for use with the AWS CLI and SDKs** |
+| `sam local callback` | **New** 🆕 | — |
+| `sam local execution` | **New** 🆕 | — |
 
-The descriptions of the three commands the courseware presents match the documentation.
+The descriptions of the three core commands match the documentation.
 
-| Command | Courseware description | Verification |
+| Command | Description | Verification |
 |---|---|---|
 | `sam local invoke` | Runs an AWS Lambda function locally in a Docker container | Matches |
 | `sam local start-api` | Replicates an Amazon API Gateway endpoint locally | Matches. The documentation describes it as running Lambda functions behind a local HTTP server |
@@ -1531,17 +1531,17 @@ sam local invoke --event events/s3.json S3JsonLoggerFunction
 sam local invoke --env-vars env.json HelloWorldFunction
 ```
 
-The courseware's slide 21 example, `sam local invoke "HelloWorldFunction" -e event.json`, also matches current usage of **a function logical ID plus an event file.**
+The example `sam local invoke "HelloWorldFunction" -e event.json` also matches current usage of **a function logical ID plus an event file.**
 
 The documentation's output example shows a runtime image such as `public.ecr.aws/lambda/python:3.9-rapid-x86_64` **being pulled** and `.aws-sam/build/<function>` being mounted at `/var/task` inside the container. In other words the `.aws-sam/build` directory from [Section 5.8](#58-template-file-names-and-relative-paths) is used for local invocation as well.
 
-🆕 **The documentation carries one caution absent from the courseware.** It **advises against using the SAM CLI's local invocation features with untrusted code** and directs you to run it in the Lambda service itself if you need complete isolation.
+🆕 **The documentation carries one caution worth noting.** It **advises against using the SAM CLI's local invocation features with untrusted code** and directs you to run it in the Lambda service itself if you need complete isolation.
 
 > — Source: [Introduction to testing with sam local invoke](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-invoke.html)
 
 ### 8.8 sam local generate-event 🔄
 
-Slide 20 gives only three supported services: "the representative services are Amazon S3, API Gateway, and Amazon SNS." 🔄 **The actual list is far longer.**
+Supported services are often given as only three: "the representative services are Amazon S3, API Gateway, and Amazon SNS." 🔄 **The actual list is far longer.**
 
 | Item | Content |
 |---|---|
@@ -1550,9 +1550,9 @@ Slide 20 gives only three supported services: "the representative services are A
 | Seeing the supported list | Run `sam local generate-event` with no arguments |
 | Services shown in the documentation example | `alb` · `alexa-skills-kit` · `alexa-smart-home` · `apigateway` · `appsync` · `batch` · `cloudformation` — and the list continues past that |
 
-The documentation's output example is cut off with an ellipsis, so **we could not verify the full list** ([Section 11.5](#115-items-we-could-not-verify)). Even so, the alphabetical beginning alone contains six more than the three the courseware names.
+The documentation's output example is cut off with an ellipsis, so **we could not verify the full list** ([Section 11.5](#115-items-we-could-not-verify)). Even so, the alphabetical beginning alone contains six more than the three commonly named.
 
-🆕 **Passing arguments in two stages is also absent from the courseware.**
+🆕 **Passing arguments in two stages is also worth noting.**
 
 ```bash
 # (1) See the list of supported services
@@ -1587,7 +1587,7 @@ Sample events carry **placeholder values** that can be modified with options suc
 
 ### 8.9 Invoking Cloud Resources Directly 🆕
 
-The courseware covers **local testing only.** The current CLI has a path for invoking resources deployed in the cloud directly.
+Learning only the core commands tends to stop at **local testing.** The current CLI has a path for invoking resources deployed in the cloud directly.
 
 | Command | What it does |
 |---|---|
@@ -1618,21 +1618,27 @@ Separating the uses of local testing and remote invocation:
 
 ### 9.1 The Standard Workflow
 
-Slide 21 presents the workflow in four steps. **As a production path those four steps are still valid.**
+The standard workflow has four steps. **As a production path those four steps are still valid.**
 
-| Step | Command | Courseware instructor note |
+| Step | Command | Description |
 |---|---|---|
 | Init | `sam init` | Initializes a new AWS SAM project |
 | Build | `sam build` | Builds the AWS SAM application. You can run the build inside a container |
 | Test | `sam local invoke` | Runs the application locally for testing |
 | Deploy | `sam deploy` | Deploys the application |
 
-```bash
-# The four-step workflow the courseware presents (with prompt characters removed)
-sam init
-sam build
-sam local invoke
-sam deploy --guided
+The four steps as a flow:
+
+```text
+sam init  ─▶  sam build  ─▶  sam local invoke  ─▶  sam deploy --guided
+  init         build            local test              deploy
+```
+
+After the deploy step, the flow from template to real resources is:
+
+```text
+AWS SAM template  ─▶  AWS CloudFormation  ─▶  change set  ─▶  stack  ─▶  AWS Cloud
+                       (serverless transform)   (pre-deploy review)
 ```
 
 🆕 **A successful `sam build` prints the commands to use next, and that list is broader than the courseware's four steps.**
@@ -1644,15 +1650,15 @@ sam deploy --guided
 | `sam sync --stack-name {{stack-name}} --watch` | [Section 9.6](#96-reducing-the-development-loop-with-sam-sync) |
 | `sam deploy --guided` | [Section 9.4](#94-sam-deploy-and-samconfigtoml) |
 
-The tail of the slide 21 diagram (AWS SAM template → AWS CloudFormation → stack → AWS Cloud) also matches the documentation. However, **the diagram omits the change set between CloudFormation and the stack** ([Section 9.5](#95-change-sets-and-rollback)).
+The tail of the flow above (AWS SAM template → AWS CloudFormation → stack → AWS Cloud) matches the documentation. However, the diagrams commonly drawn **omit the change set between CloudFormation and the stack**, which the flow above makes explicit ([Section 9.5](#95-change-sets-and-rollback)).
 
-The Deploy item in the slide 21 instructor note has its causality inverted: "To deploy through interactive prompts when using a configuration file, run the `sam deploy` command." **Interactive deployment (`--guided`) and configuration-file-based deployment are different paths**, and slide 24 presents them as separate examples ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+Regarding deployment, the statement "To deploy through interactive prompts when using a configuration file, run the `sam deploy` command" has its causality inverted. **Interactive deployment (`--guided`) and configuration-file-based deployment are different paths** ([Section 11.1](#111-differences-from-the-courseware)).
 
 > — Source: [Introduction to deploying with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-deploy.html)
 
 ### 9.2 sam build and Container Builds 🔄
 
-**This is the most important correction in the module.** The slide 23 instructor note states:
+**This is the most important correction in the module.** A statement like the following sometimes circulates:
 
 > Note: Some languages (for example .NET or Python) cannot use the `-use-container` option.
 
@@ -1683,10 +1689,10 @@ The restrictions live on the `--build-in-source` side.
 | Supported build methods | **Makefile** and **esbuild** |
 | Incompatible with | `--use-container` |
 
-**The notation also splits inside the courseware.** The slide body correctly writes `--use-container`(two hyphens) while the instructor note writes `-use-container`(one hyphen). The correct spelling is **`--use-container`**, with the short form **`-u`** ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+**The notation can even split within one source.** The body correctly writes `--use-container`(two hyphens) while the surrounding text may write `-use-container`(one hyphen). The correct spelling is **`--use-container`**, with the short form **`-u`** ([Section 11.1](#111-differences-from-the-courseware)).
 
 ```bash
-# Courseware slide 23 as written
+# The problematic form
 # Default build command
 $ sam build
 # Run the build process inside a Docker container like AWS Lambda
@@ -1729,7 +1735,7 @@ Other `sam build` options:
 | `--hook-name` | The allowed value is **`terraform`** |
 | Also | `--skip-pull-image` · `--use-buildkit` · `--mount-symlinks` · `--save-params` · `--parameter-overrides` · `--template-file` · `--config-file` |
 
-The location of the build output is absent from the courseware too.
+The location of the build output is worth noting too.
 
 ```text
 Build Succeeded
@@ -1745,7 +1751,7 @@ Commands you can use next
 [*] Deploy: sam deploy --guided
 ```
 
-`sam deploy` deploys **the build artifacts in the `.aws-sam` directory.** That is why the documentation advises running `sam build` to refresh that directory before deploying if you have changed source files. The courseware's `sam build && sam local invoke` on slide 23 also relies on this relationship, which the courseware never explains.
+`sam deploy` deploys **the build artifacts in the `.aws-sam` directory.** That is why the documentation advises running `sam build` to refresh that directory before deploying if you have changed source files. `sam build && sam local invoke` also relies on this relationship.
 
 > — Source: [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html)
 
@@ -1753,11 +1759,11 @@ Commands you can use next
 
 ### 9.3 sam package Is No Longer a Separate Step 🔄
 
-Slide 24's first example is `sam build && sam package --s3-bucket <bucket_name>`, and the instructor note likewise requires both commands: "use the `sam package` and `sam deploy` commands."
+`sam build && sam package --s3-bucket <bucket_name>` is sometimes given as a pre-deployment step, with guidance to "use the `sam package` and `sam deploy` commands" together.
 
 🔄 **The documentation states this in a Note:** `sam deploy` now **implicitly performs** the functionality of `sam package`. You can use the `sam deploy` command directly to package and deploy your application.
 
-| Item | Courseware | Current |
+| Item | Former approach | Current |
 |---|---|---|
 | The packaging step | Run `sam package --s3-bucket <bucket_name>` before deploying | `sam deploy` **performs it implicitly** |
 | The S3 bucket | Pass the name directly | Create one automatically with **`--resolve-s3`.** It appears in the output as `Managed S3 bucket` |
@@ -1776,7 +1782,7 @@ Slide 24's first example is `sam build && sam package --s3-bucket <bucket_name>`
 | Size condition | If the artifact is larger than **51,200 bytes**, either `--s3-bucket` or `--resolve-s3` is required |
 
 ```bash
-# Courseware slide 24 as written
+# The problematic form
 # Build and package for deployment
 $ sam build && sam package --s3-bucket <bucket_name>
 # Deploy using interactive prompts
@@ -1805,7 +1811,7 @@ sam deploy --config-file samconfig.toml --config-env default
 sam package --resolve-s3 --output-template-file packaged.yaml
 ```
 
-| # | Courseware notation | Correction | Reason |
+| # | Original notation | Correction | Reason |
 |---|---|---|---|
 | 1 | Presents `sam package --s3-bucket <bucket_name>` as a required pre-deployment step | `sam deploy`(with `--resolve-s3` if needed) | The documentation Note states that `sam deploy` performs packaging implicitly |
 | 2 | `# Deploy using a configuration file` plus `--template-file deploy.yml` | `--config-file`(default `samconfig.toml`) | `--template-file` is the **template** option ([Section 9.4](#94-sam-deploy-and-samconfigtoml)) |
@@ -1817,7 +1823,7 @@ sam package --resolve-s3 --output-template-file packaged.yaml
 
 ### 9.4 sam deploy and samconfig.toml 🆕
 
-**The courseware never mentions `samconfig.toml`.** This file is the output of `sam deploy --guided` and the basis for every later deployment, so it is central in practice.
+`samconfig.toml` is rarely covered, yet this file is the output of `sam deploy --guided` and the basis for every later deployment, so it is central in practice.
 
 | Item | Documentation statement |
 |---|---|
@@ -1878,7 +1884,7 @@ The documentation presents two **best practices**.
 | Build first | Because `sam deploy` deploys **the build artifacts in the `.aws-sam` directory**, run `sam build` to refresh that directory after changing source files |
 | First versus later deployments | Use **`sam deploy --guided`** for the first deployment and **`sam deploy`** afterward |
 
-`--capabilities` is also required knowledge absent from the courseware.
+`--capabilities` is also easily-missed required knowledge.
 
 | Value | When it is needed |
 |---|---|
@@ -1908,7 +1914,7 @@ Other options:
 
 ### 9.5 Change Sets and Rollback 🆕
 
-**The courseware does not cover change sets at all.** The slide 21 diagram goes straight from `AWS CloudFormation` to `stack`, and slide 24 shows only that running `sam deploy` deploys. But as [Section 9.4](#94-sam-deploy-and-samconfigtoml) showed, **deployment goes through a change set.** And that is the answer to problems 4 (no rollback plan) and 5 (human error) from [Section 2.1](#21-problems-with-traditional-software-deployment).
+Change sets are rarely covered. The diagrams commonly drawn go straight from `AWS CloudFormation` to `stack`, showing only that running `sam deploy` deploys. But as [Section 9.4](#94-sam-deploy-and-samconfigtoml) showed, **deployment goes through a change set.** And that is the answer to problems 4 (no rollback plan) and 5 (human error) from [Section 2.1](#21-problems-with-traditional-software-deployment).
 
 | Item | Documentation statement |
 |---|---|
@@ -1935,7 +1941,7 @@ The change set options on `sam deploy`:
 | `--confirm-changeset` / `--no-confirm-changeset` | Displays a **prompt to confirm** whether to deploy the computed change set. The `Confirm changes before deploy` prompt in `sam deploy --guided` is exactly this choice |
 | `--no-execute-changeset` | Creates the change set and **exits without applying it.** You can view the stack changes before applying them |
 
-**The rollback options are absent from the courseware too.**
+**The rollback options are worth listing too.**
 
 | Option | Behavior |
 |---|---|
@@ -1963,7 +1969,7 @@ sam deploy --disable-rollback
 
 Matched against the problem list in [Section 2.1](#21-problems-with-traditional-software-deployment):
 
-| Problem the courseware raises | The answer here |
+| Problem of traditional deployment | The answer here |
 |---|---|
 | No rollback plan | The default behavior is a **rollback to the last stable state.** Controlled with `--on-failure` |
 | Potential for human error | Change sets allow **review before execution.** `--no-execute-changeset` lets you look without applying |
@@ -1975,7 +1981,7 @@ Matched against the problem list in [Section 2.1](#21-problems-with-traditional-
 
 ### 9.6 Reducing the Development Loop with sam sync 🆕
 
-The courseware's workflow has four steps and no `sam sync`. That command is part of **AWS SAM Accelerate.**
+The standard four-step workflow has no `sam sync`. That command is part of **AWS SAM Accelerate.**
 
 | Item | Documentation statement |
 |---|---|
@@ -2037,13 +2043,13 @@ The details of each option:
 | Fast iteration during development | `sam sync --watch` (development stacks only) |
 | Production deployment | `sam deploy` or a CI/CD pipeline |
 
-In other words, the courseware's four-step workflow is still correct **as a production path.** `sam sync` does not replace it; it adds a separate path for the development loop.
+In other words, the standard four-step workflow is still correct **as a production path.** `sam sync` does not replace it; it adds a separate path for the development loop.
 
 > — Source: [Introduction to using sam sync to sync to AWS Cloud](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/accelerate.html)
 
 ### 9.7 Verifying Deployment Results 🆕
 
-The demo item "show the resources created" on slide 28 appears to assume console work. The current CLI has a path to the same information.
+The demo item "show the resources created" appears to assume console work. The current CLI has a path to the same information.
 
 | Subcommand | What it shows |
 |---|---|
@@ -2068,7 +2074,7 @@ sam list stack-outputs --stack-name my-stack
 
 ### 9.8 Cleaning Up 🆕
 
-**The courseware never covers how to clean up deployed resources.** The demonstration ends after deploying and testing the application, so a cleanup step is needed.
+How to clean up deployed resources is rarely covered. The demonstration ends after deploying and testing the application, so a cleanup step is needed.
 
 | Item | Documentation statement |
 |---|---|
@@ -2093,15 +2099,15 @@ This connects to the stack definition in [Section 1.2](#12-terminology). Deletin
 
 ### 9.9 The Demonstration Procedure 🆕
 
-Slide 28 lists demo items and **has no instructor notes at all.** There is nothing about what to demonstrate in what order or what constitutes success, and no reference URL. The courseware items are filled in as commands below.
+Demo items are often listed **without any description of what to demonstrate in what order or what constitutes success**, and with no reference URL. Each item is filled in as commands below.
 
-| Courseware demo item | Sub-item | Command | What to check |
+| Demo item | Sub-item | Command | What to check |
 |---|---|---|---|
 | Initialize the AWS SAM environment | Available runtimes · quick templates | `sam init` | In the interactive flow: `AWS Quick Start Templates` → `Hello World Example` → runtime → package type → project name. **The creation summary includes `samconfig.toml`** |
 | Build the AWS SAM application | Folder structure · build options (container versus local) | `sam validate` → `sam build` | Check `Built Artifacts : .aws-sam/build` in the successful build output. Container builds use `sam build --use-container`; local builds use `--no-use-container` |
 | Invoke AWS SAM resources | Local testing | `sam local generate-event` → `sam local invoke` | Create an event, save it to a file, and pass it to the function. Logs go to stderr and results to stdout |
 | Deploy the AWS SAM application | Show the resources created · test the application | `sam list resources` → `sam deploy --guided` → `sam list endpoints` | The resource list before deployment, the change set confirmation prompt during deployment, and the endpoints afterward |
-| (Not in the courseware) 🆕 | Clean up | `sam delete` | Deletes the stack and artifacts |
+| (Added) 🆕 | Clean up | `sam delete` | Deletes the stack and artifacts |
 
 ```bash
 # The full demonstration procedure
@@ -2126,7 +2132,7 @@ sam deploy --guided
 sam list endpoints
 sam list stack-outputs --stack-name sam-app
 
-# 7. Clean up - a step that is not in the courseware
+# 7. Clean up - an added step
 sam delete --stack-name sam-app
 ```
 
@@ -2142,18 +2148,18 @@ The demo's first item, "**available runtimes**," appears to refer to the runtime
 
 ## 10. Deployment Strategies
 
-The courseware's deployment strategies section (slides 25–26) has only three words in the body — `Canary`, `Linear`, `All-at-once` — and its entire instructor note is about AWS CodeDeploy. **Module objective 4 asks students to "describe the various AWS SAM deployment strategies," yet AWS SAM never appears in this section.** This chapter first covers the CodeDeploy side the courseware does address ([Section 10.1](#101-the-two-deployment-types) through [Section 10.3](#103-predefined-deployment-configurations)), then fills in how to declare it in a SAM template ([Section 10.4](#104-declaring-deployment-strategy-in-a-sam-template) through [Section 10.8](#108-rollback-paths-in-one-place)).
+Deployment strategies are often introduced with only three words — `Canary`, `Linear`, `All-at-once` — plus an explanation of AWS CodeDeploy. That leaves out the **declaration in a SAM template** that corresponds to module objective 4, "describe the various AWS SAM deployment strategies." This chapter first covers the CodeDeploy side ([Section 10.1](#101-the-two-deployment-types) through [Section 10.3](#103-predefined-deployment-configurations)), then fills in how to declare it in a SAM template ([Section 10.4](#104-declaring-deployment-strategy-in-a-sam-template) through [Section 10.8](#108-rollback-paths-in-one-place)).
 
 ### 10.1 The Two Deployment Types 🔄
 
-The slide 26 instructor note presents two CodeDeploy deployment options. **The statement about in-place deployment matches the documentation.**
+There are two CodeDeploy deployment options. **The statement about in-place deployment matches the documentation.**
 
-| Deployment type | Courseware instructor note | Verification |
+| Deployment type | Description | Verification |
 |---|---|---|
 | In-place deployment | The application on each instance in the deployment group is stopped. The latest application revision is installed, and the new version of the application is started and validated. **In-place deployments can be used only for deployments that use the EC2/on-premises compute product and services** | **Matches.** The documentation states that "only deployments that use the EC2/On-Premises compute platform can use in-place deployments" |
 | Blue/green deployment | Traffic moves from the current compute environment to a new one with the updated application revision | **Matches** |
 
-🔄 **However, the courseware places two different layers side by side and never says which type Lambda deployments are.** The three words in the slide body are **deployment configurations** for the Lambda compute platform, while the in-place and blue/green types the instructor note describes are **deployment types.** The documentation states the relationship explicitly.
+🔄 **Placing the two layers side by side, though, never reveals which type Lambda deployments are.** The three words `Canary`, `Linear`, and `All-at-once` are **deployment configurations** for the Lambda compute platform, while in-place and blue/green are **deployment types.** The documentation states the relationship explicitly.
 
 | Documentation statement | Meaning |
 |---|---|
@@ -2182,7 +2188,7 @@ The documentation also gives the steps for an EC2/on-premises blue/green deploym
 
 Blue/green deployments on the EC2/on-premises platform work **only with Amazon EC2 instances.** Also, in blue/green deployments through CloudFormation, traffic shifts as part of a CloudFormation stack update, and **only ECS blue/green deployments are currently supported.**
 
-🆕 **The advantages blue/green deployments have over in-place deployments** are absent from the courseware too. The second item in particular ties directly to problem 4 (no rollback plan) from [Section 2.1](#21-problems-with-traditional-software-deployment).
+🆕 **The advantages blue/green deployments have over in-place deployments** are worth setting out too. The second item in particular ties directly to problem 4 (no rollback plan) from [Section 2.1](#21-problems-with-traditional-software-deployment).
 
 | Advantage | Content |
 |---|---|
@@ -2190,7 +2196,7 @@ Blue/green deployments on the EC2/on-premises platform work **only with Amazon E
 | Rollback | On EC2/on-premises, if the original instances have not been terminated you can roll back to the latest version **simply by rerouting traffic**, which is faster and more reliable. **In-place deployments must redeploy the previous version to roll back** |
 | Traffic control | On the AWS Lambda platform you can **control how traffic shifts** from the original function version to the new one |
 
-🆕 The components in-place deployment requires are absent from the courseware as well. An **AppSpec file (application specification file)** defines the deployment actions CodeDeploy runs, an **application revision** bundling the deployable content and the AppSpec file is uploaded to an Amazon S3 bucket or GitHub repository, and the **CodeDeploy agent** on each instance polls CodeDeploy for the target revision and deploys it.
+🆕 The components in-place deployment requires are worth setting out as well. An **AppSpec file (application specification file)** defines the deployment actions CodeDeploy runs, an **application revision** bundling the deployable content and the AppSpec file is uploaded to an Amazon S3 bucket or GitHub repository, and the **CodeDeploy agent** on each instance polls CodeDeploy for the target revision and deploys it.
 
 > — Source: [Overview of CodeDeploy deployment types](https://docs.aws.amazon.com/codedeploy/latest/userguide/welcome.html)
 
@@ -2198,7 +2204,7 @@ Blue/green deployments on the EC2/on-premises platform work **only with Amazon E
 
 ### 10.2 The Three Compute Platforms 🔄
 
-🔄 **The courseware describes only two compute platforms, EC2/on-premises and AWS Lambda.** The documentation lists **three**.
+🔄 **Compute platforms are easily introduced as just two branches, EC2/on-premises and AWS Lambda.** The documentation lists **three**.
 
 | Platform | What it describes | How traffic is managed |
 |---|---|---|
@@ -2206,7 +2212,7 @@ Blue/green deployments on the EC2/on-premises platform work **only with Amazon E
 | **AWS Lambda** | An application composed of **updated versions** of Lambda functions | Choose among canary, linear, and all-at-once configurations |
 | **Amazon ECS** | Deploys containerized applications as **task sets** | CodeDeploy installs the updated version as a **new replacement task set** for a blue/green deployment |
 
-The reason the courseware's omission of Amazon ECS matters in practice is that the same three deployment configurations (canary, linear, all-at-once) **also exist on the ECS platform.** This concept is not Lambda-only.
+The reason omitting Amazon ECS invites confusion in practice is that the same three deployment configurations (canary, linear, all-at-once) **also exist on the ECS platform.** This concept is not Lambda-only.
 
 The documentation also covers how to create a custom deployment configuration.
 
@@ -2216,9 +2222,9 @@ The documentation also covers how to create a custom deployment configuration.
 | What you choose in the console | A compute platform: **EC2/On-premises, AWS Lambda, or Amazon ECS** |
 | Zonal configuration | Supported **only for in-place deployments to Amazon EC2 instances**, and **cannot be used with predefined deployment configurations**, so you must create a custom one |
 
-Both URLs the instructor note cites as references **are still valid.**
+Both related reference URLs **are still valid.**
 
-| Courseware reference URL | Status |
+| Reference URL | Status |
 |---|---|
 | `deployment-configurations-create.html` | **Valid.** The page title is `Create a deployment configuration with CodeDeploy` |
 | `deployment-configurations.html#deployment-configuration-lambda` | **Valid.** The page title is `Working with deployment configurations in CodeDeploy` |
@@ -2229,13 +2235,13 @@ Both URLs the instructor note cites as references **are still valid.**
 
 ### 10.3 Predefined Deployment Configurations 🔄
 
-Slide 26 gives only the three words `Canary`, `Linear`, and `All-at-once`, and **never names a single predefined configuration.** The documentation provides a list of fixed names.
+The three words `Canary`, `Linear`, and `All-at-once` alone **do not reveal the names of the predefined configurations.** The documentation provides a list of fixed names.
 
-First, verifying the courseware's instructor note descriptions:
+First, verifying the descriptions as commonly written:
 
-| Configuration | Courseware instructor note | Verification |
+| Configuration | Description as commonly written | Verification |
 |---|---|---|
-| Canary | **"Traffic is shifted in 2 increments at a time."** You can select a predefined canary option that specifies the percentage of traffic shifted to the updated Lambda function version in the first increment, and you can also choose the interval in minutes. This shift completes before the remaining traffic moves in the second increment | 🔄 **The first sentence is a mistranslation.** The original means traffic is shifted **in two increments** (shifted in two increments); "2 increments at a time" reads as if the increment size were 2. The documentation describes shifting a percentage in the first increment and deploying the remainder N minutes later. The **later sentence in the same note correctly assumes two increments**, so it conflicts inside the courseware |
+| Canary | **"Traffic is shifted in 2 increments at a time."** You can select a predefined canary option that specifies the percentage of traffic shifted to the updated Lambda function version in the first increment, and you can also choose the interval in minutes. This shift completes before the remaining traffic moves in the second increment | 🔄 **The first sentence is a mistranslation.** The original means traffic is shifted **in two increments** (shifted in two increments); "2 increments at a time" reads as if the increment size were 2. The documentation describes shifting a percentage in the first increment and deploying the remainder N minutes later. The **later sentence in the same description correctly assumes two increments**, so it conflicts inside the source material |
 | Linear | Traffic is shifted in equal increments with an equal number of minutes between each increment | **Matches** |
 | All-at-once | All traffic shifts from the existing Lambda function to the updated Lambda function version **at once** | **Matches** |
 | Custom | You can also create your own custom canary or linear deployment configuration | **Matches** |
@@ -2260,9 +2266,9 @@ First, verifying the courseware's instructor note descriptions:
 |---|---|
 | `CodeDeployDefault.AllAtOnce` | — |
 | `CodeDeployDefault.HalfAtATime` | — |
-| `CodeDeployDefault.OneAtATime` | 🆕 **CodeDeploy uses this one if you do not specify a deployment configuration.** The courseware does not cover this default |
+| `CodeDeployDefault.OneAtATime` | 🆕 **CodeDeploy uses this one if you do not specify a deployment configuration.** This default is not widely known |
 
-What an EC2/on-premises deployment configuration specifies. This is what the courseware instructor note's "if you need a minimum of 50% of instances, you can specify that in the deployment configuration" refers to.
+What an EC2/on-premises deployment configuration specifies is summarized here. This is what "if you need a minimum of 50% of instances, you can specify that in the deployment configuration" refers to.
 
 | Value | Content |
 |---|---|
@@ -2495,7 +2501,7 @@ Slide 5 presents "no rollback plan" as a problem with traditional deployment, bu
 | Blue/green (EC2) | If the original instances have not been terminated, roll back **simply by rerouting traffic** | [Section 10.1](#101-the-two-deployment-types) |
 | In-place (EC2) | **Must redeploy the previous version** to roll back | [Section 10.1](#101-the-two-deployment-types) |
 
-One more wording problem in the slide 26 instructor note is worth noting. It opens a list with "To customize the deployment of your application, **you must do the following**" and lists three items — use AWS DevOps tools, use third-party deployment tools, implement your own solution — but **those three are alternatives.** Bundled under "you must," they read as if all three were required. "Choose one of the following" would be correct ([Section 11.1](#111-courseware-statements-that-do-not-match-the-facts)).
+One commonly seen wording problem is worth noting. It opens a list with "To customize the deployment of your application, **you must do the following**" and lists three items — use AWS DevOps tools, use third-party deployment tools, implement your own solution — but **those three are alternatives.** Bundled under "you must," they read as if all three were required. "Choose one of the following" would be correct ([Section 11.1](#111-differences-from-the-courseware)).
 
 > — Source: [Deploying serverless applications gradually with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/automating-updates-to-serverless-apps.html)
 
@@ -2507,97 +2513,97 @@ One more wording problem in the slide 26 instructor note is worth noting. It ope
 
 ## 11. Changes from the Courseware
 
-Items in the courseware (the instructor deck) that differ from current behavior. Students are following the official courseware alongside this document, so we record what was changed and why.
+Since learners may have the official courseware in front of them, this section gathers in one place where this material diverges from it. The evidence behind every item marked new or corrected in the sections above is here.
 
-### 11.1 Courseware Statements That Do Not Match the Facts
+### 11.1 Differences from the Courseware
 
-The first seven items were **verified against external documentation.** The following nineteen are **internal inconsistencies** — places where the courseware body and instructor note disagree, or where notation broke during extraction — and are therefore not something external documentation can verify. Those carry `—` in the evidence column.
+The first seven items were **verified against external documentation.** The following nineteen are **internal inconsistencies** — places where the courseware body and original note disagree, or where notation broke during extraction — and are therefore not something external documentation can verify. Those carry `—` in the evidence column.
 
 | Item | What the courseware says | Verified content | Evidence |
 |---|---|---|---|
-| Capitalization of the `Transform` value (slide 14) | `Transform: AWS::serverless-2016-10-31` — **lowercase `s`** | The documented value is **`AWS::Serverless-2016-10-31`**(capital `S`), and the declaration is **required** in an AWS SAM template file. The `Type: AWS::Serverless::Function` in the same code block uses a capital `S`, so the notation splits inside the courseware. The documentation also gives an ordering rule: when using language extensions, `AWS::LanguageExtensions` must come before the serverless transform ([Section 5.2](#52-the-transform-declaration)) | [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html) |
-| `Globals` described as "global variables" (slide 14) | Annotation box: "Sets the **global variables** to be used within the AWS SAM template" | `Globals` is not a section for declaring variables. It is where you **declare properties several resources have in common once and let them inherit.** The section that parameterizes values is **`Parameters`.** Eight resource types inherit, override rules differ by data type (primitives replace, maps merge, lists prepend), and **a declared property cannot be removed by a resource.** The `MethodSettings` on `Api` the courseware puts inside `Globals` is also a common resource property value, not a variable ([Section 5.3](#53-the-globals-section)) | [Globals section of the AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html) |
-| Languages that cannot use `--use-container` (slide 23) | Instructor note: "Some languages (for example .NET or Python) cannot use the `-use-container` option" | **The current `sam build` reference contains no such statement.** On the contrary, the `--build-image` description gives `sam build --use-container --build-image amazon/aws-sam-cli-build-image-python3.8` as an example. The only restriction the documentation states is **incompatibility with `--build-in-source`**, and `--build-image`, `--container-env-var`, and `--container-env-var-file` conversely error out **without** `--use-container`. The instructor note also writes the option with one hyphen, while the correct spelling is **`--use-container`**(short form `-u`) ([Section 9.2](#92-sam-build-and-container-builds)) | [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) |
-| "Configuration file" attached to `--template-file` (slides 24 · 21) | The comment "# Deploy using a configuration file" above `sam deploy --template-file deploy.yml` | `--template-file`(`--template`, `-t`) specifies the path and name of the **AWS SAM template**, defaulting to `template.yaml` or `template.yml`. SAM's configuration file is specified with **`--config-file`**, defaults to **`samconfig.toml`** at the project root, and the environment name is chosen with `--config-env`(default `default`). The slide 21 instructor note's "to deploy through interactive prompts when using a configuration file" has the same confusion, and interactive deployment (`--guided`) and configuration-file-based deployment are **different paths** ([Section 9.4](#94-sam-deploy-and-samconfigtoml)) | [sam deploy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html) |
-| A read role on the Delete function (slide 15) | `Role: !Sub arn:aws:iam::${AWS::AccountId}:role/DynamoDBReadRole` | **Deleting a DynamoDB item requires write permission**, so the name and the purpose disagree. The documentation also states that **setting `Role` makes `Policies` ignored**, and that without `Role` a role with the logical ID `<function-logical-id>Role` is created automatically. `Policies` accepts policy templates, managed policy ARNs, managed policy names, and inline policies, and the right choice for a Delete function is `DynamoDBCrudPolicy` or `DynamoDBWritePolicy` ([Section 5.5](#55-correcting-the-slide-15-template) · [Section 5.6](#56-function-permissions-policies-and-role)) | [AWS::Serverless::Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html) |
-| Mistranslation of the Canary description (slide 26) | Instructor note: "Canary - traffic is shifted in **2 increments at a time**" | The original means traffic is shifted **in two increments** (shifted in two increments). "2 increments at a time" reads as if the increment size were 2. The documentation describes shifting a percentage in the first increment and deploying the remainder N minutes later — for example `CodeDeployDefault.LambdaCanary10Percent10Minutes` shifts 10% in the first increment and deploys the remaining 90% 10 minutes later. **The later sentence in the same note correctly assumes two increments**, so it conflicts inside the courseware ([Section 10.3](#103-predefined-deployment-configurations)) | [Working with deployment configurations in CodeDeploy](https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html) |
-| Asserting manual approval is required for continuous delivery (slide 7) | Instructor note: "Continuous delivery **must go through a manual approval step** before deploying to production" | The documentation describes continuous delivery as a methodology where the release process is automated, and states that before the final push to production **a person, an automated test, or a business rule** determines when that push happens. Since the decision maker may be a person but may also be an automated test or a business rule, **manual approval is not required** ([Section 2.3](#23-the-three-devops-processes)) | [Continuous delivery and continuous integration](https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-continuous-delivery-integration.html) |
-| Code folder name mismatch (slide 15) | Instructor note: "the code is in a folder called **`deleteFunction`**" versus the template's `CodeUri: delete-function/` | `deleteFunction` is not a folder name but a **logical resource ID.** This document distinguishes the logical ID from the `CodeUri` path ([Section 5.5](#55-correcting-the-slide-15-template)) | — |
-| The Delete function's event is named `listNotes` (slide 15) | The item under `Events:` is named `listNotes`, matching the `listFunction` event name on slide 14 | This looks like a copy-paste artifact from slide 14. The same template references `!Ref pollyNotesTable` but **that table resource is not defined in the slide**, with the preceding content cut off by an ellipsis. The slide 15 label also reads "SAM template" while every other slide says "AWS SAM template." This document renamed the event to `deleteNote` and included the table resource ([Section 5.5](#55-correcting-the-slide-15-template)) | — |
-| Four notation errors in the terminal examples (slide 21) | The `>>` prompt, `_init_.py`, a smart quote, and only `Tests` capitalized | ① The shell prompt is `>>` while slides 22, 23, and 24 all use `$`. ② `_init_.py` is a typo for **`__init__.py`**(two underscores on each side). ③ The closing quote in the `functions` list of the `sam build` output is a **right single quotation mark** rather than a straight apostrophe. ④ The folder names `events` and `hello_world` are lowercase while **only `Tests` is capitalized** ([Section 8.4](#84-sam-init)) | — |
-| Instructor note sentences that do not parse (slide 21) | Init: "You can select built-in applications a template or a custom template" · Deploy: "To deploy through interactive prompts when using a configuration file" | The Init item appears to be a typo for "You can select a built-in application **template** or a custom template." The Deploy item has its causality inverted. **Interactive deployment and configuration-file-based deployment are different paths**, and slide 24 presents them as separate examples ([Section 8.4](#84-sam-init) · [Section 9.1](#91-the-standard-workflow)) | — |
-| Abbreviation assignment and item count mismatch for CI/CD (slides 7 · 9) | The instructor note assigns `CI` to continuous integration and `CD` to continuous deployment, and **gives continuous delivery no abbreviation** | Since both `continuous delivery` and `continuous deployment` are abbreviated `CD` in English, that assignment invites confusion. Also, slide 7 presents three processes while **the six DevOps practices on slide 9 do not include continuous deployment.** This document uses **only the abbreviation `CI`** and writes the others out ([Section 2.3](#23-the-three-devops-processes) · [Section 2.5](#25-devops-practices)) | — |
-| Body labels disagree with instructor note headings (slide 6) | Three of the eight items are named differently | Body "Focus on customer needs" versus note "Customer-needs focused," body "Build a highly collaborative environment" versus note "Highly collaborative environment," body "Automate wherever possible" versus note "Automate where applicable." This document standardizes on **the body labels** ([Section 2.2](#22-devops-culture)) | — |
-| Missing spaces in diagrams and instructor notes (slides 9 · 17) | The Korean labels for "Monitoring and logging" and "Communication and collaboration" lose the space before the conjunction, "Infrastructure as code" is split across two lines, and the note runs `AWS::Serverless::Api` into the following word | This looks like the result of line breaks or separate text fragments being joined during extraction. The correct forms are **Monitoring and logging · Communication and collaboration · Infrastructure as code · the `AWS::Serverless::Api` resource type.** The same kind of run-together text was found in M12 ([Section 2.5](#25-devops-practices) · [Section 7.1](#71-the-six-mechanisms)) | — |
-| Only four of six resources mapped, and a reference link for another slide's topic (slide 16) | The mapping table has four rows and the second reference link is the API Gateway resource policies page | The slide body presents six resource types, but the mapping table **has no corresponding service for `AWS::Serverless::HttpApi` or `AWS::Serverless::LayerVersion`.** In particular it collapses `Api` and `HttpApi` into a single "Serverless API." The second reference link's topic is **slide 17 (controlling access with AWS SAM).** The link itself is valid ([Section 6.2](#62-mapping-resources-to-aws-services)) | — |
-| No SAM content corresponding to module objective 4 (slides 3 · 32 · 25–26) | Both the objectives and the summary state "Describe the various **AWS SAM** deployment strategies" | **AWS SAM never appears in the deployment strategies section.** The slide 26 body is three words and the entire instructor note is about CodeDeploy, and the body (Lambda-only deployment configurations) and the note (EC2/on-premises-centric in-place and blue/green, plus the "minimum 50% of instances" example) **mix two different layers.** This document fills that gap with `AutoPublishAlias` and `DeploymentPreference` ([Section 10](#10-deployment-strategies)) | — |
-| Alternatives stated as requirements (slide 26) | Instructor note: "To customize the deployment of your application, **you must do the following**" plus three items | Use AWS DevOps tools, use third-party deployment tools, and implement your own solution are **alternatives**, but bundled under "you must" they read as if all three were required. "Choose one of the following" would be correct ([Section 10.8](#108-rollback-paths-in-one-place)) | — |
-| Three steps in the body versus four in the note (slide 19) | The body gives three steps; the note counts creating an AWS account separately, for four | The body also says only "optional" about Docker while the note adds the condition "if you plan to test your application locally." **The points where Docker is actually needed** are local testing and container builds ([Section 8.1](#81-prerequisites)) | — |
-| All knowledge check answer boxes are empty (slide 30) | All six answer text boxes for the six true/false questions are empty | The check marks are present only as animations or images, so **the extracted text cannot tell which answer is correct and it can only be determined from the instructor notes.** This is the same structure as M12 slide 29 | — |
-| Knowledge check 5's explanation cites content absent from the deck (slide 30) | Explanation: "there are various AWS toolkits that build and debug code locally across a variety of IDE and runtime combinations" | **This deck has no slide covering AWS toolkits.** Slide 19 also covers only CLI installation. The toolkit the current AWS SAM prerequisites page presents as (optional) step 3 is **AWS Toolkit for VS Code** ([Section 8.1](#81-prerequisites)) | — |
-| The demonstration slide has no instructor notes (slide 28) | Only items are listed, with no instructor note and no reference URL | There is nothing about what to demonstrate in what order or what constitutes success. M12 slide 27 also lacked instructor notes but at least provided one reference URL. Also, the item "quick templates" appears to render the `AWS Quick Start Templates` from slide 21, so the two slides use different wording. This document fills the demonstration in as a command-level procedure ([Section 9.9](#99-the-demonstration-procedure)) | — |
-| No command name for the template validation capability (slide 12) | The instructor note lists "verify that the AWS SAM template file is written to specification" as a CLI capability without naming the command | It is also absent from the command list on slides 20–24. The command is **`sam validate`**, and `--lint` additionally performs `cfn-lint` linting ([Section 8.5](#85-sam-validate)) | — |
-| Module objectives and module summary worded differently (slides 3 · 32) | Two of the four items are worded differently | Item 2 splits between "DevOps **does** … development **practices**"(slide 3) and "**in** DevOps … development **methods**"(slide 32). Item 3 differs only in how the abbreviation is written. This document standardizes on **the slide 3 wording** ([Module Objectives](#module-objectives)) | — |
-| The agenda's module 12 name differs from the M12 deck (slide 2) | "Granting access to application users" | The subtitle on M12 deck slide 1 is "Granting Access to Your Application Users." The same module carries different names across the two decks ([Where This Module Sits](#where-this-module-sits)) | — |
-| No terminology slide (slides 31–33) | The deck goes straight from the module summary to "Thank you" | M12 had term definitions on slide 36. There is no place that organizes the terms newly introduced in this module — DevOps, continuous integration, infrastructure as code, stack, change set, deployment configuration. This document adds a terminology section with a source for each definition ([Section 1.2](#12-terminology)) | — |
-| Double spaces and redundant adverbs in instructor notes (slides 5 · 12 · 10) | Two instructor notes contain double spaces between words, and the slide 10 CloudFormation description repeats an adverb of the same meaning | This document normalized the spacing to a single space and removed the redundant adverb ([Section 2.1](#21-problems-with-traditional-software-deployment) · [Section 3.2](#32-aws-tools-for-devops)) | — |
+| Capitalization of the `Transform` value | `Transform: AWS::serverless-2016-10-31` — **lowercase `s`** | The documented value is **`AWS::Serverless-2016-10-31`**(capital `S`), and the declaration is **required** in an AWS SAM template file. The `Type: AWS::Serverless::Function` in the same code block uses a capital `S`, so the notation splits inside the courseware. The documentation also gives an ordering rule: when using language extensions, `AWS::LanguageExtensions` must come before the serverless transform ([Section 5.2](#52-the-transform-declaration)) | [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html) |
+| `Globals` described as "global variables" | Annotation box: "Sets the **global variables** to be used within the AWS SAM template" | `Globals` is not a section for declaring variables. It is where you **declare properties several resources have in common once and let them inherit.** The section that parameterizes values is **`Parameters`.** Eight resource types inherit, override rules differ by data type (primitives replace, maps merge, lists prepend), and **a declared property cannot be removed by a resource.** The `MethodSettings` on `Api` the courseware puts inside `Globals` is also a common resource property value, not a variable ([Section 5.3](#53-the-globals-section)) | [Globals section of the AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html) |
+| Languages that cannot use `--use-container` | The original material: "Some languages (for example .NET or Python) cannot use the `-use-container` option" | **The current `sam build` reference contains no such statement.** On the contrary, the `--build-image` description gives `sam build --use-container --build-image amazon/aws-sam-cli-build-image-python3.8` as an example. The only restriction the documentation states is **incompatibility with `--build-in-source`**, and `--build-image`, `--container-env-var`, and `--container-env-var-file` conversely error out **without** `--use-container`. The original note also writes the option with one hyphen, while the correct spelling is **`--use-container`**(short form `-u`) ([Section 9.2](#92-sam-build-and-container-builds)) | [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) |
+| "Configuration file" attached to `--template-file` | The comment "# Deploy using a configuration file" above `sam deploy --template-file deploy.yml` | `--template-file`(`--template`, `-t`) specifies the path and name of the **AWS SAM template**, defaulting to `template.yaml` or `template.yml`. SAM's configuration file is specified with **`--config-file`**, defaults to **`samconfig.toml`** at the project root, and the environment name is chosen with `--config-env`(default `default`). The original material's "to deploy through interactive prompts when using a configuration file" has the same confusion, and interactive deployment (`--guided`) and configuration-file-based deployment are **different paths** ([Section 9.4](#94-sam-deploy-and-samconfigtoml)) | [sam deploy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html) |
+| A read role on the Delete function | `Role: !Sub arn:aws:iam::${AWS::AccountId}:role/DynamoDBReadRole` | **Deleting a DynamoDB item requires write permission**, so the name and the purpose disagree. The documentation also states that **setting `Role` makes `Policies` ignored**, and that without `Role` a role with the logical ID `<function-logical-id>Role` is created automatically. `Policies` accepts policy templates, managed policy ARNs, managed policy names, and inline policies, and the right choice for a Delete function is `DynamoDBCrudPolicy` or `DynamoDBWritePolicy` ([Section 5.5](#55-correcting-the-delete-function-template) · [Section 5.6](#56-function-permissions-policies-and-role)) | [AWS::Serverless::Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html) |
+| Mistranslation of the Canary description | The original material: "Canary - traffic is shifted in **2 increments at a time**" | The original means traffic is shifted **in two increments** (shifted in two increments). "2 increments at a time" reads as if the increment size were 2. The documentation describes shifting a percentage in the first increment and deploying the remainder N minutes later — for example `CodeDeployDefault.LambdaCanary10Percent10Minutes` shifts 10% in the first increment and deploys the remaining 90% 10 minutes later. **The later sentence in the same note correctly assumes two increments**, so it conflicts inside the courseware ([Section 10.3](#103-predefined-deployment-configurations)) | [Working with deployment configurations in CodeDeploy](https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html) |
+| Asserting manual approval is required for continuous delivery | The original material: "Continuous delivery **must go through a manual approval step** before deploying to production" | The documentation describes continuous delivery as a methodology where the release process is automated, and states that before the final push to production **a person, an automated test, or a business rule** determines when that push happens. Since the decision maker may be a person but may also be an automated test or a business rule, **manual approval is not required** ([Section 2.3](#23-the-three-devops-processes)) | [Continuous delivery and continuous integration](https://docs.aws.amazon.com/codepipeline/latest/userguide/concepts-continuous-delivery-integration.html) |
+| Code folder name mismatch | The original material: "the code is in a folder called **`deleteFunction`**" versus the template's `CodeUri: delete-function/` | `deleteFunction` is not a folder name but a **logical resource ID.** This document distinguishes the logical ID from the `CodeUri` path ([Section 5.5](#55-correcting-the-delete-function-template)) | — |
+| The Delete function's event is named `listNotes` | The item under `Events:` is named `listNotes`, the same as the list function's `listFunction` event name | This looks like a copy-paste artifact from the original material. The same template references `!Ref pollyNotesTable` but **that table resource is not defined in the original material**, with the preceding content cut off by an ellipsis. This fragment's label also reads "SAM template" while everywhere else says "AWS SAM template." This document renamed the event to `deleteNote` and included the table resource ([Section 5.5](#55-correcting-the-delete-function-template)) | — |
+| Four notation errors in the terminal examples | The `>>` prompt, `_init_.py`, a smart quote, and only `Tests` capitalized | ① The shell prompt is `>>` while the other examples all use `$`. ② `_init_.py` is a typo for **`__init__.py`**(two underscores on each side). ③ The closing quote in the `functions` list of the `sam build` output is a **right single quotation mark** rather than a straight apostrophe. ④ The folder names `events` and `hello_world` are lowercase while **only `Tests` is capitalized** ([Section 8.4](#84-sam-init)) | — |
+| Original material sentences that do not parse | Init: "You can select built-in applications a template or a custom template" · Deploy: "To deploy through interactive prompts when using a configuration file" | The Init item appears to be a typo for "You can select a built-in application **template** or a custom template." The Deploy item has its causality inverted. **Interactive deployment and configuration-file-based deployment are different paths**, and another example presents the two separately ([Section 8.4](#84-sam-init) · [Section 9.1](#91-the-standard-workflow)) | — |
+| Abbreviation assignment and item count mismatch for CI/CD | The original note assigns `CI` to continuous integration and `CD` to continuous deployment, and **gives continuous delivery no abbreviation** | Since both `continuous delivery` and `continuous deployment` are abbreviated `CD` in English, that assignment invites confusion. Also, The original material presents three processes while **the six DevOps practices in the original material do not include continuous deployment.** This document uses **only the abbreviation `CI`** and writes the others out ([Section 2.3](#23-the-three-devops-processes) · [Section 2.5](#25-devops-practices)) | — |
+| Body labels disagree with original note headings | Three of the eight items are named differently | Body "Focus on customer needs" versus note "Customer-needs focused," body "Build a highly collaborative environment" versus note "Highly collaborative environment," body "Automate wherever possible" versus note "Automate where applicable." This document standardizes on **the body labels** ([Section 2.2](#22-devops-culture)) | — |
+| Missing spaces in diagrams and original notes | The Korean labels for "Monitoring and logging" and "Communication and collaboration" lose the space before the conjunction, "Infrastructure as code" is split across two lines, and the note runs `AWS::Serverless::Api` into the following word | This looks like the result of line breaks or separate text fragments being joined during extraction. The correct forms are **Monitoring and logging · Communication and collaboration · Infrastructure as code · the `AWS::Serverless::Api` resource type.** The same kind of run-together text was found in M12 ([Section 2.5](#25-devops-practices) · [Section 7.1](#71-the-six-mechanisms)) | — |
+| Only four of six resources mapped, and a reference link for another topic | The mapping table has four rows and the second reference link is the API Gateway resource policies page | The original material presents six resource types, but the mapping table **has no corresponding service for `AWS::Serverless::HttpApi` or `AWS::Serverless::LayerVersion`.** In particular it collapses `Api` and `HttpApi` into a single "Serverless API." The second reference link points to a different topic (controlling access with AWS SAM). The link itself is valid ([Section 6.2](#62-mapping-resources-to-aws-services)) | — |
+| No SAM content corresponding to module objective 4 | Both the objectives and the summary state "Describe the various **AWS SAM** deployment strategies" | **AWS SAM never appears in the deployment strategies section.** The the original material body is three words and the entire original note is about CodeDeploy, and the body (Lambda-only deployment configurations) and the note (EC2/on-premises-centric in-place and blue/green, plus the "minimum 50% of instances" example) **mix two different layers.** This document fills that gap with `AutoPublishAlias` and `DeploymentPreference` ([Section 10](#10-deployment-strategies)) | — |
+| Alternatives stated as requirements | The original material: "To customize the deployment of your application, **you must do the following**" plus three items | Use AWS DevOps tools, use third-party deployment tools, and implement your own solution are **alternatives**, but bundled under "you must" they read as if all three were required. "Choose one of the following" would be correct ([Section 10.8](#108-rollback-paths-in-one-place)) | — |
+| Three steps in the body versus four in the note | The body gives three steps; the note counts creating an AWS account separately, for four | The body also says only "optional" about Docker while the note adds the condition "if you plan to test your application locally." **The points where Docker is actually needed** are local testing and container builds ([Section 8.1](#81-prerequisites)) | — |
+| All knowledge check answer boxes are empty | All six answer text boxes for the six true/false questions are empty | The check marks are present only as animations or images, so **the extracted text cannot tell which answer is correct and it can only be determined from the original notes.** This is the same structure as M12 the original material | — |
+| Knowledge check 5's explanation cites content absent from the deck | Explanation: "there are various AWS toolkits that build and debug code locally across a variety of IDE and runtime combinations" | **The original material has no section covering AWS toolkits;** it covers only CLI installation. The toolkit the current AWS SAM prerequisites page presents as (optional) step 3 is **AWS Toolkit for VS Code** ([Section 8.1](#81-prerequisites)) | — |
+| The demonstration section has no original notes | Only items are listed, with no original note and no reference URL | There is nothing about what to demonstrate in what order or what constitutes success. The M12 material also lacked original notes but at least provided one reference URL. Also, the item "quick templates" appears to render `AWS Quick Start Templates`, so the wording differs across the material. This document fills the demonstration in as a command-level procedure ([Section 9.9](#99-the-demonstration-procedure)) | — |
+| No command name for the template validation capability | The original note lists "verify that the AWS SAM template file is written to specification" as a CLI capability without naming the command | It is also absent from the command list in the original material. The command is **`sam validate`**, and `--lint` additionally performs `cfn-lint` linting ([Section 8.5](#85-sam-validate)) | — |
+| Module objectives and module summary worded differently | Two of the four items are worded differently | Item 2 splits between "DevOps **does** … development **practices**"(the original material) and "**in** DevOps … development **methods**"(the original material). Item 3 differs only in how the abbreviation is written. This document standardizes on **the the original material wording** ([Module Objectives](#module-objectives)) | — |
+| The agenda's module 12 name differs from the M12 deck | "Granting access to application users" | The subtitle on the M12 material is "Granting Access to Your Application Users." The same module carries different names across the two decks ([Where This Module Sits](#where-this-module-sits)) | — |
+| No terminology section | The material goes straight from the module summary to "Thank you" | The M12 material had term definitions. There is no place that organizes the terms newly introduced in this module — DevOps, continuous integration, infrastructure as code, stack, change set, deployment configuration. This document adds a terminology section with a source for each definition ([Section 1.2](#12-terminology)) | — |
+| Double spaces and redundant adverbs in original notes | Two original notes contain double spaces between words, and the original material CloudFormation description repeats an adverb of the same meaning | This document normalized the spacing to a single space and removed the redundant adverb ([Section 2.1](#21-problems-with-traditional-software-deployment) · [Section 3.2](#32-aws-tools-for-devops)) | — |
 
 ### 11.2 Changed Behavior and Defaults
 
 | Item | What the courseware says | Current | Evidence |
 |---|---|---|---|
-| The SAM resource type list | Slide 16 presents **6**(`Api` · `HttpApi` · `Function` · `LayerVersion` · `SimpleTable` · `StateMachine`) | **13.** All six from the courseware are still valid and seven were added — `Application`(nested serverless applications) · `CapacityProvider` · **`Connector`**(permissions between resources) · `GraphQLApi` · `WebSocketApi` · `MicrovmImage` · `NetworkConnector`. These resources and properties are defined with AWS SAM shorthand syntax, and SAM also supports CloudFormation resource and property types ([Section 6.1](#61-thirteen-resource-types)) | [AWS SAM resources and properties](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-resources-and-properties.html) |
-| Ways to grant permissions between resources | **Only two** — `Policies`(a managed policy name) on slide 14 and `Role`(an existing role ARN) on slide 15 | **`AWS::Serverless::Connector`** was added after the courseware. There are two syntaxes — an **embedded connector syntax** with a `Connectors` block inside the source resource, and a standalone resource declaration — and the documentation recommends the embedded syntax for most use cases, advising the standalone syntax when referencing a source that is not in the same template, such as **a nested stack resource or a shared resource.** The valid `Permissions` values are **`Read` and `Write`**, and SAM turns that declared intent into the IAM permissions needed ([Section 6.3](#63-connectors)) | [AWS::Serverless::Connector](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html) |
-| The SAM CLI command list | Slides 20–24 present **7** | **24.** Among the commands absent from the courseware, the most important are **`sam validate`**(the capability slide 12 mentions without naming) · **`sam sync`** · **`sam delete`** · **`sam remote invoke`** · `sam list` · `sam logs` · `sam traces` · `sam publish` · `sam pipeline`(bootstrap · init). `sam local` also has **six** subcommands rather than three (`callback` · `execution` · `generate-event` · `invoke` · `start-api` · `start-lambda`) ([Section 8.3](#83-twenty-four-cli-commands) · [Section 8.6](#86-six-sam-local-subcommands)) | [AWS SAM CLI command reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html) |
-| Workflow steps | Slide 21 gives **four steps**: `sam init` → `sam build` → `sam local invoke` → `sam deploy` | **`sam sync`** was added after the courseware and is part of **AWS SAM Accelerate.** With `--watch` it builds, deploys to CloudFormation, then keeps running and watching for local changes, using an AWS service API for a fast update when the updated resource supports one and performing a CloudFormation deployment when it does not. `--code` syncs only code changes and `--resource-id` targets specific functions or layers. **The documentation recommends `sam sync` for development environments and `sam deploy` or a CI/CD pipeline for production**, so the courseware's four-step workflow remains valid as a production path ([Section 9.6](#96-reducing-the-development-loop-with-sam-sync)) | [Introduction to using sam sync to sync to AWS Cloud](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/accelerate.html) |
-| AWS SAM deployment strategies | Slides 25–26 are entirely about CodeDeploy and **contain no way to declare it in a SAM template** | Declared with **`AutoPublishAlias`**(automatic alias creation and version publishing) and **`DeploymentPreference`**(`Type` · `Alarms` · `Hooks`) on `AWS::Serverless::Function`. There are nine predefined `Type` values, and **the SAM spelling is `AllAtOnce`, not `All-at-once`.** Specifying `DeploymentPreference` makes SAM create a CodeDeploy application (`ServerlessDeploymentApplication`, one per stack), a per-function deployment group, and a `CodeDeployServiceRole` role. **The first gradual deployment must be done in two steps** ([Section 10.4](#104-declaring-deployment-strategy-in-a-sam-template) through [Section 10.6](#106-the-first-gradual-deployment-takes-two-steps)) | [Deploying serverless applications gradually with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/automating-updates-to-serverless-apps.html) |
-| Deployment configuration names | Slide 26 gives **only three words**: `Canary` · `Linear` · `All-at-once` | There are **nine** predefined deployment configurations for the Lambda compute platform, with fixed names (four in the `CodeDeployDefault.LambdaCanary10Percent5Minutes` family, four in the `CodeDeployDefault.LambdaLinear10PercentEvery1Minute` family, and `CodeDeployDefault.LambdaAllAtOnce`). EC2/on-premises has three, and **if you do not specify a deployment configuration, `CodeDeployDefault.OneAtATime` is used.** The courseware also describes only two compute platforms, omitting **Amazon ECS** ([Section 10.2](#102-the-three-compute-platforms) · [Section 10.3](#103-predefined-deployment-configurations)) | [Working with deployment configurations in CodeDeploy](https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html) |
+| The SAM resource type list | The original material presents **6**(`Api` · `HttpApi` · `Function` · `LayerVersion` · `SimpleTable` · `StateMachine`) | **13.** All six from the courseware are still valid and seven were added — `Application`(nested serverless applications) · `CapacityProvider` · **`Connector`**(permissions between resources) · `GraphQLApi` · `WebSocketApi` · `MicrovmImage` · `NetworkConnector`. These resources and properties are defined with AWS SAM shorthand syntax, and SAM also supports CloudFormation resource and property types ([Section 6.1](#61-thirteen-resource-types)) | [AWS SAM resources and properties](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-resources-and-properties.html) |
+| Ways to grant permissions between resources | **Only two** — `Policies`(a managed policy name) in the original material and `Role`(an existing role ARN) in the original material | **`AWS::Serverless::Connector`** was added after the courseware. There are two syntaxes — an **embedded connector syntax** with a `Connectors` block inside the source resource, and a standalone resource declaration — and the documentation recommends the embedded syntax for most use cases, advising the standalone syntax when referencing a source that is not in the same template, such as **a nested stack resource or a shared resource.** The valid `Permissions` values are **`Read` and `Write`**, and SAM turns that declared intent into the IAM permissions needed ([Section 6.3](#63-connectors)) | [AWS::Serverless::Connector](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html) |
+| The SAM CLI command list | the original material presents **7** | **24.** Among the commands absent from the courseware, the most important are **`sam validate`**(the capability the original material mentions without naming) · **`sam sync`** · **`sam delete`** · **`sam remote invoke`** · `sam list` · `sam logs` · `sam traces` · `sam publish` · `sam pipeline`(bootstrap · init). `sam local` also has **six** subcommands rather than three (`callback` · `execution` · `generate-event` · `invoke` · `start-api` · `start-lambda`) ([Section 8.3](#83-twenty-four-cli-commands) · [Section 8.6](#86-six-sam-local-subcommands)) | [AWS SAM CLI command reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html) |
+| Workflow steps | The original material gives **four steps**: `sam init` → `sam build` → `sam local invoke` → `sam deploy` | **`sam sync`** was added after the courseware and is part of **AWS SAM Accelerate.** With `--watch` it builds, deploys to CloudFormation, then keeps running and watching for local changes, using an AWS service API for a fast update when the updated resource supports one and performing a CloudFormation deployment when it does not. `--code` syncs only code changes and `--resource-id` targets specific functions or layers. **The documentation recommends `sam sync` for development environments and `sam deploy` or a CI/CD pipeline for production**, so the courseware's four-step workflow remains valid as a production path ([Section 9.6](#96-reducing-the-development-loop-with-sam-sync)) | [Introduction to using sam sync to sync to AWS Cloud](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/accelerate.html) |
+| AWS SAM deployment strategies | parts of the original material are entirely about CodeDeploy and **contain no way to declare it in a SAM template** | Declared with **`AutoPublishAlias`**(automatic alias creation and version publishing) and **`DeploymentPreference`**(`Type` · `Alarms` · `Hooks`) on `AWS::Serverless::Function`. There are nine predefined `Type` values, and **the SAM spelling is `AllAtOnce`, not `All-at-once`.** Specifying `DeploymentPreference` makes SAM create a CodeDeploy application (`ServerlessDeploymentApplication`, one per stack), a per-function deployment group, and a `CodeDeployServiceRole` role. **The first gradual deployment must be done in two steps** ([Section 10.4](#104-declaring-deployment-strategy-in-a-sam-template) through [Section 10.6](#106-the-first-gradual-deployment-takes-two-steps)) | [Deploying serverless applications gradually with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/automating-updates-to-serverless-apps.html) |
+| Deployment configuration names | The original material gives **only three words**: `Canary` · `Linear` · `All-at-once` | There are **nine** predefined deployment configurations for the Lambda compute platform, with fixed names (four in the `CodeDeployDefault.LambdaCanary10Percent5Minutes` family, four in the `CodeDeployDefault.LambdaLinear10PercentEvery1Minute` family, and `CodeDeployDefault.LambdaAllAtOnce`). EC2/on-premises has three, and **if you do not specify a deployment configuration, `CodeDeployDefault.OneAtATime` is used.** The courseware also describes only two compute platforms, omitting **Amazon ECS** ([Section 10.2](#102-the-three-compute-platforms) · [Section 10.3](#103-predefined-deployment-configurations)) | [Working with deployment configurations in CodeDeploy](https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html) |
 | The deployment settings configuration file | The courseware **never mentions `samconfig.toml`** | `sam deploy --guided` records the interactive flow's answers in the project's **`samconfig.toml`**, and on later deployments running just `sam deploy` uses those values. The interactive flow's defaults come from `~/.aws/config`, `~/.aws/credentials`, and the project's `samconfig.toml`, and **square brackets indicate the default.** This file is read as the `--config-file` default by `sam build`, `sam deploy`, `sam package`, `sam validate`, `sam delete`, `sam init`, and others, with the environment name chosen by `--config-env`(default `default`). It is also included in the project `sam init` creates ([Section 8.4](#84-sam-init) · [Section 9.4](#94-sam-deploy-and-samconfigtoml)) | [Introduction to deploying with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-deploy.html) |
-| That deployment goes through a change set | Slide 24 and the slide 21 diagram go straight from `sam deploy` to the stack | `sam deploy` creates a **CloudFormation change set** and deploys it. `--confirm-changeset` requires confirmation before execution, and `--no-execute-changeset` creates the change set and exits. The `Confirm changes before deploy` prompt in `sam deploy --guided` is that choice. The documentation states that a change set previews the impact of proposed changes, that CloudFormation changes the stack **only when you decide to execute it**, and that during creation it performs **pre-deployment validation** for causes such as property syntax errors, resource name conflicts, and service quota limits. The rollback options are absent from the courseware too — the default is a rollback to the last stable state, changed with `--disable-rollback` or `--on-failure`(`ROLLBACK` / `DELETE` / `DO_NOTHING`) ([Section 9.5](#95-change-sets-and-rollback)) | [Update CloudFormation stacks using change sets](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html) |
-| Installation prerequisites | Slide 19 presents an AWS account, IAM permissions and credentials, **Docker (optional)**, and SAM CLI installation | The current prerequisites page states that an AWS account, IAM credentials, an access key pair, and **the AWS CLI** to configure credentials are required, and presents the steps as sign up for an AWS account → **install the AWS CLI** → configure credentials with `aws configure` → **(optional) install AWS Toolkit for VS Code**. **This page has no Docker item.** Docker is needed for local testing, and the `sam local invoke` documentation states that it uses Docker to build and invoke the function in a local container. The installation path also changed: **since September 2023 AWS no longer maintains the AWS-managed Homebrew installer**, and versions older than macOS 13.x are not supported ([Section 8.1](#81-prerequisites) · [Section 8.2](#82-changes-in-the-installation-path)) | [AWS SAM prerequisites](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/prerequisites.html) |
-| Values `Policies` accepts | Slide 14 presents **only one**, an AWS managed policy name | The documentation presents four — **AWS SAM policy templates**, the **ARN** of an AWS managed or customer managed policy, the **name** of a managed policy from a defined list, and an **inline IAM policy** written as a YAML map. Policy templates are predefined policies that scope the permissions of Lambda functions and Step Functions state machines to the resources the application uses, and the table has **79 rows.** Templates that need placeholders take an object, and **templates that need none must be given an empty object (`{}`)** or `sam build` fails. There are seven DynamoDB-related templates ([Section 5.7](#57-sam-policy-templates)) | [AWS SAM policy templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html) |
+| That deployment goes through a change set | the original material and one diagram in the original material go straight from `sam deploy` to the stack | `sam deploy` creates a **CloudFormation change set** and deploys it. `--confirm-changeset` requires confirmation before execution, and `--no-execute-changeset` creates the change set and exits. The `Confirm changes before deploy` prompt in `sam deploy --guided` is that choice. The documentation states that a change set previews the impact of proposed changes, that CloudFormation changes the stack **only when you decide to execute it**, and that during creation it performs **pre-deployment validation** for causes such as property syntax errors, resource name conflicts, and service quota limits. The rollback options are absent from the courseware too — the default is a rollback to the last stable state, changed with `--disable-rollback` or `--on-failure`(`ROLLBACK` / `DELETE` / `DO_NOTHING`) ([Section 9.5](#95-change-sets-and-rollback)) | [Update CloudFormation stacks using change sets](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html) |
+| Installation prerequisites | The original material presents an AWS account, IAM permissions and credentials, **Docker (optional)**, and SAM CLI installation | The current prerequisites page states that an AWS account, IAM credentials, an access key pair, and **the AWS CLI** to configure credentials are required, and presents the steps as sign up for an AWS account → **install the AWS CLI** → configure credentials with `aws configure` → **(optional) install AWS Toolkit for VS Code**. **This page has no Docker item.** Docker is needed for local testing, and the `sam local invoke` documentation states that it uses Docker to build and invoke the function in a local container. The installation path also changed: **since September 2023 AWS no longer maintains the AWS-managed Homebrew installer**, and versions older than macOS 13.x are not supported ([Section 8.1](#81-prerequisites) · [Section 8.2](#82-changes-in-the-installation-path)) | [AWS SAM prerequisites](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/prerequisites.html) |
+| Values `Policies` accepts | The original material presents **only one**, an AWS managed policy name | The documentation presents four — **AWS SAM policy templates**, the **ARN** of an AWS managed or customer managed policy, the **name** of a managed policy from a defined list, and an **inline IAM policy** written as a YAML map. Policy templates are predefined policies that scope the permissions of Lambda functions and Step Functions state machines to the resources the application uses, and the table has **79 rows.** Templates that need placeholders take an object, and **templates that need none must be given an empty object (`{}`)** or `sam build` fails. There are seven DynamoDB-related templates ([Section 5.7](#57-sam-policy-templates)) | [AWS SAM policy templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html) |
 
 ### 11.3 Discouraged and Unsupported Items
 
-Of the four items below, the `python3.8` and `python3.9` runtimes are **deprecated**. Reproducing the examples on courseware slides 14, 15, 21, and 22 verbatim means using a deprecated runtime, so the templates and CLI examples in this document were corrected to supported runtimes.
+Of the four items below, the `python3.8` and `python3.9` runtimes are **deprecated**. Reproducing the template and CLI examples verbatim means using a deprecated runtime, so the templates and CLI examples in this document were corrected to supported runtimes.
 
 | Item | Status | Replacement | Evidence |
 |---|---|---|---|
 | Running `sam package` as a separate step | **Discouraged.** The documentation states in a Note that "sam deploy now implicitly performs the functionality of sam package" | **`sam deploy`.** Create the bucket automatically with `--resolve-s3`; specifying it together with `--s3-bucket` produces an error. `sam deploy` zips .zip artifacts and uploads them to S3, creating a bucket if needed (shown as `Managed S3 bucket`), and uploads container images to Amazon ECR, creating a repository if needed. **`sam package` itself has not been retired**, so it remains useful when you need the packaged template as a file (`--output-template-file`) ([Section 9.3](#93-sam-package-is-no-longer-a-separate-step)) | [sam package](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-package.html) |
 | Granting a function the `AmazonDynamoDBReadOnlyAccess` managed policy | **Discouraged.** It is far from least privilege | **The `DynamoDBReadPolicy` policy template**(with `TableName`) or **`AWS::Serverless::Connector`.** Policies specified in `Policies` are appended to the function's default IAM execution role, so a managed policy attaches permission to read **every DynamoDB table in the account.** A policy template narrows the permission to the target table through a placeholder, and a connector lets you declare only the `Read` or `Write` intent between the function and the table while SAM creates the permissions. It works for labs and demonstrations ([Section 5.7](#57-sam-policy-templates) · [Section 6.3](#63-connectors)) | [AWS SAM policy templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html) |
-| The `python3.8` runtime (slides 14 · 15 · 22) | **Deprecated.** The Deprecated runtimes table lists a deprecation date of **October 14, 2024**, block function create on February 1, 2027, and block function update on March 3, 2027 | **A supported Python runtime**(`python3.12` or later recommended; `python3.13` and `python3.14` have a scheduled deprecation date of 2029-06-30 and `python3.12` of 2028-10-31). `sam init --runtime` still lists this value as allowed, but functions created with it use a deprecated runtime. The currently supported Python runtimes are `python3.15`(no deprecation scheduled) · `python3.14` · `python3.13` · `python3.12` · `python3.11` · `python3.10` ([Section 5.4](#54-correcting-the-slide-14-template) · [Section 8.4](#84-sam-init)) | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| The `python3.9` runtime (slide 21) | **Deprecated.** The Deprecated runtimes table lists a deprecation date of **December 15, 2025**, block function create on February 1, 2027, and block function update on March 3, 2027 | The same. The `sam build` output example on slide 21 shows this value as the runtime. **Slides 14, 15, and 22 in the same deck use a different runtime, so the runtime notation splits inside the courseware** ([Section 8.4](#84-sam-init)) | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| The `python3.8` runtime | **Deprecated.** The Deprecated runtimes table lists a deprecation date of **October 14, 2024**, block function create on February 1, 2027, and block function update on March 3, 2027 | **A supported Python runtime**(`python3.12` or later recommended; `python3.13` and `python3.14` have a scheduled deprecation date of 2029-06-30 and `python3.12` of 2028-10-31). `sam init --runtime` still lists this value as allowed, but functions created with it use a deprecated runtime. The currently supported Python runtimes are `python3.15`(no deprecation scheduled) · `python3.14` · `python3.13` · `python3.12` · `python3.11` · `python3.10` ([Section 5.4](#54-correcting-the-list-function-template) · [Section 8.4](#84-sam-init)) | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| The `python3.9` runtime | **Deprecated.** The Deprecated runtimes table lists a deprecation date of **December 15, 2025**, block function create on February 1, 2027, and block function update on March 3, 2027 | The same. The `sam build` output example shows this value as the runtime, while other examples in the same material use a different runtime, so the runtime notation splits within the original material ([Section 8.4](#84-sam-init)) | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
 
-### 11.4 Items Added After the Courseware
+### 11.4 What This Material Adds
 
-| Item | Summary | Evidence |
-|---|---|---|
-| `AWS::Serverless::Connector` | Configures permissions between two resources. An embedded `Connectors` block (recommended) or a standalone resource syntax. `Permissions` takes `Read` or `Write`. All three properties are AWS SAM-specific with no CloudFormation equivalent | [AWS::Serverless::Connector](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html) |
-| `AutoPublishAlias` and `DeploymentPreference` | Gradual Lambda deployment. Nine predefined `Type` values, `Alarms` for alarm-based automatic rollback, `Hooks` for `PreTraffic` and `PostTraffic` validation. Specifying them creates a CodeDeploy application, deployment group, and service role automatically. **The first deployment takes two steps**, and invocations need the **alias qualifier** | [Deploying serverless applications gradually with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/automating-updates-to-serverless-apps.html) |
-| `sam sync --watch`(AWS SAM Accelerate) | Watches local changes and syncs by the fastest method. `--code` · `--resource-id` · `--no-watch` · `--skip-deploy-sync`(deploys anyway if more than 7 days have passed since the last deployment) · `--watch-exclude`. **For development environments only**, with a confirmation prompt on execution | [Introduction to using sam sync to sync to AWS Cloud](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/accelerate.html) |
-| `samconfig.toml` | The output of `sam deploy --guided` and the basis for later deployments. The `--config-file` default, with the environment chosen by `--config-env`(default `default`). Included in the `sam init` creation summary | [Introduction to deploying with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-deploy.html) |
-| CloudFormation change sets | Preview impact before execution, see added, modified, and deleted resources with before-and-after property comparisons, and pre-deployment validation (property syntax errors, resource name conflicts, service quota limits). All change sets for that stack are removed after execution. **Does not guarantee success** | [Update CloudFormation stacks using change sets](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html) |
-| `sam deploy` rollback and capability options | `--on-failure`(`ROLLBACK` default / `DELETE` / `DO_NOTHING`), `--disable-rollback`(cannot be combined with the former), `--capabilities`(`CAPABILITY_IAM` · `CAPABILITY_NAMED_IAM` · `CAPABILITY_AUTO_EXPAND` for nested applications), `--stack-name` required, `--s3-bucket` or `--resolve-s3` required when the template exceeds 51,200 bytes, and the `SAM_CLI_POLL_DELAY` environment variable | [sam deploy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html) |
-| `sam validate` | Validates the template. `--lint` runs `cfn-lint` linting (parameters via `cfnlintrc`). `--template-file` is unnecessary if the template is in the current directory under a standard name or you have just run `sam build` | [sam validate](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-validate.html) |
-| `sam list` | `endpoints`(cloud and local endpoints) · `resources`(resources that will be created at deployment) · `stack-outputs`(stack outputs). Used **both before and after** deployment | [sam list](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-list.html) |
-| `sam delete` | Deletes the stack, the S3 and ECR artifacts, and the template file. Asks whether to delete an ECR companion stack. `--no-prompts` **deletes the companion stack and ECR repository by default** and requires `--stack-name` or a configuration TOML file | [sam delete](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-delete.html) |
-| `sam local start-lambda` and `sam remote invoke` | `start-lambda` is a local HTTP server **for use with the AWS CLI and SDKs.** `sam remote invoke` **invokes a resource deployed in the cloud directly.** The courseware covers local testing only | [AWS SAM CLI command reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html) |
-| Additional `sam init` options | `--package-type Zip` / `Image`, `--architecture x86_64` / `arm64`, `--dependency-manager`, `--base-image`, `--name`, `--output-dir`, `--no-interactive`, `--tracing`, `--application-insights`(off by default), `--extra-content`. `--location` accepts Git · Mercurial · HTTP/HTTPS · .zip · paths, and **Git requires the repository root** | [sam init](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-init.html) |
-| Two-stage arguments for `sam local generate-event` | A service name alone lists the event types; a service plus a type prints a sample event. `--region` · `--partition` · `--bucket` · `--key` modify placeholder values | [Introduction to testing with sam local generate-event](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-generate-event.html) |
-| The `Auth` property (data type `ApiAuth`) | `Auth` → `DefaultAuthorizer` + `Authorizers` inside the `Properties` of `AWS::Serverless::Api`. The function's `Api` event references an explicit API with **`RestApiId`.** The courseware templates create implicit APIs without `RestApiId` | [Amazon Cognito user pool example for AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis-cognito-user-pool.html) |
-| Mechanism selection guidance and error response customization | **Amazon Cognito user pools** for greenfield projects, and a **Lambda authorizer**(formerly custom authorizer) when authentication already exists or custom logic is needed. API Gateway error response customization is supported by **`AWS::Serverless::Api` only** | [Control API access with your AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis.html) |
-| `Globals` inheriting resources and override rules | Eight inheriting resource types, 20 supported `Api` properties, override rules (primitives replace / maps merge / lists prepend), **declared properties cannot be removed**, and implicit API property overrides | [Globals section of the AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html) |
-| The concrete shape of the transformation | A 23-line SAM template expands into over 200 lines of CloudFormation. `Function` → `AWS::Lambda::Function` + `AWS::IAM::Role` + `AWS::Lambda::Permission`, `HttpApi` → `AWS::ApiGatewayV2::Api` + `Stage`, `SimpleTable` → `AWS::DynamoDB::Table`(`id` hash key, `PAY_PER_REQUEST`). Plus `SamResourceId` metadata and a `lambda:createdBy=SAM` tag | [How AWS SAM works](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam-overview.html) |
-| Restrictions on Lambda weighted alias routing | An alias points to **at most two versions**, the two versions must share an execution role and dead-letter queue configuration, **`$LATEST` is not allowed**, and at low traffic **the actual ratio can deviate.** The invoked version is determined from the `Version` in the `START` log, the `x-amz-executed-version` header, or the `ExecutedVersion` dimension | [Implement Lambda canary deployments using a weighted alias](https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html) |
-| AWS Serverless Application Repository | Find, deploy, and publish serverless applications. Public and private sharing, uploading a manifest file (an AWS SAM template), and **deep integration with the AWS Lambda console.** `sam publish` and `AWS::Serverless::Application` connect to it. Generally available at the time we checked | [What Is the AWS Serverless Application Repository?](https://docs.aws.amazon.com/serverlessrepo/latest/devguide/what-is-serverlessrepo.html) |
-| AWS Toolkit for VS Code | (Optional) step 3 of the SAM prerequisites. Visual debugging · CodeLens integration · a streamlined deployment workflow. Requires **Visual Studio Code 1.73.0 or later** and the YAML language support extension | [AWS SAM prerequisites](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/prerequisites.html) |
-| Three compute platforms and the nature of Lambda deployments | The platforms are EC2/On-Premises · AWS Lambda · **Amazon ECS.** **Lambda and ECS deployments cannot use in-place deployment and are all blue/green.** Plus the rollback advantage of blue/green, the AppSpec file and CodeDeploy agent, and zonal configuration being exclusive to EC2 in-place deployments | [CodeDeploy primary components](https://docs.aws.amazon.com/codedeploy/latest/userguide/primary-components.html) |
-| Local invocation cautions and the Docker dependency | `sam local invoke` **builds and invokes the function in a local container using Docker.** Logs go to stderr and results to stdout. It mounts `.aws-sam/build/<function>` at `/var/task` in the container. The documentation **advises against using it with untrusted code** | [Introduction to testing with sam local invoke](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-invoke.html) |
-| Configuration management as a DevOps practice | The `What is DevOps?` page presents **configuration management** alongside infrastructure as code as an infrastructure automation practice. It is absent from the six-item list on courseware slide 9 | [What is DevOps?](https://aws.amazon.com/devops/what-is-devops/) |
-| IaC tool comparison and SAM use scenarios | SAM instead of CloudFormation (template compatibility plus serverless simplification), SAM instead of the AWS CDK (declarative), and **using both together**(complementing the CDK with SAM CLI local testing). Scenarios are serverless applications · **augmenting CloudFormation** · local development and testing · serverless CI/CD · **migration** | [What is the AWS Serverless Application Model (AWS SAM)?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) |
-| Required and optional template sections plus parameter precedence | **Only `Transform` and `Resources` are required.** Section order is free, but `AWS::LanguageExtensions` must precede the serverless transform. `--parameter-overrides` and configuration file entries **take precedence over template entries** | [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html) |
-| `AWS::Serverless::Function` defaults and container images | `Timeout` 3 seconds, `Architectures` `x86_64`, `PackageType` `Zip`(requiring `CodeUri` or `InlineCode`). With `PackageType: Image`, **only `ImageUri` applies** and `Runtime`, `CodeUri`, and `InlineCode` are ignored. Setting `Runtime` to `provided` builds a custom runtime | [AWS::Serverless::Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html) |
-| `sam build` options and output locations | `--build-in-source`(Node.js runtimes plus Makefile and esbuild, incompatible with `--use-container`) · `--parallel` · `--cached`(`.aws-sam/cache`) · `--exclude` · `--hook-name terraform` and others. Output goes to `.aws-sam/build` and the built template to `.aws-sam/build/template.yaml`. **`sam deploy` deploys that directory** | [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) |
+| Item | Summary | Why it was added | Evidence |
+|---|---|---|---|
+| `AWS::Serverless::Connector` | Configures permissions between two resources. An embedded `Connectors` block (recommended) or a standalone resource syntax. `Permissions` takes `Read` or `Write`. All three properties are AWS SAM-specific with no CloudFormation equivalent | A third path to granting permissions that reduces mistakes compared with the two common methods | [AWS::Serverless::Connector](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html) |
+| `AutoPublishAlias` and `DeploymentPreference` | Gradual Lambda deployment. Nine predefined `Type` values, `Alarms` for alarm-based automatic rollback, `Hooks` for `PreTraffic` and `PostTraffic` validation. Specifying them creates a CodeDeploy application, deployment group, and service role automatically. **The first deployment takes two steps**, and invocations need the **alias qualifier** | The substance of the "SAM deployment strategy" module objective 4 asks for is these two properties | [Deploying serverless applications gradually with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/automating-updates-to-serverless-apps.html) |
+| `sam sync --watch`(AWS SAM Accelerate) | Watches local changes and syncs by the fastest method. `--code` · `--resource-id` · `--no-watch` · `--skip-deploy-sync`(deploys anyway if more than 7 days have passed since the last deployment) · `--watch-exclude`. **For development environments only**, with a confirmation prompt on execution | A separate path for shortening the development loop that is missing from the standard workflow | [Introduction to using sam sync to sync to AWS Cloud](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/accelerate.html) |
+| `samconfig.toml` | The output of `sam deploy --guided` and the basis for later deployments. The `--config-file` default, with the environment chosen by `--config-env`(default `default`). Included in the `sam init` creation summary | It is the output of `sam deploy --guided` and the basis for later deployments, yet it is rarely covered | [Introduction to deploying with AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-deploy.html) |
+| CloudFormation change sets | Preview impact before execution, see added, modified, and deleted resources with before-and-after property comparisons, and pre-deployment validation (property syntax errors, resource name conflicts, service quota limits). All change sets for that stack are removed after execution. **Does not guarantee success** | Deployment actually goes through it and it is the basis for rollback and review, yet it is missing from the diagrams | [Update CloudFormation stacks using change sets](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html) |
+| `sam deploy` rollback and capability options | `--on-failure`(`ROLLBACK` default / `DELETE` / `DO_NOTHING`), `--disable-rollback`(cannot be combined with the former), `--capabilities`(`CAPABILITY_IAM` · `CAPABILITY_NAMED_IAM` · `CAPABILITY_AUTO_EXPAND` for nested applications), `--stack-name` required, `--s3-bucket` or `--resolve-s3` required when the template exceeds 51,200 bytes, and the `SAM_CLI_POLL_DELAY` environment variable | It is the practical answer to the "no rollback plan" problem, yet the options are not presented | [sam deploy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html) |
+| `sam validate` | Validates the template. `--lint` runs `cfn-lint` linting (parameters via `cfnlintrc`). `--template-file` is unnecessary if the template is in the current directory under a standard name or you have just run `sam build` | The actual command name for the "verify the template meets the specification" capability is missing | [sam validate](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-validate.html) |
+| `sam list` | `endpoints`(cloud and local endpoints) · `resources`(resources that will be created at deployment) · `stack-outputs`(stack outputs). Used **both before and after** deployment | A path to check "resources created" from the CLI without the console | [sam list](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-list.html) |
+| `sam delete` | Deletes the stack, the S3 and ECR artifacts, and the template file. Asks whether to delete an ECR companion stack. `--no-prompts` **deletes the companion stack and ECR repository by default** and requires `--stack-name` or a configuration TOML file | Demonstrations and labs create resources and stop, so a cleanup procedure is needed | [sam delete](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-delete.html) |
+| `sam local start-lambda` and `sam remote invoke` | `start-lambda` is a local HTTP server **for use with the AWS CLI and SDKs.** `sam remote invoke` **invokes a resource deployed in the cloud directly.** The courseware covers local testing only | The SDK and cloud-invocation paths beyond local testing are missing | [AWS SAM CLI command reference](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html) |
+| Additional `sam init` options | `--package-type Zip` / `Image`, `--architecture x86_64` / `arm64`, `--dependency-manager`, `--base-image`, `--name`, `--output-dir`, `--no-interactive`, `--tracing`, `--application-insights`(off by default), `--extra-content`. `--location` accepts Git · Mercurial · HTTP/HTTPS · .zip · paths, and **Git requires the repository root** | Covering only three options hides practical choices such as container packaging and architecture | [sam init](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-init.html) |
+| Two-stage arguments for `sam local generate-event` | A service name alone lists the event types; a service plus a type prints a sample event. `--region` · `--partition` · `--bucket` · `--key` modify placeholder values | Without knowing how to pass the arguments you cannot generate an event | [Introduction to testing with sam local generate-event](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-generate-event.html) |
+| The `Auth` property (data type `ApiAuth`) | `Auth` → `DefaultAuthorizer` + `Authorizers` inside the `Properties` of `AWS::Serverless::Api`. The function's `Api` event references an explicit API with **`RestApiId`.** The courseware templates create implicit APIs without `RestApiId` | "Enable authorization" alone does not reveal which properties to use | [Amazon Cognito user pool example for AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis-cognito-user-pool.html) |
+| Mechanism selection guidance and error response customization | **Amazon Cognito user pools** for greenfield projects, and a **Lambda authorizer**(formerly custom authorizer) when authentication already exists or custom logic is needed. API Gateway error response customization is supported by **`AWS::Serverless::Api` only** | Laying out the six mechanisms as a table alone does not say what to choose when | [Control API access with your AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-controlling-access-to-apis.html) |
+| `Globals` inheriting resources and override rules | Eight inheriting resource types, 20 supported `Api` properties, override rules (primitives replace / maps merge / lists prepend), **declared properties cannot be removed**, and implicit API property overrides | `Globals` is easily mistaken for "global variables," so its exact behavior is needed | [Globals section of the AWS SAM template](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html) |
+| The concrete shape of the transformation | A 23-line SAM template expands into over 200 lines of CloudFormation. `Function` → `AWS::Lambda::Function` + `AWS::IAM::Role` + `AWS::Lambda::Permission`, `HttpApi` → `AWS::ApiGatewayV2::Api` + `Stage`, `SimpleTable` → `AWS::DynamoDB::Table`(`id` hash key, `PAY_PER_REQUEST`). Plus `SamResourceId` metadata and a `lambda:createdBy=SAM` tag | "It transforms" alone gives no sense of what expands and by how much | [How AWS SAM works](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam-overview.html) |
+| Restrictions on Lambda weighted alias routing | An alias points to **at most two versions**, the two versions must share an execution role and dead-letter queue configuration, **`$LATEST` is not allowed**, and at low traffic **the actual ratio can deviate.** The invoked version is determined from the `Version` in the `START` log, the `x-amz-executed-version` header, or the `ExecutedVersion` dimension | You need to know what a deployment configuration actually manipulates, and its restrictions | [Implement Lambda canary deployments using a weighted alias](https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html) |
+| AWS Serverless Application Repository | Find, deploy, and publish serverless applications. Public and private sharing, uploading a manifest file (an AWS SAM template), and **deep integration with the AWS Lambda console.** `sam publish` and `AWS::Serverless::Application` connect to it. Generally available at the time we checked | It connects to `sam publish` and the `Application` resource, yet it is not covered | [What Is the AWS Serverless Application Repository?](https://docs.aws.amazon.com/serverlessrepo/latest/devguide/what-is-serverlessrepo.html) |
+| AWS Toolkit for VS Code | (Optional) step 3 of the SAM prerequisites. Visual debugging · CodeLens integration · a streamlined deployment workflow. Requires **Visual Studio Code 1.73.0 or later** and the YAML language support extension | This tool is the actual referent of the "various toolkits" mention | [AWS SAM prerequisites](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/prerequisites.html) |
+| Three compute platforms and the nature of Lambda deployments | The platforms are EC2/On-Premises · AWS Lambda · **Amazon ECS.** **Lambda and ECS deployments cannot use in-place deployment and are all blue/green.** Plus the rollback advantage of blue/green, the AppSpec file and CodeDeploy agent, and zonal configuration being exclusive to EC2 in-place deployments | Seeing only two branches omits ECS and misses why Lambda is blue/green | [CodeDeploy primary components](https://docs.aws.amazon.com/codedeploy/latest/userguide/primary-components.html) |
+| Local invocation cautions and the Docker dependency | `sam local invoke` **builds and invokes the function in a local container using Docker.** Logs go to stderr and results to stdout. It mounts `.aws-sam/build/<function>` at `/var/task` in the container. The documentation **advises against using it with untrusted code** | The point at which Docker is effectively required, and the safety advisory, are missing | [Introduction to testing with sam local invoke](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-invoke.html) |
+| Configuration management as a DevOps practice | The `What is DevOps?` page presents **configuration management** alongside infrastructure as code as an infrastructure automation practice. It is absent from the six-item list on the original material | Seeing only six infrastructure automation practices leaves one out | [What is DevOps?](https://aws.amazon.com/devops/what-is-devops/) |
+| IaC tool comparison and SAM use scenarios | SAM instead of CloudFormation (template compatibility plus serverless simplification), SAM instead of the AWS CDK (declarative), and **using both together**(complementing the CDK with SAM CLI local testing). Scenarios are serverless applications · **augmenting CloudFormation** · local development and testing · serverless CI/CD · **migration** | There is no basis for judging when to use SAM, CloudFormation, or the CDK | [What is the AWS Serverless Application Model (AWS SAM)?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) |
+| Required and optional template sections plus parameter precedence | **Only `Transform` and `Resources` are required.** Section order is free, but `AWS::LanguageExtensions` must precede the serverless transform. `--parameter-overrides` and configuration file entries **take precedence over template entries** | There is no distinction of which sections are required or where values take precedence | [AWS SAM template anatomy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html) |
+| `AWS::Serverless::Function` defaults and container images | `Timeout` 3 seconds, `Architectures` `x86_64`, `PackageType` `Zip`(requiring `CodeUri` or `InlineCode`). With `PackageType: Image`, **only `ImageUri` applies** and `Runtime`, `CodeUri`, and `InlineCode` are ignored. Setting `Runtime` to `provided` builds a custom runtime | Not knowing defaults such as `Timeout` and the image packaging rules trips people up often | [AWS::Serverless::Function](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html) |
+| `sam build` options and output locations | `--build-in-source`(Node.js runtimes plus Makefile and esbuild, incompatible with `--use-container`) · `--parallel` · `--cached`(`.aws-sam/cache`) · `--exclude` · `--hook-name terraform` and others. Output goes to `.aws-sam/build` and the built template to `.aws-sam/build/template.yaml`. **`sam deploy` deploys that directory** | The relationship that `sam deploy` deploys `.aws-sam/build` is missing | [sam build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html) |
 
 ### 11.5 Items We Could Not Verify
 
@@ -2605,15 +2611,15 @@ Recorded honestly. Check these before stating them definitively in class.
 
 | Item | Status |
 |---|---|
-| Whether AWS CodeCommit is closed to new customers | We tried the developer guide, the FAQ, and documentation search, but **found no notice that it is closed to new customers.** We did not fill this in by guessing. Note that CodeCommit **does not appear** in the tool list on courseware slide 10 ([Section 3.4](#34-no-source-repository-in-the-list)) |
-| Current definitions of AWS CodeArtifact · AWS Config · AWS X-Ray · Amazon CloudWatch | **We did not consult the documentation for each service** to compare against the one-line descriptions on slide 10. In the table in [Section 3.2](#32-aws-tools-for-devops) these four appear as courseware wording only |
-| The six DevOps benefits on slide 8 | The reference page responded, but **the body we retrieved did not include the benefits section**, so we did not use it as evidence. The table in [Section 2.4](#24-why-adopt-devops) is the courseware wording as-is |
+| Whether AWS CodeCommit is closed to new customers | We tried the developer guide, the FAQ, and documentation search, but **found no notice that it is closed to new customers.** We did not fill this in by guessing. Note that CodeCommit **does not appear** in the tool list on the original material ([Section 3.4](#34-no-source-repository-in-the-list)) |
+| Current definitions of AWS CodeArtifact · AWS Config · AWS X-Ray · Amazon CloudWatch | **We did not consult the documentation for each service** to compare against the one-line descriptions in the original material. In the table in [Section 3.2](#32-aws-tools-for-devops) these four appear as courseware wording only |
+| The six DevOps benefits in the original material | The reference page responded, but **the body we retrieved did not include the benefits section**, so we did not use it as evidence. The table in [Section 2.4](#24-why-adopt-devops) is the courseware wording as-is |
 | A standalone definition page for infrastructure as code (IaC) | We verified only the mention on the `What is DevOps?` page. **We did not consult a page that defines IaC on its own** ([Section 3.1](#31-infrastructure-as-code)) |
 | The exact default name of the template file `sam init` creates | We verified only the default names the CLI **looks for** — `template.yaml`, `template.yml`, `template.json`. The name `sam init` **creates** could not be verified ([Section 5.8](#58-template-file-names-and-relative-paths)) |
-| The `sam init` project directory structure | We could not verify the **directory structure of the generated output** against the `events` / `hello_world` / `Tests` tree on slide 21. We verified only the creation **summary**(Name · Architectures · Dependency Manager · Configuration file and so on) ([Section 8.4](#84-sam-init)) |
+| The `sam init` project directory structure | We could not verify the **directory structure of the generated output** against the `events` / `hello_world` / `Tests` tree in the original material. We verified only the creation **summary**(Name · Architectures · Dependency Manager · Configuration file and so on) ([Section 8.4](#84-sam-init)) |
 | The minimum list of IAM permissions the SAM CLI needs | We verified only that the prerequisites are **"IAM credentials and an IAM access key pair."** Which permissions which operations need was not consulted ([Section 8.1](#81-prerequisites)) |
 | The full list of services `sam local generate-event` supports | The documentation example is **cut off with an ellipsis**, so we could not verify the full list. We verified `alb` · `alexa-skills-kit` · `alexa-smart-home` · `apigateway` · `appsync` · `batch` · `cloudformation` ([Section 8.8](#88-sam-local-generate-event)) |
 | CloudFormation `DeletionPolicy` and stack policies | We verified change sets and rollback options but **did not consult these two.** If you need resource-level protection, check them directly ([Section 9.5](#95-change-sets-and-rollback)) |
 | AWS SAM and CloudFormation service quotas | **Not consulted.** The only figure verified in this document is the 51,200-byte condition for templates and artifacts |
-| The official AWS definition of continuous deployment | The CodePipeline documentation we consulted **defines only continuous integration and continuous delivery**, so we could not verify slide 7's statement that "continuous deployment (CD) is a fully automated pipeline from build to production deployment" ([Section 2.3](#23-the-three-devops-processes)) |
-| The full list of AWS toolkits for IDEs | We verified **only AWS Toolkit for VS Code** from the SAM prerequisites. The explanation for knowledge check question 5 on slide 30 cites "various AWS toolkits," but we could not verify that list ([Section 8.1](#81-prerequisites)) |
+| The official AWS definition of continuous deployment | The CodePipeline documentation we consulted **defines only continuous integration and continuous delivery**, so we could not verify the original material's statement that "continuous deployment (CD) is a fully automated pipeline from build to production deployment" ([Section 2.3](#23-the-three-devops-processes)) |
+| The full list of AWS toolkits for IDEs | We verified **only AWS Toolkit for VS Code** from the SAM prerequisites. The explanation for knowledge check question 5 in the original material cites "various AWS toolkits," but we could not verify that list ([Section 8.1](#81-prerequisites)) |
