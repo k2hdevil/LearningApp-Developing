@@ -16,8 +16,8 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 7](#7-changes-from-the-courseware) for what changed and how.
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 7](#7-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 30, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -51,7 +51,7 @@ In the previous module you learned how to configure an SDK and create a service 
 - Configure a bucket to host a website
 - Set up cross-origin resource sharing (CORS) to selectively allow cross-origin access to Amazon S3 resources
 
-Elements that appear in the Lab 2 diagram: AWS Identity and Access Management (IAM), AWS Cloud, SDK, Amazon S3 operations, granting permissions, Notes bucket, developer, user, website endpoint.
+The components that come together in this module include AWS Identity and Access Management (IAM), the SDK, Amazon S3 operations and granting permissions, the bucket that holds the objects, the developer and the user, and the website endpoint.
 
 ---
 
@@ -69,7 +69,7 @@ Configuration targets: encryption, lifecycle, CORS, versioning, website, notific
 | Properties | Specify how the bucket operates and manages objects. Enable versioning, configure event notifications, logs, website hosting, and so on |
 | Management | Manage objects. Replication rules for automatic asynchronous copying between buckets, and lifecycle rules for storage class transitions, archiving, and deletion after a set period |
 
-The courseware describes permissions configuration as spanning "from ACLs to bucket policies to Amazon S3 access points," which presents ACLs as the first mechanism. Today the default for S3 Object Ownership is **Bucket owner enforced**, and that setting disables all ACLs. New buckets have ACLs disabled by default, and AWS recommends keeping ACLs disabled unless you specifically need per-object access control.
+The primary mechanisms for configuring permissions are bucket policies and IAM policies. The default for S3 Object Ownership is **Bucket owner enforced**, and that setting disables all ACLs. New buckets have ACLs disabled by default, and AWS recommends keeping ACLs disabled unless you specifically need per-object access control.
 
 | Object Ownership setting | ACLs |
 |---|---|
@@ -85,7 +85,7 @@ In a bucket with ACLs disabled, only PUT requests that specify no ACL, or that s
 
 You need a bucket to store and work with objects. The AWS account that creates a bucket owns it, and **you cannot change a bucket's name or Region after you create it.**
 
-The courseware states that "by default you can create up to 100 buckets, but you can request a service limit increase up to 1,000 buckets." The current values are different.
+There is a per-account quota on the number of buckets, and if you need more you request an increase.
 
 | Item | Current value |
 |---|---|
@@ -98,7 +98,7 @@ The courseware states that "by default you can create up to 100 buckets, but you
 
 > — Source: [Bucket quotas, limitations, and restrictions](https://docs.aws.amazon.com/AmazonS3/latest/userguide/BucketRestrictions.html)
 
-The three steps to create a bucket (courseware slide 6):
+Creating a bucket takes three steps:
 
 | Step | Content |
 |---|---|
@@ -108,13 +108,13 @@ The three steps to create a bucket (courseware slide 6):
 
 The `LocationConstraint` in `CreateBucket` specifies the Region to create the bucket in. If you do not specify a Region, the bucket is created in the **US East (N. Virginia) Region (`us-east-1`)**, and `us-east-1` is not included in the list of valid values for `LocationConstraint`. The value `EU` creates the bucket in `eu-west-1`. `LocationConstraint` is not supported for directory buckets. 🆕 You can specify tags at bucket creation with `Tags` in `CreateBucketConfiguration`, which requires the `s3:TagResource` permission.
 
-This supports the courseware instructor note: "To create a bucket in `us-east-1`, do not include the location constraint attribute."
+So when you create a bucket in `us-east-1`, do not include the `LocationConstraint` attribute.
 
 > — Source: [CreateBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html)
 
 #### Bucket Naming Rules 🔄
 
-The bucket name `notes_bucket` in the courseware .NET example contains an underscore, which violates the current naming rules.
+Bucket names must follow a set of naming rules. For example, a name with an underscore such as `notes_bucket` is not allowed.
 
 | Rule | Content |
 |---|---|
@@ -135,13 +135,13 @@ The bucket name `notes_bucket` in the courseware .NET example contains an unders
 | 200 OK | The bucket exists and you have access permission |
 | 400 Bad Request / 403 Forbidden / 404 Not Found | The bucket does not exist or you do not have permission. **There is no message body, so you cannot determine any exception beyond these HTTP response codes** |
 
-The instructor notes on courseware slide 7 mention only 404 and 403 and omit 400, and the Java example on slide 8 treats 400 as "attempted to access a bucket from a Region other than where it exists." The API documentation describes 400 as one of the general codes (400 / 403 / 404) returned when a bucket does not exist or access is denied, and further states that **you can call `HeadBucket` with any bucket name in any Region within the partition and receive a response header containing the correct bucket location, regardless of the bucket policy.**
+400 is one of the general codes (400 / 403 / 404) returned when a bucket does not exist or access is denied. Do not read 400 as only "attempted to access a bucket from a Region other than where it exists." In fact, **you can call `HeadBucket` with any bucket name in any Region within the partition and receive a response header containing the correct bucket location, regardless of the bucket policy.**
 
 For general purpose buckets, `HeadBucket` requires the `s3:ListBucket` permission. Response headers include `x-amz-bucket-region`, `x-amz-bucket-arn`, and `x-amz-access-point-alias`. 🆕
 
 > — Source: [HeadBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html)
 
-Request and response syntax as recorded on courseware slide 7 (Java):
+The `HeadBucket` request and response syntax in Java:
 
 ```text
 Request syntax
@@ -157,7 +157,7 @@ S3Exception
 
 ### 2.4 Example: HeadBucket (Java) 🔄
 
-Two problems in the courseware slide 8 example are corrected here. One is the incorrect interpretation of the `case 400` branch (see [Section 2.3](#23-the-headbucket-api-operation)); the other is the missing `break` in the `switch` statement, which makes a 404 response print all three messages. The second one is Java language behavior, so the code is fixed without citing AWS documentation for it.
+Watch two things in the example below. One is interpreting the `case 400` branch correctly (see [Section 2.3](#23-the-headbucket-api-operation)); the other is including a `break` in each `case` of the `switch` statement to prevent the fall-through that makes a 404 response print all three messages.
 
 ```java
 public void bucketExisting(S3Client s3, String bucketName) {
@@ -191,7 +191,7 @@ public void bucketExisting(S3Client s3, String bucketName) {
 }
 ```
 
-Courseware slide annotations: `HeadBucketRequest` is built from the bucket name / capture the result / examine the exception / exception 404 indicates the bucket does not exist, so you can create it.
+The flow is: build a `HeadBucketRequest` from the bucket name → capture the result → examine the exception. A 404 exception indicates the bucket does not exist, so in that case you can create it.
 
 > — Source: [HeadBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html)
 
@@ -249,7 +249,7 @@ Other S3 changes in version 4 confirmed in the same document: 🆕
 
 ### 2.7 Creating a Bucket 🔄
 
-Python (same as the courseware):
+Python:
 
 ```python
 s3_client = boto3.client('s3', region_name=region)
@@ -257,7 +257,7 @@ location = {'LocationConstraint': region}
 s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=location)
 ```
 
-Java — the courseware example uses `doesBucketExistV2`, `new CreateBucketRequest(...)`, and `new GetBucketLocationRequest(...)`, which is **AWS SDK for Java 1.x syntax**. Version 1.x reached end-of-support on December 31, 2025, so this is rewritten in 2.x syntax.
+Java — `doesBucketExistV2`, `new CreateBucketRequest(...)`, and `new GetBucketLocationRequest(...)` are **AWS SDK for Java 1.x syntax**. Version 1.x reached end-of-support on December 31, 2025, so the code below is written in 2.x syntax.
 
 ```java
 // AWS SDK for Java 2.x. Request objects are created with builders.
@@ -275,9 +275,9 @@ System.out.println("Bucket location: "
 
 > — Source: [AWS SDK for Java 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html), [S3Client (AWS SDK for Java 2.x)](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/S3Client.html)
 
-.NET — four things in the courseware example need fixing.
+.NET — four common problems in bucket-creation code and how to resolve them.
 
-| Courseware | Problem | Correction |
+| Common code | Problem | Correct approach |
 |---|---|---|
 | `BucketName = "notes_bucket"` | Underscores cannot be used in bucket names | `notes-bucket` |
 | `BucketRegion = S3Region.EU` | The `S3Region` field list in SDK for .NET V4 has no field consisting of the string `EU`. It only has fields corresponding to Region codes, such as `EUCentral1` and `EUWest1` | An explicit Region field such as `S3Region.EUWest1` |
@@ -301,7 +301,7 @@ PutBucketResponse response = await client.PutBucketAsync(request);
 
 ### 2.8 Waiting Until the Bucket Exists 🔄
 
-You can call `HeadBucket` repeatedly until the bucket is created, or you can use a waiter. The courseware instructor note says "a waiter that waits until the bucket is **terminated**," but the `bucket_exists` and `waitUntilBucketExists` waiters used in the example wait **until the bucket exists**. This is a translation error that also contradicts the slide title ("Waiting until the bucket is created").
+You can call `HeadBucket` repeatedly until the bucket is created, or you can use a waiter. As their names say, the `bucket_exists` and `waitUntilBucketExists` waiters wait **until the bucket exists**.
 
 The Boto3 `S3.Waiter.BucketExists` waiter is obtained with `client.get_waiter('bucket_exists')`.
 
@@ -341,7 +341,7 @@ exists = await AmazonS3Util.DoesS3BucketExistV2Async(s3Client, bucketName);
 
 ### 2.9 Updating Bucket Versioning 🔄
 
-You can change a bucket's configuration after you create it. The courseware example enables versioning.
+You can change a bucket's configuration after you create it. The example below enables versioning.
 
 ```console
 >> aws s3api get-bucket-versioning --bucket notes-bucket --generate-cli-skeleton output
@@ -352,9 +352,9 @@ You can change a bucket's configuration after you create it. The courseware exam
 }
 ```
 
-The courseware skeleton output shows `"Status": "Disabled"` and `"MFADelete": "Disabled"`. Three things there differ from the facts.
+It is easy to misread the versioning skeleton output as `"Status": "Disabled"` and `"MFADelete": "Disabled"`, but watch these three points.
 
-| Courseware states | Verified content |
+| Common misconception | Actual behavior |
 |---|---|
 | `"Status": "Disabled"` | `PutBucketVersioning` accepts only **`Enabled` and `Suspended`**. If a bucket has never had a versioning state set, it has no versioning state and a `GetBucketVersioning` request **does not return a versioning state value** |
 | `"MFADelete"` | The field name is **`MfaDelete`** |
@@ -377,7 +377,7 @@ To enable MFA Delete you must be the **bucket owner** and send both the `Status`
 | `yaml-input` | YAML input parameter template |
 | `output` | JSON output parameter template. **Cannot be requested as YAML** |
 
-Custom AWS CLI commands such as `aws s3` do not support `--generate-cli-skeleton`, `--cli-input-json`, or `--cli-input-yaml`. The courseware example uses an `aws s3api` command, so it is valid. Skeletons use the underlying API parameter names rather than the CLI parameter names.
+Custom AWS CLI commands such as `aws s3` do not support `--generate-cli-skeleton`, `--cli-input-json`, or `--cli-input-yaml`. You can use it with `aws s3api` commands such as the versioning example above. Skeletons use the underlying API parameter names rather than the CLI parameter names.
 
 > — Source: [About AWS CLI skeletons and input files](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-skeleton.html)
 
@@ -405,7 +405,7 @@ What you can do with object uploads and copies:
 
 Amazon S3 provides **strong read-after-write consistency**. After you successfully write a new object or overwrite an existing one, any subsequent read request immediately receives the latest version of the object. List operations are strongly consistent as well.
 
-The courseware records the size boundaries per upload path as "single upload < 5 GB / multipart upload < 5 TB / multipart recommended above 100 MB." The 5 GB single PUT limit and the 100 MB threshold are still correct, but **the multipart ceiling is larger than the courseware states.**
+The size limits per upload path are as follows.
 
 | Path | Current limit |
 |---|---|
@@ -419,7 +419,7 @@ The courseware records the size boundaries per upload path as "single upload < 5
 
 > — Source: [Uploading objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html)
 
-The benefits of multipart upload (courseware slide 17) and their basis:
+The benefits of multipart upload and their basis:
 
 | Benefit | Content |
 |---|---|
@@ -451,7 +451,7 @@ The lifecycle rule for cleaning up incomplete multipart uploads:
 
 ### 3.3 Multipart Upload Limits 🆕
 
-The courseware does not cover part size or part count limits. These are the values you need when implementing multipart upload directly with low-level commands.
+When you implement multipart upload directly with low-level commands, you need to know the part size and part count limits.
 
 | Item | Value |
 |---|---|
@@ -465,13 +465,13 @@ The courseware does not cover part size or part count limits. These are the valu
 
 > — Source: [Amazon S3 multipart upload limits](https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html)
 
-Step 1 on courseware slide 17, "split the file into pieces of 5 GB or less," matches the 5 GiB part size ceiling but **omits the 5 MiB minimum.**
+When you split a file into parts, each part must satisfy not only the 5 GiB ceiling but also a **5 MiB minimum** (the last part is the exception).
 
-Two official pages give different values for the maximum object size: the multipart upload limits page says 48.8 TiB and the object upload page says up to 50 TB. Which one is authoritative could not be determined from the documentation, so both values are presented with their respective sources (see [Section 7.5](#75-items-that-could-not-be-verified)). What is certain is that **the courseware's 5 TB differs from current documentation.**
+Two official pages give different values for the maximum object size: the multipart upload limits page says 48.8 TiB and the object upload page says up to 50 TB. Which one is authoritative could not be determined from the documentation, so both values are presented with their respective sources (see [Section 7.5](#75-items-that-could-not-be-verified)).
 
 ### 3.4 Multipart Upload with Low-Level Commands
 
-The procedure from courseware slide 17.
+The procedure for a multipart upload with low-level commands.
 
 | Step | Content |
 |---|---|
@@ -501,11 +501,11 @@ A successful response:
 }
 ```
 
-The multipart upload knowledge center article cited in the courseware instructor notes still responds: [Amazon S3 multipart upload with the AWS CLI](https://aws.amazon.com/premiumsupport/knowledge-center/s3-multipart-upload-cli/). Only URL reachability was checked; the content was not verified.
+For a multipart upload with the AWS CLI, you can also refer to this knowledge center article: [Amazon S3 multipart upload with the AWS CLI](https://aws.amazon.com/premiumsupport/knowledge-center/s3-multipart-upload-cli/). Only URL reachability was checked; the content was not verified.
 
 ### 3.5 High-Level Transfers: S3 Transfer Manager 🆕
 
-The courseware presents only `aws s3 cp` as a high-level transfer mechanism and does not cover the high-level transfer APIs in the SDKs. The **Amazon S3 Transfer Manager** is an open source high-level file transfer utility in the AWS SDK for Java 2.x, used to transfer files and directories to Amazon S3.
+High-level transfer mechanisms exist not only as CLI commands like `aws s3 cp` but also in the SDKs. The **Amazon S3 Transfer Manager** is an open source high-level file transfer utility in the AWS SDK for Java 2.x, used to transfer files and directories to Amazon S3.
 
 | Item | Content |
 |---|---|
@@ -542,7 +542,7 @@ Request parameters for `GetObject`:
 
 You retrieve an object from a bucket with the `GetObject` method and then process the data stream with one of the `GetObjectResponse` methods. The object is streamed, so the network connection stays open until all the data is read or the input stream is closed.
 
-The courseware example uses the synchronous `client.GetObject(request)`. **When targeting .NET Core (.NET Core 3.1, .NET 5, .NET 6, and so on) or .NET Standard, AWS service clients support only the asynchronous call pattern**, so you must use `GetObjectAsync`. Only builds targeting .NET Framework 4.7.2 support both synchronous and asynchronous patterns; Portable Class Library and Xamarin also support asynchronous only. High-level abstractions such as `TransferUtility` likewise support asynchronous calls only on .NET Core.
+Use the asynchronous method instead of the synchronous `client.GetObject(request)`. **When targeting .NET Core (.NET Core 3.1, .NET 5, .NET 6, and so on) or .NET Standard, AWS service clients support only the asynchronous call pattern**, so you must use `GetObjectAsync`. Only builds targeting .NET Framework 4.7.2 support both synchronous and asynchronous patterns; Portable Class Library and Xamarin also support asynchronous only. High-level abstractions such as `TransferUtility` likewise support asynchronous calls only on .NET Core.
 
 ```csharp
 GetObjectRequest request = new GetObjectRequest
@@ -558,9 +558,7 @@ using (GetObjectResponse response = await client.GetObjectAsync(request))
 
 ### 3.8 Example: Getting an Object (Python) 🔄
 
-The courseware example uses the Boto3 **resources interface** (`s3.Object(...)`), and while the function takes a `bucket` argument, the body mixes an undefined `bucketname` with `bucket.name`. The first is an interface choice; the second is an error in the courseware code itself.
-
-The AWS Python SDK team has **no plans to add new features to the Boto3 resources interface.** Existing interfaces continue to operate for the lifecycle of Boto3, but the latest service features are available through the client interface. Write new code against `boto3.client('s3')`.
+When getting an object, use the client interface rather than the Boto3 **resources interface** (`s3.Object(...)`). The AWS Python SDK team has **no plans to add new features to the Boto3 resources interface.** Existing interfaces continue to operate for the lifecycle of Boto3, but the latest service features are available through the client interface. Write new code against `boto3.client('s3')`.
 
 ```python
 def get_object(s3_client, bucket, object_key):
@@ -583,7 +581,7 @@ def get_object(s3_client, bucket, object_key):
 
 When you get an object you can override some aspects of the response headers. For example, you can dynamically change the `Content-Disposition` header of a single object so that it appears with a different file name for each caller.
 
-The courseware example uses the `ResponseHeaderOverrides` class and `new GetObjectRequest(bucketName, key).withResponseHeaders(...)`, which is **AWS SDK for Java 1.x syntax**. In 2.x, `GetObjectRequest.Builder` provides response header overrides as **methods on the request builder** rather than a separate class: `responseCacheControl`, `responseContentDisposition`, `responseContentEncoding`, `responseContentLanguage`, `responseContentType`, `responseExpires`, plus `range`, `versionId`, `ifMatch`, `ifNoneMatch`, `ifModifiedSince`, `ifUnmodifiedSince`, `partNumber`, and `checksumMode`.
+The `ResponseHeaderOverrides` class and `new GetObjectRequest(bucketName, key).withResponseHeaders(...)` are **AWS SDK for Java 1.x syntax**. In 2.x, `GetObjectRequest.Builder` provides response header overrides as **methods on the request builder** rather than a separate class: `responseCacheControl`, `responseContentDisposition`, `responseContentEncoding`, `responseContentLanguage`, `responseContentType`, `responseExpires`, plus `range`, `versionId`, `ifMatch`, `ifNoneMatch`, `ifModifiedSince`, `ifUnmodifiedSince`, `partNumber`, and `checksumMode`.
 
 ```java
 // AWS SDK for Java 2.x. Response header overrides are set on the request builder.
@@ -616,11 +614,11 @@ The `HeadObject` operation retrieves metadata from an object without returning t
 }
 ```
 
-Courseware slide annotation: if the request generates an error, it returns a 404 Not Found or 403 Forbidden code.
+If the request generates an error, it returns a 404 Not Found or 403 Forbidden code.
 
 ### 3.11 Amazon S3 Object Lambda 🔄
 
-With S3 Object Lambda you can add your own code to Amazon S3 **GET, LIST, and HEAD** requests to modify and process the data returned to your application. The courseware slide body mentions only "S3 GET requests," but the instructor note's "GET, HEAD, and LIST" matches the documentation.
+With S3 Object Lambda you can add your own code to Amazon S3 **GET, LIST, and HEAD** requests to modify and process the data returned to your application. It applies to all three request types.
 
 | Request | What you can do |
 |---|---|
@@ -634,7 +632,7 @@ You configure a Lambda function and then attach it to an **Object Lambda Access 
 
 #### Availability Change 🔄
 
-The courseware introduces S3 Object Lambda as a general feature available to anyone. **Since November 7, 2025 that is no longer the case.**
+S3 Object Lambda is **no longer open to new customers as of November 7, 2025.**
 
 | Item | Content |
 |---|---|
@@ -650,7 +648,7 @@ In other words, it is still worth covering to understand the concept, but **do n
 
 ### 3.12 Example: S3 Object Lambda (Python) 🔄
 
-The courseware example declares the variables `route` and `token` and then calls `write_get_object_response` with `RequestRoute=request_route` and `RequestToken=request_token`. Those names are undefined, so the code raises a `NameError` at runtime. The variable names are made consistent here.
+The key thing in the example below is keeping variable names consistent. Pass the `route` and `token` variables you declared straight through to `write_get_object_response` as `RequestRoute=route` and `RequestToken=token`. Referencing names other than the ones you declared (such as `request_route`) raises a `NameError` at runtime.
 
 ```python
 import boto3
@@ -676,7 +674,7 @@ def lambda_handler(event, context):
     return {'status_code': 200}
 ```
 
-The launch blog post cited in the courseware instructor notes still responds: [Introducing Amazon S3 Object Lambda](https://aws.amazon.com/blogs/aws/introducing-amazon-s3-object-lambda-use-your-code-to-process-data-as-it-is-being-retrieved-from-s3/). Only URL reachability was checked.
+You can also refer to the S3 Object Lambda launch blog post: [Introducing Amazon S3 Object Lambda](https://aws.amazon.com/blogs/aws/introducing-amazon-s3-object-lambda-use-your-code-to-process-data-as-it-is-being-retrieved-from-s3/). Only URL reachability was checked.
 
 > — Source: [Transforming objects with S3 Object Lambda](https://docs.aws.amazon.com/AmazonS3/latest/userguide/transforming-objects.html)
 
@@ -688,14 +686,22 @@ The launch blog post cited in the courseware instructor notes still responds: [I
 
 All objects and buckets are private by default. Presigned URLs are useful when you want someone without AWS credentials or permissions to retrieve (GET) a specific object or upload (PUT) to a bucket. They grant time-limited access to an object **without changing the bucket policy.**
 
-The flow from courseware slide 26:
+The flow for issuing and using a presigned URL:
 
-| Step | Content |
-|---|---|
-| 1 | The client requests a link to upload or download |
-| 2 | The Amazon EC2 instance running the application generates a presigned URL |
-| 3 | The presigned URL is returned — grants PUT or GET access, specifies an expiration, applies to a single object |
-| 4 | The client GETs or PUTs the object |
+```text
+                    (1) request a link
+   ┌──────────┐  ────────────────▶  ┌────────────────────────┐
+   │  Client   │                     │  Application (EC2, etc.) │
+   │          │  ◀────────────────  │  generates a presigned   │
+   └────┬─────┘  (3) return presigned │  URL with IAM creds (2)  │
+        │         URL (PUT/GET, expiry, └────────────────────────┘
+        │          single object)
+        │  (4) GET/PUT directly with the presigned URL
+        └────────────────────────────────────▶  ┌──────────────┐
+                                                 │  Amazon S3    │
+                                                 │  target object │
+                                                 └──────────────┘
+```
 
 What you specify when creating the URL:
 
@@ -707,7 +713,7 @@ What you specify when creating the URL:
 | HTTP method | GET to download, PUT to upload, HEAD to read metadata, and so on |
 | Expiration time interval | See [Section 4.2](#42-expiration-and-credential-types) |
 
-There is one important property the courseware does not cover. **The credentials a presigned URL uses belong to the IAM principal that created it.** Anyone with valid credentials can create a presigned URL, but for the access to actually succeed, it must be created by someone who has permission to perform the operation the URL is based on. In other words, a presigned URL's capability is **limited to the permissions of the user who created it.**
+There is one important property here. **The credentials a presigned URL uses belong to the IAM principal that created it.** Anyone with valid credentials can create a presigned URL, but for the access to actually succeed, it must be created by someone who has permission to perform the operation the URL is based on. In other words, a presigned URL's capability is **limited to the permissions of the user who created it.**
 
 - A presigned URL can be used **multiple times** until it expires, and S3 checks the expiration at the time of the HTTP request.
 - You can restrict signature use with the `s3:signatureAge` condition key. 🆕
@@ -717,7 +723,7 @@ There is one important property the courseware does not cover. **The credentials
 
 ### 4.2 Expiration and Credential Types 🆕
 
-The courseware mentions only an "expiration date and time" and does not cover the caps or the early expiration that depends on the credential type.
+There are caps on the expiration period per creation path, and a URL can expire earlier depending on the credential type used to sign it.
 
 | Creation path | Expiration you can set |
 |---|---|
@@ -748,7 +754,7 @@ So even if you pass 7 days to `--expires-in`, a URL signed with an instance prof
 | `--expires-in` default | 3,600 seconds |
 | `--expires-in` maximum | 604,800 seconds (7 days) |
 
-The example URL in the courseware instructor notes uses the `AWSAccessKeyId`, `Signature`, and `Expires` query parameters, which is the **Signature Version 2 form**. The query parameters in URLs the current CLI generates are as follows.
+Using the `AWSAccessKeyId`, `Signature`, and `Expires` query parameters is the **Signature Version 2 form**. URLs the current CLI generates use SigV4 and have the following query parameters.
 
 ```text
 https://notes-bucket.s3.us-west-2.amazonaws.com/readme.txt
@@ -760,7 +766,7 @@ https://notes-bucket.s3.us-west-2.amazonaws.com/readme.txt
   &X-Amz-Signature=...
 ```
 
-One more thing to note: **`aws s3 presign` generates GET URLs only.** The courseware explains that presigned URLs are also used for PUT, but a PUT upload URL has to be created with an SDK rather than the CLI (for example, Boto3's `generate_presigned_url(ClientMethod='put_object')`).
+One more thing to note: **`aws s3 presign` generates GET URLs only.** Presigned URLs are also used for PUT, but a PUT upload URL has to be created with an SDK rather than the CLI (for example, Boto3's `generate_presigned_url(ClientMethod='put_object')`).
 
 > — Source: [aws s3 presign](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/presign.html)
 
@@ -785,7 +791,7 @@ PresignedGetObjectRequest presignedRequest = presigner.presignGetObject(presignR
 URL url = presignedRequest.url();
 ```
 
-The [AWS SDK for Java presigned URL example](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/examples-s3-presign.html) cited in the courseware instructor notes still responds. Only URL reachability was checked; the content was not verified.
+For more examples, see the [AWS SDK for Java presigned URL example](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/examples-s3-presign.html) document. Only URL reachability was checked; the content was not verified.
 
 ### 4.5 Example: Creating a Presigned URL (.NET, Python)
 
@@ -811,9 +817,9 @@ url = boto3.client('s3').generate_presigned_url(
     ExpiresIn=3600)
 ```
 
-### 4.6 Product Demo
+### 4.6 Try It in the Lab
 
-The demo items from courseware slide 30.
+The material in this module sinks in when you work through it hands-on, along these two tracks.
 
 - Using the SDKs for CRUD operations
 - Using the AWS CLI for presigned URLs and continuation tokens
@@ -859,7 +865,7 @@ How `aws s3 sync` behaves:
 
 #### The Storage Class Transition Example 🔄
 
-The courseware instructor notes present "changing an object's storage class from Standard to Reduced Redundancy or the other way around" as the representative use of a copy operation. **AWS does not recommend using Reduced Redundancy Storage (RRS) today.**
+A storage class transition is often cited as the representative use of a copy operation, but using Reduced Redundancy Storage (RRS) as the target is not recommended. **AWS does not recommend using RRS today.**
 
 | Item | Content |
 |---|---|
@@ -869,13 +875,13 @@ The courseware instructor notes present "changing an object's storage class from
 | Requesting a lost object | Requesting a lost RRS object returns a **405 error** |
 | Upload without a storage class | S3 Standard is applied |
 
-The `/AmazonS3/latest/dev/ChgStoClsOfObj.html` path cited in the courseware is an older developer guide path, and it has since been consolidated into the user guide page below.
+Storage class content is consolidated into the user guide page below.
 
 > — Source: [Understanding and managing Amazon S3 storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html)
 
 ### 5.2 Listing Buckets 🔄
 
-`ListBuckets` returns a list of all buckets owned by the authenticated sender of the request and requires the `s3:ListAllMyBuckets` policy action. The courseware describes it as returning the whole list at once and provides only an example that iterates over the result, but **pagination exists today and its use is strongly recommended.**
+`ListBuckets` returns a list of all buckets owned by the authenticated sender of the request and requires the `s3:ListAllMyBuckets` policy action. It is easy to assume it returns the whole list at once, but **`ListBuckets` has pagination and its use is strongly recommended.**
 
 | Item | Content |
 |---|---|
@@ -889,7 +895,7 @@ The `/AmazonS3/latest/dev/ChgStoClsOfObj.html` path cited in the courseware is a
 
 > — Source: [ListBuckets API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html)
 
-The courseware Java example, `List<Bucket> buckets = s3.listBuckets();` with `b.getName()`, is SDK for Java 1.x syntax. In 2.x you use `buckets()` on the `listBuckets()` response, or `listBucketsPaginator()`. The 2.x `S3Client` provides `listBuckets`, `listBucketsPaginator`, `listObjectsV2`, `listObjectsV2Paginator`, `listObjectVersions`, `listObjectVersionsPaginator`, `listMultipartUploads`, `listMultipartUploadsPaginator`, `listParts`, `listPartsPaginator`, `headBucket`, and `headObject`. In other words, **there are paginator variants for both bucket listing and object listing.**
+`List<Bucket> buckets = s3.listBuckets();` with `b.getName()` is SDK for Java 1.x syntax. In 2.x you use `buckets()` on the `listBuckets()` response, or `listBucketsPaginator()`. The 2.x `S3Client` provides `listBuckets`, `listBucketsPaginator`, `listObjectsV2`, `listObjectsV2Paginator`, `listObjectVersions`, `listObjectVersionsPaginator`, `listMultipartUploads`, `listMultipartUploadsPaginator`, `listParts`, `listPartsPaginator`, `headBucket`, and `headObject`. In other words, **there are paginator variants for both bucket listing and object listing.**
 
 ```java
 // AWS SDK for Java 2.x. Paginated bucket listing.
@@ -903,7 +909,7 @@ s3.listBucketsPaginator(listRequest).stream()
 
 > — Source: [S3Client (AWS SDK for Java 2.x)](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/S3Client.html)
 
-.NET (the courseware example uses the synchronous `client.ListBuckets()`, corrected here to the asynchronous form):
+.NET (using the asynchronous form instead of the synchronous `client.ListBuckets()`):
 
 ```csharp
 // Only asynchronous methods are supported on .NET Core / .NET Standard
@@ -913,7 +919,7 @@ foreach (S3Bucket bucket in response.Buckets)
 { Console.WriteLine("Bucket {0}, Created on {1}", bucket.BucketName, bucket.CreationDate);}
 ```
 
-Python (same as the courseware):
+Python:
 
 ```python
 # Retrieve the list of existing buckets
@@ -995,7 +1001,7 @@ To retrieve all the data from a paginated response you could write a loop that m
 | Response | Iterates over the full AWS response for the operation. All properties in the response are accessible |
 | Key results | Unique to each operation. The properties most likely to be truncated because of length. For the `ListObjectsV2` paginator these are `S3Objects` and `CommonPrefixes` |
 
-Java (same as the courseware):
+Java:
 
 ```java
 ListObjectsV2Request listReq = ListObjectsV2Request.builder()
@@ -1007,7 +1013,7 @@ listRes.stream()
         .forEach(content -> System.out.println(" Key: " + content.key()));
 ```
 
-.NET (same as the courseware):
+.NET:
 
 ```csharp
 var listObjectsV2Paginator = client.Paginators.ListObjectsV2(new ListObjectsV2Request
@@ -1016,7 +1022,7 @@ foreach (var s3Object in listObjectsV2Paginator.S3Objects)
 {  Console.WriteLine(s3Object.Key); }
 ```
 
-Python — the courseware example uses `client.get_paginator('list_objects')`, the **paginator for the v1 operation**. The Java and .NET examples on the same slide already use `ListObjectsV2`, so this is also an inconsistency across languages. Boto3 has `S3.Paginator.ListObjectsV2`, obtained with `client.get_paginator('list_objects_v2')`.
+Python — `client.get_paginator('list_objects')` is the **paginator for the v1 operation**. Boto3 has `S3.Paginator.ListObjectsV2`, so obtain it with `client.get_paginator('list_objects_v2')` and use that instead.
 
 ```python
 # Use the list_objects_v2 paginator rather than v1
@@ -1033,7 +1039,7 @@ for page in page_iterator:
 
 ### 5.5 Deleting Multiple Objects at Once: DeleteObjects 🆕
 
-The courseware does not cover multi-object deletion or its limits. This is the API to know when you handle bulk cleanup without going as far as Batch Operations.
+When you handle bulk cleanup without going as far as Batch Operations, it helps to know the multi-object deletion API and its limits.
 
 | Item | Content |
 |---|---|
@@ -1051,7 +1057,7 @@ The courseware does not cover multi-object deletion or its limits. This is the A
 
 S3 Batch Operations performs large-scale operations on Amazon S3 objects. A single job performs a **single operation** on a list of objects you specify, and one job can process **billions of objects containing exabytes of data**. You can use it from the console, the AWS CLI, the AWS SDKs, and the Amazon S3 REST API, and you can apply labels and control access.
 
-The three stages on courseware slide 36:
+Batch Operations is organized in three stages:
 
 | Stage | Content |
 |---|---|
@@ -1061,9 +1067,9 @@ The three stages on courseware slide 36:
 
 #### The Eleven Supported Operations 🔄
 
-The courseware lists only seven (PUT object copy, initiate object restore, PUT object ACL, PUT object tagging, manage Object Lock retention date, manage Object Lock legal hold, invoke a custom Lambda operation). The current documentation lists eleven.
+Batch Operations supports the following eleven operations.
 
-| Operation | In the courseware |
+| Operation | Among the seven commonly listed |
 |---|---|
 | Copy objects | Yes |
 | Restore objects | Yes |
@@ -1081,7 +1087,7 @@ The courseware lists only seven (PUT object copy, initiate object restore, PUT o
 
 #### The Four Ways to Specify a Manifest 🔄
 
-The courseware offers only two: an Amazon S3 Inventory report or a custom CSV file. There are four today.
+A manifest can be specified in the following four ways.
 
 | Method | Content |
 |---|---|
@@ -1107,23 +1113,23 @@ The courseware offers only two: an Amazon S3 Inventory report or a custom CSV fi
 
 You can configure an S3 bucket as a static website. A static website contains static resources such as HTML and images but **no server-side processing or scripting.** Once configured, the site is available at the bucket's AWS Region-specific website endpoint.
 
-The courseware presents this only as "website hosting plus public read access." The recommended path in the current documentation is different.
+There are several paths for hosting static website content, and the order the current documentation recommends is as follows.
 
 | Approach | Where the current documentation places it |
 |---|---|
 | **AWS Amplify Hosting** | The **first recommendation** for hosting static website content stored in S3. A fully managed service that deploys the site to a global CDN built on Amazon CloudFront; you select the object location in a general purpose bucket, it deploys to the managed CDN, and it **generates a public HTTPS URL** |
 | CloudFront + OAC | **Required when the bucket is encrypted with SSE-KMS**, because SSE-KMS does not support anonymous users. Use **OAC (origin access control)** rather than OAI to protect the origin |
-| S3 website endpoint | The approach the courseware presents. Does not support HTTPS or access points (see [Section 6.2](#62-website-endpoints)) |
+| S3 website endpoint | The simplest approach. Does not support HTTPS or access points (see [Section 6.2](#62-website-endpoints)) |
 
-The courseware instructor notes offer only CloudFront as the HTTPS alternative and do not cover the SSE-KMS bucket condition.
+When you need HTTPS, CloudFront is the alternative, and the CloudFront + OAC path is required when the bucket is encrypted with SSE-KMS.
 
 > — Source: [Hosting a static website using Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html)
 
-The knowledge center article on [serving a static website with CloudFront](https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/) cited in the courseware instructor notes still responds. Only URL reachability was checked.
+For serving a static website with CloudFront, see the knowledge center article on [serving a static website with CloudFront](https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/). Only URL reachability was checked.
 
 ### 6.2 Website Endpoints 🔄
 
-The table on courseware slide 38 shows the endpoint as `https://[bucketname].s3-website-[Region].amazonaws.com`, but **the instructor notes on the same slide state that HTTPS is not supported, and slide 39 shows `http://`.** The courseware contradicts itself. The scheme in the official documentation is `http`, and there are two forms depending on the Region.
+The scheme for a website endpoint is `http` (website endpoints do not support HTTPS). There are two forms depending on the Region.
 
 | Form | Example |
 |---|---|
@@ -1149,7 +1155,7 @@ A website endpoint is **different** from the endpoint you send REST API requests
 
 ### 6.3 How This Interacts with Block Public Access 🆕
 
-Courseware slide 38 only states that "for the website to be publicly accessible, the bucket must allow public read access," and does not cover the defaults on new buckets or how they interact. **By default, new buckets, access points, and objects do not allow public access.**
+For a website to be publicly accessible, the bucket must allow public read access. You need to understand the defaults on new buckets and how they interact. **By default, new buckets, access points, and objects do not allow public access.**
 
 | Setting | Effect |
 |---|---|
@@ -1165,7 +1171,7 @@ Courseware slide 38 only states that "for the website to be publicly accessible,
 | AWS recommendation | Enable **all four settings** on the account and on every bucket (AWS Security Hub foundational security best practice S3.8) |
 | When public access is required, as with static website hosting | Adjust the individual settings |
 
-In short, the courseware's "public read access" only holds if you deliberately turn off the defaults. To get HTTPS without turning them off, use the Amplify Hosting or CloudFront + OAC path in [Section 6.1](#61-static-website-hosting).
+In short, "public read access" only holds if you deliberately turn off the default block settings. To get HTTPS without turning them off, use the Amplify Hosting or CloudFront + OAC path in [Section 6.1](#61-static-website-hosting).
 
 > — Source: [Blocking public access to your Amazon S3 storage](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html)
 
@@ -1175,7 +1181,7 @@ In short, the courseware's "public read access" only holds if you deliberately t
 >> aws s3 website s3://notes-bucket/ --index-document index.html --error-document error.html
 ```
 
-The first sentence of the courseware instructor notes describes this as "the API-level `s3api` command," but **`website` belongs to the `aws s3` command set (high level).** The example command itself is correct. Note that custom commands such as `aws s3` do not support `--generate-cli-skeleton`, which illustrates the difference in nature between the two command sets.
+`website` belongs to the `aws s3` command set (high level), not `aws s3api`. Note that custom commands such as `aws s3` do not support `--generate-cli-skeleton`, which illustrates the difference in nature between the two command sets.
 
 | Item | Content |
 |---|---|
@@ -1191,9 +1197,9 @@ The first sentence of the courseware instructor notes describes this as "the API
 
 CORS defines a way for client web applications loaded in one domain to interact with resources in another domain. Amazon S3 supports CORS, so you can build rich client-side web applications with S3 and **selectively** allow cross-origin access to your S3 resources.
 
-The courseware example: when you host web fonts in an S3 bucket and a web page in an alternate domain wants to use them, the browser performs a CORS check before loading the page. If JavaScript on a page in one domain (`http://www.example.com`) tries to use resources in an S3 bucket through the `website.s3.amazonaws.com` endpoint, the browser allows that cross-domain access only if CORS is enabled on the bucket.
+For example, when you host web fonts in an S3 bucket and a web page in an alternate domain wants to use them, the browser performs a CORS check before loading the page. If JavaScript on a page in one domain (`http://www.example.com`) tries to use resources in an S3 bucket through the `website.s3.amazonaws.com` endpoint, the browser allows that cross-domain access only if CORS is enabled on the bucket.
 
-Two aspects of the behavior the courseware does not cover: 🆕
+Two aspects of the behavior to watch in particular: 🆕
 
 - When S3 receives a preflight request from a browser, it evaluates the bucket's CORS configuration and uses the **first `CORSRule`** that matches the incoming request to allow the cross-origin request. A rule matches when the request's `Origin` header matches `AllowedOrigins`, `Access-Control-Request-Method` matches `AllowedMethods`, and the headers in `Access-Control-Request-Headers` match `AllowedHeaders`.
 - Enabling CORS on a bucket does not change the fact that **ACLs and policies still apply.**
@@ -1204,9 +1210,7 @@ S3 Object Lambda always adds the `"AllowedOrigins":"*"` header field to requests
 
 #### Configuration Format: From XML to JSON 🔄
 
-The courseware instructs you to "create a CORS configuration XML file" and provides only an XML example.
-
-As recorded in the courseware (XML):
+CORS configuration was historically written in XML. An XML example looks like this:
 
 ```text
 <CORSConfiguration>
@@ -1230,20 +1234,20 @@ Today, **configuring CORS in the S3 console requires JSON, and the new console s
 
 | Element | Value |
 |---|---|
-| Maximum rules per configuration | **100** (matches the courseware). Added as the bucket's `cors` subresource |
+| Maximum rules per configuration | **100.** Added as the bucket's `cors` subresource |
 | `AllowedMethods` | `GET`, `PUT`, `POST`, `DELETE`, `HEAD` |
 | `AllowedOrigins` | An origin string can contain at most **one** wildcard `*` (for example, `http://*.example.com`). A single `*` allows all origins |
 | `AllowedHeaders` | Can also contain at most one wildcard (for example, `x-amz-*`) |
 | `ExposeHeaders` (optional) | Response headers to expose so the application can access them |
 | `MaxAgeSeconds` (optional) | How many seconds the browser caches the preflight response |
 
-The `/AmazonS3/latest/dev/cors.html` and `/AmazonS3/latest/dev/ManageCorsUsing.html` paths cited in the courseware are older developer guide paths and now redirect to the user guide paths.
+CORS content is in the user guide page below.
 
 > — Source: [Elements of a CORS configuration](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ManageCorsUsing.html)
 
 ### 6.6 Event Notification Triggers 🆕
 
-The answer explanation for knowledge check 5 in the courseware describes event notifications only as a "response to Amazon S3 operations such as PUT, POST, COPY, or DELETE." The supported triggers today include **events that are not API calls.**
+Event notifications are often summarized only as a response to Amazon S3 operations such as PUT, POST, COPY, or DELETE, but the supported triggers actually include **events that are not API calls.**
 
 | Item | Content |
 |---|---|
@@ -1277,22 +1281,22 @@ Points to watch:
 
 ## 7. Changes from the Courseware
 
-The following items in the courseware (instructor deck) differ from current behavior. Learners typically have the official courseware alongside this material, so what changed and why is recorded here.
+Since learners may have the official courseware in front of them, this section gathers in one place where this material diverges from it. The evidence behind every item marked new or corrected in the sections above is here.
 
-### 7.1 Where the Courseware Is Factually Incorrect
+### 7.1 Differences from the Courseware
 
 | Item | Courseware states | Verified content | Source |
 |---|---|---|---|
-| Per-account bucket quota (slide 6) | "up to 100 by default, with an increase request up to 1,000" | The default quota is **10,000 general purpose buckets**, and anything beyond that is requested in the Service Quotas console. Commercial Region quotas are viewed and managed only in US East (N. Virginia) | [Bucket quotas and limitations](https://docs.aws.amazon.com/AmazonS3/latest/userguide/BucketRestrictions.html) |
-| Interpretation of HeadBucket 400 (slide 8) | Treats `case 400` as "attempted to access a bucket from a Region other than where it exists" | 400 is one of the general codes (400 / 403 / 404) returned when a bucket does not exist or access is denied. In fact, calling with a bucket name from another Region in the partition still returns the correct location header. The notes on slide 7 omit 400 entirely | [HeadBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html) |
-| The bucket name `notes_bucket` (slide 11) | An underscore in `BucketName` in the .NET example | General purpose bucket names can use only lowercase letters, numbers, periods, and hyphens; **underscores are not allowed**. Buckets created after March 1, 2018 follow the same rules in all Regions | [Bucket naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) |
-| Versioning status "Disabled" (slide 13) | The skeleton output shows `"Status": "Disabled"` and `"MFADelete": "Disabled"` | The status values are only **`Enabled` and `Suspended`**. A bucket that has never been configured returns no status value. The field name is **`MfaDelete`**. `--generate-cli-skeleton output` produces an **empty template**, not a filled-in result | [PutBucketVersioning API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html) |
-| "A waiter that waits until the bucket is terminated" (slide 12) | The instructor note wording | `bucket_exists` and `waitUntilBucketExists` wait **until the bucket exists**. The Boto3 `BucketExists` waiter polls `head_bucket` every 5 seconds and errors after 20 failed attempts. A translation error that also contradicts the slide title | [S3.Waiter.BucketExists](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/waiter/BucketExists.html) |
-| Website endpoint scheme (slide 38) | The table shows `https://...s3-website-[Region]...` | The scheme in the official documentation is **`http`**. The notes on the same slide say HTTPS is not supported and slide 39 shows `http://`, so the courseware contradicts itself. There are two forms, hyphen and dot, depending on the Region | [Website endpoints](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html) |
-| "The API-level `s3api` command `website`" (slide 39) | The first sentence of the instructor notes | `website` belongs to the **`aws s3` command set (high level)**. The example command itself is correct | [aws s3 website](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/website.html) |
-| Missing `break` in the `switch` statement (slide 8) | No `break` in `case 404` / `400` / `403` | A fall-through that prints all three messages on a 404 response. This is Java language behavior, so the code is corrected without citing AWS documentation | — (see [Section 7.5](#75-items-that-could-not-be-verified)) |
-| Variable mismatch in the Python example (slide 20) | The argument is `bucket`, but the body passes an undefined `bucketname` and also mixes in `bucket.name` | An error in the courseware code itself. Rewritten against the client interface with consistent argument names | — (see [Section 7.5](#75-items-that-could-not-be-verified)) |
-| Variable mismatch in the Object Lambda example (slide 24) | Declares `route` and `token`, then uses `request_route` and `request_token` | References undefined names, so it raises a `NameError` at runtime. Corrected to `RequestRoute=route` and `RequestToken=token` | — (see [Section 7.5](#75-items-that-could-not-be-verified)) |
+| Per-account bucket quota | "up to 100 by default, with an increase request up to 1,000" | The default quota is **10,000 general purpose buckets**, and anything beyond that is requested in the Service Quotas console. Commercial Region quotas are viewed and managed only in US East (N. Virginia) | [Bucket quotas and limitations](https://docs.aws.amazon.com/AmazonS3/latest/userguide/BucketRestrictions.html) |
+| Interpretation of HeadBucket 400 | Treats `case 400` as "attempted to access a bucket from a Region other than where it exists" | 400 is one of the general codes (400 / 403 / 404) returned when a bucket does not exist or access is denied. In fact, calling with a bucket name from another Region in the partition still returns the correct location header | [HeadBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html) |
+| The bucket name `notes_bucket` | An underscore in `BucketName` in the .NET example | General purpose bucket names can use only lowercase letters, numbers, periods, and hyphens; **underscores are not allowed**. Buckets created after March 1, 2018 follow the same rules in all Regions | [Bucket naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) |
+| Versioning status "Disabled" | The skeleton output shows `"Status": "Disabled"` and `"MFADelete": "Disabled"` | The status values are only **`Enabled` and `Suspended`**. A bucket that has never been configured returns no status value. The field name is **`MfaDelete`**. `--generate-cli-skeleton output` produces an **empty template**, not a filled-in result | [PutBucketVersioning API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html) |
+| "A waiter that waits until the bucket is terminated" | The instructor note wording | `bucket_exists` and `waitUntilBucketExists` wait **until the bucket exists**. The Boto3 `BucketExists` waiter polls `head_bucket` every 5 seconds and errors after 20 failed attempts | [S3.Waiter.BucketExists](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/waiter/BucketExists.html) |
+| Website endpoint scheme | The table shows `https://...s3-website-[Region]...` | The scheme in the official documentation is **`http`** (website endpoints do not support HTTPS). There are two forms, hyphen and dot, depending on the Region | [Website endpoints](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html) |
+| "The API-level `s3api` command `website`" | The first sentence of the instructor notes | `website` belongs to the **`aws s3` command set (high level)**. The example command itself is correct | [aws s3 website](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/website.html) |
+| Missing `break` in the `switch` statement | No `break` in `case 404` / `400` / `403` | A fall-through that prints all three messages on a 404 response. This is Java language behavior, so the code is corrected without citing AWS documentation | — (see [Section 7.5](#75-items-that-could-not-be-verified)) |
+| Variable mismatch in the Python example | The argument is `bucket`, but the body passes an undefined `bucketname` and also mixes in `bucket.name` | An error in the courseware code itself. Rewritten against the client interface with consistent argument names | — (see [Section 7.5](#75-items-that-could-not-be-verified)) |
+| Variable mismatch in the Object Lambda example | Declares `route` and `token`, then uses `request_route` and `request_token` | References undefined names, so it raises a `NameError` at runtime. Corrected to `RequestRoute=route` and `RequestToken=token` | — (see [Section 7.5](#75-items-that-could-not-be-verified)) |
 
 ### 7.2 Where Behavior or Defaults Changed
 
@@ -1314,37 +1318,37 @@ The following items in the courseware (instructor deck) differ from current beha
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
-| AWS SDK for Java 1.x (examples on slides 11, 21, 33) | **Reached end-of-support on December 31, 2025** | AWS SDK for Java 2.x (`software.amazon.awssdk`). Response header overrides become `GetObjectRequest.builder().responseContentDisposition(...)` | [Java SDK 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html) |
-| S3 Object Lambda (slides 23, 24) | Since November 7, 2025, **available only to existing customers and a select group of APN partners**. No new features planned | The Dynamic Image Transformation for Amazon CloudFront solution / invoking Lambda through CloudFront, API Gateway, or function URLs / processing in the client | [Object Lambda availability change](https://docs.aws.amazon.com/AmazonS3/latest/userguide/amazons3-ol-change.html) |
-| Boto3 resources interface `s3.Object(...)` (slide 20) | No new features planned. Existing interfaces continue to operate | `boto3.client('s3').get_object(Bucket=..., Key=...)` | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
-| `get_paginator('list_objects')` (slide 35) | The paginator for the v1 operation. The documentation recommends `ListObjectsV2` | `client.get_paginator('list_objects_v2')` | [ListObjects API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjects.html) |
-| The Standard ↔ Reduced Redundancy transition example (slide 32) | RRS is not recommended. Designed for 0.01% expected annual loss, and requesting a lost object returns 405 | Stay on S3 Standard, or transition to Standard-IA or the Glacier classes | [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
+| AWS SDK for Java 1.x examples | **Reached end-of-support on December 31, 2025** | AWS SDK for Java 2.x (`software.amazon.awssdk`). Response header overrides become `GetObjectRequest.builder().responseContentDisposition(...)` | [Java SDK 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html) |
+| S3 Object Lambda | Since November 7, 2025, **available only to existing customers and a select group of APN partners**. No new features planned | The Dynamic Image Transformation for Amazon CloudFront solution / invoking Lambda through CloudFront, API Gateway, or function URLs / processing in the client | [Object Lambda availability change](https://docs.aws.amazon.com/AmazonS3/latest/userguide/amazons3-ol-change.html) |
+| Boto3 resources interface `s3.Object(...)` | No new features planned. Existing interfaces continue to operate | `boto3.client('s3').get_object(Bucket=..., Key=...)` | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
+| `get_paginator('list_objects')` | The paginator for the v1 operation. The documentation recommends `ListObjectsV2` | `client.get_paginator('list_objects_v2')` | [ListObjects API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjects.html) |
+| The Standard ↔ Reduced Redundancy transition example | RRS is not recommended. Designed for 0.01% expected annual loss, and requesting a lost object returns 405 | Stay on S3 Standard, or transition to Standard-IA or the Glacier classes | [Storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) |
 
-### 7.4 Added Since the Courseware
+### 7.4 What This Material Adds
 
-| Item | Summary | Source |
-|---|---|---|
-| Multipart part limits | Part size 5 MiB to 5 GiB (no minimum for the last part), up to 10,000 parts per upload, 1,000 results each for `list parts` and `list multipart uploads` | [Multipart upload limits](https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html) |
-| Console upload ceiling | A single object of up to 160 GB through the Amazon S3 console | [Uploading objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html) |
-| S3 Transfer Manager | The high-level file and directory transfer utility in Java 2.x. Supports progress monitoring and pausing | [S3 Transfer Manager](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/transfer-manager.html) |
-| Scope of `AbortIncompleteMultipartUpload` | Applies to both existing and new multipart uploads, and the cleanup incurs no early delete fee | [Deleting incomplete multipart uploads](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpu-abort-incomplete-mpu-lifecycle-config.html) |
-| `GetObject` conditional reads and `partNumber` | `If-Match`, `If-None-Match`, `If-Modified-Since`, `If-Unmodified-Since` (412 / 304), ranged GET by part number, and the per-version permission `s3:GetObjectVersion` | [GetObject API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html) |
-| Java 2.x response header overrides | Set through `GetObjectRequest.Builder` methods such as `responseCacheControl` and `responseContentDisposition`, with no separate class | [GetObjectRequest.Builder](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/model/GetObjectRequest.Builder.html) |
-| `DeleteObjects` | Deletes up to 1,000 keys in a single request. Supports `quiet` mode, and objects that do not exist are reported as deleted | [DeleteObjects API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) |
-| Presigned URL expiration caps and permission inheritance | Console 1 minute to 12 hours, CLI and SDKs up to 7 days. A URL made with temporary credentials expires with them. Capability is **limited to the signer's permissions**. The `s3:signatureAge` condition key | [Presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html) |
-| Tagging a bucket at creation | `Tags` in `CreateBucketConfiguration`. Requires the `s3:TagResource` permission | [CreateBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html) |
-| `HeadBucket` response headers | `x-amz-bucket-region`, `x-amz-bucket-arn`, `x-amz-access-point-alias`, and others | [HeadBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html) |
-| Batch Operations manifest generation | Generation from metadata and from a replication configuration. Manifests and completion reports are stored in general purpose buckets, and reports are always encrypted with SSE-S3 | [Creating a Batch Operations job](https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops-create-job.html) |
-| Website endpoint constraints | GET and HEAD requests only, 403 for Requester Pays buckets, and the domain is registered on the Public Suffix List | [Website endpoints](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html) |
-| The four Block Public Access settings | `BlockPublicAcls`, `IgnorePublicAcls`, `BlockPublicPolicy`, `RestrictPublicBuckets`. When levels differ, the most restrictive combination applies | [Block Public Access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html) |
-| How CORS rules are evaluated | Only the **first** matching `CORSRule` applies, and enabling CORS does not stop ACLs and policies from applying | [CORS overview](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html) |
-| `aws s3 sync --delete` | Deletes files present in the destination but not in the source. `--storage-class` defaults to `STANDARD` | [aws s3 sync](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/sync.html) |
-| Scope of `--generate-cli-skeleton` | Three values: `input`, `yaml-input`, `output`. `output` cannot be YAML. Custom commands such as `aws s3` do not support it | [CLI skeletons](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-skeleton.html) |
-| S3 changes in SDK for .NET V4 | `DoesS3BucketExist(Async)` removed, always SigV4 signing, a `us-east-1` client can no longer reach buckets in other Regions, `GetACL` and `PutACL` deprecated | [What's new in SDK for .NET V4](https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-v4.html) |
-| The Java 2.x paginator list | Paginator variants exist for both bucket listing and object listing (`listBucketsPaginator`, `listObjectsV2Paginator`, and others) | [S3Client (Java 2.x)](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/S3Client.html) |
-| Thread safety of Boto3 resources | Resource instances are not thread safe and must be created per thread. Waiters are available in the form `wait_until_exists()` | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
-| `ListObjectsV2` behavior details | The continuation token is an obfuscated value, not an actual key. General purpose buckets return keys in lexicographical order | [ListObjectsV2 API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html) |
-| Scope of Object Lambda requests | LIST and HEAD can be transformed in addition to GET. Object Lambda Access Points are not supported for directory buckets | [Object Lambda](https://docs.aws.amazon.com/AmazonS3/latest/userguide/transforming-objects.html) |
+| Item | Why it was added | Summary | Source |
+|---|---|---|---|
+| Multipart part limits | Implementing multipart upload directly with low-level commands needs part size and count limits, which the courseware does not cover | Part size 5 MiB to 5 GiB (no minimum for the last part), up to 10,000 parts per upload, 1,000 results each for `list parts` and `list multipart uploads` | [Multipart upload limits](https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html) |
+| Console upload ceiling | Separate from the 5 GB single PUT, knowing the console ceiling lets you pick the right path in practice | A single object of up to 160 GB through the Amazon S3 console | [Uploading objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html) |
+| S3 Transfer Manager | The courseware presents only `aws s3 cp` for high-level transfers, leaving the SDK high-level APIs blank | The high-level file and directory transfer utility in Java 2.x. Supports progress monitoring and pausing | [S3 Transfer Manager](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/transfer-manager.html) |
+| Scope of `AbortIncompleteMultipartUpload` | Multipart uploads keep incurring part charges until explicitly completed or stopped, so the cleanup rule's scope and fees matter | Applies to both existing and new multipart uploads, and the cleanup incurs no early delete fee | [Deleting incomplete multipart uploads](https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpu-abort-incomplete-mpu-lifecycle-config.html) |
+| `GetObject` conditional reads and `partNumber` | Partial retrieval, conditional reads, and version access are common in practice but absent from the courseware's GET coverage | `If-Match`, `If-None-Match`, `If-Modified-Since`, `If-Unmodified-Since` (412 / 304), ranged GET by part number, and the per-version permission `s3:GetObjectVersion` | [GetObject API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html) |
+| Java 2.x response header overrides | The courseware example is 1.x syntax, so the 2.x way to do the same thing needs to be shown | Set through `GetObjectRequest.Builder` methods such as `responseCacheControl` and `responseContentDisposition`, with no separate class | [GetObjectRequest.Builder](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/model/GetObjectRequest.Builder.html) |
+| `DeleteObjects` | A common way to handle bulk cleanup short of Batch Operations, missing from the courseware | Deletes up to 1,000 keys in a single request. Supports `quiet` mode, and objects that do not exist are reported as deleted | [DeleteObjects API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) |
+| Presigned URL expiration caps and permission inheritance | The courseware mentions only an "expiration date," missing the trap that actual validity depends on the credential type | Console 1 minute to 12 hours, CLI and SDKs up to 7 days. A URL made with temporary credentials expires with them. Capability is **limited to the signer's permissions**. The `s3:signatureAge` condition key | [Presigned URLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html) |
+| Tagging a bucket at creation | Tagging at creation is useful for governance but absent from the courseware's creation example | `Tags` in `CreateBucketConfiguration`. Requires the `s3:TagResource` permission | [CreateBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html) |
+| `HeadBucket` response headers | Beyond existence checks, useful information such as location and ARN comes back in the headers, which the courseware does not mention | `x-amz-bucket-region`, `x-amz-bucket-arn`, `x-amz-access-point-alias`, and others | [HeadBucket API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html) |
+| Batch Operations manifest generation | Knowing the automatic generation paths, beyond manual CSV and inventory, eases operations | Generation from metadata and from a replication configuration. Manifests and completion reports are stored in general purpose buckets, and reports are always encrypted with SSE-S3 | [Creating a Batch Operations job](https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops-create-job.html) |
+| Website endpoint constraints | Stating the supported scope and constraints keeps website endpoints from being confused with REST endpoints | GET and HEAD requests only, 403 for Requester Pays buckets, and the domain is registered on the Public Suffix List | [Website endpoints](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html) |
+| The four Block Public Access settings | Understanding how public read access interacts with the default block is required to configure static hosting safely | `BlockPublicAcls`, `IgnorePublicAcls`, `BlockPublicPolicy`, `RestrictPublicBuckets`. When levels differ, the most restrictive combination applies | [Block Public Access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html) |
+| How CORS rules are evaluated | Knowing which rule applies when there are several, and how CORS relates to ACLs and policies, avoids misbehavior | Only the **first** matching `CORSRule` applies, and enabling CORS does not stop ACLs and policies from applying | [CORS overview](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html) |
+| `aws s3 sync --delete` | The delete behavior of sync and the default storage class are often needed in practice but absent from the courseware | Deletes files present in the destination but not in the source. `--storage-class` defaults to `STANDARD` | [aws s3 sync](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/sync.html) |
+| Scope of `--generate-cli-skeleton` | The courseware example uses this option, and without knowing the supported values and per-command-set constraints it is easy to misread | Three values: `input`, `yaml-input`, `output`. `output` cannot be YAML. Custom commands such as `aws s3` do not support it | [CLI skeletons](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-skeleton.html) |
+| S3 changes in SDK for .NET V4 | Running the courseware .NET examples on the latest SDK requires knowing the removed and changed APIs | `DoesS3BucketExist(Async)` removed, always SigV4 signing, a `us-east-1` client can no longer reach buckets in other Regions, `GetACL` and `PutACL` deprecated | [What's new in SDK for .NET V4](https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-v4.html) |
+| The Java 2.x paginator list | Knowing that each listing operation has a paginator variant lets you avoid manual loops | Paginator variants exist for both bucket listing and object listing (`listBucketsPaginator`, `listObjectsV2Paginator`, and others) | [S3Client (Java 2.x)](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/S3Client.html) |
+| Thread safety of Boto3 resources | If you keep using the resources interface, you must know its thread-safety trap | Resource instances are not thread safe and must be created per thread. Waiters are available in the form `wait_until_exists()` | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
+| `ListObjectsV2` behavior details | Misunderstanding the continuation token and ordering behavior throws off pagination logic | The continuation token is an obfuscated value, not an actual key. General purpose buckets return keys in lexicographical order | [ListObjectsV2 API](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html) |
+| Scope of Object Lambda requests | It is easy to assume only GET is transformed, so the supported scope and directory-bucket constraint are stated | LIST and HEAD can be transformed in addition to GET. Object Lambda Access Points are not supported for directory buckets | [Object Lambda](https://docs.aws.amazon.com/AmazonS3/latest/userguide/transforming-objects.html) |
 
 ### 7.5 Items That Could Not Be Verified
 
@@ -1353,8 +1357,8 @@ Recorded honestly. Confirm these before stating them definitively in class.
 | Item | Status |
 |---|---|
 | Maximum object size (48.8 TiB vs 50 TB) | Two official pages state different units and values. The multipart upload limits page says 48.8 TiB; the object upload page says up to 50 TB and "5 MB to 50 TB." Which one is authoritative could not be determined from the documentation, so both values appear in the body with their respective sources. The only settled point is that the courseware's 5 TB differs from current documentation |
-| The Java `switch` fall-through on slide 8 | The missing `break` makes the 404 branch fall through into the 400 and 403 branches. This is Java language behavior, not a fact to verify against AWS documentation. The body example adds `break` and carries no citation for it |
-| Variable mismatch in the Python example on slide 20 | The function takes a `bucket` argument but the body mixes an undefined `bucketname` with `bucket.name`. This is an inconsistency in the courseware code itself, not something to verify against external documentation |
-| Variable mismatch in the Object Lambda example on slide 24 | Declares `route` and `token`, then references `request_route` and `request_token`. Not a documentation matter for the same reason; only the variable names were made consistent |
+| The Java `switch` fall-through | The missing `break` makes the 404 branch fall through into the 400 and 403 branches. This is Java language behavior, not a fact to verify against AWS documentation. The body example adds `break` and carries no citation for it |
+| Variable mismatch in the Python example | The function takes a `bucket` argument but the body mixes an undefined `bucketname` with `bucket.name`. This is an inconsistency in the courseware code itself, not something to verify against external documentation |
+| Variable mismatch in the Object Lambda example | Declares `route` and `token`, then references `request_route` and `request_token`. Not a documentation matter for the same reason; only the variable names were made consistent |
 | `get-bucket-location` returning `null` for `us-east-1` | That `us-east-1` is absent from the valid `LocationConstraint` values and that a bucket is created in `us-east-1` when it is unspecified were confirmed in the CreateBucket API documentation. The `null` return behavior itself was not confirmed in documentation (same as in M05). This needs runtime verification |
 | The exact protection scope of MFA Delete | Two things were confirmed: enabling MFA Delete requires bucket owner permission and the `x-amz-mfa` header (PutBucketVersioning documentation), and deleting a versioned object in an MFA Delete bucket requires an MFA token (DeleteObjects documentation). The full protection scope behind the instructor note's "protect the bucket with MFA to prevent object deletion" was not separately confirmed against a dedicated page |
