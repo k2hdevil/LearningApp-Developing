@@ -37,6 +37,13 @@ const ITEMS = flatten(navigationTree).filter((node) => /^M\d\d-/.test(node.id ??
 const MODULES = ITEMS.filter((node) => node.contentFile).map((node) => node.id);
 
 /**
+ * 하이라이팅 가능한 언어의 코드 블록을 가진 모듈 id 집합.
+ * main() 에서 원본 마크다운의 펜스 언어 태그를 읽어 채웁니다.
+ * ASCII 다이어그램(text)만 있는 모듈은 여기에 들어가지 않아 하이라이팅을 요구받지 않습니다.
+ */
+const highlightableLangs = new Set();
+
+/**
  * 열 수 없는 해시. 앱이 주소를 정정하는지 볼 때 씁니다.
  *
  * 콘텐츠가 없는 모듈이 있으면 그것을 쓰고, 전부 게시되어 하나도 없으면 트리에 없는
@@ -237,6 +244,25 @@ async function main() {
     await send(ws, 'Runtime.enable');
     await sleep(2500);
 
+    // 하이라이팅을 요구할지 판단할 근거를 원본 마크다운에서 미리 모읍니다.
+    // 앱은 <BASE>/content/<contentFile> 로 마크다운을 그대로 서빙하므로 여기서 읽습니다.
+    // 펜스 언어 태그가 text/plaintext(또는 없음)뿐이면 ASCII 다이어그램 문서라
+    // 하이라이팅이 0인 게 정상이고, 그 밖의 언어가 하나라도 있으면 하이라이팅을 요구합니다.
+    const NON_HIGHLIGHT = new Set(['', 'text', 'plaintext', 'txt', 'plain']);
+    for (const id of MODULES) {
+      const file = ITEMS.find((n) => n.id === id)?.contentFile;
+      if (!file) continue;
+      try {
+        const md = await (await fetch(`${BASE}/content/${file}`)).text();
+        const langs = [...md.matchAll(/^```([^\n`]*)$/gm)].map((x) => x[1].trim().toLowerCase());
+        // 여는 펜스만 홀수 번째로 골라 언어를 봅니다.
+        const opening = langs.filter((_, i) => i % 2 === 0);
+        if (opening.some((l) => !NON_HIGHLIGHT.has(l))) highlightableLangs.add(id);
+      } catch {
+        // 못 읽으면 보수적으로 하이라이팅을 요구하지 않습니다(거짓 실패 방지).
+      }
+    }
+
     // 모드 전환 검사는 코드 블록 배경색을 읽습니다. 그래서 코드가 실제로 있는 모듈에서
     // 해야 합니다. 모듈 목록의 마지막 항목에 코드가 없으면(M15 처럼) 배경색이 null 로
     // 나와 거짓 실패가 납니다. 어느 모듈을 쓸지는 아래 루프에서 트리를 돌며 정합니다.
@@ -262,7 +288,12 @@ async function main() {
         if (m.codeBlocks !== m.copyButtons) {
           bad.push(`코드블록 ${m.codeBlocks}개 vs 복사버튼 ${m.copyButtons}개`);
         }
-        if (m.highlighted < 1) bad.push('구문 하이라이팅 없음');
+        // 하이라이팅은 "하이라이팅 가능한 언어의 코드 블록"이 있을 때만 요구합니다.
+        // ASCII 다이어그램처럼 text/plaintext 만 있는 문서는 하이라이팅이 0인 게 정상입니다.
+        // 하이라이팅 가능 언어 유무는 원본 마크다운의 펜스 언어 태그로 판정합니다(아래 참조).
+        if (highlightableLangs.has(id) && m.highlighted < 1) {
+          bad.push('구문 하이라이팅 없음');
+        }
       } else if (m.copyButtons > 0) {
         bad.push(`코드블록은 0개인데 복사버튼이 ${m.copyButtons}개`);
       }
