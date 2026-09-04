@@ -18,8 +18,8 @@
 
 > **표기 설명**
 >
-> - 🆕 원본 강사용 덱에 없는 내용. AWS 공식 문서로 확인한 항목입니다.
-> - 🔄 원본 강사용 덱의 내용이 현재와 달라 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [9장](#9-교재-대비-변경-사항)에 정리했습니다.
+> - 🆕 강의에서 다루지 않은 내용. AWS 공식 문서로 확인해 더한 항목입니다.
+> - 🔄 강의 당시와 달라져 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [9장](#9-교재-대비-변경-사항)에 모아 두었습니다.
 > - 검증일: 2026년 8월 30일. 이후 문서가 갱신될 수 있으니 시험·실무 적용 전에는 링크된 원문을 확인하세요.
 
 ---
@@ -45,7 +45,7 @@
 
 ### 이 모듈에서 다루는 것
 
-교재는 테이블 수명 주기를 4단계로 나눠 설명합니다. 이 문서도 같은 순서를 따릅니다.
+테이블 수명 주기는 4단계로 나뉩니다. 이 문서도 같은 순서를 따릅니다.
 
 | 단계 | 내용 | 이 문서 |
 |---|---|---|
@@ -68,7 +68,7 @@
 | 트랜잭션 🆕 | `TransactWriteItems`, `TransactGetItems`, `ExecuteTransaction`(PartiQL) |
 | DynamoDB Streams | `ListStreams`, `DescribeStream`, `GetShardIterator`, `GetRecords` |
 
-교재 슬라이드 4의 제어 영역 다섯 작업 목록은 현재 문서와 일치합니다. 달라진 것은 데이터 영역의 폭입니다. 교재는 클래식 API만 제시하지만, 현재 문서는 같은 CRUD를 **PartiQL로도** 수행할 수 있고 **트랜잭션**이 별도 범주로 존재한다고 기술합니다. PartiQL과 트랜잭션은 [7.5절](#75-교재에-없는-두-가지-인터페이스-partiql과-트랜잭션)에서 다룹니다.
+제어 영역은 위의 다섯 작업으로 구성됩니다. 데이터 영역은 폭이 넓어서, 같은 CRUD를 클래식 API뿐 아니라 **PartiQL로도** 수행할 수 있고 **트랜잭션**이 별도 범주로 존재합니다. PartiQL과 트랜잭션은 [7.5절](#75-두-가지-인터페이스-partiql과-트랜잭션)에서 다룹니다.
 
 > — 출처: [DynamoDB API](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html)
 
@@ -84,7 +84,7 @@
 
 DynamoDB는 NoSQL 데이터베이스입니다. 개발자는 스키마를 정의하며 프로세스를 시작하지 않습니다. 대신 답해야 하는 질문을 파악하는 것으로 시작하고, 지원해야 하는 작업에 필요한 애플리케이션의 액세스 패턴을 먼저 확인합니다.
 
-교재가 제시하는 세 속성(**크기, 형태, 속도**)은 다음과 같습니다.
+액세스 패턴을 파악할 때 살피는 세 속성(**크기, 형태, 속도**)은 다음과 같습니다.
 
 | 속성 | 내용 |
 |---|---|
@@ -109,13 +109,13 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 | 파티션 키 (단순 기본 키) | 하나의 속성으로 구성됩니다. **hash attribute**라고도 부릅니다. DynamoDB가 파티션 키 값을 내부 해시 함수의 입력으로 써서 항목이 저장될 파티션을 결정합니다. 파티션 키만 있는 테이블에서는 두 항목이 같은 파티션 키 값을 가질 수 없습니다 |
 | 파티션 키 + 정렬 키 (복합 기본 키) | 두 속성으로 구성됩니다. 정렬 키는 **range attribute**라고도 부릅니다. 파티션 키 값이 같은 항목은 정렬 키 값 순서로 함께 저장됩니다. 파티션 키 값이 같은 항목이 여러 개 있을 수 있지만 정렬 키 값은 달라야 합니다 |
 
-🆕 교재가 다루지 않는 제약: **기본 키 속성은 스칼라여야 하고 허용되는 데이터 유형은 문자열·숫자·이진뿐입니다.** 키가 아닌 속성에는 이런 제약이 없습니다. 기본 키 외의 속성은 미리 정의할 필요가 없어 테이블이 스키마리스이며, 중첩 속성은 최대 32단계까지 지원합니다.
+🆕 기억할 제약: **기본 키 속성은 스칼라여야 하고 허용되는 데이터 유형은 문자열·숫자·이진뿐입니다.** 키가 아닌 속성에는 이런 제약이 없습니다. 기본 키 외의 속성은 미리 정의할 필요가 없어 테이블이 스키마리스이며, 중첩 속성은 최대 32단계까지 지원합니다.
 
 > — 출처: [Core components of Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
 
-키 선택 기준(교재 슬라이드 8): 일반적인 액세스 패턴 / 높은 카디널리티 / 애플리케이션에 대표적인 값.
+키 선택 기준: 일반적인 액세스 패턴 / 높은 카디널리티 / 애플리케이션에 대표적인 값.
 
-같은 데이터를 두 가지로 설계한 교재 예제:
+같은 데이터를 두 가지로 설계해 비교하면 다음과 같습니다.
 
 | 설계 | 파티션 키 | 정렬 키 | "StudentC의 모든 노트 가져오기" |
 |---|---|---|---|
@@ -126,7 +126,7 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 
 ### 2.4 인덱스 설계와 보조 인덱스 할당량 🆕
 
-교재 슬라이드 9의 네 원칙:
+인덱스 설계의 네 원칙은 다음과 같습니다.
 
 | 원칙 | 내용 |
 |---|---|
@@ -135,7 +135,7 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 | 정렬 순서를 사용 | 핵심 설계가 함께 정렬할 것을 요구하면 관련 항목을 그룹으로 묶어 효율적으로 쿼리할 수 있습니다 |
 | 쿼리를 분산 | 많은 볼륨의 쿼리가 데이터베이스의 특정 부분에 몰리면 I/O 용량을 초과할 수 있습니다. 트래픽을 여러 파티션으로 분산시켜 핫 스팟이 방지되도록 데이터 키를 설계합니다 |
 
-🆕 교재는 보조 인덱스를 다루면서 **두 종류의 차이와 테이블당 개수 할당량은 말하지 않습니다.**
+🆕 두 종류의 보조 인덱스는 차이와 테이블당 개수 할당량이 다릅니다.
 
 | 항목 | 글로벌 보조 인덱스(GSI) | 로컬 보조 인덱스(LSI) |
 |---|---|---|
@@ -152,11 +152,11 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 
 ### 2.5 초기 처리량 선택 🔄
 
-테이블의 초기 처리 능력을 선택할 때 고려할 입력(교재 슬라이드 10): 항목 크기 / 예상되는 테이블 읽기·쓰기 속도 / 읽기 일관성 요구 사항.
+테이블의 초기 처리 능력을 선택할 때 고려할 입력: 항목 크기 / 예상되는 테이블 읽기·쓰기 속도 / 읽기 일관성 요구 사항.
 
 #### 용량 단위 계산 🔄
 
-교재는 "단일 응답 항목을 반환한 쿼리는 크기가 2KB이고 이 작업에 **1 RCU**가 부과된다. 같은 테이블이 쓰기에 사용되면 **2 WCU**가 부과된다"고 기재합니다. 쓰기 쪽은 맞지만 읽기 쪽은 **읽기 일관성 모델이 빠져 있습니다.**
+2KB 항목 하나를 읽는 데 1 RCU가 부과된다고 말할 때는 **읽기 일관성 모델이 빠져 있습니다.**
 
 | 읽기 유형 | 4KB 이하 항목 1건 |
 |---|---|
@@ -171,21 +171,21 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 
 - 읽기의 항목 크기는 **4KB 배수로 올림**됩니다. 3,500바이트 항목을 읽으면 4KB 항목을 읽은 것과 같은 처리량을 씁니다.
 - 쓰기의 항목 크기는 **1KB 배수로 올림**됩니다. 500바이트 항목을 쓰면 1KB 항목을 쓴 것과 같습니다.
-- 따라서 2KB 항목 하나를 읽으면 강력한 일관성에서는 1 RCU, **기본값인 최종 일관성에서는 0.5 RCU**입니다. 2KB 쓰기는 2 WCU로 교재와 같습니다.
+- 따라서 2KB 항목 하나를 읽으면 강력한 일관성에서는 1 RCU, **기본값인 최종 일관성에서는 0.5 RCU**입니다. 2KB 쓰기는 2 WCU입니다.
 - 🆕 **존재하지 않는 항목을 읽어도 읽기 처리량은 소비됩니다.** `Query`·`Scan`은 데이터가 없어도 읽기 일관성과 검색한 파티션 수에 따라 추가 처리량이 부과됩니다.
 
 > — 출처: [DynamoDB read and write operations](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html)
 
 #### 용량 모드 🔄
 
-교재는 프로비저닝 모드를 먼저 제시하고 온디맨드를 "알 수 없는 워크로드" 대안으로 서술합니다. **현재 문서의 서열은 반대입니다.**
+현재 문서는 **온디맨드를 기본·권장 옵션으로, 프로비저닝을 안정적 워크로드용으로** 제시합니다.
 
-| 모드 | 교재 서술 | 현재 문서 |
-|---|---|---|
-| 온디맨드 | 알 수 없는 워크로드 / 예측 불가능한 트래픽. "용량 계획 없이 초당 수천 개의 요청을 처리하는 유연한 과금 옵션" | **기본이자 권장(default and recommended) 처리량 옵션.** 서버리스 처리량 옵션으로 용량 계획·모니터링·스케일링 정책 구성이 필요 없고 요청 단위로 과금 |
-| 프로비저닝 | 예측 가능한 트래픽 / 알려진 워크로드 / 사용 가능한 예약 용량 | 초당 읽기·쓰기 수를 지정. **예측 가능한 성장세를 가진 안정적 워크로드**에 적합. 실제 소비량이 아니라 프로비저닝한 시간당 용량으로 과금되어 비용 예측 가능성을 얻음 |
+| 모드 | 성격 |
+|---|---|
+| 온디맨드 | **기본이자 권장(default and recommended) 처리량 옵션.** 서버리스 처리량 옵션으로 용량 계획·모니터링·스케일링 정책 구성이 필요 없고 요청 단위로 과금 |
+| 프로비저닝 | 초당 읽기·쓰기 수를 지정. **예측 가능한 성장세를 가진 안정적 워크로드**에 적합. 실제 소비량이 아니라 프로비저닝한 시간당 용량으로 과금되어 비용 예측 가능성을 얻음 |
 
-온디맨드에 대해 교재가 다루지 않는 사실: 🆕
+온디맨드의 추가 성질: 🆕
 
 - 온디맨드 테이블도 프로비저닝과 **동일한 한 자릿수 밀리초 지연 시간, SLA, 보안**을 제공합니다.
 - 새 온디맨드 테이블은 초당 **쓰기 4,000건·읽기 12,000건**까지 즉시 처리하고, 직전 최고 트래픽의 **두 배**까지 즉시 수용합니다.
@@ -196,12 +196,12 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 
 #### 용량 모드 전환 한도 🔄
 
-교재 강사 노트는 두 가지를 기재합니다. 둘 다 현재와 다릅니다.
+테이블 생성과 용량 모드 전환에서 두 가지에 유의합니다.
 
-| 교재 기재 | 확인된 내용 |
+| 흔한 오해 | 실제 동작 |
 |---|---|
-| "AWS CLI 또는 AWS SDK를 사용하여 테이블을 생성할 때 테이블의 용량을 프로비저닝해야 합니다" | `CreateTable`의 `BillingMode`는 **필수가 아닙니다.** 유효값은 `PROVISIONED`와 `PAY_PER_REQUEST`이고, `PAY_PER_REQUEST`를 선택하면 `ProvisionedThroughput`을 **지정할 수 없습니다.** 문서는 대부분의 워크로드에 `PAY_PER_REQUEST`를 권장합니다 |
-| "24시간마다 한 번씩 읽기 및 쓰기 용량 모드를 전환할 수 있습니다" | 프로비저닝 → 온디맨드는 **24시간 롤링 윈도 안에서 최대 4번**, 온디맨드 → 프로비저닝은 **언제든** 전환할 수 있습니다 |
+| 테이블을 생성할 때 반드시 용량을 프로비저닝해야 한다 | `CreateTable`의 `BillingMode`는 **필수가 아닙니다.** 유효값은 `PROVISIONED`와 `PAY_PER_REQUEST`이고, `PAY_PER_REQUEST`를 선택하면 `ProvisionedThroughput`을 **지정할 수 없습니다.** 문서는 대부분의 워크로드에 `PAY_PER_REQUEST`를 권장합니다 |
+| 24시간마다 한 번씩만 용량 모드를 전환할 수 있다 | 프로비저닝 → 온디맨드는 **24시간 롤링 윈도 안에서 최대 4번**, 온디맨드 → 프로비저닝은 **언제든** 전환할 수 있습니다 |
 
 전환 시 알아 둘 점: 🆕
 
@@ -213,7 +213,7 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 
 #### 버스트 용량과 적응형 용량 🆕
 
-교재 강사 노트는 "버스트 및 적응형 용량을 활용하여 애플리케이션 용량을 미세 조정할 수 있습니다"라고만 적습니다. 구체적인 값은 다음과 같습니다.
+버스트 및 적응형 용량으로 애플리케이션 용량을 미세 조정할 수 있습니다. 구체적인 값은 다음과 같습니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -226,7 +226,7 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 
 ### 2.6 그 밖의 테이블 할당량 🆕
 
-교재 슬라이드 21은 서비스 할당량 문서를 링크만 하고 값을 제시하지 않습니다.
+그 밖의 테이블 할당량 값은 다음과 같습니다.
 
 | 항목 | 값 |
 |---|---|
@@ -245,11 +245,11 @@ Notes 애플리케이션의 일반적인 쿼리 세 가지:
 
 ### 3.1 테이블 생성: Java 하위 수준 인터페이스 🔄
 
-교재 슬라이드 13~14는 키 스키마와 속성 정의를 만든 뒤 `CreateTableRequest`를 빌드합니다. 요청을 만드는 부분은 AWS SDK for Java 2.x 문법이지만 **응답을 받는 마지막 줄이 1.x 클래스 이름**입니다.
+키 스키마와 속성 정의를 만든 뒤 `CreateTableRequest`를 빌드합니다. 아래 예제에서 한 가지 주의할 점은 응답 형식입니다.
 
-| 교재 기재 | 확인된 내용 |
+| 흔한 오해 | 올바른 방식 |
 |---|---|
-| `CreateTableResult result = ddb.createTable(request);` | 2.x의 반환 형식은 **`CreateTableResponse`** 이고 `tableDescription()` 메서드로 테이블 속성을 반환합니다. `CreateTableResult`는 1.x 클래스 이름입니다 |
+| `CreateTableResult result = ddb.createTable(request);` | AWS SDK for Java 2.x의 반환 형식은 **`CreateTableResponse`** 이고 `tableDescription()` 메서드로 테이블 속성을 반환합니다. `CreateTableResult`는 1.x 클래스 이름입니다 |
 
 ```java
 // 요청에 사용할 키 속성 및 값 설정
@@ -260,8 +260,8 @@ keySchema.add(KeySchemaElement.builder()
         .attributeName("NoteId").keyType(KeyType.RANGE).build());  // 정렬 키
 
 // 요청에 사용할 속성 정의 설정
-// NoteId 는 N(숫자)으로 정의한다. 교재는 슬라이드마다 S 와 N 이 엇갈리지만
-// 슬라이드 25 이후의 모든 CLI 예제가 {"NoteId":{"N":"42"}} 를 쓴다.
+// NoteId 는 N(숫자)으로 정의한다. 이 자료의 모든 CLI 예제가
+// {"NoteId":{"N":"42"}} 로 숫자를 쓰므로 그에 맞춘다.
 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
 attributeDefinitions.add(AttributeDefinition.builder()
         .attributeName("UserId").attributeType(ScalarAttributeType.S).build());
@@ -292,17 +292,9 @@ System.out.println(response.tableDescription().tableStatus());   // CREATING
 
 > — 출처: [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html), [CreateTableResponse (AWS SDK for Java 2.x)](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/dynamodb/model/CreateTableResponse.html)
 
-#### `NoteId`의 속성 유형: 교재 안의 모순 🔄
+#### `NoteId`의 속성 유형 🔄
 
-| 위치 | `NoteId` 유형 |
-|---|---|
-| 슬라이드 13 코드 | `ScalarAttributeType.S` |
-| 슬라이드 13 강사 노트 | "primarykey(UserId)와 sortKey(NoteId)는 **모두 문자열(S)**" |
-| 슬라이드 14 강사 노트 | "primarykey(UserId)는 문자열(S)로 설정되고 sortKey(NoteId)는 **숫자(N)**" |
-| 슬라이드 15 .NET 예제 | `ScalarAttributeType.N` |
-| 슬라이드 25 이후 모든 CLI 예제 | `{"NoteId":{"N":"..."}}` |
-
-`AttributeType` 유효값은 `S`·`N`·`B`이고 기본 키 속성의 데이터 유형은 문자열·숫자·이진 중 하나여야 하므로 둘 다 문법적으로는 가능합니다. 그러나 하나의 `Notes` 테이블에 두 정의가 공존할 수는 없습니다. 이 문서는 **다수 예제와 일치하는 `N`으로 통일**했습니다.
+`AttributeType` 유효값은 `S`·`N`·`B`이고 기본 키 속성의 데이터 유형은 문자열·숫자·이진 중 하나여야 합니다. 하나의 `Notes` 테이블에 두 정의가 공존할 수는 없으므로, 이 자료는 CLI 예제와 일관되게 `NoteId`를 **`N`(숫자)으로 통일**했습니다.
 
 > — 출처: [AttributeDefinition](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeDefinition.html)
 
@@ -317,23 +309,15 @@ System.out.println(response.tableDescription().tableStatus());   // CREATING
 | 읽기·쓰기 가능 시점 | **`ACTIVE` 테이블에서만** 수행 가능 |
 | 상태 확인 방법 | `DescribeTable` |
 
-응답은 `TableDescription` 객체를 담고 있으며 `BillingModeSummary`, `CreationDateTime`, `GlobalSecondaryIndexes`, `TableStatus` 등을 포함합니다. 이 부분은 교재 슬라이드 16 강사 노트와 일치합니다.
+응답은 `TableDescription` 객체를 담고 있으며 `BillingModeSummary`, `CreationDateTime`, `GlobalSecondaryIndexes`, `TableStatus` 등을 포함합니다.
 
-🆕 교재가 다루지 않는 제약: 테이블 이름은 **리전 안에서 고유**해야 하고(리전이 다르면 같은 이름을 쓸 수 있음), 보조 인덱스가 있는 테이블은 **한 번에 하나만** `CREATING` 상태일 수 있습니다.
+🆕 함께 기억할 제약: 테이블 이름은 **리전 안에서 고유**해야 하고(리전이 다르면 같은 이름을 쓸 수 있음), 보조 인덱스가 있는 테이블은 **한 번에 하나만** `CREATING` 상태일 수 있습니다.
 
 > — 출처: [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html)
 
 ### 3.3 테이블 생성: .NET 하위 수준 인터페이스 🔄
 
-교재 슬라이드 15~16 예제에는 세 가지 문제가 있습니다.
-
-| 교재 | 문제 | 교정 |
-|---|---|---|
-| `AttributeName = "NoteId",I` | 잉여 문자 `I` | `AttributeName = "NoteId",` |
-| `},,` | 쉼표 중복 | `},` |
-| `var response = client.CreateTable(request);` | 현재 공식 .NET(v4) 예제는 비동기 호출을 사용 | `await client.CreateTableAsync(request)` |
-
-앞의 두 개는 교재 자체의 오타여서 AWS 문서로 검증할 성질이 아니고, 마지막 하나는 공식 코드 예제와의 차이입니다.
+.NET 테이블 생성 코드에서 한 가지에 주의합니다. 현재 공식 .NET(v4) 예제는 **비동기 호출**(`CreateTableAsync`)을 사용합니다. 동기 `client.CreateTable(request)` 대신 `await client.CreateTableAsync(request)`를 씁니다.
 
 ```csharp
 AmazonDynamoDBClient client = new AmazonDynamoDBClient();
@@ -380,7 +364,7 @@ while (status != TableStatus.ACTIVE);
 
 ### 3.4 CLI로 인덱스가 포함된 테이블 생성
 
-교재 슬라이드 17은 기본 테이블 키 `(UserId, NoteId)`와 인덱스 키 `(UserId, Is_Incomplete)`를 그림으로 보여 줍니다. 속성 유형은 다음 값으로 설정합니다.
+다음 예제는 기본 테이블 키 `(UserId, NoteId)`와 로컬 보조 인덱스 키 `(UserId, Is_Incomplete)`로 테이블을 만듭니다. 속성 유형은 다음 값으로 설정합니다.
 
 | 값 | 의미 |
 |---|---|
@@ -406,7 +390,7 @@ aws dynamodb create-table \
   --billing-mode PAY_PER_REQUEST
 ```
 
-교재 강사 노트의 참고: 설계에 따라 개발자는 DynamoDB 테이블에 **키가 아닌 속성을 선언할 필요가 없습니다.** DynamoDB는 `--key-schema`를 제외하고 스키마가 없습니다. 이 서술은 현재 문서의 "기본 키 외에는 속성도 데이터 유형도 미리 정의할 필요가 없다"와 일치합니다.
+참고로 설계에 따라 개발자는 DynamoDB 테이블에 **키가 아닌 속성을 선언할 필요가 없습니다.** 기본 키(그리고 인덱스 키) 외에는 속성도 데이터 유형도 미리 정의할 필요가 없습니다.
 
 > — 출처: [Core components of Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
 
@@ -414,12 +398,12 @@ aws dynamodb create-table \
 
 Java용 AWS SDK는 리소스가 원하는 상태로 전환될 때까지 대기하는 waiter 기능을 제공합니다. waiter를 쓰지 않으면 상태를 반복 검사하는 폴링 코드를 직접 써야 합니다.
 
-교재 슬라이드 18 코드에는 두 곳의 문제가 있습니다.
+아래 예제에서 두 가지 인자 형태에 주의합니다.
 
-| 교재 | 문제 |
+| 잘못 쓰기 쉬운 형태 | 올바른 형태 |
 |---|---|
-| `CreateTableResponse response = ddb.createTable("Notes");` | 슬라이드 주석과 강사 노트는 "`CreateTableRequest` 객체의 정보를 사용하여 테이블을 생성"한다고 하는데 코드는 문자열 리터럴을 넘깁니다. `DynamoDbClient.createTable`은 **요청 객체 또는 빌더 `Consumer`** 를 받는 오버로드만 있습니다 |
-| `dbWaiter.waitUntilTableExists("Notes");` | 공식 예제는 **`DescribeTableRequest`를 구성하는 빌더**를 넘깁니다 |
+| `ddb.createTable("Notes")` — 문자열 리터럴 | `DynamoDbClient.createTable`은 **요청 객체 또는 빌더 `Consumer`** 를 받는 오버로드만 있으므로 `CreateTableRequest`를 넘깁니다 |
+| `dbWaiter.waitUntilTableExists("Notes")` — 문자열 리터럴 | **`DescribeTableRequest`를 구성하는 빌더**를 넘깁니다 |
 
 ```java
 // 표준 클라이언트를 waiter 에 넘겨 같은 리전을 쓰도록 한다.
@@ -447,15 +431,9 @@ try (DynamoDbWaiter dbWaiter = DynamoDbWaiter.builder().client(ddb).build()) {
 
 ### 3.6 테이블 업데이트·리스트·삭제 (Java) 🔄
 
-교재 슬라이드 19~20의 Java 예제는 **AWS SDK for Java 1.x Document API 문법**입니다.
+`Table table = dynamoDB.getTable("Notes")`, `new ProvisionedThroughput().withReadCapacityUnits(15L)`, `TableCollection<ListTablesResult> tables = dynamoDB.listTables()` 는 모두 **AWS SDK for Java 1.x Document API 문법**입니다.
 
-| 교재 코드 | 버전 |
-|---|---|
-| `Table table = dynamoDB.getTable("Notes");` | 1.x |
-| `new ProvisionedThroughput().withReadCapacityUnits(15L)` | 1.x |
-| `TableCollection<ListTablesResult> tables = dynamoDB.listTables();` | 1.x |
-
-AWS SDK for Java 1.x는 **2025년 12월 31일 지원이 종료**되었습니다(2024년 1월 12일 발표, 2024년 7월 31일 유지 관리 모드 진입). 같은 모듈의 슬라이드 13~14·18·41~42는 2.x 문법이어서 교재 안에서 버전이 섞여 있습니다. 패키지 이름도 다릅니다. 1.x는 `com.amazonaws`, 2.x는 `software.amazon.awssdk`입니다.
+AWS SDK for Java 1.x는 **2025년 12월 31일 지원이 종료**되었습니다(2024년 1월 12일 발표, 2024년 7월 31일 유지 관리 모드 진입). 패키지 이름도 다릅니다. 1.x는 `com.amazonaws`, 2.x는 `software.amazon.awssdk`입니다. 아래는 2.x 문법입니다.
 
 ```java
 // 업데이트 — AWS SDK for Java 2.x
@@ -482,7 +460,7 @@ ddb.listTablesPaginator(ListTablesRequest.builder().build())
 
 ### 3.7 테이블 업데이트·리스트·삭제 (.NET)
 
-교재 슬라이드 21~22 예제입니다. 동기 메서드를 비동기로 바꾼 것 외에는 교재와 같습니다([3.3절](#33-테이블-생성-net-하위-수준-인터페이스) 참조).
+.NET에서 테이블을 업데이트·리스트·삭제하는 예제입니다. 동기 메서드 대신 비동기 메서드를 씁니다([3.3절](#33-테이블-생성-net-하위-수준-인터페이스) 참조).
 
 ```csharp
 // 업데이트
@@ -515,16 +493,15 @@ foreach (string name in listResponse.TableNames)
 
 ### 3.8 처리량 증가·감소 한도 🔄
 
-교재 슬라이드 21 강사 노트의 네 문장 중 세 문장은 지금도 맞고 한 문장이 다릅니다.
+처리량 증가는 제약이 느슨합니다.
 
-| 교재 기재 | 확인된 내용 |
+| 항목 | 내용 |
 |---|---|
-| `ReadCapacityUnits` 또는 `WriteCapacityUnits`를 **필요한 만큼 자주 늘릴 수 있다** | 맞습니다 |
-| 단일 호출에서 테이블, 그 테이블의 GSI, 또는 둘의 조합에 대해 늘릴 수 있다 | 맞습니다 |
-| 새 설정은 `UpdateTable` 작업이 완료될 때까지 효과를 발휘하지 않는다 | 맞습니다 |
-| **"언제든 하루에 최대 4번 줄일 수 있습니다"** | 다릅니다. 아래 표 참조 |
+| 증가 빈도 | `ReadCapacityUnits`·`WriteCapacityUnits`를 **필요한 만큼 자주** 늘릴 수 있음 |
+| 증가 범위 | 단일 호출에서 테이블, 그 테이블의 GSI, 또는 둘의 조합에 대해 늘릴 수 있음 |
+| 반영 시점 | 새 설정은 `UpdateTable` 작업이 완료될 때까지 효과를 발휘하지 않음 |
 
-현재 감소 한도는 다음과 같습니다.
+감소는 "언제든 하루 최대 4번"이 아니라 다음 규칙을 따릅니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -538,7 +515,7 @@ foreach (string name in listResponse.TableNames)
 
 ### 3.9 `ListTables`는 페이지 매김된다 🔄
 
-교재는 슬라이드 19~20·22에서 "`ListTables` 작업은 파라미터가 필요하지 않습니다"라고 반복합니다. 이 문장은 지금도 맞습니다. 다만 교재 Java 리스트 예제는 전체 테이블을 한 번에 순회하는 것처럼 보입니다.
+`ListTables` 작업은 파라미터가 필요하지 않습니다. 다만 전체 테이블을 한 번에 순회한다고 여기기 쉬운데, 실제로는 출력이 페이지 매김됩니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -584,7 +561,7 @@ aws dynamodb put-item \
 | `ReturnValues` | 같은 작업에서 항목의 속성 값을 반환할 수 있습니다. 덮어쓰기 여부를 판별하려면 `ALL_OLD`로 설정하고 응답에 `Attributes` 요소가 있는지 확인합니다 🆕 |
 | 조건부 PUT | 지정된 기본 키가 있는 항목이 존재하지 않을 때만 추가하거나, 특정 속성 값을 가질 때만 기존 항목을 교체 |
 
-교재 강사 노트는 "속성 값은 `null`일 수 없습니다"라고만 적습니다. 현재 문서는 더 정확합니다. 🔄
+"속성 값은 `null`일 수 없다"고 뭉뚱그리기 쉽지만, 규칙은 더 세분화되어 있습니다. 🔄
 
 | 값 | 허용 여부 |
 |---|---|
@@ -623,7 +600,7 @@ aws dynamodb batch-write-item --request-items file://request-items.json
 }
 ```
 
-교재가 제시하는 한도는 지금도 맞습니다.
+배치 작업의 한도는 다음과 같습니다.
 
 | 작업 | 항목 수 | 데이터 크기 |
 |---|---|---|
@@ -631,7 +608,7 @@ aws dynamodb batch-write-item --request-items file://request-items.json
 | `BatchGetItem` | 최대 **100개** 항목 읽기 | 최대 **16MB** |
 | 개별 항목 최대 크기 | **400KB** | — |
 
-교재가 다루지 않는 동작: 🆕
+알아 둘 세부 동작: 🆕
 
 | 항목 | 내용 |
 |---|---|
@@ -646,7 +623,7 @@ aws dynamodb batch-write-item --request-items file://request-items.json
 
 > — 출처: [BatchWriteItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html)
 
-`BatchGetItem`도 교재보다 세부가 많습니다. 🆕
+`BatchGetItem`에도 알아 둘 세부가 많습니다. 🆕
 
 | 항목 | 내용 |
 |---|---|
@@ -704,11 +681,11 @@ aws dynamodb query \
   --expression-attribute-values '{":userid":{"S":"StudentA"}}'
 ```
 
-> 교재 슬라이드 30의 CLI 예제는 `'{":userid":{"S":"StudentA"}'` 로 **닫는 중괄호가 하나 빠져** 있어 JSON 파싱에 실패합니다. 위 예제에서 교정했습니다.
+> `--expression-attribute-values`의 JSON은 닫는 중괄호까지 정확히 맞춰야 합니다. 중괄호가 하나라도 빠지면 JSON 파싱에 실패합니다.
 
 #### 정렬 키 조건 연산자 🔄
 
-교재 슬라이드 본문은 `=, <, >, <=, >=, AND, BETWEEN 또는 begins_with`를 나열하고, 같은 슬라이드의 강사 노트 목록에는 `BETWEEN`이 빠져 있습니다. 정확한 목록은 다음과 같습니다.
+정렬 키 조건에 쓸 수 있는 연산자의 정확한 목록은 다음과 같습니다.
 
 | 형태 | 의미 |
 |---|---|
@@ -724,7 +701,7 @@ aws dynamodb query \
 
 #### 필터 표현식은 읽는 양을 줄이지 않는다 🔄
 
-교재 강사 노트는 "필터 표현식을 결합하고 결과를 제한할 수 있습니다. 둘을 결합하면 **필요한 것보다 많은 항목을 읽지 않고도** 구체화된 데이터 세트를 얻을 수 있습니다"라고 기재합니다. 이 부분은 오해를 낳습니다.
+필터 표현식이 "읽는 양을 줄여 준다"고 오해하기 쉽지만, 실제로는 그렇지 않습니다.
 
 | 항목 | 확인된 내용 |
 |---|---|
@@ -774,13 +751,11 @@ DynamoDB는 `Query` 결과에 페이지 매김을 하며 결과는 **1MB 이하*
 }
 ```
 
-절차는 교재와 같습니다. ① 결과에 `LastEvaluatedKey`가 있는지 확인 ② 있으면 같은 `KeyConditionExpression`으로 새 `Query`를 구성하고 그 값을 `ExclusiveStartKey`로 사용 ③ 실행 ④ 반복.
+절차는 이렇습니다. ① 결과에 `LastEvaluatedKey`가 있는지 확인 ② 있으면 같은 `KeyConditionExpression`으로 새 `Query`를 구성하고 그 값을 `ExclusiveStartKey`로 사용 ③ 실행 ④ 반복.
 
-교재가 기재하지 않은 중요한 단서가 하나 있습니다. 🔄
+여기에 중요한 단서가 하나 있습니다. 🔄
 
-| 교재 기재 | 확인된 내용 |
-|---|---|
-| "쿼리에 `LastEvaluatedKey` 요소가 있고 값이 `null`이 아닌 경우" 다음 페이지를 요청한다 | 비어 있지 않은 `LastEvaluatedKey`는 이전 `Query`가 **페이지 경계(1MB 페이지 크기 한도 또는 `Limit` 값)에서 멈췄다**는 뜻일 뿐이며 일치하는 항목이 더 남아 있다는 **보장이 아닙니다.** 특히 `FilterExpression`을 쓰면 필터 적용 **전에** 읽은 항목에 1MB·`Limit` 상한이 적용되므로, 한 페이지가 일치 항목 0개를 반환하면서도 `LastEvaluatedKey`를 포함할 수 있습니다. 결과 세트의 끝을 아는 유일한 방법은 `LastEvaluatedKey`가 비는 것입니다 |
+비어 있지 않은 `LastEvaluatedKey`는 이전 `Query`가 **페이지 경계(1MB 페이지 크기 한도 또는 `Limit` 값)에서 멈췄다**는 뜻일 뿐이며, 일치하는 항목이 더 남아 있다는 **보장이 아닙니다.** 특히 `FilterExpression`을 쓰면 필터 적용 **전에** 읽은 항목에 1MB·`Limit` 상한이 적용되므로, 한 페이지가 일치 항목 0개를 반환하면서도 `LastEvaluatedKey`를 포함할 수 있습니다. 결과 세트의 끝을 아는 유일한 방법은 `LastEvaluatedKey`가 비는 것입니다.
 
 🆕 AWS CLI 버전 1·2 모두 **자동 페이지 매김이 기본 동작**입니다. 직접 페이지를 넘기려면 `--no-paginate`를 씁니다. 참고로 `--max-items`는 `NextToken`을, `--limit`은 `LastEvaluatedKey`를 반환합니다.
 
@@ -800,7 +775,7 @@ aws dynamodb scan \
 | 항목 | 내용 |
 |---|---|
 | 페이지 한도 | 단일 `Scan` 요청은 최대 **1MB**의 데이터를 검색. 이 한도는 **필터 표현식 평가 전에** 적용 |
-| 필터 적용 시점 | `Scan`이 끝난 뒤 결과가 반환되기 전 (교재와 일치) |
+| 필터 적용 시점 | `Scan`이 끝난 뒤 결과가 반환되기 전 |
 | 소비 용량 | **필터 표현식이 있든 없든 `Scan`이 소비하는 읽기 용량은 같습니다** 🔄 |
 | 필터에 쓸 수 있는 속성 | `Query`와 달리 **파티션 키·정렬 키를 포함해 어떤 속성이든** 지정할 수 있습니다 🆕 |
 | `Limit` | 필터 표현식 평가 **전에** 반환할 최대 항목 수를 지정. `Limit=6`에 필터를 붙이면 6개를 읽고 그중 일치하는 것만 남으므로 최종 결과는 6개 **이하** |
@@ -836,7 +811,7 @@ aws dynamodb scan \
 | 쿼리 | 기본 키 값을 기반으로 항목을 찾습니다 |
 | 스캔 | 테이블 또는 보조 인덱스의 **모든 항목**을 읽습니다 |
 
-교재 강조: 스캔은 쿼리보다 효율이 떨어지지만 유일한 솔루션인 경우가 자주 있습니다. 강사 노트의 지침도 그대로 유효합니다. **대규모 테이블에서 많은 결과를 제거하는 필터가 포함된 스캔 작업을 사용하지 마십시오.** 테이블 크기가 늘어나면 스캔이 느려지고 더 많은 용량을 사용합니다.
+스캔은 쿼리보다 효율이 떨어지지만 유일한 솔루션인 경우가 자주 있습니다. 핵심 지침은 이것입니다. **대규모 테이블에서 많은 결과를 제거하는 필터가 포함된 스캔 작업을 사용하지 마십시오.** 테이블 크기가 늘어나면 스캔이 느려지고 더 많은 용량을 사용합니다.
 
 [5.4절](#54-데이터-스캔-scan)의 소비 용량 규칙이 왜 그런지를 설명해 줍니다. 필터가 많은 결과를 걸러 낸다는 것은 **읽기 용량은 이미 다 썼는데 돌려받는 항목만 적다**는 뜻입니다.
 
@@ -851,21 +826,21 @@ aws dynamodb scan \
 | `Segment` | 특정 작업자가 스캔할 세그먼트. 작업자마다 다른 값을 써야 하고 **0부터 시작**합니다 |
 | `TotalSegments` | 병렬 스캔의 총 세그먼트 수. 애플리케이션이 사용할 **작업자 수와 같아야** 합니다 |
 
-교재 슬라이드 34의 예: 애플리케이션이 세 개의 스레드를 스폰하고 각 스레드에 번호를 할당합니다. 각 스레드는 `Segment`를 지정된 번호로, `TotalSegments`를 3으로 설정해 스캔 요청을 실행하고, 지정된 세그먼트를 한 번에 1MB씩 스캔해 주 스레드에 데이터를 반환합니다.
+예를 들어 애플리케이션이 세 개의 스레드를 스폰하고 각 스레드에 번호를 할당합니다. 각 스레드는 `Segment`를 지정된 번호로, `TotalSegments`를 3으로 설정해 스캔 요청을 실행하고, 지정된 세그먼트를 한 번에 1MB씩 스캔해 주 스레드에 데이터를 반환합니다.
 
-교재가 다루지 않는 세그먼트 할당 방식: 🆕
+세그먼트 할당 방식은 다음과 같습니다. 🆕
 
 - DynamoDB는 각 항목의 **파티션 키에 해시 함수를 적용해** 세그먼트를 할당합니다. 주어진 `TotalSegments` 값에서 **같은 파티션 키를 가진 항목은 항상 같은 `Segment`** 에 할당됩니다. 정렬 키 값이나 항목 컬렉션 크기와는 무관합니다.
 - 세그먼트 할당이 파티션 키 해시만을 기준으로 하므로 **세그먼트 분포가 고르지 않을 수 있습니다.** 어떤 세그먼트에는 항목이 하나도 없고 어떤 세그먼트에는 큰 항목 컬렉션을 가진 파티션 키가 여럿 몰릴 수 있습니다.
 - 따라서 **세그먼트 수를 늘려도 스캔 성능이 빨라진다고 보장할 수 없습니다.** 파티션 키가 키 공간에 고르게 분포하지 않으면 특히 그렇습니다.
 
-교재 강사 노트의 주의 사항은 지금도 유효합니다. 작업자가 많은 병렬 스캔은 스캔 대상 테이블·인덱스의 프로비저닝된 처리량을 모두 소비하기 쉬우므로, 다른 애플리케이션이 같은 테이블에 읽기·쓰기가 많으면 실행하지 마십시오. 요청당 반환 데이터 양을 제어하려면 `Limit` 파라미터를 씁니다.
+주의 사항이 하나 있습니다. 작업자가 많은 병렬 스캔은 스캔 대상 테이블·인덱스의 프로비저닝된 처리량을 모두 소비하기 쉬우므로, 다른 애플리케이션이 같은 테이블에 읽기·쓰기가 많으면 실행하지 마십시오. 요청당 반환 데이터 양을 제어하려면 `Limit` 파라미터를 씁니다.
 
 > — 출처: [Scanning tables in DynamoDB — Parallel scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html)
 
 ### 5.7 레거시 조건 파라미터 🆕
 
-교재의 모든 예제는 표현식 기반 파라미터를 씁니다. 이는 현재 권장 사항과 일치합니다. 다만 API에는 레거시 파라미터가 남아 있어 오래된 코드를 유지 보수할 때 만나게 됩니다.
+이 자료의 모든 예제는 현재 권장 사항인 표현식 기반 파라미터를 씁니다. 다만 API에는 레거시 파라미터가 남아 있어 오래된 코드를 유지 보수할 때 만나게 됩니다.
 
 | API 작업 | 레거시 파라미터 | 대신 사용할 표현식 파라미터 |
 |---|---|---|
@@ -914,12 +889,12 @@ aws dynamodb update-item \
 
 기본적으로 DynamoDB 쓰기 작업(`PutItem`, `UpdateItem`, `DeleteItem`)은 **비조건부**입니다. 조건부 쓰기는 항목 속성이 하나 이상의 예상된 조건을 충족하는 경우에만 성공합니다.
 
-교재 슬라이드 37의 의도는 "노트에 즐겨찾기 플래그가 지정되지 않은 경우에만 업데이트를 허용"하는 것입니다. 그런데 CLI 예제의 조건 표현식이 유효한 구문이 아닙니다.
+"노트에 즐겨찾기 플래그가 지정되지 않은 경우에만 업데이트를 허용"하려는 조건을 쓸 때, 흔히 마주치는 두 가지 오류가 있습니다.
 
-| 교재 기재 | 문제 |
+| 잘못 쓰기 쉬운 형태 | 문제 |
 |---|---|
 | `--condition-expression "Favorite NOT yes"` | `NOT`은 **조건 하나를 부정하는 논리 연산자**여서 `operand NOT operand` 형태의 이항 비교로 쓸 수 없습니다. 또 `yes` 같은 값은 리터럴로 쓸 수 없고 **표현식 속성 값(`:val`)** 으로 넘겨야 합니다 |
-| `expression-attribute-values.json`에 `:newnote`만 있음 | 조건 표현식에 등장하는 자리표시자 값이 빠져 있습니다 |
+| 값 파일에 `:newnote`만 넣음 | 조건 표현식에 등장하는 자리표시자 값이 빠지면 안 됩니다 |
 
 조건 표현식의 문법은 다음과 같습니다.
 
@@ -947,7 +922,7 @@ function ::=
 
 `IN` 목록에는 최대 100개 값을 넣을 수 있습니다. 함수 이름은 **대소문자를 구분**합니다. Boolean 속성은 속성 자체를 조건으로 참조할 수 없고 표현식 속성 값으로 Boolean 값을 넘겨 `=` 또는 `<>`로 비교해야 합니다.
 
-교재의 의도를 문법에 맞게 다시 쓰면 이렇게 됩니다.
+이 의도를 문법에 맞게 쓰면 다음과 같습니다.
 
 ```bash
 aws dynamodb update-item \
@@ -971,12 +946,12 @@ aws dynamodb update-item \
 
 #### 조건이 실패해도 쓰기 용량은 소비된다 🔄
 
-교재 강사 노트는 소비량을 두 경우로 나눠 기재합니다. 현재 문서의 서술은 한 가지 규칙입니다.
+조건이 실패해도 쓰기 용량은 소비되며, 소비량은 항목 크기에 따라 결정됩니다.
 
-| 교재 기재 | 확인된 내용 |
+| 상황 | 소비되는 쓰기 용량 |
 |---|---|
-| "항목이 현재 테이블에 존재하지 않는 경우 DynamoDB는 쓰기 용량 단위 **1개**를 소비합니다" | 문서는 **'1개'라는 고정값을 제시하지 않습니다.** 조건이 `false`로 평가되어도 쓰기 용량 단위를 소비하며, 소비량은 **기존 항목 또는 생성·업데이트를 시도한 새 항목의 크기**에 따라 달라집니다 |
-| "항목이 존재하는 경우 소비되는 쓰기 용량 단위 수는 항목 크기에 따라 달라집니다" | 맞습니다. 문서 예시: 기존 항목이 300KB이고 생성·업데이트를 시도한 새 항목이 310KB이면 소비되는 쓰기 용량은 **새 항목 310KB 기준**입니다 |
+| 조건이 `false`로 평가됨 | 고정 1개가 아니라 **기존 항목 또는 생성·업데이트를 시도한 새 항목의 크기**에 따라 결정됩니다 |
+| 항목이 이미 존재함 | 항목 크기에 따라 결정됩니다. 예: 기존 300KB, 새 항목 310KB이면 **새 항목 310KB 기준** |
 
 실패한 조건부 쓰기는 `ConditionalCheckFailedException`(HTTP 400)을 반환합니다. 이 경우 응답에서 소비된 쓰기 용량 정보를 받지 못하지만, Amazon CloudWatch에서 테이블의 `ConsumedWriteCapacityUnits` 지표를 확인할 수 있습니다. 🆕 예외에는 예외를 유발한 항목(`Item`)이 함께 담길 수 있고, `ReturnValuesOnConditionCheckFailure` 파라미터로 반환 방식을 제어합니다.
 
@@ -998,7 +973,7 @@ aws dynamodb delete-item \
 | `ReturnValues` | 삭제하면서 같은 작업에서 항목의 속성 값을 반환할 수 있습니다 |
 | 조건부 삭제 | 항목이 존재하거나 항목에 예상 속성 값이 있을 때만 삭제. 조건이 충족되면 삭제하고 그렇지 않으면 삭제하지 않습니다 |
 
-교재 슬라이드 39의 모범 사례("조건부 작업은 항목 삭제 시 추가 보호 수준을 제공합니다")는 현재 문서와 일치합니다.
+모범 사례로, 조건부 작업은 항목 삭제 시 추가 보호 수준을 제공합니다.
 
 ```bash
 # 즐겨찾기가 아닌 노트만 삭제한다
@@ -1016,7 +991,7 @@ aws dynamodb delete-item \
 
 ### 7.1 Java 2.x의 세 인터페이스 🆕
 
-교재는 Java 상위 수준 인터페이스로 확장 클라이언트만 제시합니다. AWS SDK for Java 2.x는 추상화 수준에 따라 **세 가지** 인터페이스를 지원합니다.
+AWS SDK for Java 2.x는 추상화 수준에 따라 **세 가지** 인터페이스를 지원합니다.
 
 | 인터페이스 | 내용 |
 |---|---|
@@ -1024,7 +999,7 @@ aws dynamodb delete-item \
 | 상위 수준 (**DynamoDB 확장 클라이언트**) | 클라이언트 측 데이터 클래스와 테이블을 매핑. 주 클래스는 `DynamoDbEnhancedClient`이며 별도 패키지·Maven 아티팩트 `software.amazon.awssdk.enhanced.dynamodb`에 있습니다. 1.x의 상위 수준 인터페이스는 주 클래스 이름 `DynamoDBMapper`로 불렸습니다 |
 | Document | 데이터 유형 설명자를 지정할 필요가 없고 데이터의 의미로 유형이 결정됩니다. `EnhancedDocument`를 사용하고 `fromJson(String)`·`toJson()` 유틸리티 메서드를 제공합니다 |
 
-이 표가 교재 슬라이드 41 강사 노트의 "DynamoDB 확장 클라이언트 API는 Java v1.x용 SDK의 `DynamoDBMapper` 클래스의 후속 버전"을 뒷받침합니다.
+DynamoDB 확장 클라이언트 API는 Java v1.x용 SDK의 `DynamoDBMapper` 클래스의 후속 버전입니다.
 
 🆕 확장 클라이언트는 `@DynamoDbBean` 대신 **`@DynamoDbImmutable`** 을 쓰면 불변 데이터 클래스도 매핑할 수 있습니다. 불변 클래스는 getter만 있고 SDK가 인스턴스를 만들 빌더 클래스를 요구하며, Project Lombok 같은 라이브러리로 보일러플레이트를 줄일 수 있습니다.
 
@@ -1032,14 +1007,14 @@ aws dynamodb delete-item \
 
 ### 7.2 Java: DynamoDB 확장 클라이언트 데이터 클래스 🔄
 
-교재 슬라이드 41 예제에는 네 가지 문제가 있습니다.
+확장 클라이언트 데이터 클래스를 작성할 때 흔히 마주치는 네 가지 문제와 올바른 방식입니다.
 
-| 교재 | 문제 | 교정 |
+| 잘못 쓰기 쉬운 형태 | 문제 | 올바른 방식 |
 |---|---|---|
-| `@DynamoDbPartition` | 공식 주석 목록에 **그런 이름이 없습니다.** 같은 슬라이드의 강사 노트는 `@DynamoDbPartitionKey`로 올바르게 적었습니다 | `@DynamoDbPartitionKey` |
+| `@DynamoDbPartition` | 공식 주석 목록에 **그런 이름이 없습니다** | `@DynamoDbPartitionKey` |
 | `public void setNoteId(Integer noteId)` | 필드는 `private String noteId`, getter는 `String`을 반환하는데 setter만 `Integer`라서 컴파일되지 않습니다 | `setNoteId(String noteId)` |
-| 클래스 이름 `Note` vs 강사 노트의 `NotesItems`·`NotesItem` | 세 이름이 섞여 있습니다 | `Note`로 통일 |
-| `@DynamoDbAttribute` 위치 | 속성 수준 주석은 getter 또는 setter 중 **한쪽에만** 붙일 수 있습니다. 공식 가이드는 getter에 붙입니다 | getter에만 |
+| 클래스 이름을 `Note`·`NotesItems`·`NotesItem`로 섞어 씀 | 이름이 일관되지 않습니다 | `Note`로 통일 |
+| `@DynamoDbAttribute` 를 getter·setter 양쪽에 붙임 | 속성 수준 주석은 getter 또는 setter 중 **한쪽에만** 붙일 수 있습니다 | getter에만 (공식 가이드) |
 
 현재 공식 주석 목록의 주요 항목은 다음과 같습니다.
 
@@ -1075,7 +1050,7 @@ public static class Note {    // Notes 테이블의 열에 해당하는 데이�
     @DynamoDbSortKey // 정렬 키에 대한 속성 수준 주석
     @DynamoDbAttribute("NoteId")
     public String getNoteId() { return this.noteId; }
-    // 필드·getter 와 타입을 맞춘다. 교재의 setNoteId(Integer) 는 컴파일되지 않는다.
+    // 필드·getter 와 타입을 맞춘다. setNoteId(Integer) 로 쓰면 컴파일되지 않는다.
     public void setNoteId(String noteId) { this.noteId = noteId; }
 
     @DynamoDbAttribute("Notes")
@@ -1097,7 +1072,7 @@ public static class Note {    // Notes 테이블의 열에 해당하는 데이�
 
 `DynamoDbEnhancedClient`의 `table` 메서드에 테이블 이름과 테이블 스키마를 넘겨 `DynamoDbTable` 객체를 인스턴스화합니다. 이 객체로 테이블 작업(`createTable()`, `deleteTable()`, `describeTable()`)과 CRUD 작업(scan, query, getItem, putItem, updateItem 등)을 모두 수행할 수 있습니다.
 
-교재 슬라이드 42는 `note.setNodeId("9")`를 호출합니다. 슬라이드 41의 클래스에는 `setNodeId`가 없고 `setNoteId`만 있으므로 오타입니다.
+데이터 클래스에는 `setNodeId`가 아니라 `setNoteId`가 있으므로 항목을 만들 때 `setNoteId`를 호출합니다.
 
 ```java
 // 확장 클라이언트 인스턴스화
@@ -1110,7 +1085,7 @@ static final DynamoDbTable<Note> notesTable = enhancedClient
 // 새 노트
 Note note = new Note();
 note.setUserId("UserA");
-note.setNoteId("9");        // 교재의 setNodeId 는 오타
+note.setNoteId("9");        // setNodeId 가 아니라 setNoteId
 note.setNotes("This is a note");
 
 // 항목 넣기
@@ -1134,7 +1109,7 @@ AWS SDK for .NET은 두 가지 상위 수준 모델을 제공합니다.
 | 객체 지속성 모델 | `Amazon.DynamoDBv2.DataModel` | `DynamoDBContext` | **불가** 🔄 |
 | 문서 모델 | `Amazon.DynamoDBv2.DocumentModel` | `Table`, `Document` | **불가** |
 
-교재는 "테이블을 생성·업데이트·삭제할 수 없다"는 제약을 문서 모델(슬라이드 44)에만 붙였습니다. 현재 문서는 **객체 지속성 모델에도 같은 제약이 있다**고 기술합니다. 두 모델 모두 데이터 작업만 제공하며 테이블 생성·업데이트·삭제에는 하위 수준 API를 써야 합니다. 🔄
+"테이블을 생성·업데이트·삭제할 수 없다"는 제약은 문서 모델뿐 아니라 **객체 지속성 모델에도 똑같이 적용됩니다.** 두 모델 모두 데이터 작업만 제공하며 테이블 생성·업데이트·삭제에는 하위 수준 API를 써야 합니다. 🔄
 
 #### 객체 지속성 모델
 
@@ -1167,7 +1142,7 @@ public class NotesItems
 }
 ```
 
-🆕 교재가 다루지 않는 두 가지: 객체 지속성 모델은 **낙관적 잠금(optimistic locking)** 을 지원해 업데이트 시 최신 사본을 갖고 있는지 확인할 수 있습니다. 그리고 데이터 유형 매핑은 다음과 같습니다.
+🆕 두 가지를 더 알아 둡니다: 객체 지속성 모델은 **낙관적 잠금(optimistic locking)** 을 지원해 업데이트 시 최신 사본을 갖고 있는지 확인할 수 있습니다. 그리고 데이터 유형 매핑은 다음과 같습니다.
 
 | .NET 유형 | DynamoDB 유형 |
 |---|---|
@@ -1193,7 +1168,7 @@ GetItemOperationConfig config = new GetItemOperationConfig()
 Document doc = await table.GetItemAsync("StudentA", config);
 ```
 
-교재 슬라이드 44의 `UpdateItem` 예제는 `note["Favorite"] = null;`로 기존 속성을 삭제한다고 주석을 달았습니다. 🔄 현재 문서는 DynamoDB의 null 유형에 **`DynamoDBNull`** 을 쓰도록 기술하고, 문자열 유형의 빈 문자열 값과 List·Map 안의 빈 문자열 값은 **쓰기 요청에서 제거된다**고 설명합니다. 속성을 실제로 제거하려면 하위 수준 `UpdateExpression`의 `REMOVE` 절이 명확합니다.
+`note["Favorite"] = null;`로 기존 속성을 삭제하려 하기 쉽지만, 🔄 DynamoDB의 null 유형에는 **`DynamoDBNull`** 을 씁니다. 문자열 유형의 빈 문자열 값과 List·Map 안의 빈 문자열 값은 **쓰기 요청에서 제거됩니다.** 속성을 실제로 제거하려면 하위 수준 `UpdateExpression`의 `REMOVE` 절이 명확합니다.
 
 ```csharp
 Table table = Table.LoadTable(client, "Notes");
@@ -1216,7 +1191,7 @@ aws dynamodb update-item \
 
 > — 출처: [Working with the .NET object persistence model and DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html), [Working with the .NET document model in DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKMidLevel.html)
 
-### 7.5 교재에 없는 두 가지 인터페이스: PartiQL과 트랜잭션 🆕
+### 7.5 두 가지 인터페이스: PartiQL과 트랜잭션 🆕
 
 #### PartiQL
 
@@ -1263,7 +1238,7 @@ PartiQL이 SQL처럼 보이더라도 파티션 키를 지정하지 않으면 내
 
 ### 7.6 Python 상위 수준 인터페이스는 어떻게 되나 🆕
 
-교재는 상위 수준 인터페이스로 Java와 .NET만 다루고 Python을 다루지 않습니다. Python에서 상위 수준 인터페이스를 찾으면 boto3 **리소스 인터페이스**(`boto3.resource('dynamodb').Table(...)`)가 먼저 눈에 띕니다. 다만 방향이 정해져 있습니다.
+Python에서 상위 수준 인터페이스를 찾으면 boto3 **리소스 인터페이스**(`boto3.resource('dynamodb').Table(...)`)가 먼저 눈에 띕니다. 다만 방향이 정해져 있습니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -1312,25 +1287,25 @@ for page in paginator.paginate(
 
 Amazon DynamoDB는 규모와 성능을 고려하여 설계되었습니다. **대부분의 경우 DynamoDB 응답 시간은 한 자릿수 밀리초** 단위로 측정됩니다. 하지만 일부 사용 사례는 **마이크로초** 단위의 응답 시간이 필요합니다. 이런 경우 DAX가 최종적으로 일관된 데이터에 액세스할 때 빠른 응답 시간을 제공합니다.
 
-교재는 캐싱 옵션으로 DAX와 Amazon ElastiCache 두 가지를 제시합니다. ElastiCache 쪽 서술이 현재와 다릅니다.
+캐싱 옵션은 DAX와 Amazon ElastiCache 두 가지입니다. ElastiCache는 다음과 같이 확장되어 있습니다.
 
-| 교재 기재 | 확인된 내용 |
+| 항목 | 내용 |
 |---|---|
-| "**Memcached 또는 Redis** 프로토콜을 준수하는 서버 노드를 배포 및 실행하는 웹 서비스" | ElastiCache는 **Valkey, Memcached, Redis OSS** 세 엔진과 함께 작동합니다 |
-| 노드 기반 클러스터만 전제 | **서버리스 캐시**와 노드 기반 클러스터 두 형식으로 운영할 수 있습니다 |
+| 지원 엔진 | **Valkey, Memcached, Redis OSS** 세 엔진과 함께 작동합니다 |
+| 배포 형식 | **서버리스 캐시**와 노드 기반 클러스터 두 형식으로 운영할 수 있습니다 |
 
 | 형식 | 내용 |
 |---|---|
 | 서버리스 캐시 | 1분 이내에 고가용성 캐시를 만들 수 있고 인스턴스 프로비저닝이나 노드·클러스터 구성이 필요하지 않습니다. Valkey 7.2 이상, Memcached 1.6.22 이상, Redis OSS 7.1과 호환됩니다 |
 | 노드 기반 클러스터 | 노드 유형, 노드 수, 가용 영역별 노드 배치를 직접 선택하고 클러스터 모드 사용 여부를 고릅니다. 노드 기반 Valkey 클러스터에서는 분산 멀티 AZ 트랜잭션 로그에 데이터를 유지하는 durability를 활성화할 수 있습니다 |
 
-교재와 같이 이 강의는 DAX에 초점을 맞춥니다.
+이 모듈은 DAX에 초점을 맞춥니다.
 
 > — 출처: [What is Amazon ElastiCache?](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/WhatIs.html)
 
 ### 8.2 Amazon DynamoDB Accelerator(DAX) 🆕
 
-DAX는 까다로운 애플리케이션에서 빠른 인 메모리 성능을 활용할 수 있는 **DynamoDB 호환 캐싱 서비스**입니다. 교재가 제시하는 세 가지 핵심 시나리오는 현재 문서와 일치합니다.
+DAX는 까다로운 애플리케이션에서 빠른 인 메모리 성능을 활용할 수 있는 **DynamoDB 호환 캐싱 서비스**입니다. 세 가지 핵심 시나리오는 다음과 같습니다.
 
 | # | 시나리오 |
 |---|---|
@@ -1338,7 +1313,7 @@ DAX는 까다로운 애플리케이션에서 빠른 인 메모리 성능을 활�
 | 2 | DynamoDB와 **API 호환**인 관리형 서비스를 제공해 운영·애플리케이션 복잡성을 줄입니다. 기존 애플리케이션에 최소한의 기능 변경만 필요합니다 |
 | 3 | 읽기 중심·버스트 워크로드에서 **읽기 용량 단위 오버 프로비저닝** 필요를 줄여 처리량을 높이고 운영 비용을 절감합니다 |
 
-DAX 적합·부적합 사용 사례입니다. 교재 목록에 근거와 이유를 보충했습니다.
+DAX 적합·부적합 사용 사례와 그 이유입니다.
 
 | 적합 | 이유 |
 |---|---|
@@ -1354,7 +1329,7 @@ DAX 적합·부적합 사용 사례입니다. 교재 목록에 근거와 이유�
 | 쓰기 집약적인 애플리케이션 | 🆕 쓰기가 많으면 **클러스터 내 DAX 노드 간 복제가 늘어** 리소스 소비와 가용성 위험이 커집니다 |
 | 반복 읽기가 많지 않은 애플리케이션 | 🆕 DAX는 **캐시 적중률이 90%를 넘을 때** 가장 잘 작동합니다. 적중률이 낮으면 캐시 미스가 늘어 클러스터 리소스를 더 씁니다 |
 
-교재가 다루지 않는 DAX 특성: 🆕
+그 밖의 DAX 특성: 🆕
 
 | 항목 | 내용 |
 |---|---|
@@ -1369,12 +1344,12 @@ DAX 적합·부적합 사용 사례입니다. 교재 목록에 근거와 이유�
 
 ### 8.3 DAX가 처리하는 요청 🔄
 
-교재 슬라이드 48이 제시하는 읽기 작업 네 개는 현재 문서와 일치합니다. 쓰기 작업 목록에는 하나가 빠져 있습니다.
+DAX가 처리하는 작업은 다음과 같습니다.
 
-| 구분 | 교재 기재 | 확인된 내용 |
-|---|---|---|
-| 읽기 | `GetItem`, `BatchGetItem`, `Query`, `Scan` | 동일 |
-| 쓰기 (write-through) | `BatchWriteItem`, `UpdateItem`, `DeleteItem`, `PutItem` | 이 네 개 **+ `TransactWriteItems`** |
+| 구분 | 작업 |
+|---|---|
+| 읽기 | `GetItem`, `BatchGetItem`, `Query`, `Scan` |
+| 쓰기 (write-through) | `BatchWriteItem`, `UpdateItem`, `DeleteItem`, `PutItem`, `TransactWriteItems` |
 
 읽기 요청의 처리 흐름:
 
@@ -1393,7 +1368,7 @@ DAX 적합·부적합 사용 사례입니다. 교재 목록에 근거와 이유�
 
 즉 작업은 **테이블과 DAX 양쪽에 성공적으로 기록되었을 때만** 성공합니다. 🆕 스로틀링을 포함해 어떤 이유로든 DynamoDB 쓰기가 실패하면 항목은 DAX에 캐시되지 않고 예외가 요청자에게 반환됩니다. `TransactWriteItems`는 조금 다릅니다. DynamoDB가 트랜잭션 완료를 확인하면 DAX가 곧바로 성공을 반환하고, 백그라운드에서 각 항목에 대해 `TransactGetItems`를 호출해 항목 캐시를 채웁니다(직렬화 가능 격리를 보장하기 위해).
 
-🆕 교재가 다루지 않는 중요한 제약: **DAX는 `CreateTable`, `UpdateTable` 같은 테이블 관리 작업을 인식하지 않습니다.** 애플리케이션이 이런 작업을 수행해야 하면 DAX가 아니라 DynamoDB에 직접 액세스해야 합니다.
+🆕 중요한 제약: **DAX는 `CreateTable`, `UpdateTable` 같은 테이블 관리 작업을 인식하지 않습니다.** 애플리케이션이 이런 작업을 수행해야 하면 DAX가 아니라 DynamoDB에 직접 액세스해야 합니다.
 
 노드 용량을 초과하는 요청에는 `ThrottlingException`을 반환합니다. CloudWatch의 `ThrottledRequestCount` 지표로 모니터링하고, 자주 발생하면 클러스터를 확장하도록 권장합니다.
 
@@ -1423,7 +1398,7 @@ DAX를 쓰는 애플리케이션은 **최종 일관성 데이터를 허용하도
 
 ### 8.5 DAX 클러스터 구성 🆕
 
-교재는 DAX를 개념 수준으로만 다룹니다. 실제로 클러스터를 만들 때 필요한 값은 다음과 같습니다.
+실제로 DAX 클러스터를 만들 때 필요한 값은 다음과 같습니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -1474,7 +1449,7 @@ DAX는 두 계열의 인스턴스를 제공합니다.
 
 ### 8.7 DAX 클라이언트
 
-애플리케이션에서 DAX를 쓰려면 사용하는 프로그래밍 언어의 **DAX 클라이언트**를 씁니다. 교재 강사 노트의 "DAX를 사용하려면 Amazon DynamoDB Accelerator(DAX) SDK가 필요합니다"가 이것입니다. DAX 클라이언트는 기존 DynamoDB 애플리케이션에 미치는 영향을 최소화하도록 설계되어 **몇 가지 간단한 코드 수정만** 필요합니다.
+애플리케이션에서 DAX를 쓰려면 사용하는 프로그래밍 언어의 **DAX 클라이언트**(Amazon DynamoDB Accelerator SDK)가 필요합니다. DAX 클라이언트는 기존 DynamoDB 애플리케이션에 미치는 영향을 최소화하도록 설계되어 **몇 가지 간단한 코드 수정만** 필요합니다.
 
 애플리케이션은 EC2 인스턴스에 DAX 클라이언트와 함께 배포하고, 런타임에 DAX 클라이언트가 모든 DynamoDB API 요청을 DAX 클러스터로 보냅니다. DAX가 직접 처리할 수 있으면 처리하고, 그렇지 않으면 DynamoDB로 통과시킵니다.
 
@@ -1484,23 +1459,23 @@ DAX는 두 계열의 인스턴스를 제공합니다.
 
 ## 9. 교재 대비 변경 사항
 
-교재(강사용 덱)에 있는 내용 중 현재와 달라진 항목입니다. 수강생이 공식 교재를 함께 보고 있으므로, 무엇을 왜 바꿨는지 확인할 수 있도록 남겨 둡니다.
+수강생이 공식 교재를 함께 볼 수 있으므로, 이 자료가 교재와 어디서 갈라지는지 한곳에 모았습니다. 앞 장에서 신규·교정으로 표시한 항목의 근거가 여기 있습니다.
 
-### 9.1 교재 기술이 사실과 다른 항목
+### 9.1 교재와 다른 점
 
-| 항목 | 교재 기재 | 확인된 내용 | 근거 |
+| 항목 | 교재의 서술 | 확인된 내용 | 근거 |
 |---|---|---|---|
-| RCU 예제 (슬라이드 10) | "2KB 항목을 반환한 쿼리는 1 RCU가 부과됩니다" | 1 RCU는 **강력한 일관성** 읽기 기준입니다. `GetItem`·`Query`·`Scan`의 기본값인 **최종 일관성 읽기에서는 0.5 RCU**, 트랜잭션 읽기는 2 RCU입니다. 같은 예제의 쓰기 2 WCU는 맞습니다 | [읽기·쓰기 작업](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html) |
-| 정렬 키 연산자 목록 (슬라이드 30) | 본문은 `=, <, >, <=, >=, AND, BETWEEN 또는 begins_with`, 강사 노트는 `BETWEEN` 없이 6개 | `AND`는 독립 연산자가 아니라 `BETWEEN :v1 AND :v2` 구문의 일부입니다. 정확한 목록은 `=`, `<`, `<=`, `>`, `>=`, `BETWEEN :v1 AND :v2`, `begins_with(sortKeyName, :val)`이고 `begins_with`는 숫자 정렬 키에 쓸 수 없습니다. 본문과 강사 노트가 서로 다릅니다 | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
-| 필터 표현식의 효과 (슬라이드 30) | "둘을 결합하면 필요한 것보다 많은 항목을 읽지 않고도 구체화된 데이터 세트를 얻을 수 있습니다" | DynamoDB는 반환 데이터 양이 아니라 **항목 크기**를 기준으로 용량을 계산하며 `FilterExpression` 사용 여부와 무관하게 소비 용량이 같습니다. `Scan`도 동일합니다. 읽는 양은 `KeyConditionExpression`·`Limit`·보조 인덱스로 줄입니다 | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
-| 조건 표현식 구문 (슬라이드 37) | `--condition-expression "Favorite NOT yes"` | 조건 표현식 문법에서 `NOT`은 **조건 하나를 부정하는 논리 연산자**이므로 이항 비교로 쓸 수 없고, `yes` 같은 값은 리터럴로 쓸 수 없어 표현식 속성 값으로 넘겨야 합니다. 또 교재의 값 파일에는 조건에 필요한 값이 없습니다 | [조건·필터 표현식 연산자와 함수](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html) |
-| `@DynamoDbPartition` (슬라이드 41) | 코드의 파티션 키 주석 | 공식 데이터 클래스 주석 목록에 그런 이름은 없습니다. 정확한 이름은 **`@DynamoDbPartitionKey`** 이며 같은 슬라이드의 강사 노트는 올바르게 적었습니다 | [데이터 클래스 주석](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
-| `ddb.createTable("Notes")` (슬라이드 18) | 문자열 리터럴을 전달 | 슬라이드 주석·강사 노트는 "`CreateTableRequest` 객체의 정보를 사용"한다고 서술하지만 코드가 다릅니다. `DynamoDbClient.createTable`은 요청 객체 또는 빌더 `Consumer`를 받는 오버로드만 있습니다 | [테이블 생성 예제 (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
-| `waitUntilTableExists("Notes")` (슬라이드 18) | 문자열 리터럴을 전달 | 공식 예제는 `waiter.waitUntilTableExists(b -> b.tableName("Notes").build())` 처럼 `DescribeTableRequest`를 구성하는 빌더를 넘깁니다 | [테이블 생성 예제 (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
-| `NoteId` 속성 유형 (슬라이드 13·14) | 슬라이드 13 코드·노트는 `S`, 슬라이드 14 노트는 `N` | `AttributeType` 유효값은 `S`·`N`·`B`이므로 둘 다 문법적으로 가능하지만 하나의 `Notes` 테이블에 두 정의가 공존할 수는 없습니다. 슬라이드 15의 .NET 예제와 슬라이드 25 이후 모든 CLI 예제가 `N`이므로 이 문서는 `N`으로 통일했습니다 | [AttributeDefinition](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeDefinition.html) |
-| .NET 코드 오타 (슬라이드 16) | `AttributeName = "NoteId",I` 와 `},,` | 잉여 문자와 쉼표 중복으로 컴파일되지 않습니다. 교재 자체의 오타이므로 AWS 문서 근거 없이 코드만 교정했습니다 | — ([9.5절](#95-검증하지-못한-항목)) |
-| query CLI JSON (슬라이드 30) | `'{":userid":{"S":"StudentA"}'` | 닫는 중괄호가 하나 빠져 JSON 파싱에 실패합니다. 교재 자체의 표기 오류입니다 | — ([9.5절](#95-검증하지-못한-항목)) |
-| 확장 클라이언트 예제 (슬라이드 41·42) | 클래스 이름 `Note` / 강사 노트 `NotesItems`·`NotesItem`, `setNoteId(Integer)`, `note.setNodeId("9")` | 세 이름이 섞여 있고, 필드·getter는 `String`인데 setter만 `Integer`라서 컴파일되지 않고, `setNodeId`는 존재하지 않는 메서드입니다. 교재 내부 불일치입니다 | — ([9.5절](#95-검증하지-못한-항목)) |
+| RCU 예제 | "2KB 항목을 반환한 쿼리는 1 RCU가 부과됩니다" | 1 RCU는 **강력한 일관성** 읽기 기준입니다. `GetItem`·`Query`·`Scan`의 기본값인 **최종 일관성 읽기에서는 0.5 RCU**, 트랜잭션 읽기는 2 RCU입니다. 같은 예제의 쓰기 2 WCU는 맞습니다 | [읽기·쓰기 작업](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html) |
+| 정렬 키 연산자 목록 | `=, <, >, <=, >=, AND, BETWEEN 또는 begins_with` | `AND`는 독립 연산자가 아니라 `BETWEEN :v1 AND :v2` 구문의 일부입니다. 정확한 목록은 `=`, `<`, `<=`, `>`, `>=`, `BETWEEN :v1 AND :v2`, `begins_with(sortKeyName, :val)`이고 `begins_with`는 숫자 정렬 키에 쓸 수 없습니다 | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
+| 필터 표현식의 효과 | "둘을 결합하면 필요한 것보다 많은 항목을 읽지 않고도 구체화된 데이터 세트를 얻을 수 있습니다" | DynamoDB는 반환 데이터 양이 아니라 **항목 크기**를 기준으로 용량을 계산하며 `FilterExpression` 사용 여부와 무관하게 소비 용량이 같습니다. `Scan`도 동일합니다. 읽는 양은 `KeyConditionExpression`·`Limit`·보조 인덱스로 줄입니다 | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
+| 조건 표현식 구문 | `--condition-expression "Favorite NOT yes"` | 조건 표현식 문법에서 `NOT`은 **조건 하나를 부정하는 논리 연산자**이므로 이항 비교로 쓸 수 없고, `yes` 같은 값은 리터럴로 쓸 수 없어 표현식 속성 값으로 넘겨야 합니다. 또 값 파일에 조건에 필요한 값이 있어야 합니다 | [조건·필터 표현식 연산자와 함수](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html) |
+| `@DynamoDbPartition` | 코드의 파티션 키 주석 | 공식 데이터 클래스 주석 목록에 그런 이름은 없습니다. 정확한 이름은 **`@DynamoDbPartitionKey`** 입니다 | [데이터 클래스 주석](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
+| `ddb.createTable("Notes")` | 문자열 리터럴을 전달 | `DynamoDbClient.createTable`은 요청 객체 또는 빌더 `Consumer`를 받는 오버로드만 있으므로 `CreateTableRequest`를 넘깁니다 | [테이블 생성 예제 (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
+| `waitUntilTableExists("Notes")` | 문자열 리터럴을 전달 | 공식 예제는 `waiter.waitUntilTableExists(b -> b.tableName("Notes").build())` 처럼 `DescribeTableRequest`를 구성하는 빌더를 넘깁니다 | [테이블 생성 예제 (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
+| `NoteId` 속성 유형 | 예제마다 `S`와 `N`이 엇갈림 | `AttributeType` 유효값은 `S`·`N`·`B`이므로 둘 다 문법적으로 가능하지만 하나의 `Notes` 테이블에 두 정의가 공존할 수는 없습니다. CLI 예제가 `N`이므로 이 자료는 `N`으로 통일했습니다 | [AttributeDefinition](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeDefinition.html) |
+| .NET 코드 오타 | `AttributeName = "NoteId",I` 와 `},,` | 잉여 문자와 쉼표 중복으로 컴파일되지 않습니다. 코드 자체의 오타이므로 AWS 문서 근거 없이 코드만 교정했습니다 | — ([9.5절](#95-검증하지-못한-항목)) |
+| query CLI JSON | `'{":userid":{"S":"StudentA"}'` | 닫는 중괄호가 하나 빠져 JSON 파싱에 실패합니다 | — ([9.5절](#95-검증하지-못한-항목)) |
+| 확장 클라이언트 예제 | 클래스 이름 혼용, `setNoteId(Integer)`, `note.setNodeId("9")` | 클래스 이름이 섞여 있고, 필드·getter는 `String`인데 setter만 `Integer`라서 컴파일되지 않고, `setNodeId`는 존재하지 않는 메서드입니다 | — ([9.5절](#95-검증하지-못한-항목)) |
 
 ### 9.2 동작·기본값이 변경된 항목
 
@@ -1525,35 +1500,35 @@ DAX는 두 계열의 인스턴스를 제공합니다.
 
 | 항목 | 상태 | 대체 | 근거 |
 |---|---|---|---|
-| AWS SDK for Java 1.x (슬라이드 19~20 Java 예제) | **2025년 12월 31일 지원 종료**(2024년 1월 12일 발표, 2024년 7월 31일 유지 관리 모드) | AWS SDK for Java 2.x(`software.amazon.awssdk`). 테이블 작업은 `DynamoDbClient`, 매핑은 `DynamoDbEnhancedClient`, 데이터 유형 설명자를 피하려면 `EnhancedDocument` | [Java 2.x로 DynamoDB 프로그래밍](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
-| 레거시 조건 파라미터 (`AttributesToGet`·`Expected`·`KeyConditions`·`QueryFilter`·`ScanFilter`·`AttributeUpdates`·`ConditionalOperator`) | 비권장. 표현식 파라미터와 **혼용 불가** | `ProjectionExpression`·`ConditionExpression`·`KeyConditionExpression`·`FilterExpression`·`UpdateExpression`. 교재는 이미 표현식 기반만 쓰므로 현재 권장과 일치합니다 | [레거시 조건 파라미터](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LegacyConditionalParameters.html) |
-| boto3 리소스 인터페이스 (교재에 없음. Python 상위 수준을 찾을 때 마주치는 경로) | 신규 기능 추가 계획 없음. 기존 인터페이스는 계속 동작 | `boto3.client('dynamodb')`. 리소스 인스턴스는 스레드 안전하지 않아 스레드마다 새로 만들어야 합니다 | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
+| AWS SDK for Java 1.x Java 예제 | **2025년 12월 31일 지원 종료**(2024년 1월 12일 발표, 2024년 7월 31일 유지 관리 모드) | AWS SDK for Java 2.x(`software.amazon.awssdk`). 테이블 작업은 `DynamoDbClient`, 매핑은 `DynamoDbEnhancedClient`, 데이터 유형 설명자를 피하려면 `EnhancedDocument` | [Java 2.x로 DynamoDB 프로그래밍](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
+| 레거시 조건 파라미터 (`AttributesToGet`·`Expected`·`KeyConditions`·`QueryFilter`·`ScanFilter`·`AttributeUpdates`·`ConditionalOperator`) | 비권장. 표현식 파라미터와 **혼용 불가** | `ProjectionExpression`·`ConditionExpression`·`KeyConditionExpression`·`FilterExpression`·`UpdateExpression`. 이 자료는 이미 표현식 기반만 쓰므로 현재 권장과 일치합니다 | [레거시 조건 파라미터](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LegacyConditionalParameters.html) |
+| boto3 리소스 인터페이스 (Python 상위 수준을 찾을 때 마주치는 경로) | 신규 기능 추가 계획 없음. 기존 인터페이스는 계속 동작 | `boto3.client('dynamodb')`. 리소스 인스턴스는 스레드 안전하지 않아 스레드마다 새로 만들어야 합니다 | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
 
-### 9.4 교재 이후 추가된 항목
+### 9.4 이 자료에서 더한 점
 
-| 항목 | 요약 | 근거 |
-|---|---|---|
-| PartiQL | SQL 호환 쿼리 언어. `ExecuteStatement`·`BatchExecuteStatement`·`ExecuteTransaction`. 콘솔·NoSQL Workbench·CLI·API로 실행. DynamoDB는 하위 집합만 지원하고 Amazon Ion은 미지원 | [PartiQL for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html) |
-| 트랜잭션 | `TransactWriteItems`(최대 100 액션, 서로 다른 100 항목, 4MB), `TransactGetItems`(동일). 액션은 `Put`·`Update`·`Delete`·`ConditionCheck`. 인덱스 대상 불가, 같은 항목 중복 불가, 클라이언트 토큰 10분, `TransactionCanceledException`, SERIALIZABLE 격리 | [DynamoDB 트랜잭션](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html) |
-| 보조 인덱스 할당량 | LSI 테이블당 최대 5개, GSI 테이블당 기본 할당량 20개(조정 가능). 프로젝션 속성은 모든 인덱스 합쳐 100개(`INCLUDE`에만 적용). LSI는 파티션 키 값당 10GB | [DynamoDB 할당량](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
-| GSI·LSI의 일관성 차이 | GSI는 최종 일관성 읽기만 지원하며 `ConsistentRead=true`를 지정하면 `ValidationException` | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
-| 기타 테이블 할당량 | 이진 단위(1KB=1024B), 테이블 크기 상한 없음, 계정·리전당 테이블 초기 할당량 2,500개, 테이블당 처리량 40,000/40,000, 계정당 프로비저닝 80,000/80,000 | [DynamoDB 할당량](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
-| 버스트·적응형 용량의 값 | 버스트는 미사용 용량 최대 5분(300초) 보유. 적응형 용량은 자동·무료. 파티션 한계는 읽기 3,000회·쓰기 1,000회. LSI가 있으면 항목 컬렉션을 분할하지 않음 | [버스트·적응형 용량](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html) |
-| 온디맨드 초기 처리량 | 새 온디맨드 테이블은 초당 쓰기 4,000·읽기 12,000까지 즉시 처리. 직전 최고치의 두 배까지 즉시 수용. 최대 처리량 설정으로 비용 제한 가능 | [온디맨드 용량 모드](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html) |
-| `CreateTable` 비동기 동작 | `CREATING` → `ACTIVE`, `ACTIVE`에서만 읽기·쓰기. 테이블 이름은 리전 내 고유, 보조 인덱스가 있는 테이블은 한 번에 하나만 `CREATING` | [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html) |
-| `BatchWriteItem` 세부 동작 | 저장 후 400KB와 JSON 전송 표현 크기의 차이, `UnprocessedItems` + 지수 백오프, 개별 조건 지정 불가, 키 길이 상한(파티션 2,048B·정렬 1,024B) | [BatchWriteItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html) |
-| `BatchGetItem` 세부 동작 | 100개 초과 시 `ValidationException`, 파티션당 1MB 초과 요청 시 부분 결과, `UnprocessedKeys`, 반환 순서 보장 없음, 같은 키 중복 시 `ValidationException` | [BatchGetItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchGetItem.html) |
-| `Scan`의 `ScannedCount`·`Count` | `ScannedCount`는 필터 전 평가 항목 수, `Count`는 필터 후 남은 수. 전자가 크고 후자가 작으면 비효율. LSI 스캔은 기본 테이블 용량을, GSI 스캔은 인덱스 용량을 소비 | [Scan 문서](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
-| 병렬 스캔 세그먼트 할당 | 파티션 키 해시로 세그먼트를 할당하므로 같은 파티션 키는 항상 같은 세그먼트. 분포가 고르지 않을 수 있어 세그먼트 수를 늘려도 성능 향상이 보장되지 않음 | [Scan 문서 — Parallel scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
-| Java 2.x의 세 인터페이스 | 하위 수준 / 확장 클라이언트 / Document(`EnhancedDocument`, `fromJson`·`toJson`). `@DynamoDbImmutable`로 불변 클래스 매핑. `queryPaginator`·`scanPaginator` 자동 페이지 매김 | [Java 2.x로 DynamoDB 프로그래밍](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
-| 확장 클라이언트 주석 목록 | `@DynamoDbAtomicCounter`, `@DynamoDbAutoGeneratedTimestampAttribute`, `@DynamoDbAutoGeneratedUuid`, `@DynamoDbVersionAttribute`, `@DynamoDbUpdateBehavior`, `@DynamoDbFlatten` 등. 속성 주석은 getter 또는 setter 한쪽에만 | [데이터 클래스 주석](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
-| 확장 클라이언트 속성 이름 규칙 | 데이터 클래스로부터 테이블을 만들면 속성 이름이 소문자로 시작. 대문자로 시작하려면 `@DynamoDbAttribute(NAME)` | [테이블 생성 예제 (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
-| .NET 객체 지속성 모델의 낙관적 잠금 | 업데이트 시 최신 사본을 갖고 있는지 확인하는 optimistic locking 지원 | [.NET 객체 지속성 모델](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html) |
-| DAX 강력한 일관성 읽기 처리 | 강력한 일관성 읽기는 DynamoDB로 통과하고 **캐시되지 않습니다.** DAX는 테이블 관리 작업을 인식하지 않습니다 | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
-| DAX의 두 캐시 | 항목 캐시(TTL 기본 5분)와 쿼리 캐시가 분리되어 독립 동작. 항목 캐시 쓰기는 쿼리 캐시에 영향 없음. LRU는 항상 활성 | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
-| DAX 클러스터 구성 | 클러스터당 최대 11개 노드(프라이머리 1 + 복제본 10), 프로덕션 최소 3개 노드·다중 AZ, 클러스터당 테이블 500개, TCP 포트 8111, `dax://`·`daxs://` 엔드포인트, 파라미터 그룹 | [DAX 클러스터 구성 요소](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
-| DAX 노드 유형 | 고정 성능(R4·R5·R7)과 버스트 가능(T2 표준 모드·T3 무제한 모드). `dax.t3.small`은 시간당 24 크레딧, 기준 20%, 최대 576 크레딧 | [DAX T3/T2 버스트 인스턴스](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.Burstable.html) |
-| DAX 운영 제약 | EC2-VPC 전용, 캐시 적중률 90% 초과 시 최적, 최상위 속성 이름 메타데이터를 무기한 유지, 저장 중·전송 중 암호화 지원, Go·Java·Node.js·Python·.NET 지원 | [DAX 개요](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html) |
+| 항목 | 왜 더했는가 | 요약 | 근거 |
+|---|---|---|---|
+| PartiQL | 교재는 클래식 API만 다뤄 SQL 호환 쿼리 경로가 비어 있음 | SQL 호환 쿼리 언어. `ExecuteStatement`·`BatchExecuteStatement`·`ExecuteTransaction`. 콘솔·NoSQL Workbench·CLI·API로 실행. DynamoDB는 하위 집합만 지원하고 Amazon Ion은 미지원 | [PartiQL for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html) |
+| 트랜잭션 | 여러 항목·테이블에 걸친 all-or-nothing이 필요한 경우가 있는데 교재에 없음 | `TransactWriteItems`(최대 100 액션, 서로 다른 100 항목, 4MB), `TransactGetItems`(동일). 액션은 `Put`·`Update`·`Delete`·`ConditionCheck`. 인덱스 대상 불가, 같은 항목 중복 불가, 클라이언트 토큰 10분, `TransactionCanceledException`, SERIALIZABLE 격리 | [DynamoDB 트랜잭션](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html) |
+| 보조 인덱스 할당량 | 인덱스를 설계할 때 부딪히는 개수·크기 한도가 교재에 없음 | LSI 테이블당 최대 5개, GSI 테이블당 기본 할당량 20개(조정 가능). 프로젝션 속성은 모든 인덱스 합쳐 100개(`INCLUDE`에만 적용). LSI는 파티션 키 값당 10GB | [DynamoDB 할당량](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
+| GSI·LSI의 일관성 차이 | GSI에 강력한 일관성 읽기를 지정하면 오류가 나는 함정을 짚어야 함 | GSI는 최종 일관성 읽기만 지원하며 `ConsistentRead=true`를 지정하면 `ValidationException` | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
+| 기타 테이블 할당량 | 교재가 값 없이 링크만 두어 실제 한도를 알 수 없음 | 이진 단위(1KB=1024B), 테이블 크기 상한 없음, 계정·리전당 테이블 초기 할당량 2,500개, 테이블당 처리량 40,000/40,000, 계정당 프로비저닝 80,000/80,000 | [DynamoDB 할당량](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
+| 버스트·적응형 용량의 값 | 교재가 개념만 언급하고 구체적 수치를 다루지 않음 | 버스트는 미사용 용량 최대 5분(300초) 보유. 적응형 용량은 자동·무료. 파티션 한계는 읽기 3,000회·쓰기 1,000회. LSI가 있으면 항목 컬렉션을 분할하지 않음 | [버스트·적응형 용량](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html) |
+| 온디맨드 초기 처리량 | 온디맨드 스케일링의 즉시 수용 범위·스로틀링 조건을 알아야 함 | 새 온디맨드 테이블은 초당 쓰기 4,000·읽기 12,000까지 즉시 처리. 직전 최고치의 두 배까지 즉시 수용. 최대 처리량 설정으로 비용 제한 가능 | [온디맨드 용량 모드](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html) |
+| `CreateTable` 비동기 동작 | 생성 직후 읽기·쓰기가 안 되는 이유를 알아야 함 | `CREATING` → `ACTIVE`, `ACTIVE`에서만 읽기·쓰기. 테이블 이름은 리전 내 고유, 보조 인덱스가 있는 테이블은 한 번에 하나만 `CREATING` | [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html) |
+| `BatchWriteItem` 세부 동작 | 배치 쓰기의 원자성·재시도·한도는 실무에서 자주 부딪히나 교재에 없음 | 저장 후 400KB와 JSON 전송 표현 크기의 차이, `UnprocessedItems` + 지수 백오프, 개별 조건 지정 불가, 키 길이 상한(파티션 2,048B·정렬 1,024B) | [BatchWriteItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html) |
+| `BatchGetItem` 세부 동작 | 부분 결과와 순서 미보장을 모르면 배치 읽기 로직이 어긋남 | 100개 초과 시 `ValidationException`, 파티션당 1MB 초과 요청 시 부분 결과, `UnprocessedKeys`, 반환 순서 보장 없음, 같은 키 중복 시 `ValidationException` | [BatchGetItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchGetItem.html) |
+| `Scan`의 `ScannedCount`·`Count` | 두 카운터를 구분해야 비효율적 스캔을 진단할 수 있음 | `ScannedCount`는 필터 전 평가 항목 수, `Count`는 필터 후 남은 수. 전자가 크고 후자가 작으면 비효율. LSI 스캔은 기본 테이블 용량을, GSI 스캔은 인덱스 용량을 소비 | [Scan 문서](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
+| 병렬 스캔 세그먼트 할당 | 세그먼트를 늘려도 항상 빨라지지 않는 이유를 알아야 함 | 파티션 키 해시로 세그먼트를 할당하므로 같은 파티션 키는 항상 같은 세그먼트. 분포가 고르지 않을 수 있어 세그먼트 수를 늘려도 성능 향상이 보장되지 않음 | [Scan 문서 — Parallel scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
+| Java 2.x의 세 인터페이스 | 교재가 확장 클라이언트만 제시해 나머지 두 인터페이스가 비어 있음 | 하위 수준 / 확장 클라이언트 / Document(`EnhancedDocument`, `fromJson`·`toJson`). `@DynamoDbImmutable`로 불변 클래스 매핑. `queryPaginator`·`scanPaginator` 자동 페이지 매김 | [Java 2.x로 DynamoDB 프로그래밍](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
+| 확장 클라이언트 주석 목록 | 자동 생성·버전 관리용 주석은 실무에서 유용하나 교재에 없음 | `@DynamoDbAtomicCounter`, `@DynamoDbAutoGeneratedTimestampAttribute`, `@DynamoDbAutoGeneratedUuid`, `@DynamoDbVersionAttribute`, `@DynamoDbUpdateBehavior`, `@DynamoDbFlatten` 등. 속성 주석은 getter 또는 setter 한쪽에만 | [데이터 클래스 주석](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
+| 확장 클라이언트 속성 이름 규칙 | 테이블 속성 이름이 소문자로 시작하는 함정을 알아야 함 | 데이터 클래스로부터 테이블을 만들면 속성 이름이 소문자로 시작. 대문자로 시작하려면 `@DynamoDbAttribute(NAME)` | [테이블 생성 예제 (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
+| .NET 객체 지속성 모델의 낙관적 잠금 | 동시 업데이트 충돌을 막는 수단인데 교재에 없음 | 업데이트 시 최신 사본을 갖고 있는지 확인하는 optimistic locking 지원 | [.NET 객체 지속성 모델](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html) |
+| DAX 강력한 일관성 읽기 처리 | 강력한 일관성 읽기가 캐시되지 않는다는 점을 모르면 오해가 생김 | 강력한 일관성 읽기는 DynamoDB로 통과하고 **캐시되지 않습니다.** DAX는 테이블 관리 작업을 인식하지 않습니다 | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
+| DAX의 두 캐시 | 항목 캐시와 쿼리 캐시가 독립이라는 점이 캐시 동작 이해에 필요함 | 항목 캐시(TTL 기본 5분)와 쿼리 캐시가 분리되어 독립 동작. 항목 캐시 쓰기는 쿼리 캐시에 영향 없음. LRU는 항상 활성 | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
+| DAX 클러스터 구성 | 교재가 DAX를 개념 수준으로만 다뤄 실제 구성 값이 없음 | 클러스터당 최대 11개 노드(프라이머리 1 + 복제본 10), 프로덕션 최소 3개 노드·다중 AZ, 클러스터당 테이블 500개, TCP 포트 8111, `dax://`·`daxs://` 엔드포인트, 파라미터 그룹 | [DAX 클러스터 구성 요소](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
+| DAX 노드 유형 | 클러스터 사이징에 필요한 인스턴스 계열·모드가 교재에 없음 | 고정 성능(R4·R5·R7)과 버스트 가능(T2 표준 모드·T3 무제한 모드). `dax.t3.small`은 시간당 24 크레딧, 기준 20%, 최대 576 크레딧 | [DAX T3/T2 버스트 인스턴스](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.Burstable.html) |
+| DAX 운영 제약 | 플랫폼·적중률·암호화 같은 운영 전제를 알아야 도입을 판단함 | EC2-VPC 전용, 캐시 적중률 90% 초과 시 최적, 최상위 속성 이름 메타데이터를 무기한 유지, 저장 중·전송 중 암호화 지원, Go·Java·Node.js·Python·.NET 지원 | [DAX 개요](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html) |
 
 ### 9.5 검증하지 못한 항목
 
@@ -1564,9 +1539,9 @@ DAX는 두 계열의 인스턴스를 제공합니다.
 | `CreateTable`에서 `BillingMode`를 생략했을 때 적용되는 값 | 확인한 것은 두 가지입니다. `BillingMode`가 `CreateTable`의 필수 파라미터가 아니라는 점(CreateTable API 문서), 그리고 온디맨드가 "기본이자 권장 처리량 옵션"이라는 서술(온디맨드 용량 모드 문서)입니다. 다만 **API 호출에서 `BillingMode`를 아예 생략했을 때 어떤 값이 적용된다고 명시한 문장은 찾지 못했습니다.** 확장 클라이언트에서 빌더 없이 `createTable()`을 호출하면 온디맨드가 된다는 것은 Java 개발자 안내서로 확인했지만, 이는 SDK 상위 수준 동작이므로 API 기본값과 같다고 단정할 수 없습니다. 실무에서는 `BillingMode`를 **명시**하는 것이 안전합니다 |
 | DAX 노드 유형 전체 목록과 사양 | 고정 성능 계열(R4·R5·R7)과 버스트 가능 계열(T2·T3)의 존재, 두 계열의 모드 차이, `dax.t3.small`의 크레딧 수치는 DAX T3/T2 문서로 확인했습니다. **사용 가능한 노드 유형의 전체 목록은 문서가 요금 페이지를 가리키고 있어 이 문서에서는 조회하지 않았습니다.** 클러스터 사이징이 필요하면 요금 페이지를 직접 확인하세요 |
 | DAX 클라이언트 배포 사이트 | DAX 문서는 여러 언어용 클라이언트를 별도 배포 사이트에서 제공한다고 안내합니다. 그 사이트는 HTTP 전용 주소이고 이 프로젝트의 인용 가능 도메인 목록에 없어 **조회하지 않았습니다.** 문서에 링크가 있다는 사실만 확인했습니다 |
-| 슬라이드 16 .NET 코드 오타 (`,I`, `},,`) | 컴파일되지 않는 표기 오류입니다. AWS 문서로 확인할 성질의 사실이 아니라 교재 자체의 오타이므로 코드만 교정하고 근거 인용은 붙이지 않았습니다 |
-| 슬라이드 30 query CLI의 닫는 중괄호 누락 | 같은 이유로 문서 검증 대상이 아닙니다. JSON 파싱이 실패하는 표기 오류이며 중괄호만 보완했습니다 |
-| 슬라이드 41~42 확장 클라이언트 예제의 이름·타입 불일치 | 클래스 이름 세 가지 혼용, `setNoteId(Integer)` 타입 불일치, `setNodeId` 오타는 모두 교재 내부 불일치입니다. 외부 문서로 검증할 대상이 아니므로 이름과 타입만 맞췄습니다 |
-| `NoteId`를 `S`와 `N` 중 무엇으로 정의해야 하는가 | `AttributeType` 유효값이 `S`·`N`·`B`이고 기본 키 속성이 문자열·숫자·이진 중 하나여야 한다는 것은 확인했습니다. **어느 쪽이 이 애플리케이션의 '올바른' 설계인지는 AWS 문서로 판별할 수 없습니다.** 이 문서는 슬라이드 15의 .NET 예제와 슬라이드 25 이후 모든 CLI 예제가 `N`을 쓴다는 다수 근거로 `N`을 택했습니다 |
+| .NET 코드 오타 (`,I`, `},,`) | 컴파일되지 않는 표기 오류입니다. AWS 문서로 확인할 성질의 사실이 아니라 코드 자체의 오타이므로 코드만 교정하고 근거 인용은 붙이지 않았습니다 |
+| query CLI의 닫는 중괄호 누락 | 같은 이유로 문서 검증 대상이 아닙니다. JSON 파싱이 실패하는 표기 오류이며 중괄호만 보완했습니다 |
+| 확장 클라이언트 예제의 이름·타입 불일치 | 클래스 이름 혼용, `setNoteId(Integer)` 타입 불일치, `setNodeId` 오타는 모두 코드 내부 불일치입니다. 외부 문서로 검증할 대상이 아니므로 이름과 타입만 맞췄습니다 |
+| `NoteId`를 `S`와 `N` 중 무엇으로 정의해야 하는가 | `AttributeType` 유효값이 `S`·`N`·`B`이고 기본 키 속성이 문자열·숫자·이진 중 하나여야 한다는 것은 확인했습니다. **어느 쪽이 이 애플리케이션의 '올바른' 설계인지는 AWS 문서로 판별할 수 없습니다.** 이 자료는 .NET 예제와 모든 CLI 예제가 `N`을 쓴다는 다수 근거로 `N`을 택했습니다 |
 | .NET 문서 모델의 동기 메서드 지원 여부 | 이 문서의 .NET 예제는 공식 .NET(v4) DynamoDB 코드 예제가 비동기를 쓰는 것에 맞춰 `GetItemAsync`·`UpdateItemAsync`로 적었습니다. **문서 모델의 `Table` 클래스가 동기 `GetItem`·`Update`를 여전히 노출하는지는 별도로 확인하지 않았습니다.** 문서 모델 문서는 제공 메서드 이름을 `PutItem`·`GetItem`·`DeleteItem`으로 표기합니다 |
-| 실습 3 워크플로 (슬라이드 51~52) | 원본 덱에 다이어그램만 있고 텍스트가 없습니다. 요약할 원문이 없어 이 문서에서는 다루지 않았습니다 |
+| 실습 3 워크플로 | 원본 자료에 다이어그램만 있고 텍스트가 없습니다. 요약할 원문이 없어 이 자료에서는 다루지 않았습니다 |

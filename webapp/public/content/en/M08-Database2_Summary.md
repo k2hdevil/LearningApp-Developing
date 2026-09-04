@@ -18,8 +18,8 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 9](#9-changes-from-the-courseware) for what changed and how.
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 9](#9-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 30, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -45,7 +45,7 @@ After completing this module, you should be able to do the following:
 
 ### What This Module Covers
 
-The courseware divides the table lifecycle into four steps. This document follows the same order.
+The table lifecycle divides into four steps. This document follows the same order.
 
 | Step | Content | In this document |
 |---|---|---|
@@ -68,7 +68,7 @@ Control plane operations let you create and manage DynamoDB tables, and also wor
 | Transactions 🆕 | `TransactWriteItems`, `TransactGetItems`, `ExecuteTransaction` (PartiQL) |
 | DynamoDB Streams | `ListStreams`, `DescribeStream`, `GetShardIterator`, `GetRecords` |
 
-The list of five control plane operations on courseware slide 4 matches the current documentation. What changed is the breadth of the data plane. The courseware presents only the classic APIs, whereas current documentation states that the same CRUD work can be done **with PartiQL** and that **transactions** exist as a separate category. PartiQL and transactions are covered in [Section 7.5](#75-two-interfaces-not-in-the-courseware-partiql-and-transactions).
+The control plane consists of the five operations above. The data plane is broader: the same CRUD work can be done not only with the classic APIs but also **with PartiQL**, and **transactions** exist as a separate category. PartiQL and transactions are covered in [Section 7.5](#75-two-interfaces-partiql-and-transactions).
 
 > — Source: [DynamoDB API](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html)
 
@@ -84,7 +84,7 @@ Table design starts with planning. You ask questions that help you understand th
 
 DynamoDB is a NoSQL database. Developers do not begin the process by defining a schema. Instead they begin by identifying the questions that must be answered, and they first confirm the application's access patterns for the operations that must be supported.
 
-The three properties the courseware presents (**size, shape, and velocity**) are as follows.
+The three properties to examine when identifying access patterns (**size, shape, and velocity**) are as follows.
 
 | Property | Content |
 |---|---|
@@ -109,13 +109,13 @@ The primary key uniquely identifies each item in a DynamoDB table. DynamoDB supp
 | Partition key (simple primary key) | Composed of one attribute. Also called a **hash attribute**. DynamoDB uses the partition key value as input to an internal hash function to determine the partition where the item is stored. In a table that has only a partition key, no two items can have the same partition key value |
 | Partition key + sort key (composite primary key) | Composed of two attributes. The sort key is also called a **range attribute**. Items with the same partition key value are stored together in sorted order by sort key value. Multiple items can share a partition key value, but their sort key values must differ |
 
-🆕 A constraint the courseware does not cover: **each primary key attribute must be a scalar, and the only data types allowed are string, number, and binary.** Non-key attributes have no such restriction. Other than the primary key, the table is schemaless, and nested attributes are supported up to 32 levels deep.
+🆕 A constraint worth remembering: **each primary key attribute must be a scalar, and the only data types allowed are string, number, and binary.** Non-key attributes have no such restriction. Other than the primary key, the table is schemaless, and nested attributes are supported up to 32 levels deep.
 
 > — Source: [Core components of Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
 
-Key selection criteria (courseware slide 8): common access patterns / high cardinality / values representative of the application.
+Key selection criteria: common access patterns / high cardinality / values representative of the application.
 
-The courseware's two designs for the same data:
+Comparing two designs for the same data:
 
 | Design | Partition key | Sort key | "Get all notes for StudentC" |
 |---|---|---|---|
@@ -126,7 +126,7 @@ Design the partition key around **common access patterns** and the **uniqueness 
 
 ### 2.4 Index Design and Secondary Index Quotas 🆕
 
-The four principles on courseware slide 9:
+The four principles of index design:
 
 | Principle | Content |
 |---|---|
@@ -135,7 +135,7 @@ The four principles on courseware slide 9:
 | Use sort order | When the core design requires items to be sorted together, grouping related items lets you query them efficiently |
 | Distribute queries | If a high volume of queries concentrates on one part of the database, you can exceed I/O capacity. Design data keys so that traffic spreads across many partitions and hot spots are avoided |
 
-🆕 The courseware covers secondary indexes but **does not state the difference between the two kinds or the per-table count quotas.**
+🆕 The two kinds of secondary index differ in their characteristics and per-table count quotas.
 
 | Item | Global secondary index (GSI) | Local secondary index (LSI) |
 |---|---|---|
@@ -152,11 +152,11 @@ Projected attributes have a quota too. User-specified projected attributes are l
 
 ### 2.5 Choosing Initial Throughput 🔄
 
-Inputs to consider when choosing a table's initial throughput (courseware slide 10): item size / expected table read and write rates / read consistency requirements.
+Inputs to consider when choosing a table's initial throughput: item size / expected table read and write rates / read consistency requirements.
 
 #### Capacity Unit Calculation 🔄
 
-The courseware states that "a query returning a single response item of 2 KB is charged **1 RCU** for this operation. If the same table were used for a write operation, the table would be charged **2 WCU**." The write side is correct, but the read side **omits the read consistency model.**
+Saying that reading one 2 KB item is charged 1 RCU **omits the read consistency model.**
 
 | Read type | One item up to 4 KB |
 |---|---|
@@ -171,21 +171,21 @@ The courseware states that "a query returning a single response item of 2 KB is 
 
 - Item sizes for reads are **rounded up to the next 4 KB multiple**. Reading a 3,500-byte item consumes the same throughput as reading a 4 KB item.
 - Item sizes for writes are **rounded up to the next 1 KB multiple**. Writing a 500-byte item is the same as writing a 1 KB item.
-- So reading one 2 KB item costs 1 RCU with a strongly consistent read and **0.5 RCU with the default eventually consistent read**. A 2 KB write costs 2 WCU, matching the courseware.
+- So reading one 2 KB item costs 1 RCU with a strongly consistent read and **0.5 RCU with the default eventually consistent read**. A 2 KB write costs 2 WCU.
 - 🆕 **Read throughput is consumed even when you read an item that does not exist.** For `Query` and `Scan`, you are still charged additional read throughput based on read consistency and the number of partitions searched, even if no data exists.
 
 > — Source: [DynamoDB read and write operations](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html)
 
 #### Capacity Modes 🔄
 
-The courseware presents provisioned mode first and describes on-demand as the alternative for "unknown workloads." **The current documentation reverses that order.**
+The current documentation presents **on-demand as the default and recommended option, and provisioned for steady workloads.**
 
-| Mode | Courseware description | Current documentation |
-|---|---|---|
-| On-demand | Unknown workloads / unpredictable traffic. "A flexible billing option that can handle thousands of requests per second without capacity planning" | **The default and recommended throughput option.** A serverless throughput option that removes capacity planning, monitoring, and scaling policy configuration, billed per request |
-| Provisioned | Predictable traffic / known workloads / reserved capacity available | You specify reads and writes per second. Suited to **steady workloads with predictable growth**. Billed on the hourly capacity you provisioned rather than what you consumed, which gives cost predictability |
+| Mode | Character |
+|---|---|
+| On-demand | **The default and recommended throughput option.** A serverless throughput option that removes capacity planning, monitoring, and scaling policy configuration, billed per request |
+| Provisioned | You specify reads and writes per second. Suited to **steady workloads with predictable growth**. Billed on the hourly capacity you provisioned rather than what you consumed, which gives cost predictability |
 
-Facts about on-demand that the courseware does not cover: 🆕
+Additional facts about on-demand: 🆕
 
 - On-demand tables deliver **the same single-digit millisecond latency, SLA, and security** as provisioned mode.
 - New on-demand tables sustain up to **4,000 writes and 12,000 reads per second** immediately, and instantly accommodate up to **double** the previous peak traffic.
@@ -196,12 +196,12 @@ Facts about on-demand that the courseware does not cover: 🆕
 
 #### Capacity Mode Switching Limits 🔄
 
-The courseware instructor notes state two things. Both differ from current behavior.
+Watch two things about table creation and capacity mode switching.
 
-| Courseware statement | Verified content |
+| Common misconception | Actual behavior |
 |---|---|
-| "You must provision the table's capacity when you create a table using the AWS CLI or an AWS SDK" | `BillingMode` on `CreateTable` is **not required.** Valid values are `PROVISIONED` and `PAY_PER_REQUEST`, and if you choose `PAY_PER_REQUEST` you **cannot** specify `ProvisionedThroughput`. The documentation recommends `PAY_PER_REQUEST` for most workloads |
-| "You can switch read/write capacity mode once every 24 hours" | Provisioned → on-demand is limited to **four times in a 24-hour rolling window**; on-demand → provisioned can be done **at any time** |
+| You must provision the table's capacity when creating a table | `BillingMode` on `CreateTable` is **not required.** Valid values are `PROVISIONED` and `PAY_PER_REQUEST`, and if you choose `PAY_PER_REQUEST` you **cannot** specify `ProvisionedThroughput`. The documentation recommends `PAY_PER_REQUEST` for most workloads |
+| You can switch capacity mode only once every 24 hours | Provisioned → on-demand is limited to **four times in a 24-hour rolling window**; on-demand → provisioned can be done **at any time** |
 
 Things to know about switching: 🆕
 
@@ -213,7 +213,7 @@ Things to know about switching: 🆕
 
 #### Burst and Adaptive Capacity 🆕
 
-The courseware instructor notes only say "you can fine-tune application capacity by taking advantage of burst and adaptive capacity." The concrete values are as follows.
+You can fine-tune application capacity with burst and adaptive capacity. The concrete values are as follows.
 
 | Item | Content |
 |---|---|
@@ -226,7 +226,7 @@ The courseware instructor notes only say "you can fine-tune application capacity
 
 ### 2.6 Other Table Quotas 🆕
 
-Courseware slide 21 links the service quotas document but does not give any values.
+The other table quota values are as follows.
 
 | Item | Value |
 |---|---|
@@ -245,9 +245,9 @@ Courseware slide 21 links the service quotas document but does not give any valu
 
 ### 3.1 Creating a Table: Java Low-Level Interface 🔄
 
-Courseware slides 13 and 14 build the key schema and attribute definitions and then build a `CreateTableRequest`. The request-building portion is AWS SDK for Java 2.x syntax, but **the last line, which receives the response, uses a 1.x class name.**
+Build the key schema and attribute definitions, then build a `CreateTableRequest`. One thing to watch in the example below is the response type.
 
-| Courseware statement | Verified content |
+| Common mistake | Correct form |
 |---|---|
 | `CreateTableResult result = ddb.createTable(request);` | The 2.x return type is **`CreateTableResponse`**, and `tableDescription()` returns the table properties. `CreateTableResult` is the 1.x class name |
 
@@ -260,8 +260,8 @@ keySchema.add(KeySchemaElement.builder()
         .attributeName("NoteId").keyType(KeyType.RANGE).build());  // sort key
 
 // Set the attribute definitions for the request.
-// NoteId is defined as N (number). The courseware alternates between S and N,
-// but every CLI example from slide 25 onward uses {"NoteId":{"N":"42"}}.
+// NoteId is defined as N (number). Every CLI example in this material
+// uses {"NoteId":{"N":"42"}}, so match that here.
 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
 attributeDefinitions.add(AttributeDefinition.builder()
         .attributeName("UserId").attributeType(ScalarAttributeType.S).build());
@@ -292,17 +292,9 @@ System.out.println(response.tableDescription().tableStatus());   // CREATING
 
 > — Source: [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html), [CreateTableResponse (AWS SDK for Java 2.x)](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/dynamodb/model/CreateTableResponse.html)
 
-#### The `NoteId` Attribute Type: A Contradiction Inside the Courseware 🔄
+#### The `NoteId` Attribute Type 🔄
 
-| Location | `NoteId` type |
-|---|---|
-| Slide 13 code | `ScalarAttributeType.S` |
-| Slide 13 instructor notes | "primarykey (UserId) and sortKey (NoteId) are **both set to string (S)**" |
-| Slide 14 instructor notes | "primarykey (UserId) is set to string (S) and sortKey (NoteId) is set to **number (N)**" |
-| Slide 15 .NET example | `ScalarAttributeType.N` |
-| Every CLI example from slide 25 onward | `{"NoteId":{"N":"..."}}` |
-
-Valid `AttributeType` values are `S`, `N`, and `B`, and a primary key attribute must be string, number, or binary, so either is syntactically possible. But two definitions cannot coexist for one `Notes` table. This document **standardizes on `N`, matching the majority of the examples.**
+Valid `AttributeType` values are `S`, `N`, and `B`, and a primary key attribute must be string, number, or binary. Two definitions cannot coexist for one `Notes` table, so this material **standardizes on `N` (number), consistent with the CLI examples.**
 
 > — Source: [AttributeDefinition](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeDefinition.html)
 
@@ -317,23 +309,15 @@ Valid `AttributeType` values are `S`, `N`, and `B`, and a primary key attribute 
 | When reads and writes are possible | **Only on an `ACTIVE` table** |
 | How to check status | `DescribeTable` |
 
-The response carries a `TableDescription` object that includes `BillingModeSummary`, `CreationDateTime`, `GlobalSecondaryIndexes`, `TableStatus`, and more. This matches the courseware slide 16 instructor notes.
+The response carries a `TableDescription` object that includes `BillingModeSummary`, `CreationDateTime`, `GlobalSecondaryIndexes`, `TableStatus`, and more.
 
-🆕 Constraints the courseware does not cover: table names must be **unique within each Region** (you can reuse a name in a different Region), and only **one table with secondary indexes** can be in the `CREATING` state at any given time.
+🆕 Constraints to keep in mind: table names must be **unique within each Region** (you can reuse a name in a different Region), and only **one table with secondary indexes** can be in the `CREATING` state at any given time.
 
 > — Source: [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html)
 
 ### 3.3 Creating a Table: .NET Low-Level Interface 🔄
 
-The example on courseware slides 15 and 16 has three problems.
-
-| Courseware | Problem | Correction |
-|---|---|---|
-| `AttributeName = "NoteId",I` | Stray character `I` | `AttributeName = "NoteId",` |
-| `},,` | Duplicated comma | `},` |
-| `var response = client.CreateTable(request);` | The current official .NET (v4) example uses an asynchronous call | `await client.CreateTableAsync(request)` |
-
-The first two are courseware typos and are not the kind of fact you verify against AWS documentation; the last one is a difference from the official code example.
+Watch one thing in .NET table-creation code: the current official .NET (v4) example uses an **asynchronous call** (`CreateTableAsync`). Use `await client.CreateTableAsync(request)` instead of the synchronous `client.CreateTable(request)`.
 
 ```csharp
 AmazonDynamoDBClient client = new AmazonDynamoDBClient();
@@ -380,7 +364,7 @@ If the table already exists, a `ResourceInUseException` is raised.
 
 ### 3.4 Creating a Table with an Index Using the CLI
 
-Courseware slide 17 shows the base table key `(UserId, NoteId)` and the index key `(UserId, Is_Incomplete)` in a diagram. Attribute types are set with the following values.
+The following example creates a table with the base table key `(UserId, NoteId)` and a local secondary index key `(UserId, Is_Incomplete)`. Attribute types are set with the following values.
 
 | Value | Meaning |
 |---|---|
@@ -406,7 +390,7 @@ aws dynamodb create-table \
   --billing-mode PAY_PER_REQUEST
 ```
 
-A note from the courseware instructor notes: by design, developers **do not need to declare non-key attributes** on a DynamoDB table. DynamoDB is schemaless except for `--key-schema`. This statement matches the current documentation's "other than the primary key, neither the attributes nor their data types need to be defined beforehand."
+Note that by design, developers **do not need to declare non-key attributes** on a DynamoDB table. Other than the primary key (and index keys), neither the attributes nor their data types need to be defined beforehand.
 
 > — Source: [Core components of Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
 
@@ -414,12 +398,12 @@ A note from the courseware instructor notes: by design, developers **do not need
 
 The AWS SDK for Java provides waiters that wait until a resource transitions to a desired state. Without a waiter, you have to write your own polling code that repeatedly checks the state.
 
-The code on courseware slide 18 has two problems.
+Watch two argument forms in the example below.
 
-| Courseware | Problem |
+| Easy to get wrong | Correct form |
 |---|---|
-| `CreateTableResponse response = ddb.createTable("Notes");` | The slide annotation and instructor notes say the table is created "using the information in the `CreateTableRequest` object," but the code passes a string literal. `DynamoDbClient.createTable` has only overloads that take a **request object or a builder `Consumer`** |
-| `dbWaiter.waitUntilTableExists("Notes");` | The official example passes a **builder that constructs a `DescribeTableRequest`** |
+| `ddb.createTable("Notes")` — a string literal | `DynamoDbClient.createTable` has only overloads that take a **request object or a builder `Consumer`**, so pass a `CreateTableRequest` |
+| `dbWaiter.waitUntilTableExists("Notes")` — a string literal | Pass a **builder that constructs a `DescribeTableRequest`** |
 
 ```java
 // Pass the standard client to the waiter so the same Region is used.
@@ -447,15 +431,9 @@ try (DynamoDbWaiter dbWaiter = DynamoDbWaiter.builder().client(ddb).build()) {
 
 ### 3.6 Update, List, and Delete a Table (Java) 🔄
 
-The Java examples on courseware slides 19 and 20 use **AWS SDK for Java 1.x Document API syntax.**
+`Table table = dynamoDB.getTable("Notes")`, `new ProvisionedThroughput().withReadCapacityUnits(15L)`, and `TableCollection<ListTablesResult> tables = dynamoDB.listTables()` are all **AWS SDK for Java 1.x Document API syntax.**
 
-| Courseware code | Version |
-|---|---|
-| `Table table = dynamoDB.getTable("Notes");` | 1.x |
-| `new ProvisionedThroughput().withReadCapacityUnits(15L)` | 1.x |
-| `TableCollection<ListTablesResult> tables = dynamoDB.listTables();` | 1.x |
-
-AWS SDK for Java 1.x **reached end-of-support on December 31, 2025** (announced January 12, 2024; entered maintenance mode July 31, 2024). Slides 13–14, 18, and 41–42 in the same module use 2.x syntax, so versions are mixed inside the courseware. The package names differ too: 1.x is `com.amazonaws` and 2.x is `software.amazon.awssdk`.
+AWS SDK for Java 1.x **reached end-of-support on December 31, 2025** (announced January 12, 2024; entered maintenance mode July 31, 2024). The package names differ too: 1.x is `com.amazonaws` and 2.x is `software.amazon.awssdk`. The 2.x syntax follows.
 
 ```java
 // Update — AWS SDK for Java 2.x
@@ -482,7 +460,7 @@ ddb.listTablesPaginator(ListTablesRequest.builder().build())
 
 ### 3.7 Update, List, and Delete a Table (.NET)
 
-The examples on courseware slides 21 and 22. Apart from converting the synchronous methods to asynchronous ones, they match the courseware (see [Section 3.3](#33-creating-a-table-net-low-level-interface)).
+Examples for updating, listing, and deleting a table in .NET. Use the asynchronous methods instead of the synchronous ones (see [Section 3.3](#33-creating-a-table-net-low-level-interface)).
 
 ```csharp
 // Update
@@ -515,16 +493,15 @@ foreach (string name in listResponse.TableNames)
 
 ### 3.8 Throughput Increase and Decrease Limits 🔄
 
-Three of the four statements in the courseware slide 21 instructor notes still hold; one differs.
+Throughput increases have loose constraints.
 
-| Courseware statement | Verified content |
+| Item | Content |
 |---|---|
-| You can increase `ReadCapacityUnits` or `WriteCapacityUnits` **as often as necessary** | Correct |
-| In a single call you can increase throughput for a table, its GSIs, or any combination | Correct |
-| The new settings do not take effect until the `UpdateTable` operation is complete | Correct |
-| **"You can decrease up to four times per day, at any time"** | Differs. See the table below |
+| Increase frequency | You can increase `ReadCapacityUnits` or `WriteCapacityUnits` **as often as necessary** |
+| Increase scope | In a single call you can increase throughput for a table, its GSIs, or any combination |
+| Effective time | The new settings do not take effect until the `UpdateTable` operation is complete |
 
-The current decrease quota works as follows.
+Decreases are not "up to four times per day at any time" but follow this rule.
 
 | Item | Content |
 |---|---|
@@ -538,7 +515,7 @@ The current decrease quota works as follows.
 
 ### 3.9 `ListTables` Is Paginated 🔄
 
-The courseware repeats on slides 19–20 and 22 that "the `ListTables` operation does not require any parameters." That statement is still correct. However, the courseware Java list example looks as though it iterates every table in one pass.
+The `ListTables` operation does not require any parameters. It is easy to assume it iterates every table in one pass, but the output is actually paginated.
 
 | Item | Content |
 |---|---|
@@ -584,7 +561,7 @@ aws dynamodb put-item \
 | `ReturnValues` | Returns the item's attribute values in the same operation. To determine whether an overwrite occurred, set it to `ALL_OLD` and check whether the response includes an `Attributes` element 🆕 |
 | Conditional put | Add a new item only if one with the specified primary key does not exist, or replace an existing item only if it has certain attribute values |
 
-The courseware instructor notes only say "attribute values cannot be `null`." The current documentation is more precise. 🔄
+It is easy to lump this together as "attribute values cannot be `null`," but the rules are more granular. 🔄
 
 | Value | Allowed |
 |---|---|
@@ -623,7 +600,7 @@ The request consists of a map of one or more table names and, for each table, a 
 }
 ```
 
-The limits the courseware presents are still correct.
+The batch operation limits are as follows.
 
 | Operation | Item count | Data size |
 |---|---|---|
@@ -631,7 +608,7 @@ The limits the courseware presents are still correct.
 | `BatchGetItem` | Up to **100** items read | Up to **16 MB** |
 | Maximum size of an individual item | **400 KB** | — |
 
-Behavior the courseware does not cover: 🆕
+Behavior worth knowing: 🆕
 
 | Item | Content |
 |---|---|
@@ -646,7 +623,7 @@ Behavior the courseware does not cover: 🆕
 
 > — Source: [BatchWriteItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html)
 
-`BatchGetItem` also has more detail than the courseware covers. 🆕
+`BatchGetItem` also has detail worth knowing. 🆕
 
 | Item | Content |
 |---|---|
@@ -704,11 +681,11 @@ aws dynamodb query \
   --expression-attribute-values '{":userid":{"S":"StudentA"}}'
 ```
 
-> The CLI example on courseware slide 30 reads `'{":userid":{"S":"StudentA"}'`, which is **missing a closing brace** and therefore fails JSON parsing. The example above corrects it.
+> The JSON for `--expression-attribute-values` must have its closing braces balanced exactly. A single missing brace causes JSON parsing to fail.
 
 #### Sort Key Condition Operators 🔄
 
-The slide body lists `=, <, >, <=, >=, AND, BETWEEN or begins_with`, while the instructor notes on the same slide omit `BETWEEN`. The accurate list is as follows.
+The accurate list of operators usable in a sort key condition is as follows.
 
 | Form | Meaning |
 |---|---|
@@ -724,7 +701,7 @@ The slide body lists `=, <, >, <=, >=, AND, BETWEEN or begins_with`, while the i
 
 #### A Filter Expression Does Not Reduce What Is Read 🔄
 
-The courseware instructor notes state that "you can combine a filter expression and limit the results. Combining the two gives you a refined dataset **without reading more items than necessary**." This invites a misunderstanding.
+It is easy to assume a filter expression "reduces how much you read," but that is not the case.
 
 | Item | Verified content |
 |---|---|
@@ -774,13 +751,11 @@ DynamoDB paginates `Query` results into pages of **1 MB or less**. An applicatio
 }
 ```
 
-The procedure matches the courseware. (1) Check whether the result contains a `LastEvaluatedKey`. (2) If it does, construct a new `Query` with the same `KeyConditionExpression` and use that value as `ExclusiveStartKey`. (3) Run it. (4) Repeat.
+The procedure is: (1) check whether the result contains a `LastEvaluatedKey`; (2) if it does, construct a new `Query` with the same `KeyConditionExpression` and use that value as `ExclusiveStartKey`; (3) run it; (4) repeat.
 
-There is one important caveat the courseware does not state. 🔄
+There is one important caveat here. 🔄
 
-| Courseware statement | Verified content |
-|---|---|
-| Request the next page "if the query has a `LastEvaluatedKey` element and the value is not `null`" | A non-empty `LastEvaluatedKey` only means the previous `Query` **stopped at a page boundary** (the 1 MB page-size limit or a `Limit` value); it is **not a guarantee** that more matching items remain. In particular, when you use a `FilterExpression`, the 1 MB/`Limit` cap applies to the items read **before** the filter is applied, so a page can return zero matching items and still include a `LastEvaluatedKey`. The only way to know you have reached the end of the result set is when `LastEvaluatedKey` is empty |
+A non-empty `LastEvaluatedKey` only means the previous `Query` **stopped at a page boundary** (the 1 MB page-size limit or a `Limit` value); it is **not a guarantee** that more matching items remain. In particular, when you use a `FilterExpression`, the 1 MB/`Limit` cap applies to the items read **before** the filter is applied, so a page can return zero matching items and still include a `LastEvaluatedKey`. The only way to know you have reached the end of the result set is when `LastEvaluatedKey` is empty.
 
 🆕 **Automatic pagination is the default behavior in both AWS CLI version 1 and version 2.** Use `--no-paginate` to page yourself. Note that `--max-items` returns a `NextToken` while `--limit` returns a `LastEvaluatedKey`.
 
@@ -800,7 +775,7 @@ aws dynamodb scan \
 | Item | Content |
 |---|---|
 | Page limit | A single `Scan` request retrieves a maximum of **1 MB** of data. This limit applies **before** the filter expression is evaluated |
-| When the filter is applied | After `Scan` finishes but before the results are returned (matches the courseware) |
+| When the filter is applied | After `Scan` finishes but before the results are returned |
 | Consumed capacity | **A `Scan` consumes the same amount of read capacity, regardless of whether a filter expression is present** 🔄 |
 | Attributes usable in the filter | Unlike `Query`, you can specify **any attributes, including partition key and sort key attributes** 🆕 |
 | `Limit` | Specifies the maximum number of items to return **before** filter expression evaluation. With `Limit=6` plus a filter, six items are read and only the matches remain, so the final result contains six items **or fewer** |
@@ -836,7 +811,7 @@ What consumes the capacity also differs. 🆕
 | Query | Finds items based on primary key values |
 | Scan | Reads **every item** in a table or secondary index |
 
-The courseware's emphasis: a scan is less efficient than a query, but it is often the only solution. The instructor notes' guidance also still holds. **Avoid using a Scan operation with a filter that removes many results on a large table.** As a table grows, the scan takes longer and consumes more capacity.
+A scan is less efficient than a query, but it is often the only solution. The key guidance is this: **avoid using a Scan operation with a filter that removes many results on a large table.** As a table grows, the scan takes longer and consumes more capacity.
 
 The consumed-capacity rule in [Section 5.4](#54-scanning-data-scan) explains why. A filter that removes many results means **you have already spent the read capacity and are simply getting fewer items back.**
 
@@ -851,21 +826,21 @@ A parallel scan logically divides a table or secondary index into multiple **seg
 | `Segment` | The segment a particular worker scans. Each worker must use a different value, and segments are **zero-based** |
 | `TotalSegments` | The total number of segments for the parallel scan. It must equal the **number of workers** your application will use |
 
-The example on courseware slide 34: the application spawns three threads and assigns each a number. Each thread issues a scan request with `Segment` set to its designated number and `TotalSegments` set to 3, scans its designated segment 1 MB at a time, and returns the data to the main thread.
+For example, the application spawns three threads and assigns each a number. Each thread issues a scan request with `Segment` set to its designated number and `TotalSegments` set to 3, scans its designated segment 1 MB at a time, and returns the data to the main thread.
 
-How segments are assigned, which the courseware does not cover: 🆕
+How segments are assigned: 🆕
 
 - DynamoDB assigns items to segments by **applying a hash function to each item's partition key.** For a given `TotalSegments` value, **all items with the same partition key are always assigned to the same `Segment`**, regardless of sort key values or item collection size.
 - Because segment assignment is based solely on the partition key hash, **segments can be unevenly distributed.** Some segments might contain no items while others contain many partition keys with large item collections.
 - Therefore **increasing the number of segments does not guarantee faster scan performance**, particularly when partition keys are not uniformly distributed across the keyspace.
 
-The cautions in the courseware instructor notes still hold. A parallel scan with a large number of workers can easily consume all of the provisioned throughput for the table or index being scanned, so avoid such scans if the table or index is also incurring heavy read or write activity from other applications. Use the `Limit` parameter to control the amount of data returned per request.
+One caution applies. A parallel scan with a large number of workers can easily consume all of the provisioned throughput for the table or index being scanned, so avoid such scans if the table or index is also incurring heavy read or write activity from other applications. Use the `Limit` parameter to control the amount of data returned per request.
 
 > — Source: [Scanning tables in DynamoDB — Parallel scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html)
 
 ### 5.7 Legacy Conditional Parameters 🆕
 
-Every example in the courseware uses expression-based parameters, which matches current guidance. However, legacy parameters remain in the API and you will meet them when maintaining older code.
+Every example in this material uses the current-recommended expression-based parameters. However, legacy parameters remain in the API and you will meet them when maintaining older code.
 
 | API operation | Legacy parameter | Expression parameter to use instead |
 |---|---|---|
@@ -914,12 +889,12 @@ This consumption rule matches the current documentation. 🆕 `AttributeUpdates`
 
 By default, DynamoDB write operations (`PutItem`, `UpdateItem`, `DeleteItem`) are **unconditional.** A conditional write succeeds only if the item attributes meet one or more expected conditions.
 
-The intent of courseware slide 37 is to "allow the update only when the note is not flagged as a favorite." However, the condition expression in the CLI example is not valid syntax.
+When writing a condition to "allow the update only when the note is not flagged as a favorite," two errors are common.
 
-| Courseware statement | Problem |
+| Easy to get wrong | Problem |
 |---|---|
 | `--condition-expression "Favorite NOT yes"` | `NOT` is a **logical operator that negates a single condition**, so it cannot be used as a binary comparison in the form `operand NOT operand`. Also, a value such as `yes` cannot be written as a literal and must be passed as an **expression attribute value (`:val`)** |
-| `expression-attribute-values.json` contains only `:newnote` | The placeholder value the condition expression needs is missing |
+| Putting only `:newnote` in the values file | The placeholder value the condition expression needs must be present |
 
 The syntax for a condition expression is as follows.
 
@@ -947,7 +922,7 @@ function ::=
 
 An `IN` list can contain up to 100 values. Function names are **case-sensitive.** A Boolean attribute cannot be referenced on its own as a condition; supply the Boolean value in the expression attribute values and compare it with `=` or `<>`.
 
-Rewriting the courseware's intent so that it conforms to the grammar:
+Rewriting this intent so that it conforms to the grammar:
 
 ```bash
 aws dynamodb update-item \
@@ -971,12 +946,12 @@ The update proceeds only when the `Favorite` attribute is absent or its value is
 
 #### Write Capacity Is Consumed Even When the Condition Fails 🔄
 
-The courseware instructor notes split the consumption into two cases. The current documentation describes a single rule.
+Write capacity is consumed even when the condition fails, and the amount depends on the item size.
 
-| Courseware statement | Verified content |
+| Situation | Write capacity consumed |
 |---|---|
-| "If the item does not currently exist in the table, DynamoDB consumes **one** write capacity unit" | The documentation **does not state a fixed value of one.** Write capacity units are consumed even when the condition evaluates to `false`, and the amount depends on **the size of the existing item or of the new item you are trying to create or update** |
-| "If the item exists, the number of write capacity units consumed depends on the item size" | Correct. The documentation's example: if the existing item is 300 KB and the new item you are trying to create or update is 310 KB, the write capacity consumed is **based on the 310 KB new item** |
+| The condition evaluates to `false` | Not a fixed value of one, but based on **the size of the existing item or of the new item you are trying to create or update** |
+| The item already exists | Depends on the item size. Example: existing 300 KB, new item 310 KB → **based on the 310 KB new item** |
 
 A failed conditional write returns `ConditionalCheckFailedException` (HTTP 400). In that case the response does not carry information about the write capacity consumed, but you can check the table's `ConsumedWriteCapacityUnits` metric in Amazon CloudWatch. 🆕 The exception can carry the item that caused it (`Item`), and the `ReturnValuesOnConditionCheckFailure` parameter controls how it is returned.
 
@@ -998,7 +973,7 @@ aws dynamodb delete-item \
 | `ReturnValues` | Returns the item's attribute values in the same operation as the delete |
 | Conditional delete | Deletes the item only if it exists or has an expected attribute value. If the condition is met DynamoDB performs the delete; otherwise the item is not deleted |
 
-The best practice on courseware slide 39 ("conditional operations provide an extra level of protection when deleting items") matches the current documentation.
+As a best practice, conditional operations provide an extra level of protection when deleting items.
 
 ```bash
 # Delete only notes that are not favorites
@@ -1016,7 +991,7 @@ aws dynamodb delete-item \
 
 ### 7.1 The Three Interfaces in Java 2.x 🆕
 
-The courseware presents only the enhanced client as the Java higher-level interface. The AWS SDK for Java 2.x supports **three** interfaces depending on the level of abstraction you want.
+The AWS SDK for Java 2.x supports **three** interfaces depending on the level of abstraction you want.
 
 | Interface | Content |
 |---|---|
@@ -1024,7 +999,7 @@ The courseware presents only the enhanced client as the Java higher-level interf
 | High-level (**DynamoDB enhanced client**) | Maps client-side data classes to tables. The main class is `DynamoDbEnhancedClient`, published in a separate package and Maven artifact named `software.amazon.awssdk.enhanced.dynamodb`. The 1.x high-level interface was referred to by its main class `DynamoDBMapper` |
 | Document | No need to specify data type descriptors; types are implied by the semantics of the data. It uses `EnhancedDocument` and provides `fromJson(String)` and `toJson()` utility methods |
 
-This table supports the courseware slide 41 instructor notes statement that "the DynamoDB Enhanced Client API is a high-level library that succeeds the `DynamoDBMapper` class of the SDK for Java v1.x."
+The DynamoDB Enhanced Client API is a high-level library that succeeds the `DynamoDBMapper` class of the SDK for Java v1.x.
 
 🆕 The enhanced client can also map **immutable data classes** using **`@DynamoDbImmutable`** instead of `@DynamoDbBean`. An immutable class has only getters and requires a builder class the SDK uses to create instances; libraries such as Project Lombok can reduce the boilerplate.
 
@@ -1032,14 +1007,14 @@ This table supports the courseware slide 41 instructor notes statement that "the
 
 ### 7.2 Java: DynamoDB Enhanced Client Data Class 🔄
 
-The example on courseware slide 41 has four problems.
+Four problems are common when writing an enhanced client data class, with their correct forms.
 
-| Courseware | Problem | Correction |
+| Easy to get wrong | Problem | Correct form |
 |---|---|---|
-| `@DynamoDbPartition` | **No such name exists** in the official annotation list. The instructor notes on the same slide correctly write `@DynamoDbPartitionKey` | `@DynamoDbPartitionKey` |
+| `@DynamoDbPartition` | **No such name exists** in the official annotation list | `@DynamoDbPartitionKey` |
 | `public void setNoteId(Integer noteId)` | The field is `private String noteId` and the getter returns `String`, but only the setter takes `Integer`, so it does not compile | `setNoteId(String noteId)` |
-| Class name `Note` versus `NotesItems` and `NotesItem` in the instructor notes | Three names are mixed | Standardize on `Note` |
-| Placement of `@DynamoDbAttribute` | You can apply an attribute-level annotation to the getter **or** the setter, but not both. The official guide shows annotations on getters | On the getter only |
+| Mixing class names `Note`, `NotesItems`, and `NotesItem` | The names are inconsistent | Standardize on `Note` |
+| Placing `@DynamoDbAttribute` on both getter and setter | You can apply an attribute-level annotation to the getter **or** the setter, but not both | On the getter only (official guide) |
 
 The main entries in the current official annotation list are as follows.
 
@@ -1075,7 +1050,7 @@ public static class Note {    // data members corresponding to the columns of th
     @DynamoDbSortKey // attribute-level annotation for the sort key
     @DynamoDbAttribute("NoteId")
     public String getNoteId() { return this.noteId; }
-    // Match the field and getter types. The courseware's setNoteId(Integer) does not compile.
+    // Match the field and getter types. setNoteId(Integer) would not compile.
     public void setNoteId(String noteId) { this.noteId = noteId; }
 
     @DynamoDbAttribute("Notes")
@@ -1097,7 +1072,7 @@ public static class Note {    // data members corresponding to the columns of th
 
 Use the `table` method of `DynamoDbEnhancedClient`, passing the table name and table schema, to instantiate a `DynamoDbTable` object. With that object you can perform both table operations (`createTable()`, `deleteTable()`, `describeTable()`) and CRUD operations (scan, query, getItem, putItem, updateItem, and so on).
 
-Courseware slide 42 calls `note.setNodeId("9")`. The class on slide 41 has no `setNodeId`, only `setNoteId`, so this is a typo.
+The data class has no `setNodeId`, only `setNoteId`, so call `setNoteId` when building an item.
 
 ```java
 // Instantiate the enhanced client
@@ -1110,7 +1085,7 @@ static final DynamoDbTable<Note> notesTable = enhancedClient
 // A new note
 Note note = new Note();
 note.setUserId("UserA");
-note.setNoteId("9");        // the courseware's setNodeId is a typo
+note.setNoteId("9");        // setNoteId, not setNodeId
 note.setNotes("This is a note");
 
 // Put the item
@@ -1134,7 +1109,7 @@ The AWS SDK for .NET provides two higher-level models.
 | Object persistence model | `Amazon.DynamoDBv2.DataModel` | `DynamoDBContext` | **Not possible** 🔄 |
 | Document model | `Amazon.DynamoDBv2.DocumentModel` | `Table`, `Document` | **Not possible** |
 
-The courseware attaches the "cannot create, update, or delete tables" constraint only to the document model (slide 44). The current documentation states that **the object persistence model has the same constraint.** Both models provide only data operations, and you must use the low-level API to create, update, and delete tables. 🔄
+The "cannot create, update, or delete tables" constraint applies not only to the document model but **equally to the object persistence model.** Both models provide only data operations, and you must use the low-level API to create, update, and delete tables. 🔄
 
 #### Object Persistence Model
 
@@ -1167,7 +1142,7 @@ public class NotesItems
 }
 ```
 
-🆕 Two things the courseware does not cover: the object persistence model supports **optimistic locking**, which ensures you have the latest copy of the item you are about to update. And the data type mapping is as follows.
+🆕 Two more things to know: the object persistence model supports **optimistic locking**, which ensures you have the latest copy of the item you are about to update. And the data type mapping is as follows.
 
 | .NET primitive type | DynamoDB type |
 |---|---|
@@ -1193,7 +1168,7 @@ GetItemOperationConfig config = new GetItemOperationConfig()
 Document doc = await table.GetItemAsync("StudentA", config);
 ```
 
-The `UpdateItem` example on courseware slide 44 comments that `note["Favorite"] = null;` deletes an existing attribute. 🔄 The current documentation states that **`DynamoDBNull`** is used for the DynamoDB null type, and that empty string attribute values of string type and empty string values contained within List or Map type are **dropped from write requests.** To actually remove an attribute, the low-level `UpdateExpression` `REMOVE` clause is clearer.
+It is tempting to delete an existing attribute with `note["Favorite"] = null;`, but 🔄 **`DynamoDBNull`** is used for the DynamoDB null type, and empty string attribute values of string type and empty string values contained within List or Map type are **dropped from write requests.** To actually remove an attribute, the low-level `UpdateExpression` `REMOVE` clause is clearer.
 
 ```csharp
 Table table = Table.LoadTable(client, "Notes");
@@ -1216,7 +1191,7 @@ The document model maps DynamoDB's Boolean, null, list, and map types to `Dynamo
 
 > — Source: [Working with the .NET object persistence model and DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html), [Working with the .NET document model in DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKMidLevel.html)
 
-### 7.5 Two Interfaces Not in the Courseware: PartiQL and Transactions 🆕
+### 7.5 Two Interfaces: PartiQL and Transactions 🆕
 
 #### PartiQL
 
@@ -1263,7 +1238,7 @@ A conditional write ([Section 6.2](#62-conditional-write-operations)) guarantees
 
 ### 7.6 What About Python's Higher-Level Interface 🆕
 
-The courseware covers only Java and .NET for higher-level interfaces and does not cover Python. In Python, the boto3 **resources interface** (`boto3.resource('dynamodb').Table(...)`) is what you notice first when looking for a higher-level interface. The direction, however, is settled.
+In Python, the boto3 **resources interface** (`boto3.resource('dynamodb').Table(...)`) is what you notice first when looking for a higher-level interface. The direction, however, is settled.
 
 | Item | Content |
 |---|---|
@@ -1312,25 +1287,25 @@ for page in paginator.paginate(
 
 Amazon DynamoDB is designed for scale and performance. **In most cases DynamoDB response times can be measured in single-digit milliseconds.** However, certain use cases require response times in **microseconds.** For those cases DAX delivers fast response times for accessing eventually consistent data.
 
-The courseware presents two caching options, DAX and Amazon ElastiCache. The ElastiCache description differs from current documentation.
+There are two caching options, DAX and Amazon ElastiCache. ElastiCache has expanded as follows.
 
-| Courseware statement | Verified content |
+| Item | Content |
 |---|---|
-| "A web service you use to deploy and run server nodes compliant with the **Memcached or Redis** protocol" | ElastiCache works with the **Valkey, Memcached, and Redis OSS** engines |
-| Assumes node-based clusters only | You can operate ElastiCache in two formats: a **serverless cache** or a node-based cluster |
+| Supported engines | ElastiCache works with the **Valkey, Memcached, and Redis OSS** engines |
+| Deployment formats | You can operate ElastiCache in two formats: a **serverless cache** or a node-based cluster |
 
 | Format | Content |
 |---|---|
 | Serverless cache | Creates a highly available cache in under a minute with no instance provisioning and no node or cluster configuration. Compatible with Valkey 7.2 and higher, Memcached 1.6.22 and above, and Redis OSS 7.1 |
 | Node-based cluster | You choose the node type, number of nodes, and node placement across Availability Zones, and whether to run in cluster mode. For node-based Valkey clusters you can enable durability to persist data in a distributed Multi-AZ transactional log |
 
-As in the courseware, this lesson focuses on DAX.
+This module focuses on DAX.
 
 > — Source: [What is Amazon ElastiCache?](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/WhatIs.html)
 
 ### 8.2 Amazon DynamoDB Accelerator (DAX) 🆕
 
-DAX is a **DynamoDB-compatible caching service** that lets demanding applications benefit from fast in-memory performance. The three core scenarios the courseware presents match the current documentation.
+DAX is a **DynamoDB-compatible caching service** that lets demanding applications benefit from fast in-memory performance. Its three core scenarios are as follows.
 
 | # | Scenario |
 |---|---|
@@ -1338,7 +1313,7 @@ DAX is a **DynamoDB-compatible caching service** that lets demanding application
 | 2 | DAX reduces operational and application complexity by providing a managed service that is **API-compatible** with DynamoDB. It requires only minimal functional changes to use with an existing application |
 | 3 | For read-heavy or bursty workloads, DAX provides increased throughput and potential operational cost savings by **reducing the need to overprovision read capacity units** |
 
-DAX use cases where it fits and where it does not. Evidence and reasoning have been added to the courseware's lists.
+DAX use cases where it fits and where it does not, with the reasoning.
 
 | Fits | Reason |
 |---|---|
@@ -1354,7 +1329,7 @@ DAX use cases where it fits and where it does not. Evidence and reasoning have b
 | Write-intensive applications | 🆕 A high volume of writes leads to **increased replication across DAX nodes in a cluster**, which increases resource consumption and the risk of availability issues |
 | Applications without many repeated reads | 🆕 DAX performs best when **cache hit rates exceed 90%.** Lower hit rates increase cache misses, which consumes more cluster resources |
 
-DAX characteristics the courseware does not cover: 🆕
+Other DAX characteristics: 🆕
 
 | Item | Content |
 |---|---|
@@ -1369,12 +1344,12 @@ DAX characteristics the courseware does not cover: 🆕
 
 ### 8.3 Requests DAX Handles 🔄
 
-The four read operations on courseware slide 48 match the current documentation. The write operations list is missing one.
+The operations DAX handles are as follows.
 
-| Category | Courseware statement | Verified content |
-|---|---|---|
-| Read | `GetItem`, `BatchGetItem`, `Query`, `Scan` | Same |
-| Write (write-through) | `BatchWriteItem`, `UpdateItem`, `DeleteItem`, `PutItem` | These four **plus `TransactWriteItems`** |
+| Category | Operations |
+|---|---|
+| Read | `GetItem`, `BatchGetItem`, `Query`, `Scan` |
+| Write (write-through) | `BatchWriteItem`, `UpdateItem`, `DeleteItem`, `PutItem`, `TransactWriteItems` |
 
 How read requests flow:
 
@@ -1393,7 +1368,7 @@ How write requests flow (write-through):
 
 So the operation is successful **only if the data is successfully written to both the table and DAX.** 🆕 If a write to DynamoDB fails for any reason, including throttling, the item is not cached in DAX and the exception is returned to the requester. `TransactWriteItems` is slightly different: once DynamoDB confirms the transaction completed, DAX returns success immediately and in the background makes a `TransactGetItems` request for each item to populate the item cache (to ensure serializable isolation).
 
-🆕 An important constraint the courseware does not cover: **DAX does not recognize table management operations such as `CreateTable` and `UpdateTable`.** If your application needs to perform these operations, it must access DynamoDB directly rather than using DAX.
+🆕 An important constraint: **DAX does not recognize table management operations such as `CreateTable` and `UpdateTable`.** If your application needs to perform these operations, it must access DynamoDB directly rather than using DAX.
 
 If the number of requests exceeds the capacity of a node, DAX returns a `ThrottlingException`. Monitor the `ThrottledRequestCount` metric in CloudWatch, and consider scaling up the cluster if you see these exceptions regularly.
 
@@ -1423,7 +1398,7 @@ Applications that use DAX should be designed **to tolerate eventually consistent
 
 ### 8.5 DAX Cluster Configuration 🆕
 
-The courseware covers DAX only at a conceptual level. The values you actually need when creating a cluster are as follows.
+The values you actually need when creating a DAX cluster are as follows.
 
 | Item | Content |
 |---|---|
@@ -1474,7 +1449,7 @@ For example, a `dax.t3.small` instance receives 24 CPU credits per hour, giving 
 
 ### 8.7 The DAX Client
 
-To use DAX from an application, you use the **DAX client** for your programming language. This is what the courseware instructor notes mean by "using DAX requires the Amazon DynamoDB Accelerator (DAX) SDK." The DAX client is designed for minimal disruption to your existing DynamoDB applications, with only **a few simple code modifications** needed.
+To use DAX from an application, you use the **DAX client** (the Amazon DynamoDB Accelerator SDK) for your programming language. The DAX client is designed for minimal disruption to your existing DynamoDB applications, with only **a few simple code modifications** needed.
 
 You deploy your application together with the DAX client on an EC2 instance, and at runtime the DAX client directs all of your application's DynamoDB API requests to the DAX cluster. If DAX can process a request directly it does so; otherwise it passes the request through to DynamoDB.
 
@@ -1484,23 +1459,23 @@ You deploy your application together with the DAX client on an EC2 instance, and
 
 ## 9. Changes from the Courseware
 
-These are items in the courseware (the instructor deck) that differ from current behavior. Because learners have the official courseware in hand, we record what changed and why.
+Since learners may have the official courseware in front of them, this section gathers in one place where this material diverges from it. The evidence behind every item marked new or corrected in the sections above is here.
 
-### 9.1 Courseware Statements That Do Not Match the Facts
+### 9.1 Differences from the Courseware
 
 | Item | Courseware statement | Verified content | Source |
 |---|---|---|---|
-| RCU example (slide 10) | "A query returning a 2 KB item is charged 1 RCU" | 1 RCU is the **strongly consistent** read figure. With the default eventually consistent read used by `GetItem`, `Query`, and `Scan` it is **0.5 RCU**, and a transactional read is 2 RCU. The 2 WCU in the same example is correct | [Read and write operations](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html) |
-| Sort key operator list (slide 30) | The body lists `=, <, >, <=, >=, AND, BETWEEN or begins_with`; the instructor notes list six without `BETWEEN` | `AND` is not a standalone operator but part of the `BETWEEN :v1 AND :v2` construct. The accurate list is `=`, `<`, `<=`, `>`, `>=`, `BETWEEN :v1 AND :v2`, and `begins_with(sortKeyName, :val)`, and `begins_with` cannot be used with a Number sort key. The body and the notes disagree with each other | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
-| Effect of a filter expression (slide 30) | "Combining the two gives you a refined dataset without reading more items than necessary" | DynamoDB calculates capacity from **item size**, not the amount of data returned, and consumed capacity is the same whether or not a `FilterExpression` is used. The same applies to `Scan`. What reduces the amount read is `KeyConditionExpression`, `Limit`, and secondary indexes | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
-| Condition expression syntax (slide 37) | `--condition-expression "Favorite NOT yes"` | In the condition expression grammar, `NOT` is a **logical operator that negates a single condition**, so it cannot be used as a binary comparison, and a value such as `yes` cannot be a literal and must be passed as an expression attribute value. The courseware's values file also lacks the value the condition needs | [Condition and filter expressions, operators, and functions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html) |
-| `@DynamoDbPartition` (slide 41) | The partition key annotation in the code | No such name exists in the official data class annotation list. The correct name is **`@DynamoDbPartitionKey`**, which the instructor notes on the same slide write correctly | [Data class annotations](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
-| `ddb.createTable("Notes")` (slide 18) | Passes a string literal | The slide annotation and instructor notes say the information in the `CreateTableRequest` object is used, but the code differs. `DynamoDbClient.createTable` has only overloads that take a request object or a builder `Consumer` | [Create a DynamoDB table if needed (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
-| `waitUntilTableExists("Notes")` (slide 18) | Passes a string literal | The official example uses `waiter.waitUntilTableExists(b -> b.tableName("Notes").build())`, passing a builder that constructs a `DescribeTableRequest` | [Create a DynamoDB table if needed (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
-| `NoteId` attribute type (slides 13 and 14) | Slide 13 code and notes say `S`; slide 14 notes say `N` | Valid `AttributeType` values are `S`, `N`, and `B`, so either is syntactically possible, but two definitions cannot coexist for one `Notes` table. Since the .NET example on slide 15 and every CLI example from slide 25 onward use `N`, this document standardizes on `N` | [AttributeDefinition](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeDefinition.html) |
-| .NET code typos (slide 16) | `AttributeName = "NoteId",I` and `},,` | A stray character and a duplicated comma mean the code does not compile. These are courseware typos, so the code was corrected without an AWS documentation source | — (see [Section 9.5](#95-items-we-could-not-verify)) |
-| query CLI JSON (slide 30) | `'{":userid":{"S":"StudentA"}'` | A missing closing brace makes JSON parsing fail. This is a courseware notation error | — (see [Section 9.5](#95-items-we-could-not-verify)) |
-| Enhanced client example (slides 41 and 42) | Class name `Note` versus `NotesItems` and `NotesItem` in the notes, `setNoteId(Integer)`, `note.setNodeId("9")` | Three names are mixed; the field and getter are `String` while only the setter is `Integer`, so it does not compile; and `setNodeId` is a nonexistent method. These are internal courseware inconsistencies | — (see [Section 9.5](#95-items-we-could-not-verify)) |
+| RCU example | "A query returning a 2 KB item is charged 1 RCU" | 1 RCU is the **strongly consistent** read figure. With the default eventually consistent read used by `GetItem`, `Query`, and `Scan` it is **0.5 RCU**, and a transactional read is 2 RCU. The 2 WCU in the same example is correct | [Read and write operations](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html) |
+| Sort key operator list | `=, <, >, <=, >=, AND, BETWEEN or begins_with` | `AND` is not a standalone operator but part of the `BETWEEN :v1 AND :v2` construct. The accurate list is `=`, `<`, `<=`, `>`, `>=`, `BETWEEN :v1 AND :v2`, and `begins_with(sortKeyName, :val)`, and `begins_with` cannot be used with a Number sort key | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
+| Effect of a filter expression | "Combining the two gives you a refined dataset without reading more items than necessary" | DynamoDB calculates capacity from **item size**, not the amount of data returned, and consumed capacity is the same whether or not a `FilterExpression` is used. The same applies to `Scan`. What reduces the amount read is `KeyConditionExpression`, `Limit`, and secondary indexes | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
+| Condition expression syntax | `--condition-expression "Favorite NOT yes"` | In the condition expression grammar, `NOT` is a **logical operator that negates a single condition**, so it cannot be used as a binary comparison, and a value such as `yes` cannot be a literal and must be passed as an expression attribute value. The values file must also contain the value the condition needs | [Condition and filter expressions, operators, and functions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html) |
+| `@DynamoDbPartition` | The partition key annotation in the code | No such name exists in the official data class annotation list. The correct name is **`@DynamoDbPartitionKey`** | [Data class annotations](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
+| `ddb.createTable("Notes")` | Passes a string literal | `DynamoDbClient.createTable` has only overloads that take a request object or a builder `Consumer`, so pass a `CreateTableRequest` | [Create a DynamoDB table if needed (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
+| `waitUntilTableExists("Notes")` | Passes a string literal | The official example uses `waiter.waitUntilTableExists(b -> b.tableName("Notes").build())`, passing a builder that constructs a `DescribeTableRequest` | [Create a DynamoDB table if needed (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
+| `NoteId` attribute type | The examples alternate between `S` and `N` | Valid `AttributeType` values are `S`, `N`, and `B`, so either is syntactically possible, but two definitions cannot coexist for one `Notes` table. Since the CLI examples use `N`, this material standardizes on `N` | [AttributeDefinition](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeDefinition.html) |
+| .NET code typos | `AttributeName = "NoteId",I` and `},,` | A stray character and a duplicated comma mean the code does not compile. These are code typos, so the code was corrected without an AWS documentation source | — (see [Section 9.5](#95-items-we-could-not-verify)) |
+| query CLI JSON | `'{":userid":{"S":"StudentA"}'` | A missing closing brace makes JSON parsing fail | — (see [Section 9.5](#95-items-we-could-not-verify)) |
+| Enhanced client example | Mixed class names, `setNoteId(Integer)`, `note.setNodeId("9")` | Class names are inconsistent; the field and getter are `String` while only the setter is `Integer`, so it does not compile; and `setNodeId` is a nonexistent method | — (see [Section 9.5](#95-items-we-could-not-verify)) |
 
 ### 9.2 Changed Behavior and Defaults
 
@@ -1525,35 +1500,35 @@ These are items in the courseware (the instructor deck) that differ from current
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
-| AWS SDK for Java 1.x (Java examples on slides 19–20) | **End-of-support on December 31, 2025** (announced January 12, 2024; maintenance mode July 31, 2024) | AWS SDK for Java 2.x (`software.amazon.awssdk`). Use `DynamoDbClient` for table operations, `DynamoDbEnhancedClient` for mapping, and `EnhancedDocument` to avoid data type descriptors | [Programming DynamoDB with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
-| Legacy conditional parameters (`AttributesToGet`, `Expected`, `KeyConditions`, `QueryFilter`, `ScanFilter`, `AttributeUpdates`, `ConditionalOperator`) | Discouraged. **Cannot be mixed** with expression parameters | `ProjectionExpression`, `ConditionExpression`, `KeyConditionExpression`, `FilterExpression`, `UpdateExpression`. The courseware already uses only expression-based parameters, which matches current guidance | [Legacy conditional parameters](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LegacyConditionalParameters.html) |
-| boto3 resources interface (not in the courseware; the path you meet when looking for a Python higher-level interface) | No plans to add new features. Existing interfaces continue to operate | `boto3.client('dynamodb')`. Resource instances are not thread safe and must be created per thread | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
+| AWS SDK for Java 1.x Java examples | **End-of-support on December 31, 2025** (announced January 12, 2024; maintenance mode July 31, 2024) | AWS SDK for Java 2.x (`software.amazon.awssdk`). Use `DynamoDbClient` for table operations, `DynamoDbEnhancedClient` for mapping, and `EnhancedDocument` to avoid data type descriptors | [Programming DynamoDB with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
+| Legacy conditional parameters (`AttributesToGet`, `Expected`, `KeyConditions`, `QueryFilter`, `ScanFilter`, `AttributeUpdates`, `ConditionalOperator`) | Discouraged. **Cannot be mixed** with expression parameters | `ProjectionExpression`, `ConditionExpression`, `KeyConditionExpression`, `FilterExpression`, `UpdateExpression`. This material already uses only expression-based parameters, which matches current guidance | [Legacy conditional parameters](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LegacyConditionalParameters.html) |
+| boto3 resources interface (the path you meet when looking for a Python higher-level interface) | No plans to add new features. Existing interfaces continue to operate | `boto3.client('dynamodb')`. Resource instances are not thread safe and must be created per thread | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
 
-### 9.4 Added After the Courseware
+### 9.4 What This Material Adds
 
-| Item | Summary | Source |
-|---|---|---|
-| PartiQL | A SQL-compatible query language. `ExecuteStatement`, `BatchExecuteStatement`, `ExecuteTransaction`. Runs from the console, NoSQL Workbench, CLI, and APIs. DynamoDB supports only a subset and does not support Amazon Ion | [PartiQL for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html) |
-| Transactions | `TransactWriteItems` (up to 100 actions, 100 distinct items, 4 MB) and `TransactGetItems` (same). Actions are `Put`, `Update`, `Delete`, `ConditionCheck`. No index targets, no duplicate items, 10-minute client token, `TransactionCanceledException`, serializable isolation | [DynamoDB transactions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html) |
-| Secondary index quotas | Up to 5 LSIs per table; default quota of 20 GSIs per table (adjustable). Projected attributes limited to 100 across all indexes (`INCLUDE` only). LSIs have a 10 GB limit per partition key value | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
-| Consistency difference between GSI and LSI | GSIs support eventually consistent reads only; specifying `ConsistentRead=true` raises `ValidationException` | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
-| Other table quotas | Binary units (1 KB = 1024 B), no table size limit, initial quota of 2,500 tables per account per Region, 40,000/40,000 throughput per table, 80,000/80,000 provisioned per account | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
-| Values for burst and adaptive capacity | Burst retains up to five minutes (300 seconds) of unused capacity. Adaptive capacity is automatic and free. Partition limits are 3,000 reads and 1,000 writes. Item collections are not split when an LSI exists | [Burst and adaptive capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html) |
-| On-demand initial throughput | New on-demand tables sustain 4,000 writes and 12,000 reads per second immediately, and instantly accommodate double the previous peak. Maximum throughput settings bound costs | [On-demand capacity mode](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html) |
-| `CreateTable` asynchronous behavior | `CREATING` → `ACTIVE`, reads and writes only on `ACTIVE`. Table names unique within a Region; only one table with secondary indexes can be `CREATING` at a time | [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html) |
-| `BatchWriteItem` details | The difference between 400 KB once stored and the JSON representation in transit, `UnprocessedItems` plus exponential backoff, no per-request conditions, key length limits (partition 2,048 B, sort 1,024 B) | [BatchWriteItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html) |
-| `BatchGetItem` details | `ValidationException` beyond 100 items, partial results when more than 1 MB per partition is requested, `UnprocessedKeys`, no ordering guarantee, `ValidationException` on duplicate keys | [BatchGetItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchGetItem.html) |
-| `ScannedCount` and `Count` for `Scan` | `ScannedCount` is the pre-filter evaluated count and `Count` the post-filter count; a large former with a small latter is inefficient. Scanning an LSI consumes base table capacity, and a GSI consumes index capacity | [Scan documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
-| Parallel scan segment assignment | Segments are assigned by partition key hash, so the same partition key always lands in the same segment. Distribution can be uneven, so more segments do not guarantee better performance | [Scan documentation — Parallel scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
-| The three interfaces in Java 2.x | Low-level / enhanced client / Document (`EnhancedDocument`, `fromJson`, `toJson`). `@DynamoDbImmutable` for immutable classes. `queryPaginator` and `scanPaginator` for automatic pagination | [Programming DynamoDB with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
-| Enhanced client annotation list | `@DynamoDbAtomicCounter`, `@DynamoDbAutoGeneratedTimestampAttribute`, `@DynamoDbAutoGeneratedUuid`, `@DynamoDbVersionAttribute`, `@DynamoDbUpdateBehavior`, `@DynamoDbFlatten`, and more. Attribute annotations go on the getter or the setter, not both | [Data class annotations](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
-| Enhanced client attribute naming rule | Tables generated from a data class have attribute names beginning with a lowercase letter. Use `@DynamoDbAttribute(NAME)` to begin with an uppercase letter | [Create a DynamoDB table if needed (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
-| Optimistic locking in the .NET object persistence model | Supports optimistic locking to ensure you have the latest copy of the item you are about to update | [.NET object persistence model](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html) |
-| DAX handling of strongly consistent reads | Strongly consistent reads pass through to DynamoDB and are **not cached.** DAX does not recognize table management operations | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
-| The two DAX caches | The item cache (TTL 5 minutes by default) and the query cache are separate and operate independently. Item cache writes do not affect the query cache. LRU is always enabled | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
-| DAX cluster configuration | Up to 11 nodes per cluster (1 primary + 10 replicas), at least 3 nodes across AZs for production, 500 tables per cluster, TCP port 8111, `dax://` and `daxs://` endpoints, parameter groups | [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
-| DAX node types | Fixed performance (R4, R5, R7) and burstable (T2 standard mode, T3 unlimited mode). `dax.t3.small` gets 24 credits per hour, 20% baseline, up to 576 credits | [DAX T3/T2 burstable instances](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.Burstable.html) |
-| DAX operational constraints | EC2-VPC only, best above a 90% cache hit rate, top-level attribute name metadata retained indefinitely, encryption at rest and in transit supported, Go, Java, Node.js, Python, and .NET supported | [DAX overview](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html) |
+| Item | Why it was added | Summary | Source |
+|---|---|---|---|
+| PartiQL | The courseware covers only the classic APIs, leaving the SQL-compatible query path blank | A SQL-compatible query language. `ExecuteStatement`, `BatchExecuteStatement`, `ExecuteTransaction`. Runs from the console, NoSQL Workbench, CLI, and APIs. DynamoDB supports only a subset and does not support Amazon Ion | [PartiQL for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html) |
+| Transactions | All-or-nothing across multiple items or tables is sometimes needed but absent from the courseware | `TransactWriteItems` (up to 100 actions, 100 distinct items, 4 MB) and `TransactGetItems` (same). Actions are `Put`, `Update`, `Delete`, `ConditionCheck`. No index targets, no duplicate items, 10-minute client token, `TransactionCanceledException`, serializable isolation | [DynamoDB transactions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html) |
+| Secondary index quotas | The count and size limits you hit when designing indexes are absent from the courseware | Up to 5 LSIs per table; default quota of 20 GSIs per table (adjustable). Projected attributes limited to 100 across all indexes (`INCLUDE` only). LSIs have a 10 GB limit per partition key value | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
+| Consistency difference between GSI and LSI | Specifying a strongly consistent read on a GSI errors, a trap worth stating | GSIs support eventually consistent reads only; specifying `ConsistentRead=true` raises `ValidationException` | [Query API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html) |
+| Other table quotas | The courseware links only, leaving the actual limits unknown | Binary units (1 KB = 1024 B), no table size limit, initial quota of 2,500 tables per account per Region, 40,000/40,000 throughput per table, 80,000/80,000 provisioned per account | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
+| Values for burst and adaptive capacity | The courseware mentions the concept only, without concrete values | Burst retains up to five minutes (300 seconds) of unused capacity. Adaptive capacity is automatic and free. Partition limits are 3,000 reads and 1,000 writes. Item collections are not split when an LSI exists | [Burst and adaptive capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html) |
+| On-demand initial throughput | You need the instant-accommodation range and throttling conditions of on-demand scaling | New on-demand tables sustain 4,000 writes and 12,000 reads per second immediately, and instantly accommodate double the previous peak. Maximum throughput settings bound costs | [On-demand capacity mode](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html) |
+| `CreateTable` asynchronous behavior | You need to know why reads and writes fail right after creation | `CREATING` → `ACTIVE`, reads and writes only on `ACTIVE`. Table names unique within a Region; only one table with secondary indexes can be `CREATING` at a time | [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html) |
+| `BatchWriteItem` details | Batch write atomicity, retries, and limits come up often in practice but are absent from the courseware | The difference between 400 KB once stored and the JSON representation in transit, `UnprocessedItems` plus exponential backoff, no per-request conditions, key length limits (partition 2,048 B, sort 1,024 B) | [BatchWriteItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html) |
+| `BatchGetItem` details | Not knowing partial results and no ordering throws off batch-read logic | `ValidationException` beyond 100 items, partial results when more than 1 MB per partition is requested, `UnprocessedKeys`, no ordering guarantee, `ValidationException` on duplicate keys | [BatchGetItem API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchGetItem.html) |
+| `ScannedCount` and `Count` for `Scan` | Distinguishing the two counters lets you diagnose an inefficient scan | `ScannedCount` is the pre-filter evaluated count and `Count` the post-filter count; a large former with a small latter is inefficient. Scanning an LSI consumes base table capacity, and a GSI consumes index capacity | [Scan documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
+| Parallel scan segment assignment | You need to know why adding segments does not always speed things up | Segments are assigned by partition key hash, so the same partition key always lands in the same segment. Distribution can be uneven, so more segments do not guarantee better performance | [Scan documentation — Parallel scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) |
+| The three interfaces in Java 2.x | The courseware presents only the enhanced client, leaving the other two blank | Low-level / enhanced client / Document (`EnhancedDocument`, `fromJson`, `toJson`). `@DynamoDbImmutable` for immutable classes. `queryPaginator` and `scanPaginator` for automatic pagination | [Programming DynamoDB with the AWS SDK for Java 2.x](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html) |
+| Enhanced client annotation list | Annotations for auto-generation and versioning are useful in practice but absent from the courseware | `@DynamoDbAtomicCounter`, `@DynamoDbAutoGeneratedTimestampAttribute`, `@DynamoDbAutoGeneratedUuid`, `@DynamoDbVersionAttribute`, `@DynamoDbUpdateBehavior`, `@DynamoDbFlatten`, and more. Attribute annotations go on the getter or the setter, not both | [Data class annotations](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-anno-index.html) |
+| Enhanced client attribute naming rule | You need to know the trap of table attribute names starting lowercase | Tables generated from a data class have attribute names beginning with a lowercase letter. Use `@DynamoDbAttribute(NAME)` to begin with an uppercase letter | [Create a DynamoDB table if needed (Java 2.x)](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/ddb-en-client-gs-ddbtable.html) |
+| Optimistic locking in the .NET object persistence model | A means of preventing concurrent update conflicts, absent from the courseware | Supports optimistic locking to ensure you have the latest copy of the item you are about to update | [.NET object persistence model](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKHighLevel.html) |
+| DAX handling of strongly consistent reads | Not knowing strongly consistent reads are not cached leads to misunderstanding | Strongly consistent reads pass through to DynamoDB and are **not cached.** DAX does not recognize table management operations | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
+| The two DAX caches | Knowing the item and query caches are independent is needed to understand cache behavior | The item cache (TTL 5 minutes by default) and the query cache are separate and operate independently. Item cache writes do not affect the query cache. LRU is always enabled | [DAX: How it works](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html) |
+| DAX cluster configuration | The courseware covers DAX only conceptually, without the real configuration values | Up to 11 nodes per cluster (1 primary + 10 replicas), at least 3 nodes across AZs for production, 500 tables per cluster, TCP port 8111, `dax://` and `daxs://` endpoints, parameter groups | [DAX cluster components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html) |
+| DAX node types | The instance families and modes needed for cluster sizing are absent from the courseware | Fixed performance (R4, R5, R7) and burstable (T2 standard mode, T3 unlimited mode). `dax.t3.small` gets 24 credits per hour, 20% baseline, up to 576 credits | [DAX T3/T2 burstable instances](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.Burstable.html) |
+| DAX operational constraints | You need the platform, hit-rate, and encryption premises to judge adoption | EC2-VPC only, best above a 90% cache hit rate, top-level attribute name metadata retained indefinitely, encryption at rest and in transit supported, Go, Java, Node.js, Python, and .NET supported | [DAX overview](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html) |
 
 ### 9.5 Items We Could Not Verify
 
@@ -1564,9 +1539,9 @@ We record these honestly. Confirm them before stating them definitively in class
 | The value applied when `BillingMode` is omitted from `CreateTable` | Two things were confirmed: that `BillingMode` is not a required parameter of `CreateTable` (CreateTable API documentation), and that on-demand is described as "the default and recommended throughput option" (on-demand capacity mode documentation). However, **we did not find a sentence stating which value applies when `BillingMode` is omitted entirely from an API call.** That calling `createTable()` without a builder on the enhanced client yields on-demand was confirmed in the Java developer guide, but that is SDK high-level behavior and cannot be assumed identical to the API default. In practice it is safer to **state `BillingMode` explicitly** |
 | The full list of DAX node types and their specifications | The existence of the fixed performance family (R4, R5, R7) and the burstable family (T2, T3), the mode difference between them, and the `dax.t3.small` credit figures were confirmed in the DAX T3/T2 documentation. **The full list of available node types is pointed to the pricing page by the documentation and was not retrieved for this document.** Check the pricing page directly when sizing a cluster |
 | The DAX client distribution site | The DAX documentation notes that clients for various languages are available on a separate distribution site. That site is an HTTP-only address and is not on this project's list of citable domains, so **it was not retrieved.** Only the fact that the documentation links to it was confirmed |
-| .NET code typos on slide 16 (`,I`, `},,`) | Notation errors that prevent compilation. These are not the kind of fact you verify against AWS documentation but courseware typos, so only the code was corrected and no source citation was attached |
-| The missing closing brace in the query CLI on slide 30 | Not a documentation verification target for the same reason. It is a notation error that breaks JSON parsing, and only the brace was restored |
-| Name and type inconsistencies in the enhanced client example on slides 41 and 42 | The three mixed class names, the `setNoteId(Integer)` type mismatch, and the `setNodeId` typo are all internal courseware inconsistencies. They are not verifiable against external documentation, so only the names and types were aligned |
-| Whether `NoteId` should be defined as `S` or `N` | We confirmed that valid `AttributeType` values are `S`, `N`, and `B` and that primary key attributes must be string, number, or binary. **Which one is the "correct" design for this application cannot be determined from AWS documentation.** This document chose `N` on the majority evidence that the .NET example on slide 15 and every CLI example from slide 25 onward use `N` |
+| .NET code typos (`,I`, `},,`) | Notation errors that prevent compilation. These are not the kind of fact you verify against AWS documentation but code typos, so only the code was corrected and no source citation was attached |
+| The missing closing brace in the query CLI | Not a documentation verification target for the same reason. It is a notation error that breaks JSON parsing, and only the brace was restored |
+| Name and type inconsistencies in the enhanced client example | The mixed class names, the `setNoteId(Integer)` type mismatch, and the `setNodeId` typo are all internal code inconsistencies. They are not verifiable against external documentation, so only the names and types were aligned |
+| Whether `NoteId` should be defined as `S` or `N` | We confirmed that valid `AttributeType` values are `S`, `N`, and `B` and that primary key attributes must be string, number, or binary. **Which one is the "correct" design for this application cannot be determined from AWS documentation.** This material chose `N` on the majority evidence that the CLI examples use `N` |
 | Whether the .NET document model still supports synchronous methods | The .NET examples in this document use `GetItemAsync` and `UpdateItemAsync`, matching the official .NET (v4) DynamoDB code examples that use async. **We did not separately confirm whether the document model's `Table` class still exposes synchronous `GetItem` and `Update`.** The document model documentation names the provided methods as `PutItem`, `GetItem`, and `DeleteItem` |
-| Lab 3 workflow (slides 51 and 52) | The original deck has only a diagram with no text. There was no source text to summarize, so this document does not cover it |
+| Lab 3 workflow | The original material has only a diagram with no text. There was no source text to summarize, so this material does not cover it |
