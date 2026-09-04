@@ -22,12 +22,12 @@
 
 > **표기 설명**
 >
-> - 🆕 원본 강사용 덱에 없는 내용. AWS 공식 문서로 확인한 항목입니다.
-> - 🔄 원본 강사용 덱의 내용이 현재와 달라 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [13장](#13-교재-대비-변경-사항)에 정리했습니다.
+> - 🆕 강의에서 다루지 않은 내용. AWS 공식 문서로 확인해 더한 항목입니다.
+> - 🔄 강의 당시와 달라져 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [13장](#13-교재-대비-변경-사항)에 모아 두었습니다.
 > - 검증일: 2026년 8월 25일. 이후 문서가 갱신될 수 있으니 시험·실무 적용 전에는 링크된 원문을 확인하세요.
-> - **이 모듈은 교재 이후 바뀐 것이 가장 많은 모듈입니다.** X-Ray SDK 와 데몬은 2026년 2월 25일 유지 관리 모드에 들어갔고, X-Ray 콘솔은 더 이상 개발되지 않으며, 서비스 맵은 CloudWatch 콘솔의 트레이스 맵으로 통합되었습니다. 덱의 계측 코드를 그대로 따라가면 지금 권장되지 않는 경로를 배우게 됩니다([13.3절](#133-비권장-및-지원-종료된-항목)).
-> - 용어를 하나로 통일했습니다. `observability` 는 **관측가능성**, `metric` 은 **지표**, `dimension` 은 **측정 기준**, `alarm` 은 **경보**, `trace` 는 **트레이스**, `segment` 는 **세그먼트**, `subsegment` 는 **하위 세그먼트**, `sampling` 은 **샘플링**, `span` 은 **스팬**으로 씁니다. 교재가 같은 것을 서로 다르게 부르는 곳은 [13.1절](#131-교재-기술이-사실과-다른-항목)에 밝혔습니다.
-> - 교재의 CLI 예시와 C# 예시는 **그대로 실을 수 없는 오류가 있어 교정해 실었습니다.** 무엇을 고쳤는지는 해당 절의 교정 표에 적었습니다.
+> - **이 모듈은 이 과정에서 가장 많이 바뀐 영역입니다.** X-Ray SDK 와 데몬은 2026년 2월 25일 유지 관리 모드에 들어갔고, X-Ray 콘솔은 더 이상 개발되지 않으며, 서비스 맵은 CloudWatch 콘솔의 트레이스 맵으로 통합되었습니다. 예전 계측 코드를 그대로 따라가면 지금 권장되지 않는 경로를 배우게 됩니다([13.3절](#133-비권장-및-지원-종료된-항목)).
+> - 용어를 하나로 통일했습니다. `observability` 는 **관측가능성**, `metric` 은 **지표**, `dimension` 은 **측정 기준**, `alarm` 은 **경보**, `trace` 는 **트레이스**, `segment` 는 **세그먼트**, `subsegment` 는 **하위 세그먼트**, `sampling` 은 **샘플링**, `span` 은 **스팬**으로 씁니다. 외부 문서로 판별할 수 없는 항목은 표기를 붙이지 않고 본문에서 짚은 뒤 [13장](#13-교재-대비-변경-사항)에 모았습니다.
+> - CLI 예시와 C# 예시는 **그대로 실을 수 없는 오류가 있어 교정해 실었습니다.** 무엇을 고쳤는지는 해당 절의 교정 표에 적었습니다.
 
 ---
 
@@ -43,23 +43,23 @@
 - CloudWatch Application Insights를 사용한 애플리케이션 모니터링 설명
 - AWS X-Ray를 사용한 애플리케이션 디버깅 설명
 
-슬라이드 3(모듈 목표)과 슬라이드 42(모듈 요약)가 같은 다섯 항목을 싣는데 첫 항목의 표기가
-다릅니다. 이 문서는 슬라이드 3을 기준으로 통일했습니다([13.1절](#131-교재-기술이-사실과-다른-항목)).
+모듈 목표와 모듈 요약이 같은 다섯 항목을 싣는데 첫 항목의 표기가 다릅니다. 이 문서는 모듈
+목표 쪽 표기를 기준으로 통일했습니다([13.1절](#131-교재와-다른-점)).
 
-### 이 모듈에서 덱이 다루지 않는 것
+### 이 주제가 넓히는 범위
 
-두 번째 목표는 "**현대적** 개발"을 말하는데, 덱이 드는 도구는 CloudWatch와 X-Ray 둘뿐이고
-그 안에서도 다루는 범위가 좁습니다. 강의에서 반드시 나오는 질문이 덱에 답이 없습니다.
+두 번째 목표는 "**현대적** 개발"을 말하지만, 핵심 도구는 CloudWatch와 X-Ray 둘이고 그 안에서도
+좁은 범위만 다루기 쉽습니다. 강의에서 반드시 나오는 다음 질문들은 그 좁은 범위 밖에 있습니다.
 
-| 덱에 없는 것 | 왜 문제인가 | 이 문서에서 다룬 위치 |
+| 좁은 범위 밖의 주제 | 왜 중요한가 | 이 문서에서 다룬 위치 |
 |---|---|---|
-| 로그를 **조회·분석하는 방법** | 덱은 로그를 CloudWatch로 보내는 것까지만 다룹니다. 모아 놓고 읽는 방법이 없으면 관측가능성이 성립하지 않습니다 | [7.4절](#74-cloudwatch-logs-insights) |
-| 로그 **보존 기간** | 로그 그룹이 "같은 보존 기간을 공유한다"고만 하고 기본값을 밝히지 않습니다. 기본값은 무기한이라 방치하면 계속 과금됩니다 | [7.3절](#73-보존-기간과-로그-클래스) |
-| X-Ray **샘플링** | 트레이싱 비용과 부하를 좌우하는 핵심인데 덱에 한 줄도 없습니다 | [11.4절](#114-샘플링) |
-| 트레이싱을 **켜는 설정** | 덱은 SDK 코드만 보여 주고, Lambda·API Gateway에서 트레이싱을 켜는 설정을 다루지 않습니다 | [12.1절](#121-트레이싱을-켜는-설정) |
-| 사용자 지정 지표 **게시 방법** | 슬라이드 12에 "사용자 지정 데이터"가 나오지만 `PutMetricData` 언급이 없습니다 | [5.4절](#54-사용자-지정-지표-게시) |
-| **대시보드** | 슬라이드 20 노트에 "CloudWatch 대시보드를 자동으로 생성"이라고만 나오고 대시보드 자체 설명이 없습니다 | [4.3절](#43-대시보드와-크로스-계정-관측가능성) |
-| **현재 권장되는 계측 방법** | 덱은 X-Ray SDK를 유일한 경로로 제시합니다. 지금은 OpenTelemetry가 권장 경로입니다 | [12.3절](#123-opentelemetry-로의-전환) |
+| 로그를 **조회·분석하는 방법** | 로그를 CloudWatch로 보내는 것만으로는 부족합니다. 모아 놓고 읽는 방법이 없으면 관측가능성이 성립하지 않습니다 | [7.4절](#74-cloudwatch-logs-insights) |
+| 로그 **보존 기간** | 로그 그룹은 같은 보존 기간을 공유하며, 기본값은 무기한이라 방치하면 계속 과금됩니다 | [7.3절](#73-보존-기간과-로그-클래스) |
+| X-Ray **샘플링** | 트레이싱 비용과 부하를 좌우하는 핵심입니다 | [11.4절](#114-샘플링) |
+| 트레이싱을 **켜는 설정** | 계측 코드만으로는 부족하고, Lambda·API Gateway에서 트레이싱을 켜는 설정이 필요합니다 | [12.1절](#121-트레이싱을-켜는-설정) |
+| 사용자 지정 지표 **게시 방법** | "사용자 지정 데이터"를 흐름도로만 보면 정작 `PutMetricData` 로 어떻게 게시하는지가 빠집니다 | [5.4절](#54-사용자-지정-지표-게시) |
+| **대시보드** | "CloudWatch 대시보드를 자동으로 생성"한다는 언급만으로는 대시보드 자체를 이해하기 어렵습니다 | [4.3절](#43-대시보드와-크로스-계정-관측가능성) |
+| **현재 권장되는 계측 방법** | X-Ray SDK 를 유일한 경로로 배우기 쉽지만, 지금은 OpenTelemetry가 권장 경로입니다 | [12.3절](#123-opentelemetry-로의-전환) |
 
 ### 이 모듈의 위치
 
@@ -82,7 +82,7 @@ Amazon CloudWatch와 AWS X-Ray가 더해집니다.
 
 ### 2.1 무엇이 다른가
 
-교재가 이 모듈에서 가장 강조하는 한 문장입니다.
+이 모듈에서 가장 강조되는 한 문장입니다.
 
 > 모니터링을 사용하면 **문제의 존재**를 확인할 수 있습니다.
 > 관측가능성을 사용하면 **문제의 이유**를 확인할 수 있습니다.
@@ -105,13 +105,13 @@ Amazon CloudWatch와 AWS X-Ray가 더해집니다.
 | 분석 | 시스템 상태를 이해하여 모니터링에 도움이 되는 컨텍스트를 제공합니다 |
 | 조치 | 운영 변경 사항에 대한 응답을 자동화합니다 |
 
-수집 → 모니터링 → 분석 → 조치가 강사 노트의 서술 순서입니다. 슬라이드 본문의 배치 순서는
-조치와 분석이 뒤바뀌어 있습니다.
+서술 순서는 수집 → 모니터링 → 분석 → 조치입니다. 일부 원본 자료는 조치와 분석의 배치 순서가
+뒤바뀌어 있으나, 활동의 흐름상 분석이 조치에 앞섭니다.
 
 ### 2.3 관측가능성 계획
 
-계획에 포함할 요소를 교재는 네 가지로 정리합니다. 슬라이드 6과 7이 같은 본문을 반복하므로
-여기서는 한 절로 합쳤습니다([13.1절](#131-교재-기술이-사실과-다른-항목)).
+계획에 포함할 요소는 네 가지입니다. 일부 원본 자료는 같은 내용을 두 곳에 나누어 반복하므로,
+여기서는 한 절로 합쳤습니다([13.1절](#131-교재와-다른-점)).
 
 | 요소 | 설명 |
 |---|---|
@@ -133,9 +133,9 @@ Amazon CloudWatch와 AWS X-Ray가 더해집니다.
 정보에 근거하여 무엇을 어떻게 모니터링할지 결정하고, 모니터링 계획에서 작업과 인사이트를
 캡처하고, 반복합니다.
 
-> **주의.** 이 "지식 주기" 도식은 교재 고유의 그림입니다. AWS 공식 문서에서 같은 도식을
-> 찾지 못했으므로 이 문서는 교재 내용을 옮기는 데 그치고, 공식 문서에 있는 것처럼
-> 서술하지 않습니다([13.5절](#135-검증하지-못한-항목)).
+> **주의.** 이 "지식 주기" 도식은 AWS 공식 문서에서 같은 형태를 찾지 못했습니다. 그래서 이
+> 문서는 개념을 소개하는 데 그치고, 공식 문서에 있는 것처럼 서술하지 않습니다
+> ([13.5절](#135-검증하지-못한-항목)).
 
 ### 2.4 관측가능성이 필요한 이유
 
@@ -162,10 +162,16 @@ Amazon CloudWatch와 AWS X-Ray가 더해집니다.
 관측가능성은 세 가지를 각각 수집하는 데 그치지 않고 **서로 상관 관계를 파악**해야 성립합니다.
 어떤 지표가 튀었을 때 같은 시각의 로그와 트레이스로 곧바로 넘어갈 수 있어야 원인을 찾습니다.
 
-> **교재 내부 불일치.** 슬라이드 8과 9는 3대 요소를 `로깅 / 지표 / 트레이싱` 으로 쓰는데,
-> 슬라이드 25(AWS X-Ray란?)의 같은 다이어그램은 `로깅 / 모니터링 / 트레이싱` 으로 씁니다.
-> 슬라이드 38 지식 확인 2번의 정답 해설이 "지표, 트레이스 및 로그"라고 못박으므로
-> 슬라이드 25가 틀린 쪽입니다([13.1절](#131-교재-기술이-사실과-다른-항목)).
+```text
+     지표 (Metrics)   ──┐   CloudWatch 지표
+     로그 (Logs)      ──┼──▶  관측가능성  ──▶  문제의 존재와 이유를 파악
+     트레이스 (Traces) ──┘   CloudWatch Logs / AWS X-Ray
+```
+
+> **원본 자료 안의 표기 차이.** 일부 원본 자료는 3대 요소를 `로깅 / 지표 / 트레이싱` 으로 쓰고,
+> 같은 다이어그램의 다른 자리에서는 `로깅 / 모니터링 / 트레이싱` 으로 씁니다. 정답 해설이 "지표,
+> 트레이스 및 로그"라고 못박으므로, 올바른 3대 요소는 **지표 / 로그 / 트레이스**입니다
+> ([13.1절](#131-교재와-다른-점)).
 
 ### 3.2 세 요소가 실제로 어떻게 이어지는가 🆕
 
@@ -196,7 +202,7 @@ Amazon CloudWatch와 AWS X-Ray가 더해집니다.
 
 ### 4.1 CloudWatch란
 
-교재의 한 줄 정의는 **"CloudWatch는 데이터 포인트 리포지토리입니다"** 입니다. 지표를 받아
+한 줄로 정의하면 **"CloudWatch는 데이터 포인트 리포지토리입니다"** 입니다. 지표를 받아
 저장하고, 저장한 지표로 통계를 계산해 소비자에게 내주는 구조입니다.
 
 | 구성 | 내용 |
@@ -210,8 +216,8 @@ Amazon EC2 같은 AWS 서비스가 지표를 리포지토리에 저장하고, �
 
 ### 4.2 경보로 할 수 있는 조치 🔄
 
-교재는 조치 대상을 EC2 인스턴스 중지·시작·종료, EC2 Auto Scaling, Amazon SNS로 적습니다.
-현재 목록은 더 넓고, **"시작"은 목록에 없습니다.**
+조치 대상을 EC2 인스턴스 중지·시작·종료, EC2 Auto Scaling, Amazon SNS로만 아는 경우가 많지만,
+현재 목록은 더 넓고 **"시작"은 목록에 없습니다.**
 
 | 대상 | ARN 형태 |
 |---|---|
@@ -224,14 +230,14 @@ Amazon EC2 같은 AWS 서비스가 지표를 리포지토리에 저장하고, �
 
 경보 작업 배열은 최대 5개까지 지정할 수 있습니다. **EC2 인스턴스 "시작"은 유효 값이
 아닙니다.** 중지된 인스턴스를 되살리는 작업은 `recover`(복구)이고 이는 하드웨어 장애 시
-동일 인스턴스를 새 호스트로 복구하는 것으로, 교재가 말하는 "시작"과 다릅니다.
+동일 인스턴스를 새 호스트로 복구하는 것으로, 흔히 말하는 "시작"과 다릅니다.
 
 > — 출처: [PutMetricAlarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html)
 
 ### 4.3 대시보드와 크로스 계정 관측가능성 🆕
 
-교재는 대시보드를 "Application Insights가 자동으로 만들어 준다"는 문맥에서 한 번 언급하고
-넘어갑니다. 대시보드는 독립적인 기능입니다.
+대시보드는 "Application Insights가 자동으로 만들어 준다"는 문맥에서 스치듯 언급되기 쉽지만,
+그 자체로 독립적인 기능입니다.
 
 | 기능 | 내용 |
 |---|---|
@@ -240,7 +246,7 @@ Amazon EC2 같은 AWS 서비스가 지표를 리포지토리에 저장하고, �
 | 여러 리전 | 서로 다른 리전에 흩어진 리소스를 한 화면에서 봅니다 |
 | 필요 권한 | `cloudwatch:GetDashboard` · `ListDashboards`(보기), `PutDashboard`(생성·수정), `DeleteDashboards`(삭제) |
 
-교재는 "지표는 생성된 리전에만 존재한다"까지만 말합니다. 그 제약을 넘는 방법이 있습니다.
+"지표는 생성된 리전에만 존재한다"는 제약이 있지만, 이를 넘는 방법이 있습니다.
 
 **크로스 계정 관측가능성**을 설정하면 모니터링 계정에서 다음을 할 수 있습니다.
 
@@ -280,8 +286,7 @@ Amazon EC2 같은 AWS 서비스가 지표를 리포지토리에 저장하고, �
 
 ### 5.2 보존 기간과 해상도 🆕
 
-덱에 없는 내용인데 실무에서 가장 먼저 부딪히는 지점입니다. 지표 보존 기간은 **기간(period)마다
-다릅니다.**
+실무에서 가장 먼저 부딪히는 지점입니다. 지표 보존 기간은 **기간(period)마다 다릅니다.**
 
 | 데이터 포인트의 기간 | 보존 |
 |---|---|
@@ -308,7 +313,7 @@ Amazon EC2 같은 AWS 서비스가 지표를 리포지토리에 저장하고, �
 ### 5.3 네임스페이스와 측정 기준
 
 지표는 **먼저 네임스페이스별로** 묶이고, 그다음 각 네임스페이스 안에서 **측정 기준 조합별로**
-묶입니다. 교재는 DynamoDB 지표가 `Table Metrics` 와 `GlobalSecondaryIndex` 로 나뉘는 예를 듭니다.
+묶입니다. 예를 들어 DynamoDB 지표는 `Table Metrics` 와 `GlobalSecondaryIndex` 로 나뉩니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -341,7 +346,7 @@ Amazon EC2 같은 일부 AWS 서비스 지표에 대해서는 CloudWatch가 측�
 
 ### 5.4 사용자 지정 지표 게시 🆕
 
-슬라이드 12에 "사용자 지정 데이터"가 화살표로 등장하지만 게시 방법이 덱에 없습니다.
+"사용자 지정 데이터"는 흐름도에 화살표로 등장하기 쉽지만, 실제 게시 방법은 다음과 같습니다.
 
 ```bash
 # 단일 데이터 포인트 게시
@@ -411,7 +416,7 @@ aws cloudwatch put-metric-data \
 ### 5.5 OpenTelemetry 지표 🆕
 
 CloudWatch는 OTLP로 전송된 OpenTelemetry 지표를 지원합니다. **기존 CloudWatch 지표와 데이터
-모델이 다릅니다.** 교재는 이 모델을 다루지 않습니다.
+모델이 다릅니다.** 이 데이터 모델은 별도로 이해해야 합니다.
 
 | 개념 | 기존 CloudWatch 지표 | OpenTelemetry 지표 |
 |---|---|---|
@@ -434,9 +439,9 @@ CloudWatch는 OTLP로 전송된 OpenTelemetry 지표를 지원합니다. **기�
 
 ## 6. 경보
 
-### 6.1 교재의 경보 시나리오
+### 6.1 기본 경보 시나리오
 
-교재는 임계값 3, 최소 위반 3개 기간인 경보를 그림으로 설명합니다.
+임계값 3, 최소 위반 3개 기간인 경보를 예로 들면 다음과 같이 동작합니다.
 
 | 기간 | 값 | 상태 |
 |---|---|---|
@@ -445,12 +450,12 @@ CloudWatch는 OTLP로 전송된 OpenTelemetry 지표를 지원합니다. **기�
 | 6 | 임계값 아래로 복귀 | `OK` |
 | 9 | 다시 위반하지만 1개 기간뿐 | `OK` 유지 |
 
-슬라이드 라벨로 정리하면 "기간 하나만 임계값을 초과했습니다. 작업이 호출되지 않습니다."와
-"3개 기간이 임계값을 초과하여 작업이 호출되었습니다."입니다.
+정리하면 "기간 하나만 임계값을 초과하면 작업이 호출되지 않고", "3개 기간이 임계값을 초과하면
+작업이 호출됩니다."
 
 ### 6.2 실제 평가 방식은 M out of N 입니다 🔄
 
-교재는 "**연속** 기간 3개"라고만 설명합니다. 실제 동작은 그것보다 유연하고, 이 차이를 모르면
+"**연속** 기간 3개"라고만 이해하기 쉽지만, 실제 동작은 그것보다 유연합니다. 이 차이를 모르면
 경보를 잘못 설계합니다.
 
 | 파라미터 | 의미 |
@@ -459,7 +464,7 @@ CloudWatch는 OTLP로 전송된 OpenTelemetry 지표를 지원합니다. **기�
 | Datapoints to Alarm (M) | 경보를 발생시키기 위해 위반해야 하는 데이터 포인트 수 |
 
 M이 N보다 작으면 **"N개 중 M개" 경보**가 되고, 위반이 연속이 아니어도 경보가 발생합니다.
-교재의 시나리오는 M과 N이 모두 3인 특수한 경우일 뿐입니다.
+6.1절의 시나리오는 M과 N이 모두 3인 특수한 경우일 뿐입니다.
 
 여기에 두 가지가 더 있습니다.
 
@@ -487,7 +492,7 @@ N개 이상 확보되면 **누락 데이터 처리 설정은 무시됩니다.**
 | `ignore` | 현재 경보 상태를 유지합니다 |
 | `missing` | 평가 범위의 데이터가 모두 누락이면 `INSUFFICIENT_DATA` 로 갑니다 |
 
-**기본 동작은 `missing` 입니다.** 교재의 CLI 예시가 `--treat-missing-data missing` 을 명시하는데,
+**기본 동작은 `missing` 입니다.** CLI 에서 `--treat-missing-data missing` 을 명시하기도 하지만,
 이는 기본값이므로 생략해도 동작이 같습니다.
 
 선택 기준은 지표의 성질입니다.
@@ -507,8 +512,8 @@ N개 이상 확보되면 **누락 데이터 처리 설정은 무시됩니다.**
 
 ### 6.4 경보의 종류 🔄
 
-교재는 "경보는 지정된 기간 동안 **단일 지표**를 관찰한다"고 씁니다(슬라이드 13, 슬라이드 38
-지식 확인 5번). 현재는 종류가 넷입니다.
+경보를 "지정된 기간 동안 **단일 지표**를 관찰하는 것"으로만 이해하기 쉽지만, 현재는 종류가
+넷입니다.
 
 | 종류 | 감시 대상 |
 |---|---|
@@ -541,17 +546,17 @@ OpsItem·인시던트 생성은 됩니다.
 
 > — 출처: [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html)
 
-> **교재의 참고 링크가 깨졌습니다.** 슬라이드 15 강사 노트는
-> `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html` 을 제시하는데,
+> **참고 링크 경로 주의.** 일부 원본 자료가 제시하는
+> `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html` 은 더 이상 유효하지 않고,
 > 현재 경로는 `/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html` 입니다
-> ([13.1절](#131-교재-기술이-사실과-다른-항목)).
+> ([13.1절](#131-교재와-다른-점)).
 
 ### 6.5 CLI로 경보 만들기 🔄
 
-교재 슬라이드 17~19에 실린 `put-metric-alarm` 예시는 **그대로 실행할 수 없습니다.** 이 문서는
-교정한 명령을 싣고, 무엇을 고쳤는지 아래 표에 밝힙니다.
+널리 인용되는 `put-metric-alarm` 예시 하나는 **그대로 실행할 수 없습니다.** 이 문서는 교정한
+명령을 싣고, 무엇을 고쳤는지 아래 표에 밝힙니다.
 
-먼저 교재가 실은 명령입니다(원문 그대로, 실행하지 마세요).
+먼저 원본 자료의 명령입니다(원문 그대로, 실행하지 마세요).
 
 ```text
 >> aws cloudwatch put-metric-alarm --alarm-name NotesWriteCapacityUnitsLimit
@@ -561,7 +566,7 @@ OpsItem·인시던트 생성은 됩니다.
 --dimensions "Name=InstanceId,Value=i-12345678"
 ```
 
-| # | 교재 | 확인된 내용 |
+| # | 원본 자료 | 확인된 내용 |
 |---|---|---|
 | 1 | 경보 이름은 `WriteCapacityUnits` 인데 지표는 `ConsumedReadCapacityUnits`(읽기) | 쓰기 용량 경보라면 지표는 `ConsumedWriteCapacityUnits` 입니다. 두 지표는 별개로 존재합니다 |
 | 2 | 네임스페이스는 `AWS/DynamoDB` 인데 측정 기준은 `Name=InstanceId,...` | DynamoDB 측정 기준은 `TableName`, `GlobalSecondaryIndexName`, `Operation`, `OperationType`, `Verb`, `ReceivingRegion`, `Source`, `StreamLabel`, `DelegatedOperation` 입니다. `InstanceId` 는 없습니다 |
@@ -645,7 +650,7 @@ aws cloudwatch put-metric-alarm \
 | AWS CLI | `aws logs put-log-events` 로 로그 이벤트 배치를 업로드합니다 |
 | API | `PutLogEvents` API 로 프로그래밍 방식으로 배치를 업로드합니다 |
 
-**정형 로그와 비정형 로그 모두 지원됩니다.** 교재가 드는 예시입니다.
+**정형 로그와 비정형 로그 모두 지원됩니다.** 예시는 다음과 같습니다.
 
 비정형:
 
@@ -683,15 +688,14 @@ ERROR 2026-08-25 05:40:16 - Error processing notification
 
 > — 출처: [Analyzing log data with CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html)
 
-> **용어 교정.** 슬라이드 16은 log4net, Log4j, NLog, Serilog 를 "지원되는 로깅 **프로토콜**"이라
-> 적습니다. 이들은 프로토콜이 아니라 로깅 프레임워크·라이브러리입니다
-> ([13.1절](#131-교재-기술이-사실과-다른-항목)).
+> **용어 교정.** log4net, Log4j, NLog, Serilog 를 "지원되는 로깅 **프로토콜**"이라 부르기도
+> 하지만, 이들은 프로토콜이 아니라 로깅 프레임워크·라이브러리입니다
+> ([13.1절](#131-교재와-다른-점)).
 
 ### 7.3 보존 기간과 로그 클래스 🆕
 
-교재는 로그 그룹이 "같은 보존 기간을 공유한다"고만 말하고 기본값을 밝히지 않습니다. **기본값은
-무기한(Never Expire)입니다.** 방치하면 로그가 계속 쌓이고 계속 과금됩니다. 실습 계정에서
-가장 흔한 비용 누수 지점입니다.
+로그 그룹은 같은 보존 기간을 공유하며, **기본값은 무기한(Never Expire)입니다.** 방치하면 로그가
+계속 쌓이고 계속 과금됩니다. 실습 계정에서 가장 흔한 비용 누수 지점입니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -721,9 +725,9 @@ ERROR 2026-08-25 05:40:16 - Error processing notification
 
 ### 7.4 CloudWatch Logs Insights 🆕
 
-**덱에서 가장 큰 공백입니다.** 교재는 로그를 CloudWatch로 보내는 것까지만 다루고, 모아 놓은
-로그를 조회·분석하는 방법을 한 줄도 다루지 않습니다. 로그를 읽지 못하면 관측가능성의 세 요소
-중 하나가 비어 있는 것과 같습니다.
+**가장 자주 비어 있는 부분입니다.** 로그를 CloudWatch로 보내는 데서 멈추면, 모아 놓은 로그를
+조회·분석하는 방법이 빠집니다. 로그를 읽지 못하면 관측가능성의 세 요소 중 하나가 비어 있는
+것과 같습니다.
 
 **쿼리 언어가 세 가지입니다.**
 
@@ -771,7 +775,7 @@ SQL·PPL 을 쓸 때는 영숫자가 아닌 문자가 든 필드를 백틱으로
 
 ### 7.5 로그에서 지표 만들기: EMF 🆕
 
-교재는 정형 JSON 로그 예시를 싣지만, 그 로그를 **지표로 바꾸는 방법**은 다루지 않습니다.
+정형 JSON 로그를 만드는 데서 더 나아가, 그 로그를 **지표로 바꾸는 방법**이 있습니다.
 CloudWatch **임베디드 지표 형식(EMF, embedded metric format)** 이 그 일을 합니다.
 
 | 항목 | 내용 |
@@ -793,8 +797,8 @@ CloudWatch **임베디드 지표 형식(EMF, embedded metric format)** 이 그 �
 
 ### 7.6 애플리케이션 로그를 보내는 .NET 패키지
 
-교재 슬라이드 16 강사 노트가 드는 NuGet 패키지입니다. 대기열에 있는 로깅 메시지를 일괄
-처리하고 백그라운드 스레드로 CloudWatch Logs 에 보냅니다.
+애플리케이션 로그를 CloudWatch Logs 로 보내는 데 쓰이는 NuGet 패키지입니다. 대기열에 있는
+로깅 메시지를 일괄 처리하고 백그라운드 스레드로 CloudWatch Logs 에 보냅니다.
 
 | 패키지 | 용도 |
 |---|---|
@@ -806,17 +810,17 @@ CloudWatch **임베디드 지표 형식(EMF, embedded metric format)** 이 그 �
 | `AWS.Logger.AspNetCore` | ASP.NET Core 연동 |
 | `Amazon.Lambda.Logging.AspNetCore` | Lambda 용 |
 
-> **Lambda 에서는 백그라운드 스레드 로깅을 쓰지 마세요.** 교재가 남긴 이 경고에는 근거가
-> 있습니다. Lambda 는 런타임과 모든 확장이 완료되고 대기 중인 이벤트가 없으면
+> **Lambda 에서는 백그라운드 스레드 로깅을 쓰지 마세요.** 이 경고에는 근거가 있습니다.
+> Lambda 는 런타임과 모든 확장이 완료되고 대기 중인 이벤트가 없으면
 > **실행 환경을 동결(freeze)** 합니다. 백그라운드 스레드도 함께 멈추므로 큐에 남은 로그가
 > 전달되지 않습니다. 다음 이벤트가 한동안 오지 않으면 동결이 풀리지 않습니다.
-> 교재의 권장은 `ILambdaContext.Logger.LogLine` 이나 `Amazon.Lambda.Logging.AspNetCore` 입니다.
+> 권장 방법은 `ILambdaContext.Logger.LogLine` 이나 `Amazon.Lambda.Logging.AspNetCore` 입니다.
 >
 > — 출처: [Understanding the Lambda execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html)
 
 ### 7.7 Lambda 로깅은 이제 설정으로 합니다 🔄
 
-교재는 정형 로그를 애플리케이션이 직접 만들어야 하는 것으로 다룹니다. 지금은 **함수 설정으로**
+정형 로그를 애플리케이션이 직접 만들어야 하는 것으로 보기 쉽지만, 지금은 **함수 설정으로**
 형식과 수준을 정할 수 있습니다.
 
 | 설정 | 값 |
@@ -825,7 +829,7 @@ CloudWatch **임베디드 지표 형식(EMF, embedded metric format)** 이 그 �
 | 로그 수준 | JSON 구조화 로그에서 `FATAL`, `ERROR`, `WARN`, `INFO`, `DEBUG`, `TRACE` |
 | 로그 그룹 | 함수가 로그를 보낼 CloudWatch 로그 그룹을 선택 |
 
-**로그 대상도 늘었습니다.** 교재는 CloudWatch Logs 하나만 전제합니다.
+**로그 대상도 늘었습니다.** CloudWatch Logs 하나만 대상으로 보기 쉽지만, 선택지가 더 있습니다.
 
 | 대상 | 언제 쓰는가 |
 |---|---|
@@ -841,8 +845,8 @@ Firehose 비용은 스트리밍 서비스 요금과 전송 대상 비용이 함�
 
 ## 8. 애플리케이션 계측
 
-슬라이드 17·18·19는 같은 내용을 애니메이션으로 3장에 나눈 것이고 강사 노트가 없습니다. 이
-문서는 한 절로 합쳤습니다([13.1절](#131-교재-기술이-사실과-다른-항목)).
+일부 원본 자료는 같은 내용을 여러 장에 나누어 반복합니다. 이 문서는 한 절로 합쳤습니다
+([13.1절](#131-교재와-다른-점)).
 
 ### 8.1 계측 경로
 
@@ -852,13 +856,12 @@ Firehose 비용은 스트리밍 서비스 요금과 전송 대상 비용이 함�
 | CloudWatch 에이전트 | 서버·컨테이너에 설치 |
 | AWS CLI | 터미널·스크립트에서 호출 |
 
-교재가 드는 SDK 목록은 Python(Boto3), .NET, Ruby, JavaScript, Go, Java, Node.js, C++, PHP
-아홉 개입니다.
+SDK 목록은 Python(Boto3), .NET, Ruby, JavaScript, Go, Java, Node.js, C++, PHP 아홉 개입니다.
 
 ### 8.2 CloudWatch 에이전트 🔄
 
-교재는 에이전트의 대상을 Amazon EC2 와 온프레미스 서버 두 가지로 적고, 용도를 지표·로그로
-한정합니다. 현재는 범위가 넓습니다.
+에이전트의 대상을 Amazon EC2 와 온프레미스 서버로만, 용도를 지표·로그로만 아는 경우가 많지만,
+현재는 범위가 더 넓습니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -915,11 +918,11 @@ Automation 문서를 실행해 해결할 수 있습니다.
 
 > — 출처: [Detect common application problems with CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html)
 
-### 9.2 흔한 문제 목록은 교재와 다릅니다 🔄
+### 9.2 흔한 문제 목록 🔄
 
-교재 슬라이드 21은 흔한 결함 패턴으로 네 항목만 적고 설명이 없습니다.
+흔한 결함 패턴으로 다음 네 항목이 설명 없이 제시되기도 합니다.
 
-| 교재가 드는 항목 |
+| 자주 언급되는 항목 |
 |---|
 | 무한 루프 |
 | 다운스트림 속도 저하 |
@@ -927,7 +930,7 @@ Automation 문서를 실행해 해결할 수 있습니다.
 | 트리거 확인 |
 
 문서가 "추가 인사이트로 근본 원인 후보와 해결 단계를 제시한다"고 드는 문제는 다음입니다.
-**교재 목록과 겹치지 않습니다.**
+**위의 자주 언급되는 목록과 겹치지 않습니다.**
 
 | 확인된 항목 | 스택 |
 |---|---|
@@ -941,9 +944,9 @@ Automation 문서를 실행해 해결할 수 있습니다.
 
 ### 9.3 무한 루프는 이제 Lambda 가 막아 줍니다 🆕
 
-슬라이드 21의 다이어그램은 S3 버킷 → 이미지 크기 조정 Lambda → 같은 버킷에 로그 업로드 →
-다시 트리거되는 순환을 그립니다. 교재는 이것을 "흔한 결함 패턴"으로 제시하고 방어 장치를
-다루지 않습니다. **지금은 Lambda 에 기본 방어 장치가 있습니다.**
+S3 버킷 → 이미지 크기 조정 Lambda → 같은 버킷에 로그 업로드 → 다시 트리거되는 순환은 흔한
+결함 패턴으로 제시되지만, 방어 장치는 함께 다뤄지지 않는 경우가 많습니다. **지금은 Lambda 에
+기본 방어 장치가 있습니다.**
 
 | 항목 | 내용 |
 |---|---|
@@ -980,7 +983,7 @@ Resources:
 
 ### 9.4 데모에서 무엇을 보는가
 
-슬라이드 23의 데모 노트입니다.
+데모의 진행 순서입니다.
 
 | 단계 | 내용 |
 |---|---|
@@ -1002,7 +1005,7 @@ Resources:
 | 확인·필터링 도구 제공 | 데이터를 보고 필터링하고 인사이트를 얻어 문제와 최적화 기회를 찾습니다 |
 | 요청 트레이싱 | 트레이싱된 요청의 요청·응답 세부 정보와, 애플리케이션이 다운스트림 AWS 리소스·마이크로서비스·데이터베이스·웹 API 에 실행한 호출 세부 정보를 봅니다 |
 
-교재가 드는 사용 사례입니다.
+주요 사용 사례입니다.
 
 - 분산 애플리케이션 분석 및 디버그
 - 성능 문제 및 오류의 근본 원인 파악 및 해결
@@ -1017,8 +1020,8 @@ X-Ray 는 애플리케이션이 보낸 트레이스와, 이미 X-Ray 와 통합�
 
 ### 10.2 작동 방식
 
-교재가 그리는 경로는 `클라이언트 → X-Ray 데몬 → X-Ray API → X-Ray 콘솔` 이고, `AWS CLI` 와
-`SDK` 가 API 로 이어집니다. 문서로 확인한 세부는 다음과 같습니다.
+기본 경로는 `클라이언트 → X-Ray 데몬 → X-Ray API → X-Ray 콘솔` 이고, `AWS CLI` 와 `SDK` 가
+API 로 이어집니다. 문서로 확인한 세부는 다음과 같습니다.
 
 | 단계 | 내용 |
 |---|---|
@@ -1035,7 +1038,7 @@ X-Ray 는 애플리케이션이 보낸 트레이스와, 이미 X-Ray 와 통합�
 
 ### 10.3 트레이스 맵 🔄
 
-교재는 이 도식을 일관되게 **서비스 맵**이라 부릅니다. 현재 문서는 **트레이스 맵(trace map)** 을
+이 도식은 예전에 일관되게 **서비스 맵**이라 불렸습니다. 현재 문서는 **트레이스 맵(trace map)** 을
 씁니다. 그리고 이름만 바뀐 것이 아니라 **위치가 바뀌었습니다.**
 
 | 항목 | 확인된 내용 |
@@ -1063,16 +1066,16 @@ X-Ray 는 애플리케이션이 보낸 트레이스와, 이미 X-Ray 와 통합�
 
 ### 10.4 노드 색상과 오류 분류
 
-교재는 색상을 네 가지로 정리합니다.
+노드 색상은 네 가지입니다.
 
-| 색상 | 교재의 표기 |
+| 색상 | 의미 |
 |---|---|
 | 녹색 | 성공적인 호출 |
 | 빨간색 | 서버 장애 (500 시리즈 오류) |
 | 노란색 | 클라이언트 오류 (400 시리즈 오류) |
 | 보라색 | 제한 오류 (429 요청 과다) |
 
-X-Ray 문서의 오류 분류는 다음과 같습니다. 교재의 색상 대응은 이 분류와 일치합니다.
+X-Ray 문서의 오류 분류는 다음과 같습니다. 위 색상 대응은 이 분류와 일치합니다.
 
 | 분류 | 내용 |
 |---|---|
@@ -1084,13 +1087,13 @@ X-Ray 문서의 오류 분류는 다음과 같습니다. 교재의 색상 대응
 
 > — 출처: [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html)
 
-> **표기 오류.** 슬라이드 30 강사 노트는 "성공한 호출과 오류 및 **결합**의 비율"이라고 씁니다.
-> 문맥상 **결함(fault)** 의 오타입니다([13.1절](#131-교재-기술이-사실과-다른-항목)).
+> **표기 오류.** 일부 원본 자료는 "성공한 호출과 오류 및 **결합**의 비율"이라고 씁니다.
+> 문맥상 **결함(fault)** 의 오타입니다([13.1절](#131-교재와-다른-점)).
 
 ### 10.5 X-Ray 콘솔은 더 이상 개발되지 않습니다 🔄
 
-이 모듈에서 가장 중요한 변화입니다. 교재는 슬라이드 26과 슬라이드 36에서 X-Ray 콘솔을 트레이스
-확인 창구로 제시합니다.
+이 모듈에서 가장 중요한 변화입니다. X-Ray 콘솔은 오랫동안 트레이스 확인 창구로 제시되어
+왔습니다.
 
 문서의 서술은 명확합니다. **AWS 는 X-Ray 콘솔을 더 이상 개발하지 않습니다.** CloudWatch 콘솔에
 X-Ray 콘솔에서 재설계된 새 X-Ray 기능이 들어 있고, X-Ray 콘솔의 **모든 기능을 포함**합니다.
@@ -1111,8 +1114,8 @@ X-Ray Insights(애플리케이션 성능 이상을 자동 감지하고 근본 �
 
 ### 10.6 CloudWatch 로 넓어진 관측가능성 기능 🆕
 
-교재의 도구 목록은 CloudWatch 와 X-Ray 둘뿐입니다. 모듈 목표 2가 "현대적 개발"을 말하므로,
-현재 이 영역에 무엇이 있는지 확인한 범위에서 정리합니다.
+핵심 도구는 CloudWatch 와 X-Ray 둘이지만, 모듈 목표 2가 "현대적 개발"을 말하므로, 현재 이
+영역에 무엇이 있는지 확인한 범위에서 정리합니다.
 
 **Application Signals**
 
@@ -1152,7 +1155,7 @@ Transaction Search 를 켜면 CloudWatch 가 그 스팬으로 Application Signal
 
 ### 11.1 트레이스, 세그먼트, 하위 세그먼트
 
-교재는 `listFunction` 의 트레이스를 예로 구조를 보여 줍니다.
+`listFunction` 의 트레이스를 예로 구조를 보면 다음과 같습니다.
 
 ```text
 최종 사용자
@@ -1192,8 +1195,8 @@ IP 패킷의 소스 IP 대신 `X-Forwarded-For` 헤더의 클라이언트 IP 를
 
 ### 11.2 추론된 세그먼트 🆕
 
-교재의 다이어그램에는 DynamoDB `Notes 테이블` 노드가 있습니다. 그런데 **DynamoDB 는 자체
-세그먼트를 보내지 않습니다.** 그 노드가 어떻게 생기는지 교재는 설명하지 않습니다.
+위 트레이스 구조에는 DynamoDB `Notes 테이블` 노드가 있습니다. 그런데 **DynamoDB 는 자체
+세그먼트를 보내지 않습니다.** 그 노드가 어떻게 생기는지 짚어 둘 필요가 있습니다.
 
 | 상황 | 무엇이 생기는가 |
 |---|---|
@@ -1209,7 +1212,7 @@ IP 패킷의 소스 IP 대신 `X-Forwarded-For` 헤더의 클라이언트 IP 를
 
 ### 11.3 Annotations 와 메타데이터
 
-교재가 싣는 예시입니다.
+예시는 다음과 같습니다.
 
 ```json
 {
@@ -1235,7 +1238,7 @@ IP 패킷의 소스 IP 대신 `X-Forwarded-For` 헤더의 클라이언트 IP 를
 | Annotations | **됩니다** | 필터 표현식에 씁니다. 콘솔에서 트레이스를 그룹화할 때나 `GetTraceSummaries` API 를 호출할 때 쓸 데이터를 기록합니다 |
 | 메타데이터 | 안 됩니다 | 객체와 목록을 포함한 임의 타입의 값을 담을 수 있습니다. 트레이스에 저장하되 **검색에는 쓰지 않을** 데이터를 기록합니다 |
 
-**X-Ray 는 트레이스당 최대 50개의 주석을 인덱싱합니다.** 교재의 이 수치는 현재도 맞습니다.
+**X-Ray 는 트레이스당 최대 50개의 주석을 인덱싱합니다.** 이 수치는 현재도 맞습니다.
 
 주석과 메타데이터는 트레이스 수준에서 집계되고, 어떤 세그먼트나 하위 세그먼트에도 붙일 수
 있습니다. **CloudWatch 콘솔**의 트레이스 세부 정보 페이지에서 세그먼트·하위 세그먼트 세부 정보
@@ -1257,7 +1260,7 @@ IP 패킷의 소스 IP 대신 `X-Forwarded-For` 헤더의 클라이언트 IP 를
 
 ### 11.4 샘플링 🆕
 
-**덱에 한 줄도 없는데 트레이싱 비용과 부하를 좌우하는 핵심입니다.**
+**트레이싱 비용과 부하를 좌우하는 핵심입니다.**
 
 X-Ray SDK 는 샘플링 알고리즘으로 어떤 요청을 트레이싱할지 결정합니다. 기본값은 다음과 같습니다.
 
@@ -1338,8 +1341,8 @@ X-Amzn-Trace-Id: Root=1-5759e988-bd862e3fe1be46a994272793;Parent=53995c3f42cd8ad
 
 ### 11.6 Lambda 의 세그먼트 구조 🔄
 
-교재 슬라이드 27은 Lambda 콜드 스타트를 `code-start 컨테이너 다운로드 → 런타임 부트스트랩 →
-코드 실행` 으로 적습니다. `code-start` 는 **cold start 의 오타**이고, 단계 구분도 문서와
+Lambda 콜드 스타트를 `code-start 컨테이너 다운로드 → 런타임 부트스트랩 → 코드 실행` 으로
+적은 자료가 있습니다. `code-start` 는 **cold start 의 오타**이고, 단계 구분도 문서와
 다릅니다.
 
 **Lambda 는 트레이스당 세그먼트 2개를 기록합니다.**
@@ -1379,7 +1382,7 @@ X-Amzn-Trace-Id: Root=1-5759e988-bd862e3fe1be46a994272793;Parent=53995c3f42cd8ad
 | `aws.runtimeOverhead` | 런타임이 마무리하는 데 추가로 필요한 시간 |
 | `aws.extensionOverhead` | 확장이 마무리하는 데 추가로 필요한 시간 |
 
-**Lambda 실행 환경 수명 주기**를 문서 기준으로 정리하면 다음과 같습니다. 교재의 세 단계와
+**Lambda 실행 환경 수명 주기**를 문서 기준으로 정리하면 다음과 같습니다. 앞서 나온 세 단계와
 비교해 보세요.
 
 | 단계 | 내용 |
@@ -1392,8 +1395,8 @@ X-Amzn-Trace-Id: Root=1-5759e988-bd862e3fe1be46a994272793;Parent=53995c3f42cd8ad
 시점에 구성된 함수 타임아웃으로 `Init` 단계를 재시도합니다. 프로비저닝된 동시성, SnapStart,
 Lambda Managed Instances 를 쓰면 이 10초 제한이 적용되지 않습니다.
 
-**교재의 "컨테이너 다운로드"는 `Init` 단계의 세 작업 목록에 없습니다.** 함수 코드와 레이어
-다운로드는 `AWS::Lambda` 세그먼트가 담는 실행 환경 준비 과정에 포함됩니다.
+**"컨테이너 다운로드"는 `Init` 단계의 세 작업 목록에 없습니다.** 함수 코드와 레이어 다운로드는
+`AWS::Lambda` 세그먼트가 담는 실행 환경 준비 과정에 포함됩니다.
 
 **X-Ray SDK 로 확장할 수 있는 범위에 제한이 있습니다.** `Invocation` 하위 세그먼트를 다운스트림
 호출·주석·메타데이터로 확장할 수 있지만, **함수 세그먼트에 직접 접근하거나 핸들러 호출 범위
@@ -1409,7 +1412,7 @@ Lambda Managed Instances 를 쓰면 이 10초 제한이 적용되지 않습니�
 
 ### 11.7 운영 지표 약어
 
-슬라이드 29는 본문 없이 강사 노트로만 다음을 소개합니다.
+운영 지표 약어는 다음과 같습니다.
 
 | 약어 | 풀이 |
 |---|---|
@@ -1442,8 +1445,8 @@ MTTR 은 AWS 문서에서도 쓰입니다. Application Insights 문서는 이 �
 
 ### 12.1 트레이싱을 켜는 설정 🆕
 
-교재 슬라이드 33·34는 SDK 코드만 보여 주고, **Lambda 와 API Gateway 에서 트레이싱을 켜는
-설정**을 다루지 않습니다. 코드를 아무리 계측해도 이 설정을 켜지 않으면 트레이스가 오지 않습니다.
+SDK 코드만으로는 부족하고, **Lambda 와 API Gateway 에서 트레이싱을 켜는 설정**이 필요합니다.
+코드를 아무리 계측해도 이 설정을 켜지 않으면 트레이스가 오지 않습니다.
 
 **Lambda 의 트레이싱 모드**
 
@@ -1519,8 +1522,8 @@ Resources:
 
 ### 12.2 Lambda 는 이제 트레이스를 자동으로 보내지 않습니다 🔄
 
-교재는 트레이싱 모드를 다루지 않기 때문에 이 변경을 알 수 없습니다. **실습에서 트레이스가 안
-보이는 가장 흔한 원인입니다.**
+트레이싱 모드를 다루지 않으면 이 변경을 놓치기 쉽습니다. **실습에서 트레이스가 안 보이는 가장
+흔한 원인입니다.**
 
 | 시점 | 동작 |
 |---|---|
@@ -1533,8 +1536,8 @@ Resources:
 
 ### 12.3 OpenTelemetry 로의 전환 🔄
 
-**이 모듈에서 가장 크게 바뀐 부분입니다.** 교재 슬라이드 33·34는 X-Ray SDK 로 계측하는 방법만
-제시합니다. 그 경로는 지금 권장되지 않습니다.
+**이 모듈에서 가장 크게 바뀐 부분입니다.** X-Ray SDK 로 계측하는 방법만 제시되기 쉽지만, 그
+경로는 지금 권장되지 않습니다.
 
 **지원 일정**
 
@@ -1615,34 +1618,34 @@ API Gateway 엔드포인트처럼 X-Ray 트레이싱을 지원하는 AWS 서비�
 
 > — 출처: [X-Ray SDK and Daemon Support timeline](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-daemon-timeline.html)
 
-### 12.4 교재의 언어별 X-Ray SDK 구성
+### 12.4 언어별 X-Ray SDK 구성
 
-교재 슬라이드 33이 드는 내용입니다. **12.3절의 유지 관리 모드 안내를 먼저 읽고 보세요.**
-기존 코드를 이해하는 데는 여전히 필요합니다.
+기존 방식의 내용입니다. **12.3절의 유지 관리 모드 안내를 먼저 읽고 보세요.** 기존 코드를
+이해하는 데는 여전히 필요합니다.
 
-| 언어 | 교재 내용 |
+| 언어 | 내용 |
 |---|---|
 | .NET | 클라이언트를 만들기 전에 `AWSSDKHandler.RegisterXRayForAllServices()` 를 호출해 모든 AWS SDK for .NET 클라이언트를 설정합니다. 특정 서비스만 지정하려면 `AWSSDKHandler.RegisterXRay<IAmazonDynamoDB>()` |
 | Java | DynamoDB 클라이언트를 설정하고 Trace Handler 를 `AmazonDynamoDBClientBuilder` 로 전달합니다 |
 | Python | Python 용 X-Ray SDK 에는 전역 레코더를 제공하는 `xray_recorder` 클래스가 있습니다 |
 
-> **Java 항목의 주의.** 교재가 드는 `AmazonDynamoDBClientBuilder` 는 **AWS SDK for Java 1.x**
+> **Java 항목의 주의.** 위에 나온 `AmazonDynamoDBClientBuilder` 는 **AWS SDK for Java 1.x**
 > API 입니다. AWS SDK for Java 1.x 는 다른 모듈에서 다룬 대로 지원이 종료되었습니다. 2.x 에서
 > 같은 일을 하는 X-Ray 계측 방법은 확인하지 못했으므로 이 문서는 단정하지 않습니다
 > ([13.5절](#135-검증하지-못한-항목)). 새로 만드는 애플리케이션에는 12.3절의 OpenTelemetry
 > 경로를 쓰세요.
 
-### 12.5 교재의 C# 예시 🔄
+### 12.5 C# 예시 🔄
 
-슬라이드 34의 코드에는 **컴파일되지 않는 부분**이 있습니다. 교정해 싣고 무엇을 고쳤는지
+널리 인용되는 C# 코드에는 **컴파일되지 않는 부분**이 있습니다. 교정해 싣고 무엇을 고쳤는지
 밝힙니다.
 
-| # | 교재 | 확인된 내용 |
+| # | 원본 자료 | 확인된 내용 |
 |---|---|---|
 | 1 | `public void RunSqlQuery(...)` 안에서 `await` 를 사용 | `void` 메서드에서는 `await` 를 쓸 수 없습니다. `async Task` 로 선언해야 컴파일됩니다 |
 | 2 | `IHostingEnvironment env` | 오래된 인터페이스 이름입니다. 대체 이름은 ASP.NET Core 문서 소관이고 AWS 공식 문서 범위에서 확인할 수 없어 단정하지 않습니다([13.5절](#135-검증하지-못한-항목)) |
 
-교정한 코드입니다. 매개변수 `env` 는 교재 원문에 있으나 본문에서 쓰이지 않으므로 그대로
+교정한 코드입니다. 매개변수 `env` 는 원본에 있으나 본문에서 쓰이지 않으므로 그대로
 두었습니다.
 
 ```csharp
@@ -1675,7 +1678,7 @@ public async Task RunSqlQueryAsync(string connectionString)
 }
 ```
 
-슬라이드가 코드의 어느 부분을 가리키는지 표시한 라벨입니다.
+코드의 어느 부분을 가리키는지 표시한 라벨입니다.
 
 | 라벨 | 대응 코드 |
 |---|---|
@@ -1685,7 +1688,7 @@ public async Task RunSqlQueryAsync(string connectionString)
 
 ### 12.6 데모에서 무엇을 보는가
 
-슬라이드 36의 데모 노트입니다.
+데모의 진행 순서입니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -1700,10 +1703,10 @@ public async Task RunSqlQueryAsync(string connectionString)
 
 ### 12.7 실습 7
 
-제목은 "AWS X-Ray를 사용하여 애플리케이션 관찰"입니다. 슬라이드 40은 어젠다와 같은 애플리케이션
-아키텍처 다이어그램만 싣고 본문 설명과 강사 노트가 없습니다.
+제목은 "AWS X-Ray를 사용하여 애플리케이션 관찰"입니다. 실습은 어젠다와 같은 애플리케이션
+아키텍처를 사용합니다.
 
-실습에서 트레이스가 보이지 않으면 다음 순서로 확인하세요. 덱에는 이 체크리스트가 없습니다.
+실습에서 트레이스가 보이지 않으면 다음 순서로 확인하세요.
 
 | 순서 | 확인할 것 | 근거 |
 |---|---|---|
@@ -1717,23 +1720,22 @@ public async Task RunSqlQueryAsync(string connectionString)
 
 ## 13. 교재 대비 변경 사항
 
-수강생이 교재와 이 문서를 나란히 놓고 볼 때 "책에는 이렇게 나오는데요?"에 답할 수 있도록
-정리한 장입니다. 총 37건이며 유형별로 교재 기술 오류 21건, 동작·이름 변경 12건, 비권장 3건,
-지원 종료 1건입니다.
+수강생이 공식 교재를 함께 볼 수 있으므로, 이 자료가 교재와 어디서 갈라지는지 한곳에 모았습니다.
+앞 장에서 신규·교정으로 표시한 항목의 근거가 여기 있습니다.
 
-### 13.1 교재 기술이 사실과 다른 항목
+### 13.1 교재와 다른 점
 
 #### 조회 대상이 틀린 것
 
-| 교재 기재 | 확인된 내용 | 근거 |
+| 교재의 서술 | 확인된 내용 | 근거 |
 |---|---|---|
-| 슬라이드 15 노트의 참고 링크가 `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html` | 현재 경로는 `/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html` 입니다. `DeveloperGuide` 경로는 유효하지 않습니다 | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
+| 원본 자료의 참고 링크가 `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html` | 현재 경로는 `/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html` 입니다. `DeveloperGuide` 경로는 유효하지 않습니다 | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
 
-#### CLI 예시의 오류 (슬라이드 17·18·19)
+#### CLI 예시의 오류
 
 교정한 명령은 [6.5절](#65-cli로-경보-만들기)에 있습니다.
 
-| # | 교재 기재 | 확인된 내용 | 근거 |
+| # | 교재의 서술 | 확인된 내용 | 근거 |
 |---|---|---|---|
 | 1 | `--alarm-name NotesWriteCapacityUnitsLimit` 인데 `--metric-name ConsumedReadCapacityUnits` | 쓰기 용량 경보라면 지표는 `ConsumedWriteCapacityUnits` 입니다 | [DynamoDB Metrics and dimensions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html) |
 | 2 | `--namespace AWS/DynamoDB` 와 `--dimensions "Name=InstanceId,Value=i-12345678"` 을 함께 사용 | DynamoDB 측정 기준에 `InstanceId` 는 없습니다. `TableName`, `GlobalSecondaryIndexName`, `Operation`, `OperationType`, `Verb`, `ReceivingRegion`, `Source`, `StreamLabel`, `DelegatedOperation` 입니다 | [DynamoDB Metrics and dimensions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html) |
@@ -1744,19 +1746,19 @@ public async Task RunSqlQueryAsync(string connectionString)
 
 #### 개념 설명이 부정확한 것
 
-| 교재 기재 | 확인된 내용 | 근거 |
+| 교재의 서술 | 확인된 내용 | 근거 |
 |---|---|---|
-| 슬라이드 15 노트: "임계값이 **연속 기간 3개**에 대해 위반된 경우에만 경보가 작업을 호출합니다" | 실제 동작은 M out of N 입니다. M이 N보다 작으면 연속이 아니어도 경보가 발생합니다. 또 평가 범위가 N보다 넓어 누락 데이터가 있으면 더 과거 데이터를 끌어와 평가합니다 | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
-| 슬라이드 13 본문·슬라이드 38 지식 확인 5번: "경보는 지정된 기간 동안 **단일 지표**를 관찰하고" | 지표 경보는 단일 지표 **또는 지표 math 표현식의 결과**를 감시합니다. 그 밖에 PromQL 경보, 로그 경보, 다른 경보의 상태를 조합하는 복합 경보가 있습니다 | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
-| 슬라이드 16 본문: "지원되는 로깅 **프로토콜** — Apache log4net, Apache Log4j, Nlog, Serilog" | 이들은 프로토콜이 아니라 로깅 프레임워크·라이브러리입니다. 문서가 로그를 보내는 방법으로 드는 것은 CloudWatch 에이전트, `put-log-events` CLI, `PutLogEvents` API 입니다 | [Working with log groups and log streams](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html) |
-| 슬라이드 21 본문: 흔한 결함 패턴으로 "무한 루프 / 다운스트림 속도 저하 / 잘못된 API 버전 / 트리거 확인" | Application Insights 문서가 드는 목록은 .NET·SQL 스택의 애플리케이션 지연 시간, SQL Server 백업 실패, 메모리 누수, 대용량 HTTP 요청, 취소된 I/O 작업입니다. 교재 목록과 겹치지 않습니다 | [Detect common application problems with CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html) |
+| 원본 자료: "임계값이 **연속 기간 3개**에 대해 위반된 경우에만 경보가 작업을 호출합니다" | 실제 동작은 M out of N 입니다. M이 N보다 작으면 연속이 아니어도 경보가 발생합니다. 또 평가 범위가 N보다 넓어 누락 데이터가 있으면 더 과거 데이터를 끌어와 평가합니다 | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| 원본 자료: "경보는 지정된 기간 동안 **단일 지표**를 관찰하고" | 지표 경보는 단일 지표 **또는 지표 math 표현식의 결과**를 감시합니다. 그 밖에 PromQL 경보, 로그 경보, 다른 경보의 상태를 조합하는 복합 경보가 있습니다 | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
+| 원본 자료: "지원되는 로깅 **프로토콜** — Apache log4net, Apache Log4j, Nlog, Serilog" | 이들은 프로토콜이 아니라 로깅 프레임워크·라이브러리입니다. 문서가 로그를 보내는 방법으로 드는 것은 CloudWatch 에이전트, `put-log-events` CLI, `PutLogEvents` API 입니다 | [Working with log groups and log streams](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html) |
+| 원본 자료: 흔한 결함 패턴으로 "무한 루프 / 다운스트림 속도 저하 / 잘못된 API 버전 / 트리거 확인" | Application Insights 문서가 드는 목록은 .NET·SQL 스택의 애플리케이션 지연 시간, SQL Server 백업 실패, 메모리 누수, 대용량 HTTP 요청, 취소된 I/O 작업입니다. 교재 목록과 겹치지 않습니다 | [Detect common application problems with CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html) |
 
 #### 오타
 
-| 교재 기재 | 확인된 내용 | 근거 |
+| 교재의 서술 | 확인된 내용 | 근거 |
 |---|---|---|
-| 슬라이드 27 다이어그램: `code-start 컨테이너 다운로드` | `cold start` 의 오타입니다. `Init` 단계의 세 작업은 확장 시작, 런타임 부트스트랩, 함수 정적 코드 실행이고, 코드·레이어 다운로드는 `AWS::Lambda` 세그먼트가 담습니다 | [Understanding the Lambda execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
-| 슬라이드 30 노트: "성공한 호출과 오류 및 **결합**의 비율" | 문맥상 **결함(fault)** 의 오타입니다. X-Ray 는 오류를 `Error`(400), `Fault`(500), `Throttle`(429)로 분류합니다 | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| 원본 자료: `code-start 컨테이너 다운로드` | `cold start` 의 오타입니다. `Init` 단계의 세 작업은 확장 시작, 런타임 부트스트랩, 함수 정적 코드 실행이고, 코드·레이어 다운로드는 `AWS::Lambda` 세그먼트가 담습니다 | [Understanding the Lambda execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
+| 원본 자료: "성공한 호출과 오류 및 **결합**의 비율" | 문맥상 **결함(fault)** 의 오타입니다. X-Ray 는 오류를 `Error`(400), `Fault`(500), `Throttle`(429)로 분류합니다 | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
 
 #### 교재 안에서 서로 어긋나는 것
 
@@ -1765,32 +1767,32 @@ public async Task RunSqlQueryAsync(string connectionString)
 
 | 어긋나는 지점 | 내용 | 이 문서의 처리 |
 |---|---|---|
-| 3대 요소 표기 | 슬라이드 8·9 는 `로깅 / 지표 / 트레이싱`, 슬라이드 25 는 `로깅 / 모니터링 / 트레이싱`. 슬라이드 38 지식 확인 2번 해설이 "지표, 트레이스 및 로그"라고 못박음 | 슬라이드 25 를 틀린 쪽으로 보고 `지표 / 로그 / 트레이스` 로 통일 |
-| CloudWatch 의 역할 | 슬라이드 11 노트는 CloudWatch 기능으로 "지표 수집 및 **트레이싱**"을 들고, 슬라이드 9 는 트레이싱을 X-Ray 에 배정 | 두 슬라이드의 역할 배분이 어긋남을 밝히고, 실제 구조(X-Ray 트레이스를 CloudWatch 콘솔에서 봄)를 [10.5절](#105-x-ray-콘솔은-더-이상-개발되지-않습니다)에 정리 |
-| 모듈 목표 문구 | 슬라이드 3 은 `관측가능성(Observability)구별`(공백 없음), 슬라이드 42 는 `관측가능성(Observability) 구별` | 슬라이드 3 기준으로 통일 |
-| 슬라이드 6·7 | 본문이 동일하고 다이어그램만 단계적으로 늘어남. 그런데 노트에 서로 없는 문장이 각각 있음 | [2.3절](#23-관측가능성-계획) 한 절로 합치고 두 노트를 모두 반영 |
-| 슬라이드 17·18·19 | 본문과 터미널 예시가 완전히 동일. 세 장 모두 강사 노트가 없음 | [8장](#8-애플리케이션-계측) 한 절로 합침 |
-| 슬라이드 29 노트 | 슬라이드 27 의 트레이스 ID·트레이스 정의를 같은 문장으로 반복한 뒤 운영 지표 약어를 소개 | 고유 내용(약어와 가용성 공식)만 [11.7절](#117-운영-지표-약어)에 남김 |
-| 슬라이드 34 코드 | `public void RunSqlQuery(...)` 안에서 `await` 사용. `void` 메서드에서는 `await` 를 쓸 수 없음 | [12.5절](#125-교재의-c-예시)에서 `async Task` 로 교정하고 밝힘 |
-| 슬라이드 34 코드 | `IHostingEnvironment` 는 오래된 인터페이스 이름 | "오래된 이름"이라는 사실만 밝히고 대체 이름은 단정하지 않음([13.5절](#135-검증하지-못한-항목)) |
+| 3대 요소 표기 | 원본 자료는 `로깅 / 지표 / 트레이싱`, 원본 자료는 `로깅 / 모니터링 / 트레이싱`. 원본 자료 정답 해설이 "지표, 트레이스 및 로그"라고 못박음 | 원본 자료를 틀린 쪽으로 보고 `지표 / 로그 / 트레이스` 로 통일 |
+| CloudWatch 의 역할 | 원본 자료는 CloudWatch 기능으로 "지표 수집 및 **트레이싱**"을 들고, 원본 자료는 트레이싱을 X-Ray 에 배정 | 두 자료의 역할 배분이 어긋남을 밝히고, 실제 구조(X-Ray 트레이스를 CloudWatch 콘솔에서 봄)를 [10.5절](#105-x-ray-콘솔은-더-이상-개발되지-않습니다)에 정리 |
+| 모듈 목표 문구 | 원본 자료는 `관측가능성(Observability)구별`(공백 없음), 원본 자료는 `관측가능성(Observability) 구별` | 원본 자료 기준으로 통일 |
+| 원본 자료 | 본문이 동일하고 다이어그램만 단계적으로 늘어남. 그런데 노트에 서로 없는 문장이 각각 있음 | [2.3절](#23-관측가능성-계획) 한 절로 합치고 두 노트를 모두 반영 |
+| 원본 자료 | 본문과 터미널 예시가 완전히 동일. 세 장 모두 원본 자료가 없음 | [8장](#8-애플리케이션-계측) 한 절로 합침 |
+| 원본 자료 | 원본 자료의 트레이스 ID·트레이스 정의를 같은 문장으로 반복한 뒤 운영 지표 약어를 소개 | 고유 내용(약어와 가용성 공식)만 [11.7절](#117-운영-지표-약어)에 남김 |
+| 원본 코드 | `public void RunSqlQuery(...)` 안에서 `await` 사용. `void` 메서드에서는 `await` 를 쓸 수 없음 | [12.5절](#125-c-예시)에서 `async Task` 로 교정하고 밝힘 |
+| 원본 코드 | `IHostingEnvironment` 는 오래된 인터페이스 이름 | "오래된 이름"이라는 사실만 밝히고 대체 이름은 단정하지 않음([13.5절](#135-검증하지-못한-항목)) |
 
 ### 13.2 동작과 기본값이 변경된 항목
 
-| 항목 | 교재 기재 | 확인된 내용 | 근거 |
+| 항목 | 교재의 서술 | 확인된 내용 | 근거 |
 |---|---|---|---|
-| X-Ray 콘솔의 위치 | 슬라이드 26·36 이 X-Ray 콘솔을 트레이스 확인 창구로 제시 | **AWS 는 X-Ray 콘솔을 더 이상 개발하지 않습니다.** CloudWatch 콘솔에 재설계된 X-Ray 기능이 있고 X-Ray 콘솔의 모든 기능을 포함합니다 | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
-| 서비스 맵 → 트레이스 맵 | 슬라이드 26·30·31·36 이 "서비스 맵" | X-Ray 서비스 맵과 CloudWatch ServiceLens 맵이 CloudWatch 콘솔의 **X-Ray 트레이스 맵**으로 통합되었습니다 | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
-| CloudWatch Events 의 이름 | 슬라이드 20 노트: "CloudWatch Events를 생성하여 향후 이벤트를 알림" | EventBridge 는 이전에 CloudWatch Events 라 불렸습니다. API 는 동일하고 기존 규칙도 그대로 보이지만, **EventBridge 에 추가되는 새 기능은 CloudWatch Events 에 추가되지 않습니다** | [EventBridge is the evolution of Amazon CloudWatch Events](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) |
+| X-Ray 콘솔의 위치 | 원본 자료가 X-Ray 콘솔을 트레이스 확인 창구로 제시 | **AWS 는 X-Ray 콘솔을 더 이상 개발하지 않습니다.** CloudWatch 콘솔에 재설계된 X-Ray 기능이 있고 X-Ray 콘솔의 모든 기능을 포함합니다 | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
+| 서비스 맵 → 트레이스 맵 | 원본 자료가 "서비스 맵" | X-Ray 서비스 맵과 CloudWatch ServiceLens 맵이 CloudWatch 콘솔의 **X-Ray 트레이스 맵**으로 통합되었습니다 | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
+| CloudWatch Events 의 이름 | 원본 자료: "CloudWatch Events를 생성하여 향후 이벤트를 알림" | EventBridge 는 이전에 CloudWatch Events 라 불렸습니다. API 는 동일하고 기존 규칙도 그대로 보이지만, **EventBridge 에 추가되는 새 기능은 CloudWatch Events 에 추가되지 않습니다** | [EventBridge is the evolution of Amazon CloudWatch Events](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) |
 | Lambda 의 트레이스 자동 전송 | 트레이싱 모드를 다루지 않아 API Gateway → Lambda 트레이스가 자연히 수집되는 것으로 전제 | 이전에는 업스트림이 트레이싱 헤더를 추가하면 Lambda 가 자동으로 보냈습니다. **지금은 보내지 않으며 `Active` 트레이싱을 명시적으로 켜야 합니다.** 켜지 않으면 기본값은 `PassThrough` 입니다 | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
-| Lambda X-Ray 세그먼트 구조 | 슬라이드 27 이 `초기화 / 호출` 하위 세그먼트 구조로 그림 | 기존 형식은 `Initialization` · `Invocation` · `Overhead` 였습니다. 새 형식에는 `Invocation` 세그먼트가 없고 `Init` 만 남으며 사용자 하위 세그먼트가 함수 세그먼트에 직접 붙습니다. AWS 가 전환 중이라 계정 안에서 두 형식이 섞여 보일 수 있습니다 | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
-| CloudWatch 에이전트의 범위 | 슬라이드 17~19 가 대상을 EC2 · 온프레미스 서버로 한정하고 용도를 지표·로그로 한정 | 에이전트는 EC2 · 온프레미스 · **컨테이너화된 애플리케이션**에서 지표 · 로그 · **트레이스**를 수집합니다. 버전 1.300025.0 이상은 트레이스를 X-Ray 로 보내 별도 데몬이 필요하지 않습니다 | [Collect metrics, logs, and traces using the CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) |
-| CloudWatch 지표 모델 | 슬라이드 13·14 가 네임스페이스와 측정 기준으로만 설명 | CloudWatch 는 OTLP 로 전송된 OpenTelemetry 지표를 지원합니다. 지표 이름과 레이블(최대 150개)을 쓰고 PromQL 로 조회하며 Query Studio 에서 다룹니다 | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
-| 사용자 지정 지표 게시 권장 | 슬라이드 12 가 "사용자 지정 데이터"를 화살표로만 표시 | **새로 구현하는 경우 OpenTelemetry 사용이 권장됩니다** | [Publish custom metrics (PutMetricData / EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) |
-| Lambda 로그 대상 | 슬라이드 16 이 CloudWatch Logs 하나만 전제 | CloudWatch Logs 가 기본이고 Amazon S3 또는 Firehose 를 대상으로 구성할 수 있습니다 | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
-| Lambda 로그 형식 | 슬라이드 16 이 정형 로그를 애플리케이션이 직접 만드는 것으로 제시 | 고급 로깅 제어로 로그 형식(텍스트/JSON), 로그 수준(`FATAL`~`TRACE`), 대상 로그 그룹을 **함수 설정으로** 지정합니다 | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
-| 로그 그룹의 성질 | 슬라이드 13 노트가 보존·모니터링·액세스 제어 설정 공유 단위로만 설명 | 로그 그룹 클래스가 Standard 와 Infrequent Access 두 가지 있고, 삭제 보호도 걸 수 있습니다 | [Amazon CloudWatch Logs concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html) |
-| 경보 평가 창 | 슬라이드 15 가 고정 경계 그림으로만 설명 | 슬라이딩 창(기본)과 월 클럭 창을 선택할 수 있습니다. 월 클럭 창은 고정 경계에 정렬되고 더 과거 데이터를 추가 조회하지 않습니다 | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
-| 경보 작업 대상 | 슬라이드 12 노트가 EC2 중지·**시작**·종료, EC2 Auto Scaling, SNS 를 제시 | 현재 목록은 EC2 작업(stop · terminate · reboot · recover), Auto Scaling 정책, **Lambda 함수**, SNS 주제, Systems Manager OpsItem·대응 계획, **Amazon Q Developer 운영 조사**입니다. 교재가 드는 "시작"은 EC2 작업 목록에 없습니다 | [PutMetricAlarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html) |
+| Lambda X-Ray 세그먼트 구조 | 원본 자료가 `초기화 / 호출` 하위 세그먼트 구조로 그림 | 기존 형식은 `Initialization` · `Invocation` · `Overhead` 였습니다. 새 형식에는 `Invocation` 세그먼트가 없고 `Init` 만 남으며 사용자 하위 세그먼트가 함수 세그먼트에 직접 붙습니다. AWS 가 전환 중이라 계정 안에서 두 형식이 섞여 보일 수 있습니다 | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
+| CloudWatch 에이전트의 범위 | 원본 자료가 대상을 EC2 · 온프레미스 서버로 한정하고 용도를 지표·로그로 한정 | 에이전트는 EC2 · 온프레미스 · **컨테이너화된 애플리케이션**에서 지표 · 로그 · **트레이스**를 수집합니다. 버전 1.300025.0 이상은 트레이스를 X-Ray 로 보내 별도 데몬이 필요하지 않습니다 | [Collect metrics, logs, and traces using the CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) |
+| CloudWatch 지표 모델 | 원본 자료가 네임스페이스와 측정 기준으로만 설명 | CloudWatch 는 OTLP 로 전송된 OpenTelemetry 지표를 지원합니다. 지표 이름과 레이블(최대 150개)을 쓰고 PromQL 로 조회하며 Query Studio 에서 다룹니다 | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| 사용자 지정 지표 게시 권장 | 원본 자료가 "사용자 지정 데이터"를 화살표로만 표시 | **새로 구현하는 경우 OpenTelemetry 사용이 권장됩니다** | [Publish custom metrics (PutMetricData / EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) |
+| Lambda 로그 대상 | 원본 자료가 CloudWatch Logs 하나만 전제 | CloudWatch Logs 가 기본이고 Amazon S3 또는 Firehose 를 대상으로 구성할 수 있습니다 | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
+| Lambda 로그 형식 | 원본 자료가 정형 로그를 애플리케이션이 직접 만드는 것으로 제시 | 고급 로깅 제어로 로그 형식(텍스트/JSON), 로그 수준(`FATAL`~`TRACE`), 대상 로그 그룹을 **함수 설정으로** 지정합니다 | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
+| 로그 그룹의 성질 | 원본 자료가 보존·모니터링·액세스 제어 설정 공유 단위로만 설명 | 로그 그룹 클래스가 Standard 와 Infrequent Access 두 가지 있고, 삭제 보호도 걸 수 있습니다 | [Amazon CloudWatch Logs concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html) |
+| 경보 평가 창 | 원본 자료가 고정 경계 그림으로만 설명 | 슬라이딩 창(기본)과 월 클럭 창을 선택할 수 있습니다. 월 클럭 창은 고정 경계에 정렬되고 더 과거 데이터를 추가 조회하지 않습니다 | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| 경보 작업 대상 | 원본 자료가 EC2 중지·**시작**·종료, EC2 Auto Scaling, SNS 를 제시 | 현재 목록은 EC2 작업(stop · terminate · reboot · recover), Auto Scaling 정책, **Lambda 함수**, SNS 주제, Systems Manager OpsItem·대응 계획, **Amazon Q Developer 운영 조사**입니다. 교재가 드는 "시작"은 EC2 작업 목록에 없습니다 | [PutMetricAlarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html) |
 
 ### 13.3 비권장 및 지원 종료된 항목
 
@@ -1801,7 +1803,7 @@ public async Task RunSqlQueryAsync(string connectionString)
 | **X-Ray 데몬** | 비권장 — SDK 와 같은 유지 관리 일정을 따르고, 문서가 마이그레이션을 안내합니다 | CloudWatch 에이전트 또는 OpenTelemetry Collector | [Migrating from X-Ray instrumentation to OpenTelemetry instrumentation](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html) |
 | 코드에 포함한 **JSON 로컬 샘플링 규칙** | 비권장 — 인스턴스마다 독립 샘플링해 전체 비율이 올라가고, 규칙 변경에 재배포가 필요합니다 | X-Ray 서비스에 정의한 샘플링 규칙 (CloudWatch 콘솔 → Settings → X-Ray traces → Sampling rules) | [Configuring sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html) |
 
-> **이 표가 이 모듈에서 가장 중요합니다.** 교재 슬라이드 26·33·34 는 X-Ray SDK 와 데몬을
+> **이 표가 이 모듈에서 가장 중요합니다.** 교재 원본 자료는 X-Ray SDK 와 데몬을
 > 계측의 유일한 경로로 제시합니다. 그 경로를 그대로 따라가면 지금 권장되지 않는 방법을
 > 배우게 됩니다. 기존 코드를 읽기 위해서는 여전히 알아야 하지만, 새로 만들 때는
 > [12.3절](#123-opentelemetry-로의-전환)의 OpenTelemetry 경로를 쓰세요.
@@ -1814,32 +1816,32 @@ public async Task RunSqlQueryAsync(string connectionString)
 
 > — 출처: [Configuring sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html)
 
-### 13.4 교재 이후 추가된 항목
+### 13.4 이 자료에서 더한 점
 
-교재에 없고 이 문서에서 공식 문서로 채운 항목입니다.
+강의에서 다루지 않았고 이 문서에서 공식 문서로 채운 항목입니다.
 
-| 항목 | 이 문서의 위치 |
-|---|---|
-| 지표 보존 기간이 기간별로 다르고 오래된 데이터가 집계되어 원본 해상도가 사라진다는 사실 | [5.2절](#52-보존-기간과-해상도) |
-| 지표 타임스탬프 제약(과거 2주 · 미래 2시간)과 그로 인한 경보 오작동 | [5.1절](#51-지표) |
-| `PutMetricData` 로 사용자 지정 지표를 게시하는 방법, 통계 세트 집계, 값 0 게시 | [5.4절](#54-사용자-지정-지표-게시) |
-| CloudWatch 의 OpenTelemetry 지표 모델 | [5.5절](#55-opentelemetry-지표) |
-| 누락 데이터 처리 네 가지 옵션과 기본값 `missing` | [6.3절](#63-누락-데이터-처리) |
-| M out of N 평가, 평가 범위, 조급한 경보 전환 방지 논리 | [6.2절](#62-실제-평가-방식은-m-out-of-n-입니다) |
-| 복합 경보 · PromQL 경보 · 로그 경보 | [6.4절](#64-경보의-종류) |
-| 로그 보존 기간 기본값이 무기한이라는 사실과 72시간 삭제 지연 | [7.3절](#73-보존-기간과-로그-클래스) |
-| CloudWatch Logs Insights 전체 (세 가지 쿼리 언어, 필드 인덱스, 제약, 스캔량 과금) | [7.4절](#74-cloudwatch-logs-insights) |
-| 임베디드 지표 형식(EMF)과 카디널리티 함정 | [7.5절](#75-로그에서-지표-만들기-emf) |
-| 대시보드와 크로스 계정 관측가능성 | [4.3절](#43-대시보드와-크로스-계정-관측가능성) |
-| Lambda 재귀 루프 감지 (약 16회, 기본 활성, 감지 범위 한계) | [9.3절](#93-무한-루프는-이제-lambda-가-막아-줍니다) |
-| 추론된 세그먼트와 엣지가 어느 쪽 정보를 쓰는지 | [11.2절](#112-추론된-세그먼트) |
-| X-Ray 샘플링 전체 (예비량·비율, 상위 기반 성질, 규칙 위치의 차이) | [11.4절](#114-샘플링) |
-| 트레이싱 헤더 구조와 위조 방어 | [11.5절](#115-트레이싱-헤더) |
-| 트레이싱을 실제로 켜는 방법 (콘솔 경로, SAM `Tracing` 속성, 필요 권한) | [12.1절](#121-트레이싱을-켜는-설정) |
-| OpenTelemetry 전환 (개념 대응표, 세 가지 경로, 샘플링 전략, 주석 처리) | [12.3절](#123-opentelemetry-로의-전환) |
-| CloudWatch Application Signals 와 Transaction Search | [10.6절](#106-cloudwatch-로-넓어진-관측가능성-기능) |
-| 세그먼트 문서 64 kB 한도, 트레이스·서비스 그래프 30일 보존 | [11.1절](#111-트레이스-세그먼트-하위-세그먼트) · [10.3절](#103-트레이스-맵) |
-| 실습에서 트레이스가 보이지 않을 때의 확인 순서 | [12.7절](#127-실습-7) |
+| 항목 | 이 문서의 위치 | 왜 더했는가 | 근거 |
+|---|---|---|---|
+| 지표 보존 기간이 기간별로 다르고 오래된 데이터가 집계되어 원본 해상도가 사라진다는 사실 | [5.2절](#52-보존-기간과-해상도) | 오래된 지표를 원본 해상도로 조회하려다 실패하는 실무 함정이라서 | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| 지표 타임스탬프 제약(과거 2주 · 미래 2시간)과 그로 인한 경보 오작동 | [5.1절](#51-지표) | 타임스탬프를 잘못 주면 경보가 `INSUFFICIENT_DATA` 로 빠지는 원인이라서 | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| `PutMetricData` 로 사용자 지정 지표를 게시하는 방법, 통계 세트 집계, 값 0 게시 | [5.4절](#54-사용자-지정-지표-게시) | "사용자 지정 데이터"라는 화살표만으로는 실제 게시 방법을 알 수 없어서 | [Publish custom metrics (PutMetricData / EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) |
+| CloudWatch 의 OpenTelemetry 지표 모델 | [5.5절](#55-opentelemetry-지표) | 새 구현에 권장되는 모델인데 데이터 모델이 기존과 달라서 | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| 누락 데이터 처리 네 가지 옵션과 기본값 `missing` | [6.3절](#63-누락-데이터-처리) | 지표 성질에 맞는 옵션을 고르지 않으면 경보가 오작동해서 | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| M out of N 평가, 평가 범위, 조급한 경보 전환 방지 논리 | [6.2절](#62-실제-평가-방식은-m-out-of-n-입니다) | "연속 3개"라는 이해만으로는 실제 평가 동작과 어긋나서 | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| 복합 경보 · PromQL 경보 · 로그 경보 | [6.4절](#64-경보의-종류) | 단일 지표 경보만 알면 알람 노이즈·로그 기반 경보를 설계할 수 없어서 | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
+| 로그 보존 기간 기본값이 무기한이라는 사실과 72시간 삭제 지연 | [7.3절](#73-보존-기간과-로그-클래스) | 방치 시 계속 과금되는 실습 계정의 가장 흔한 비용 누수라서 | [Amazon CloudWatch Logs concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html) |
+| CloudWatch Logs Insights 전체 (세 가지 쿼리 언어, 필드 인덱스, 제약, 스캔량 과금) | [7.4절](#74-cloudwatch-logs-insights) | 로그를 조회·분석하지 못하면 관측가능성의 한 축이 비어서 | [Analyzing log data with CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html) |
+| 임베디드 지표 형식(EMF)과 카디널리티 함정 | [7.5절](#75-로그에서-지표-만들기-emf) | 정형 로그를 지표로 바꾸는 방법이자 청구서 폭발을 막는 지식이라서 | [Embedding metrics within logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html) |
+| 대시보드와 크로스 계정 관측가능성 | [4.3절](#43-대시보드와-크로스-계정-관측가능성) | 대시보드가 독립 기능이고 리전·계정 경계를 넘는 방법이 필요해서 | [Using Amazon CloudWatch dashboards](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html) |
+| Lambda 재귀 루프 감지 (약 16회, 기본 활성, 감지 범위 한계) | [9.3절](#93-무한-루프는-이제-lambda-가-막아-줍니다) | "흔한 결함 패턴"에 지금은 기본 방어 장치가 있기 때문에 | [Use Lambda recursive loop detection to prevent infinite loops](https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html) |
+| 추론된 세그먼트와 엣지가 어느 쪽 정보를 쓰는지 | [11.2절](#112-추론된-세그먼트) | 트레이스 맵의 DynamoDB 노드가 어떻게 생기는지 설명이 빠져서 | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| X-Ray 샘플링 전체 (예비량·비율, 상위 기반 성질, 규칙 위치의 차이) | [11.4절](#114-샘플링) | 트레이싱 비용과 부하를 좌우하는 핵심인데 통째로 빠져서 | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| 트레이싱 헤더 구조와 위조 방어 | [11.5절](#115-트레이싱-헤더) | 샘플링 결정이 전파되는 방식이자 사용자 위조를 막는 보안 사항이라서 | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| 트레이싱을 실제로 켜는 방법 (콘솔 경로, SAM `Tracing` 속성, 필요 권한) | [12.1절](#121-트레이싱을-켜는-설정) | 계측 코드만으로는 트레이스가 오지 않아서 | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
+| OpenTelemetry 전환 (개념 대응표, 세 가지 경로, 샘플링 전략, 주석 처리) | [12.3절](#123-opentelemetry-로의-전환) | X-Ray SDK 가 권장되지 않게 되어 이전 경로를 알아야 해서 | [Migrating from X-Ray instrumentation to OpenTelemetry instrumentation](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html) |
+| CloudWatch Application Signals 와 Transaction Search | [10.6절](#106-cloudwatch-로-넓어진-관측가능성-기능) | "현대적 개발" 목표에 맞는 현재 기능이 도구 목록 밖에 있어서 | [Application Signals](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html) |
+| 세그먼트 문서 64 kB 한도, 트레이스·서비스 그래프 30일 보존 | [11.1절](#111-트레이스-세그먼트-하위-세그먼트) · [10.3절](#103-트레이스-맵) | 트레이스 데이터의 크기·보존 한계가 설계에 영향을 주기 때문에 | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| 실습에서 트레이스가 보이지 않을 때의 확인 순서 | [12.7절](#127-실습-7) | 트레이스가 안 보이는 실습 상황을 순서대로 진단할 수 있어서 | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
 
 ### 13.5 검증하지 못한 항목
 
@@ -1849,8 +1851,8 @@ public async Task RunSqlQueryAsync(string connectionString)
 |---|---|
 | 교재의 "지식 주기" 도식(인력 → 데이터 → 정보 → 지식 → 인사이트 → 작업) | AWS 공식 문서에서 같은 도식을 찾지 못했습니다. 교재 고유의 그림으로 보입니다. 이 문서는 교재 내용을 옮기는 데 그쳤습니다([2.3절](#23-관측가능성-계획)) |
 | MTTD · MTTI · MTBF 의 정의와 `가용성 = MTBF / (MTBF + MTTR)` 공식 | AWS 공식 문서에서 이 형태의 정의와 공식을 확인하지 못했습니다. MTTR 만 Application Insights 문서에서 쓰이는 것을 확인했습니다([11.7절](#117-운영-지표-약어)) |
-| `IHostingEnvironment` 의 대체 인터페이스 이름 | ASP.NET Core 문서 소관이고 AWS 소유 도메인이 아니어서 이 프로젝트의 근거 규칙상 인용할 수 없습니다. "오래된 이름"이라는 사실만 적었습니다([12.5절](#125-교재의-c-예시)) |
-| AWS SDK for Java 2.x 에서의 X-Ray 계측 방법 | 교재가 드는 `AmazonDynamoDBClientBuilder` 는 1.x API 입니다. 2.x 의 대응 방법을 이번 검증 범위에서 확인하지 못했습니다. 새 애플리케이션에는 OpenTelemetry 경로를 쓰세요([12.4절](#124-교재의-언어별-x-ray-sdk-구성)) |
+| `IHostingEnvironment` 의 대체 인터페이스 이름 | ASP.NET Core 문서 소관이고 AWS 소유 도메인이 아니어서 이 프로젝트의 근거 규칙상 인용할 수 없습니다. "오래된 이름"이라는 사실만 적었습니다([12.5절](#125-c-예시)) |
+| AWS SDK for Java 2.x 에서의 X-Ray 계측 방법 | 위에서 다룬 `AmazonDynamoDBClientBuilder` 는 1.x API 입니다. 2.x 의 대응 방법을 이번 검증 범위에서 확인하지 못했습니다. 새 애플리케이션에는 OpenTelemetry 경로를 쓰세요([12.4절](#124-언어별-x-ray-sdk-구성)) |
 | 교재가 드는 `AWS.Logger.*` NuGet 패키지들의 현재 유지 상태 | 패키지 저장소는 AWS 소유 도메인이 아니어서 근거로 쓸 수 없고, AWS 공식 문서에서 이 목록을 확인하지 못했습니다. 교재 목록을 그대로 옮겼습니다([7.6절](#76-애플리케이션-로그를-보내는-net-패키지)) |
 | CloudWatch Application Insights 가 지원하는 애플리케이션 유형 전체 목록 | 개요 문서에서 SQL Server 백엔드와 IIS·웹 계층, SAP(ASE · HANA · NetWeaver) 튜토리얼의 존재는 확인했지만 전체 목록은 확인하지 못했습니다([9.1절](#91-무엇을-하는가)) |
 | HTTP API(API Gateway v2)의 X-Ray 지원 여부 | 확인한 문서는 **REST API** 를 대상으로 합니다. HTTP API 의 지원 여부는 확인하지 못했으므로 이 문서는 REST API 범위로만 서술했습니다([12.1절](#121-트레이싱을-켜는-설정)) |

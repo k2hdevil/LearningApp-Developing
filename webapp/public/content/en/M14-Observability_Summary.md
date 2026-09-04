@@ -22,12 +22,12 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against AWS official documentation.
-> - 🔄 Content where the original instructor deck differs from current fact and has been corrected. What changed and how is recorded in [Chapter 13](#13-changes-from-the-courseware).
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 13](#13-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 25, 2026. Documentation may be updated after this date, so check the linked original before applying anything to an exam or to production.
-> - **This module has changed more since the courseware than any other.** The X-Ray SDKs and daemon entered maintenance mode on February 25, 2026, the X-Ray console is no longer being developed, and the service map has been folded into the trace map in the CloudWatch console. Following the deck's instrumentation code teaches a path that is no longer recommended ([Section 13.3](#133-discouraged-and-end-of-support-items)).
-> - Terminology is used consistently. We write **observability**, **metric**, **dimension**, **alarm**, **trace**, **segment**, **subsegment**, **sampling**, and **span**. Where the courseware calls the same thing by different names, that is recorded in [Section 13.1](#131-items-where-the-courseware-differs-from-fact).
-> - **The deck's CLI example and C# example contain errors that make them unusable as printed, so they are corrected here.** What was corrected is listed in the correction table in each section.
+> - **This is the area that has changed most in this course.** The X-Ray SDKs and daemon entered maintenance mode on February 25, 2026, the X-Ray console is no longer being developed, and the service map has been folded into the trace map in the CloudWatch console. Following the older instrumentation code teaches a path that is no longer recommended ([Section 13.3](#133-discouraged-and-end-of-support-items)).
+> - Terminology is used consistently. We write **observability**, **metric**, **dimension**, **alarm**, **trace**, **segment**, **subsegment**, **sampling**, and **span**. Items that cannot be settled with external documentation carry no marker; they are pointed out in the body and gathered in [Section 13](#13-changes-from-the-courseware).
+> - **The CLI example and C# example contain errors that make them unusable as printed, so they are corrected here.** What was corrected is listed in the correction table in each section.
 
 ---
 
@@ -43,25 +43,25 @@ After completing this module, you should be able to do the following.
 - Describe application monitoring with CloudWatch Application Insights
 - Describe application debugging with AWS X-Ray
 
-Slide 3 (Module objectives) and slide 42 (Module summary) carry the same five items with
-different spacing in the first one. This document follows slide 3
-([Section 13.1](#131-items-where-the-courseware-differs-from-fact)).
+The module objectives and the module summary carry the same five items with different spacing in
+the first one. This document follows the module-objectives wording
+([Section 13.1](#131-differences-from-the-courseware)).
 
-### What the Deck Does Not Cover
+### What This Topic Broadens Into
 
-The second objective says "**modern** development", yet the deck names only two tools,
-CloudWatch and X-Ray, and covers a narrow slice of each. Questions that always come up in class
-have no answer in the deck.
+The second objective says "**modern** development", yet the core tools are just two, CloudWatch and
+X-Ray, and it is easy to cover only a narrow slice of each. The questions that always come up in
+class sit outside that narrow slice.
 
-| Missing from the deck | Why it matters | Where this document covers it |
+| Beyond the narrow slice | Why it matters | Where this document covers it |
 |---|---|---|
-| How to **query and analyze** logs | The deck stops at shipping logs to CloudWatch. Collecting logs you cannot read is not observability | [Section 7.4](#74-cloudwatch-logs-insights) |
-| Log **retention** | It says log groups "share the same retention" but never states the default. The default is indefinite, so an unattended log group bills forever | [Section 7.3](#73-retention-and-log-classes) |
-| X-Ray **sampling** | This governs tracing cost and overhead, and the deck does not mention it once | [Section 11.4](#114-sampling) |
-| The **settings** that turn tracing on | The deck shows only SDK code and never covers enabling tracing on Lambda or API Gateway | [Section 12.1](#121-the-settings-that-turn-tracing-on) |
-| How to **publish** custom metrics | Slide 12 shows "custom data" as an arrow but never mentions `PutMetricData` | [Section 5.4](#54-publishing-custom-metrics) |
-| **Dashboards** | Slide 20's notes mention "automatically creates CloudWatch dashboards" and that is all | [Section 4.3](#43-dashboards-and-cross-account-observability) |
-| The **currently recommended** instrumentation | The deck presents the X-Ray SDK as the only path. OpenTelemetry is the recommended path now | [Section 12.3](#123-the-move-to-opentelemetry) |
+| How to **query and analyze** logs | Shipping logs to CloudWatch is not enough. Collecting logs you cannot read is not observability | [Section 7.4](#74-cloudwatch-logs-insights) |
+| Log **retention** | Log groups share the same retention, and the default is indefinite, so an unattended log group bills forever | [Section 7.3](#73-retention-and-log-classes) |
+| X-Ray **sampling** | This governs tracing cost and overhead | [Section 11.4](#114-sampling) |
+| The **settings** that turn tracing on | Instrumented code alone is not enough; you also have to enable tracing on Lambda and API Gateway | [Section 12.1](#121-the-settings-that-turn-tracing-on) |
+| How to **publish** custom metrics | Seeing "custom data" as an arrow leaves out how you actually publish it with `PutMetricData` | [Section 5.4](#54-publishing-custom-metrics) |
+| **Dashboards** | A mention that CloudWatch dashboards are "created automatically" is not enough to understand dashboards themselves | [Section 4.3](#43-dashboards-and-cross-account-observability) |
+| The **currently recommended** instrumentation | It is easy to learn the X-Ray SDK as the only path. OpenTelemetry is the recommended path now | [Section 12.3](#123-the-move-to-opentelemetry) |
 
 ### Where This Module Sits
 
@@ -84,7 +84,7 @@ AWS X-Ray added in this module.
 
 ### 2.1 What Is the Difference
 
-This is the one sentence the courseware stresses most in this module.
+This is the one sentence stressed most in this module.
 
 > Monitoring tells you that a problem **exists**.
 > Observability tells you **why** the problem happened.
@@ -107,14 +107,14 @@ every service in a modern application.
 | Analyze | Understand system state and provide context that helps monitoring |
 | Act | Automate the response to operational changes |
 
-Collect → Monitor → Analyze → Act is the order the instructor notes narrate. The layout on the
-slide itself swaps Act and Analyze.
+The narrated order is Collect → Monitor → Analyze → Act. Some source material swaps Act and
+Analyze in its layout, but in the flow of activities analysis comes before action.
 
 ### 2.3 The Observability Plan
 
-The courseware lists four elements to include in a plan. Slides 6 and 7 repeat the same body
-text, so they are merged into one section here
-([Section 13.1](#131-items-where-the-courseware-differs-from-fact)).
+There are four elements to include in a plan. Some source material repeats the same body text
+across two places, so they are merged into one section here
+([Section 13.1](#131-differences-from-the-courseware)).
 
 | Element | Description |
 |---|---|
@@ -136,9 +136,9 @@ It then draws the planning cycle as a "knowledge cycle".
 Decide what to monitor and how based on information, capture actions and insights in the
 monitoring plan, and iterate.
 
-> **Caution.** This "knowledge cycle" diagram is specific to the courseware. We could not find
-> the same diagram in AWS official documentation, so this document relays the courseware content
-> and does not present it as though it came from official documentation
+> **Caution.** We could not find this "knowledge cycle" diagram in the same form in AWS official
+> documentation, so this document only introduces the concept and does not present it as though it
+> came from official documentation
 > ([Section 13.5](#135-items-we-could-not-verify)).
 
 ### 2.4 Why Observability Is Needed
@@ -167,11 +167,17 @@ Observability does not come from collecting the three separately. It requires **
 them. When a metric spikes you have to be able to move straight to the logs and traces from the
 same moment, or you will not find the cause.
 
-> **Internal inconsistency in the courseware.** Slides 8 and 9 give the three pillars as
-> `logging / metrics / tracing`, while the same diagram on slide 25 (What is AWS X-Ray?) gives
-> `logging / monitoring / tracing`. The answer explanation for knowledge check question 2 on
-> slide 38 states "metrics, traces, and logs", so slide 25 is the one that is wrong
-> ([Section 13.1](#131-items-where-the-courseware-differs-from-fact)).
+```text
+     Metrics ──┐   CloudWatch metrics
+     Logs    ──┼──▶  Observability  ──▶  See that a problem exists and why
+     Traces  ──┘   CloudWatch Logs / AWS X-Ray
+```
+
+> **A difference in wording within the source material.** Some source material gives the three
+> pillars as `logging / metrics / tracing`, and elsewhere in the same diagram as
+> `logging / monitoring / tracing`. The answer explanation states "metrics, traces, and logs", so
+> the correct three pillars are **metrics / logs / traces**
+> ([Section 13.1](#131-differences-from-the-courseware)).
 
 ### 3.2 How the Three Pillars Actually Connect 🆕
 
@@ -202,9 +208,8 @@ that cleanly divided. Below are the connection points we verified.
 
 ### 4.1 What CloudWatch Is
 
-The courseware's one-line definition is **"CloudWatch is a repository of data points."** It
-receives and stores metrics, then computes statistics from what it stored and hands them to
-consumers.
+In one line, **"CloudWatch is a repository of data points."** It receives and stores metrics, then
+computes statistics from what it stored and hands them to consumers.
 
 | Part | Content |
 |---|---|
@@ -217,7 +222,7 @@ based on those metrics. Store custom metrics and you retrieve statistics about t
 
 ### 4.2 What an Alarm Can Do 🔄
 
-The courseware lists the targets as stopping, starting, and terminating EC2 instances, EC2 Auto
+The targets are often known as stopping, starting, and terminating EC2 instances, EC2 Auto
 Scaling, and Amazon SNS. The current list is broader, and **"start" is not on it.**
 
 | Target | ARN form |
@@ -231,14 +236,14 @@ Scaling, and Amazon SNS. The current list is broader, and **"start" is not on it
 
 An alarm action array holds at most 5 items. **Starting an EC2 instance is not a valid value.**
 The action that brings an instance back is `recover`, which moves the same instance to new
-hardware after a hardware failure. That is not what the courseware means by "start".
+hardware after a hardware failure. That is not the same as "start".
 
 > — Source: [PutMetricAlarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html)
 
 ### 4.3 Dashboards and Cross-Account Observability 🆕
 
-The courseware mentions dashboards once, in the context of Application Insights creating them
-automatically, and moves on. Dashboards are a feature in their own right.
+Dashboards are easy to overlook when they come up only in the context of Application Insights
+creating them automatically. They are a feature in their own right.
 
 | Feature | Content |
 |---|---|
@@ -247,8 +252,8 @@ automatically, and moves on. Dashboards are a feature in their own right.
 | Multiple Regions | View resources spread across different Regions in a single view |
 | Permissions needed | `cloudwatch:GetDashboard` and `ListDashboards` to view, `PutDashboard` to create or modify, `DeleteDashboards` to delete |
 
-The courseware stops at "metrics exist only in the Region in which they are created". There is a
-way past that constraint.
+Metrics exist only in the Region in which they are created, but there is a way past that
+constraint.
 
 Set up **cross-account observability** and, from a monitoring account, you can do the following.
 
@@ -290,7 +295,7 @@ other than current UTC can leave an alarm showing `INSUFFICIENT_DATA` or make it
 
 ### 5.2 Retention and Resolution 🆕
 
-Not in the deck, and the first thing you hit in practice. Metric retention **varies by period.**
+The first thing you hit in practice. Metric retention **varies by period.**
 
 | Data point period | Retention |
 |---|---|
@@ -319,8 +324,8 @@ Valid values for period are 1, 5, 10, 30, or any multiple of 60, and the default
 ### 5.3 Namespaces and Dimensions
 
 Metrics are grouped **first by namespace**, then by the various **dimension combinations** within
-each namespace. The courseware uses the example of DynamoDB metrics split into `Table Metrics`
-and `GlobalSecondaryIndex`.
+each namespace. For example, DynamoDB metrics split into `Table Metrics` and
+`GlobalSecondaryIndex`.
 
 | Item | Content |
 |---|---|
@@ -355,7 +360,7 @@ dimensions for you. **It does not do that aggregation for your custom metrics.**
 
 ### 5.4 Publishing Custom Metrics 🆕
 
-Slide 12 shows "custom data" as an arrow, but the deck never covers how to publish it.
+"Custom data" is easy to see as just an arrow on a diagram. Here is how you actually publish it.
 
 ```bash
 # Publish a single data point
@@ -426,7 +431,7 @@ publish metrics every five minutes.
 ### 5.5 OpenTelemetry Metrics 🆕
 
 CloudWatch supports OpenTelemetry metrics sent over OTLP. **The data model differs from
-traditional CloudWatch metrics.** The courseware does not cover this model.
+traditional CloudWatch metrics.** This data model needs to be understood separately.
 
 | Concept | Traditional CloudWatch metrics | OpenTelemetry metrics |
 |---|---|---|
@@ -449,9 +454,9 @@ traditional CloudWatch metrics.** The courseware does not cover this model.
 
 ## 6. Alarms
 
-### 6.1 The Courseware's Alarm Scenario
+### 6.1 A Basic Alarm Scenario
 
-The courseware illustrates an alarm with a threshold of 3 and a minimum of 3 breaching periods.
+Take an alarm with a threshold of 3 and a minimum of 3 breaching periods. It behaves like this.
 
 | Period | Value | State |
 |---|---|---|
@@ -460,12 +465,12 @@ The courseware illustrates an alarm with a threshold of 3 and a minimum of 3 bre
 | 6 | Falls back below threshold | `OK` |
 | 9 | Breaches again but only one period | Stays `OK` |
 
-In the slide's own labels: "Only one period exceeded the threshold. The action is not invoked."
-and "Three periods exceeded the threshold, so the action was invoked."
+Put simply: "only one period exceeds the threshold, so the action is not invoked", and "three
+periods exceed the threshold, so the action is invoked."
 
 ### 6.2 The Real Evaluation Is M out of N 🔄
 
-The courseware only says "three **consecutive** periods". The real behavior is more flexible, and
+It is easy to read this as "three **consecutive** periods". The real behavior is more flexible, and
 missing this difference leads to badly designed alarms.
 
 | Parameter | Meaning |
@@ -474,8 +479,8 @@ missing this difference leads to badly designed alarms.
 | Datapoints to Alarm (M) | The number of data points that must be breaching to trigger the alarm |
 
 When M is smaller than N you get an **"M out of N" alarm**, and the alarm fires even when the
-breaches are not consecutive. The courseware's scenario is just the special case where M and N are
-both 3.
+breaches are not consecutive. The scenario in Section 6.1 is just the special case where M and N
+are both 3.
 
 Two more things sit on top of this.
 
@@ -505,8 +510,8 @@ falls into one of three categories: within the threshold, breaching, or missing.
 | `ignore` | The current alarm state is maintained |
 | `missing` | If all data points in the evaluation range are missing, the alarm goes to `INSUFFICIENT_DATA` |
 
-**The default behavior is `missing`.** The courseware's CLI example spells out
-`--treat-missing-data missing`, which is the default, so omitting it changes nothing.
+**The default behavior is `missing`.** A CLI example may spell out `--treat-missing-data missing`,
+which is the default, so omitting it changes nothing.
 
 Choose based on the nature of the metric.
 
@@ -528,8 +533,8 @@ Two exceptions are worth memorizing.
 
 ### 6.4 Kinds of Alarm 🔄
 
-The courseware says an alarm watches "a **single metric** over a specified period" (slide 13 and
-knowledge check question 5 on slide 38). There are now four kinds.
+It is easy to think of an alarm as watching "a **single metric** over a specified period". There
+are now four kinds.
 
 | Kind | What it watches |
 |---|---|
@@ -563,17 +568,17 @@ farther back (so the wider evaluation range from Section 6.2 does not apply).
 
 > — Source: [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html)
 
-> **The courseware's reference link is broken.** Slide 15's instructor notes give
-> `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html`, but the current path is
-> `/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html`
-> ([Section 13.1](#131-items-where-the-courseware-differs-from-fact)).
+> **A note on a reference link path.** Some source material gives
+> `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html`, which is no longer valid; the
+> current path is `/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html`
+> ([Section 13.1](#131-differences-from-the-courseware)).
 
 ### 6.5 Creating an Alarm from the CLI 🔄
 
-The `put-metric-alarm` example on slides 17–19 **cannot be run as printed.** This document gives a
+A widely cited `put-metric-alarm` example **cannot be run as printed.** This document gives a
 corrected command and records what was corrected below.
 
-First, the command as the courseware prints it (verbatim, do not run this).
+First, the command as the original material prints it (verbatim, do not run this).
 
 ```text
 >> aws cloudwatch put-metric-alarm --alarm-name NotesWriteCapacityUnitsLimit
@@ -583,7 +588,7 @@ First, the command as the courseware prints it (verbatim, do not run this).
 --dimensions "Name=InstanceId,Value=i-12345678"
 ```
 
-| # | Courseware | Verified |
+| # | Original material | Verified |
 |---|---|---|
 | 1 | The alarm name says `WriteCapacityUnits` but the metric is `ConsumedReadCapacityUnits` (read) | A write capacity alarm needs `ConsumedWriteCapacityUnits`. The two metrics exist separately |
 | 2 | Namespace is `AWS/DynamoDB` but the dimension is `Name=InstanceId,...` | DynamoDB dimensions are `TableName`, `GlobalSecondaryIndexName`, `Operation`, `OperationType`, `Verb`, `ReceivingRegion`, `Source`, `StreamLabel`, and `DelegatedOperation`. There is no `InstanceId` |
@@ -670,7 +675,7 @@ number of log streams that can belong to one log group.**
 | AWS CLI | `aws logs put-log-events` uploads batches of log events |
 | API | The `PutLogEvents` API uploads batches programmatically |
 
-**Both structured and unstructured logs are supported.** Here are the courseware's examples.
+**Both structured and unstructured logs are supported.** Here are examples.
 
 Unstructured:
 
@@ -708,15 +713,14 @@ together every log line tied to one request.
 
 > — Source: [Analyzing log data with CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html)
 
-> **Terminology correction.** Slide 16 lists log4net, Log4j, NLog, and Serilog as "supported
+> **Terminology correction.** log4net, Log4j, NLog, and Serilog are sometimes called "supported
 > logging **protocols**". These are logging frameworks and libraries, not protocols
-> ([Section 13.1](#131-items-where-the-courseware-differs-from-fact)).
+> ([Section 13.1](#131-differences-from-the-courseware)).
 
 ### 7.3 Retention and Log Classes 🆕
 
-The courseware only says log groups "share the same retention" and never states the default. **The
-default is indefinite (Never Expire).** Left alone, logs accumulate and keep billing. It is the
-most common cost leak in a lab account.
+Log groups share the same retention, and **the default is indefinite (Never Expire).** Left alone,
+logs accumulate and keep billing. It is the most common cost leak in a lab account.
 
 | Item | Content |
 |---|---|
@@ -747,9 +751,9 @@ cannot afford to lose, such as audit data and production application logs.
 
 ### 7.4 CloudWatch Logs Insights 🆕
 
-**This is the biggest gap in the deck.** The courseware stops at shipping logs to CloudWatch and
-never covers a single way to query or analyze what it collected. Not being able to read your logs
-leaves one of the three pillars empty.
+**This is the part most often left empty.** Stopping at shipping logs to CloudWatch leaves out how
+to query or analyze what was collected. Not being able to read your logs leaves one of the three
+pillars empty.
 
 **There are three query languages.**
 
@@ -798,8 +802,8 @@ console. Use the `StartQuery` API for the same capability.
 
 ### 7.5 Turning Logs into Metrics: EMF 🆕
 
-The courseware shows a structured JSON log example but never covers **how to turn that log into a
-metric.** The CloudWatch **embedded metric format (EMF)** does that job.
+Beyond producing a structured JSON log, there is a way to **turn that log into a metric.** The
+CloudWatch **embedded metric format (EMF)** does that job.
 
 | Item | Content |
 |---|---|
@@ -820,8 +824,8 @@ fields with a limited set of values belong in dimensions.
 
 ### 7.6 .NET Packages for Shipping Application Logs
 
-These are the NuGet packages from slide 16's instructor notes. They batch queued logging messages
-and send them to CloudWatch Logs on a background thread.
+These are the NuGet packages used to ship application logs to CloudWatch Logs. They batch queued
+logging messages and send them to CloudWatch Logs on a background thread.
 
 | Package | Purpose |
 |---|---|
@@ -833,17 +837,17 @@ and send them to CloudWatch Logs on a background thread.
 | `AWS.Logger.AspNetCore` | ASP.NET Core integration |
 | `Amazon.Lambda.Logging.AspNetCore` | For Lambda |
 
-> **Do not use background-thread logging in Lambda.** The courseware's warning has a documented
-> basis. Lambda **freezes** the execution environment when the runtime and each extension have
-> completed and there are no pending events. The background thread freezes with it, so queued logs
-> are not delivered. If no further event arrives for a while, the freeze may not lift. The
-> courseware recommends `ILambdaContext.Logger.LogLine` or `Amazon.Lambda.Logging.AspNetCore`.
+> **Do not use background-thread logging in Lambda.** This warning has a documented basis. Lambda
+> **freezes** the execution environment when the runtime and each extension have completed and there
+> are no pending events. The background thread freezes with it, so queued logs are not delivered. If
+> no further event arrives for a while, the freeze may not lift. The recommended approach is
+> `ILambdaContext.Logger.LogLine` or `Amazon.Lambda.Logging.AspNetCore`.
 >
 > — Source: [Understanding the Lambda execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html)
 
 ### 7.7 Lambda Logging Is Now a Setting 🔄
 
-The courseware treats structured logs as something the application has to produce itself. Now you
+It is easy to treat structured logs as something the application has to produce itself. Now you
 can set the format and level **in the function configuration.**
 
 | Setting | Values |
@@ -852,7 +856,8 @@ can set the format and level **in the function configuration.**
 | Log level | For JSON structured logs: `FATAL`, `ERROR`, `WARN`, `INFO`, `DEBUG`, `TRACE` |
 | Log group | Choose the CloudWatch log group the function sends logs to |
 
-**The destinations grew too.** The courseware assumes CloudWatch Logs alone.
+**The destinations grew too.** It is easy to assume CloudWatch Logs alone, but there are more
+options.
 
 | Destination | When to use it |
 |---|---|
@@ -868,9 +873,8 @@ Firehose costs include both the streaming service and the cost of whatever you s
 
 ## 8. Instrumenting Your Application
 
-Slides 17, 18, and 19 split the same content across three animated slides and carry no instructor
-notes. They are merged into one section here
-([Section 13.1](#131-items-where-the-courseware-differs-from-fact)).
+Some source material splits the same content across several slides. It is merged into one section
+here ([Section 13.1](#131-differences-from-the-courseware)).
 
 ### 8.1 Instrumentation Paths
 
@@ -880,13 +884,12 @@ notes. They are merged into one section here
 | CloudWatch agent | Installed on servers and containers |
 | AWS CLI | Called from a terminal or a script |
 
-The courseware lists nine SDKs: Python (Boto3), .NET, Ruby, JavaScript, Go, Java, Node.js, C++,
-and PHP.
+There are nine SDKs: Python (Boto3), .NET, Ruby, JavaScript, Go, Java, Node.js, C++, and PHP.
 
 ### 8.2 The CloudWatch Agent 🔄
 
-The courseware lists the agent's targets as Amazon EC2 and on-premises servers and limits its
-purpose to metrics and logs. The scope is broader now.
+The agent's targets are often taken to be Amazon EC2 and on-premises servers, and its purpose
+limited to metrics and logs. The scope is broader now.
 
 | Item | Content |
 |---|---|
@@ -945,11 +948,11 @@ the relevant Systems Manager Automation document.
 
 > — Source: [Detect common application problems with CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html)
 
-### 9.2 The List of Common Problems Differs from the Courseware 🔄
+### 9.2 The List of Common Problems 🔄
 
-Slide 21 lists four items as common fault patterns with no explanation.
+Four items are sometimes given as common fault patterns with no explanation.
 
-| What the courseware lists |
+| Frequently listed item |
 |---|
 | Infinite loop |
 | Downstream slowdown |
@@ -958,7 +961,7 @@ Slide 21 lists four items as common fault patterns with no explanation.
 
 The problems the documentation names as ones it provides "additional insights that point to a
 possible root cause and steps for resolution" for are the following. **They do not overlap with the
-courseware's list.**
+frequently listed set above.**
 
 | Verified item | Stack |
 |---|---|
@@ -972,9 +975,9 @@ courseware's list.**
 
 ### 9.3 Lambda Now Stops Infinite Loops for You 🆕
 
-The diagram on slide 21 draws an S3 bucket triggering an image-resize Lambda that uploads a log
-back into the same bucket, triggering itself again. The courseware presents this as a "common fault
-pattern" and does not cover any defense. **Lambda has a built-in defense now.**
+An S3 bucket triggering an image-resize Lambda that uploads a log back into the same bucket,
+triggering itself again, is presented as a "common fault pattern", often without any defense.
+**Lambda has a built-in defense now.**
 
 | Item | Content |
 |---|---|
@@ -1011,7 +1014,7 @@ Resources:
 
 ### 9.4 What the Demo Shows
 
-From slide 23's demo notes.
+The order the demo runs in.
 
 | Step | Content |
 |---|---|
@@ -1033,7 +1036,7 @@ From slide 23's demo notes.
 | Provides viewing and filtering tools | View, filter, and gain insights into that data to identify issues and opportunities for optimization |
 | Traces requests | For any traced request, see request and response details plus details about the calls your application makes to downstream AWS resources, microservices, databases, and web APIs |
 
-The use cases the courseware lists.
+The main use cases.
 
 - Analyze and debug distributed applications
 - Identify and resolve the root cause of performance issues and errors
@@ -1049,8 +1052,8 @@ services that your Java application makes.
 
 ### 10.2 How It Works
 
-The path the courseware draws is `client → X-Ray daemon → X-Ray API → X-Ray console`, with the
-`AWS CLI` and `SDK` also feeding the API. Here is what the documentation adds.
+The basic path is `client → X-Ray daemon → X-Ray API → X-Ray console`, with the `AWS CLI` and
+`SDK` also feeding the API. Here is what the documentation adds.
 
 | Step | Content |
 |---|---|
@@ -1067,8 +1070,8 @@ The path the courseware draws is `client → X-Ray daemon → X-Ray API → X-Ra
 
 ### 10.3 The Trace Map 🔄
 
-The courseware consistently calls this diagram the **service map**. Current documentation uses
-**trace map**. And it is not only the name that changed. **The location changed.**
+This diagram was long called the **service map**. Current documentation uses **trace map**. And it
+is not only the name that changed. **The location changed.**
 
 | Item | Verified |
 |---|---|
@@ -1095,17 +1098,17 @@ same trace ID into a single service graph.
 
 ### 10.4 Node Colors and Error Classification
 
-The courseware gives four colors.
+There are four node colors.
 
-| Color | The courseware's label |
+| Color | Meaning |
 |---|---|
 | Green | Successful calls |
 | Red | Server failure (500 series errors) |
 | Yellow | Client error (400 series errors) |
 | Purple | Throttling error (429 too many requests) |
 
-The X-Ray documentation's error classification is as follows. The courseware's color mapping matches
-this classification.
+The X-Ray documentation's error classification is as follows. The color mapping above matches this
+classification.
 
 | Category | Content |
 |---|---|
@@ -1117,14 +1120,14 @@ When an exception occurs, the X-Ray SDK records details about it, including the 
 
 > — Source: [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html)
 
-> **Typographical error.** Slide 30's instructor notes say "the ratio of successful calls to errors
-> and **combinations**". In context this is a typo for **faults**
-> ([Section 13.1](#131-items-where-the-courseware-differs-from-fact)).
+> **Typographical error.** Some source material says "the ratio of successful calls to errors and
+> **combinations**". In context this is a typo for **faults**
+> ([Section 13.1](#131-differences-from-the-courseware)).
 
 ### 10.5 The X-Ray Console Is No Longer Being Developed 🔄
 
-This is the most important change in the module. The courseware presents the X-Ray console as the
-place to look at traces, on slide 26 and slide 36.
+This is the most important change in the module. The X-Ray console has long been presented as the
+place to look at traces.
 
 The documentation is unambiguous. **AWS is no longer developing the X-Ray console.** The CloudWatch
 console includes new X-Ray functionality redesigned from the X-Ray console, and it contains **all of
@@ -1146,8 +1149,8 @@ level objectives (SLOs) and drill down to correlated X-Ray traces.
 
 ### 10.6 Observability Capabilities That Grew into CloudWatch 🆕
 
-The courseware's tool list is CloudWatch and X-Ray, full stop. Since module objective 2 speaks of
-"modern development", here is what exists in this space as far as we verified.
+The core tools are CloudWatch and X-Ray. Since module objective 2 speaks of "modern development",
+here is what exists in this space as far as we verified.
 
 **Application Signals**
 
@@ -1188,7 +1191,7 @@ directly.
 
 ### 11.1 Trace, Segment, Subsegment
 
-The courseware uses a trace of `listFunction` to show the structure.
+A trace of `listFunction` shows the structure.
 
 ```text
 End user
@@ -1229,8 +1232,8 @@ IP packet. That value **can be forged, so it should not be trusted.**
 
 ### 11.2 Inferred Segments 🆕
 
-The courseware's diagram has a DynamoDB `Notes table` node. But **DynamoDB does not send its own
-segments.** The courseware never explains where that node comes from.
+The trace structure above has a DynamoDB `Notes table` node. But **DynamoDB does not send its own
+segments.** It is worth spelling out where that node comes from.
 
 | Situation | What gets created |
 |---|---|
@@ -1246,7 +1249,7 @@ records the round trip latency, including the time the request spent travelling 
 
 ### 11.3 Annotations and Metadata
 
-The courseware's examples.
+Examples.
 
 ```json
 {
@@ -1272,7 +1275,7 @@ The courseware's examples.
 | Annotations | **Yes** | Used with filter expressions. Record data you want to use to group traces in the console or when calling the `GetTraceSummaries` API |
 | Metadata | No | Can hold values of any type, including objects and lists. Record data you want stored in the trace but **do not need for searching** |
 
-**X-Ray indexes up to 50 annotations per trace.** The courseware's figure is still correct.
+**X-Ray indexes up to 50 annotations per trace.** This figure is still correct.
 
 Annotations and metadata are aggregated at the trace level and can be added to any segment or
 subsegment. You view them in the segment or subsegment details window on the trace details page in
@@ -1295,7 +1298,7 @@ Groups come with two cautions.
 
 ### 11.4 Sampling 🆕
 
-**Not one line in the deck, yet it governs tracing cost and overhead.**
+**This governs tracing cost and overhead.**
 
 The X-Ray SDK applies a sampling algorithm to determine which requests get traced. The defaults are
 as follows.
@@ -1383,8 +1386,8 @@ decisions to their requests, your application can remove `X-Amzn-Trace-Id` from 
 
 ### 11.6 Lambda's Segment Structure 🔄
 
-Slide 27 writes the Lambda cold start as `code-start container download → runtime bootstrap → run
-code`. `code-start` is a **typo for cold start**, and the phase breakdown also differs from the
+Some material writes the Lambda cold start as `code-start container download → runtime bootstrap →
+run code`. `code-start` is a **typo for cold start**, and the phase breakdown also differs from the
 documentation.
 
 **Lambda records 2 segments per trace.**
@@ -1426,7 +1429,7 @@ annotations**.
 | `aws.extensionOverhead` | The additional time the extensions needed to finish |
 
 Here is the **Lambda execution environment lifecycle** as the documentation gives it. Compare it with
-the courseware's three steps.
+the three steps mentioned earlier.
 
 | Phase | Content |
 |---|---|
@@ -1439,8 +1442,8 @@ Lambda retries the `Init` phase at the time of the first function invocation wit
 function timeout. The 10-second limit does not apply to functions using provisioned concurrency,
 SnapStart, or Lambda Managed Instances.
 
-**The courseware's "container download" is not among the three tasks of the `Init` phase.**
-Downloading function code and layers is part of the execution environment preparation covered by the
+**The "container download" step is not among the three tasks of the `Init` phase.** Downloading
+function code and layers is part of the execution environment preparation covered by the
 `AWS::Lambda` segment.
 
 **There is a limit to what the X-Ray SDK can extend.** You can extend the `Invocation` subsegment
@@ -1457,7 +1460,7 @@ concurrency Lambda might proactively initialize an instance with no invocation p
 
 ### 11.7 Operational Metric Acronyms
 
-Slide 29 has no body text and introduces the following only in the instructor notes.
+The operational metric acronyms are as follows.
 
 | Acronym | Expansion |
 |---|---|
@@ -1493,7 +1496,7 @@ troubleshooting.
 
 ### 12.1 The Settings That Turn Tracing On 🆕
 
-Slides 33 and 34 show only SDK code and never cover **the settings that enable tracing on Lambda and
+SDK code alone is not enough; you also need **the settings that enable tracing on Lambda and
 API Gateway.** No amount of instrumented code produces traces if these are off.
 
 **Lambda's tracing modes**
@@ -1573,8 +1576,8 @@ event source mappings.
 
 ### 12.2 Lambda No Longer Sends Traces Automatically 🔄
 
-The courseware does not cover tracing modes, so this change is invisible from the deck. **It is the
-single most common reason traces do not appear in the lab.**
+If tracing modes are overlooked, this change is easy to miss. **It is the single most common reason
+traces do not appear in the lab.**
 
 | When | Behavior |
 |---|---|
@@ -1587,8 +1590,8 @@ If your solution depends on this passive tracing behavior, switch to `Active` tr
 
 ### 12.3 The Move to OpenTelemetry 🔄
 
-**This is the largest change in the module.** Slides 33 and 34 present only instrumentation with the
-X-Ray SDK. That path is no longer recommended.
+**This is the largest change in the module.** It is easy to see only instrumentation with the
+X-Ray SDK, but that path is no longer recommended.
 
 **Support timeline**
 
@@ -1671,35 +1674,35 @@ configure the **X-Ray Propagator**.
 
 > — Source: [X-Ray SDK and Daemon Support timeline](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-daemon-timeline.html)
 
-### 12.4 The Courseware's Per-Language X-Ray SDK Configuration
+### 12.4 Per-Language X-Ray SDK Configuration
 
-Here is what slide 33 gives. **Read the maintenance-mode notice in Section 12.3 first.** This is
+Here is the older approach. **Read the maintenance-mode notice in Section 12.3 first.** This is
 still needed to understand existing code.
 
-| Language | Courseware content |
+| Language | Content |
 |---|---|
 | .NET | Before creating clients, call `AWSSDKHandler.RegisterXRayForAllServices()` to configure all AWS SDK for .NET clients. To target a specific service, `AWSSDKHandler.RegisterXRay<IAmazonDynamoDB>()` |
 | Java | Configure the DynamoDB client and pass the Trace Handler to `AmazonDynamoDBClientBuilder` |
 | Python | The X-Ray SDK for Python has a class named `xray_recorder` that provides the global recorder |
 
-> **A caution on the Java item.** The `AmazonDynamoDBClientBuilder` the courseware names is an
+> **A caution on the Java item.** The `AmazonDynamoDBClientBuilder` named above is an
 > **AWS SDK for Java 1.x** API. As covered in other modules, AWS SDK for Java 1.x has reached end of
 > support. We could not verify the equivalent X-Ray instrumentation approach in 2.x, so this document
 > does not assert one ([Section 13.5](#135-items-we-could-not-verify)). For new applications, use the
 > OpenTelemetry path in Section 12.3.
 
-### 12.5 The Courseware's C# Example 🔄
+### 12.5 The C# Example 🔄
 
-The code on slide 34 contains a part that **will not compile.** It is corrected here with the
+A widely cited C# example contains a part that **will not compile.** It is corrected here with the
 corrections recorded.
 
-| # | Courseware | Verified |
+| # | Original material | Verified |
 |---|---|---|
 | 1 | `await` used inside `public void RunSqlQuery(...)` | You cannot use `await` in a `void` method. It has to be declared `async Task` to compile |
 | 2 | `IHostingEnvironment env` | An older interface name. The replacement belongs to ASP.NET Core documentation and cannot be confirmed within AWS official documentation, so we do not assert it ([Section 13.5](#135-items-we-could-not-verify)) |
 
-Here is the corrected code. The `env` parameter is in the courseware original and unused in the body,
-so it is left as is.
+Here is the corrected code. The `env` parameter is in the original and unused in the body, so it is
+left as is.
 
 ```csharp
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
@@ -1731,7 +1734,7 @@ public async Task RunSqlQueryAsync(string connectionString)
 }
 ```
 
-The labels on the slide indicating which part of the code each one points to.
+The labels indicating which part of the code each one points to.
 
 | Label | Corresponding code |
 |---|---|
@@ -1741,7 +1744,7 @@ The labels on the slide indicating which part of the code each one points to.
 
 ### 12.6 What the Demo Shows
 
-From slide 36's demo notes.
+The order the demo runs in.
 
 | Item | Content |
 |---|---|
@@ -1757,10 +1760,10 @@ From slide 36's demo notes.
 
 ### 12.7 Lab 7
 
-The title is "Observing Your Application with AWS X-Ray". Slide 40 carries only the same application
-architecture diagram as the agenda, with no body text and no instructor notes.
+The title is "Observing Your Application with AWS X-Ray". The lab uses the same application
+architecture as the agenda.
 
-If no traces appear in the lab, check in this order. The deck has no such checklist.
+If no traces appear in the lab, check in this order.
 
 | Order | What to check | Reference |
 |---|---|---|
@@ -1774,19 +1777,19 @@ If no traces appear in the lab, check in this order. The deck has no such checkl
 
 ## 13. Changes from the Courseware
 
-This chapter exists so that when a student has the courseware and this document side by side, you can
-answer "but the book says this". There are 37 items in total: 21 courseware errors, 12 behavior or
-name changes, 3 discouraged items, and 1 end-of-support item.
+Since learners may have the official courseware in front of them, this section gathers in one place
+where this material diverges from it. The evidence behind every item marked new or corrected in the
+sections above is here.
 
-### 13.1 Items Where the Courseware Differs from Fact
+### 13.1 Differences from the Courseware
 
 #### Wrong reference target
 
 | Courseware says | Verified | Source |
 |---|---|---|
-| Slide 15's notes give `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html` | The current path is `/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html`. The `DeveloperGuide` path is not valid | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
+| The original material gives `/AmazonCloudWatch/latest/DeveloperGuide/AlarmThatSendsEmail.html` | The current path is `/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html`. The `DeveloperGuide` path is not valid | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
 
-#### Errors in the CLI example (slides 17, 18, 19)
+#### Errors in the CLI example
 
 The corrected command is in [Section 6.5](#65-creating-an-alarm-from-the-cli).
 
@@ -1803,17 +1806,17 @@ The corrected command is in [Section 6.5](#65-creating-an-alarm-from-the-cli).
 
 | Courseware says | Verified | Source |
 |---|---|---|
-| Slide 15 notes: "the alarm invokes the action only when the threshold has been breached for **three consecutive periods**" | The real behavior is M out of N. When M is smaller than N the alarm fires even without consecutive breaches. The evaluation range is also wider than N, so when data is missing older data points are pulled in | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
-| Slide 13 and knowledge check question 5 on slide 38: "an alarm watches a **single metric** over a specified period" | A metric alarm watches a single metric **or the result of a metric math expression**. Beyond that there are PromQL alarms, log alarms, and composite alarms over other alarms' states | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
-| Slide 16: "supported logging **protocols** — Apache log4net, Apache Log4j, Nlog, Serilog" | These are logging frameworks and libraries, not protocols. What the documentation names as ways to send logs are the CloudWatch agent, the `put-log-events` CLI command, and the `PutLogEvents` API | [Working with log groups and log streams](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html) |
-| Slide 21: common fault patterns given as "infinite loop / downstream slowdown / wrong API version / trigger verification" | The Application Insights documentation's list is application latency, SQL Server failed backups, memory leaks, large HTTP requests, and canceled I/O operations in .NET and SQL stacks. It does not overlap with the courseware's list | [Detect common application problems with CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html) |
+| The original material: "the alarm invokes the action only when the threshold has been breached for **three consecutive periods**" | The real behavior is M out of N. When M is smaller than N the alarm fires even without consecutive breaches. The evaluation range is also wider than N, so when data is missing older data points are pulled in | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| The original material: "an alarm watches a **single metric** over a specified period" | A metric alarm watches a single metric **or the result of a metric math expression**. Beyond that there are PromQL alarms, log alarms, and composite alarms over other alarms' states | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
+| The original material: "supported logging **protocols** — Apache log4net, Apache Log4j, Nlog, Serilog" | These are logging frameworks and libraries, not protocols. What the documentation names as ways to send logs are the CloudWatch agent, the `put-log-events` CLI command, and the `PutLogEvents` API | [Working with log groups and log streams](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html) |
+| The original material: common fault patterns given as "infinite loop / downstream slowdown / wrong API version / trigger verification" | The Application Insights documentation's list is application latency, SQL Server failed backups, memory leaks, large HTTP requests, and canceled I/O operations in .NET and SQL stacks. It does not overlap with that list | [Detect common application problems with CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html) |
 
 #### Typographical errors
 
 | Courseware says | Verified | Source |
 |---|---|---|
-| Slide 27 diagram: `code-start container download` | A typo for `cold start`. The three tasks of the `Init` phase are starting extensions, bootstrapping the runtime, and running the function's static code; code and layer download is covered by the `AWS::Lambda` segment | [Understanding the Lambda execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
-| Slide 30 notes: "the ratio of successful calls to errors and **combinations**" | In context this is a typo for **faults**. X-Ray classifies errors as `Error` (400), `Fault` (500), and `Throttle` (429) | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| The original material: `code-start container download` | A typo for `cold start`. The three tasks of the `Init` phase are starting extensions, bootstrapping the runtime, and running the function's static code; code and layer download is covered by the `AWS::Lambda` segment | [Understanding the Lambda execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
+| The original material: "the ratio of successful calls to errors and **combinations**" | In context this is a typo for **faults**. X-Ray classifies errors as `Error` (400), `Fault` (500), and `Throttle` (429) | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
 
 #### Places where the courseware contradicts itself
 
@@ -1822,32 +1825,32 @@ courseware**, so they carry no 🆕 or 🔄 marker.
 
 | Where it conflicts | Content | How this document handles it |
 |---|---|---|
-| The three pillars | Slides 8 and 9 say `logging / metrics / tracing`, slide 25 says `logging / monitoring / tracing`. The answer explanation for knowledge check question 2 on slide 38 states "metrics, traces, and logs" | Treats slide 25 as the wrong one and standardizes on `metrics / logs / traces` |
-| CloudWatch's role | Slide 11's notes list "metrics collection and **tracing**" as CloudWatch capabilities, while slide 9 assigns tracing to X-Ray | Notes that the two slides disagree and lays out the actual structure (X-Ray traces viewed in the CloudWatch console) in [Section 10.5](#105-the-x-ray-console-is-no-longer-being-developed) |
-| Module objective wording | Slide 3 has no space in the first item, slide 42 has one | Standardizes on slide 3 |
-| Slides 6 and 7 | Identical body text with the diagram built up in stages, yet each set of notes contains a sentence the other lacks | Merged into [Section 2.3](#23-the-observability-plan) with both notes reflected |
-| Slides 17, 18, 19 | Body text and terminal example identical. None of the three has instructor notes | Merged into [Chapter 8](#8-instrumenting-your-application) |
-| Slide 29 notes | Repeats slide 27's trace ID and trace definition verbatim before introducing the operational acronyms | Keeps only the unique content (the acronyms and the availability formula) in [Section 11.7](#117-operational-metric-acronyms) |
-| Slide 34 code | `await` used inside `public void RunSqlQuery(...)`. You cannot use `await` in a `void` method | Corrected to `async Task` and recorded in [Section 12.5](#125-the-coursewares-c-example) |
-| Slide 34 code | `IHostingEnvironment` is an older interface name | States only that it is an older name and does not assert the replacement ([Section 13.5](#135-items-we-could-not-verify)) |
+| The three pillars | One place gives `logging / metrics / tracing` and another gives `logging / monitoring / tracing`. The answer explanation states "metrics, traces, and logs" | Treats the `logging / monitoring / tracing` version as the wrong one and standardizes on `metrics / logs / traces` |
+| CloudWatch's role | One place lists "metrics collection and **tracing**" as CloudWatch capabilities, while another assigns tracing to X-Ray | Notes that the two accounts disagree and lays out the actual structure (X-Ray traces viewed in the CloudWatch console) in [Section 10.5](#105-the-x-ray-console-is-no-longer-being-developed) |
+| Module objective wording | One place has no space in the first item, another has one | Standardizes on the module-objectives wording |
+| Repeated plan content | Identical body text with the diagram built up in stages, yet each set of notes contains a sentence the other lacks | Merged into [Section 2.3](#23-the-observability-plan) with both notes reflected |
+| Repeated instrumentation content | Body text and terminal example identical across the repeated pages. None of them has separate notes | Merged into [Chapter 8](#8-instrumenting-your-application) |
+| Repeated trace definition | The operational-acronyms material repeats the earlier trace ID and trace definition verbatim before introducing the acronyms | Keeps only the unique content (the acronyms and the availability formula) in [Section 11.7](#117-operational-metric-acronyms) |
+| The original code | `await` used inside `public void RunSqlQuery(...)`. You cannot use `await` in a `void` method | Corrected to `async Task` and recorded in [Section 12.5](#125-the-c-example) |
+| The original code | `IHostingEnvironment` is an older interface name | States only that it is an older name and does not assert the replacement ([Section 13.5](#135-items-we-could-not-verify)) |
 
 ### 13.2 Items Whose Behavior or Defaults Changed
 
 | Item | Courseware says | Verified | Source |
 |---|---|---|---|
-| Where the X-Ray console sits | Slides 26 and 36 present the X-Ray console as the place to look at traces | **AWS is no longer developing the X-Ray console.** The CloudWatch console has redesigned X-Ray functionality and contains all of the X-Ray console's functionality | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
-| Service map → trace map | Slides 26, 30, 31, and 36 say "service map" | The X-Ray service map and the CloudWatch ServiceLens map have been combined into the **X-Ray trace map** in the CloudWatch console | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
-| The name CloudWatch Events | Slide 20 notes: "creates CloudWatch Events to notify you of future events" | EventBridge was formerly called CloudWatch Events. The API is the same and existing rules still appear, but **new features added to EventBridge are not added to CloudWatch Events** | [EventBridge is the evolution of Amazon CloudWatch Events](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) |
+| Where the X-Ray console sits | The original material presents the X-Ray console as the place to look at traces | **AWS is no longer developing the X-Ray console.** The CloudWatch console has redesigned X-Ray functionality and contains all of the X-Ray console's functionality | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
+| Service map → trace map | The original material says "service map" | The X-Ray service map and the CloudWatch ServiceLens map have been combined into the **X-Ray trace map** in the CloudWatch console | [Use a console](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html) |
+| The name CloudWatch Events | The original material: "creates CloudWatch Events to notify you of future events" | EventBridge was formerly called CloudWatch Events. The API is the same and existing rules still appear, but **new features added to EventBridge are not added to CloudWatch Events** | [EventBridge is the evolution of Amazon CloudWatch Events](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) |
 | Lambda sending traces automatically | Tracing modes are not covered, so API Gateway → Lambda traces are assumed to be collected naturally | Previously Lambda sent traces automatically when an upstream added a tracing header. **It does not now, and `Active` tracing has to be turned on explicitly.** Without it the default is `PassThrough` | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
-| Lambda X-Ray segment structure | Slide 27 draws an `initialization / invocation` subsegment structure | The old format had `Initialization`, `Invocation`, and `Overhead`. The new format has no `Invocation` segment; only `Init` remains and customer subsegments attach to the function segment. AWS is mid-transition, so both formats may appear in one account | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
-| The CloudWatch agent's scope | Slides 17–19 limit the targets to EC2 and on-premises servers and the purpose to metrics and logs | The agent collects metrics, logs, and **traces** from EC2, on-premises servers, and **containerized applications**. Version 1.300025.0 and later sends traces to X-Ray so a separate daemon is not needed | [Collect metrics, logs, and traces using the CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) |
-| The CloudWatch metric model | Slides 13 and 14 explain only namespaces and dimensions | CloudWatch supports OpenTelemetry metrics sent over OTLP. They use metric names and labels (up to 150), are queried with PromQL, and are handled in Query Studio | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
-| Recommended way to publish custom metrics | Slide 12 shows "custom data" as an arrow only | **For new implementations, OpenTelemetry is recommended** | [Publish custom metrics (PutMetricData / EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) |
-| Lambda log destinations | Slide 16 assumes CloudWatch Logs alone | CloudWatch Logs is the default and you can configure Amazon S3 or Firehose as destinations | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
-| Lambda log format | Slide 16 presents structured logs as something the application produces itself | Advanced logging controls set the log format (text or JSON), the log level (`FATAL` through `TRACE`), and the destination log group **in the function configuration** | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
-| The nature of a log group | Slide 13's notes describe it only as the unit that shares retention, monitoring, and access control settings | There are two log group classes, Standard and Infrequent Access, and you can also enable deletion protection | [Amazon CloudWatch Logs concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html) |
-| Alarm evaluation window | Slide 15 explains only via a fixed-boundary diagram | You can choose a sliding window (default) or a wall clock window. The wall clock window aligns to fixed boundaries and does not query additional older data | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
-| Alarm action targets | Slide 12's notes give stopping, **starting**, and terminating EC2, EC2 Auto Scaling, and SNS | The current list is EC2 actions (stop, terminate, reboot, recover), Auto Scaling policies, **Lambda functions**, SNS topics, Systems Manager OpsItem and response plans, and **Amazon Q Developer investigations**. "Starting" is not among the EC2 actions | [PutMetricAlarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html) |
+| Lambda X-Ray segment structure | The original material draws an `initialization / invocation` subsegment structure | The old format had `Initialization`, `Invocation`, and `Overhead`. The new format has no `Invocation` segment; only `Init` remains and customer subsegments attach to the function segment. AWS is mid-transition, so both formats may appear in one account | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
+| The CloudWatch agent's scope | The original material limits the targets to EC2 and on-premises servers and the purpose to metrics and logs | The agent collects metrics, logs, and **traces** from EC2, on-premises servers, and **containerized applications**. Version 1.300025.0 and later sends traces to X-Ray so a separate daemon is not needed | [Collect metrics, logs, and traces using the CloudWatch agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) |
+| The CloudWatch metric model | The original material explains only namespaces and dimensions | CloudWatch supports OpenTelemetry metrics sent over OTLP. They use metric names and labels (up to 150), are queried with PromQL, and are handled in Query Studio | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| Recommended way to publish custom metrics | The original material shows "custom data" as an arrow only | **For new implementations, OpenTelemetry is recommended** | [Publish custom metrics (PutMetricData / EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) |
+| Lambda log destinations | The original material assumes CloudWatch Logs alone | CloudWatch Logs is the default and you can configure Amazon S3 or Firehose as destinations | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
+| Lambda log format | The original material presents structured logs as something the application produces itself | Advanced logging controls set the log format (text or JSON), the log level (`FATAL` through `TRACE`), and the destination log group **in the function configuration** | [Working with Lambda function logs](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html) |
+| The nature of a log group | The original material describes it only as the unit that shares retention, monitoring, and access control settings | There are two log group classes, Standard and Infrequent Access, and you can also enable deletion protection | [Amazon CloudWatch Logs concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html) |
+| Alarm evaluation window | The original material explains only via a fixed-boundary diagram | You can choose a sliding window (default) or a wall clock window. The wall clock window aligns to fixed boundaries and does not query additional older data | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| Alarm action targets | The original material gives stopping, **starting**, and terminating EC2, EC2 Auto Scaling, and SNS | The current list is EC2 actions (stop, terminate, reboot, recover), Auto Scaling policies, **Lambda functions**, SNS topics, Systems Manager OpsItem and response plans, and **Amazon Q Developer investigations**. "Starting" is not among the EC2 actions | [PutMetricAlarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html) |
 
 ### 13.3 Discouraged and End-of-Support Items
 
@@ -1858,7 +1861,7 @@ courseware**, so they carry no 🆕 or 🔄 marker.
 | The **X-Ray daemon** | Discouraged — it follows the same maintenance timeline as the SDKs and the documentation guides migration | The CloudWatch agent or the OpenTelemetry Collector | [Migrating from X-Ray instrumentation to OpenTelemetry instrumentation](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html) |
 | **Local JSON sampling rules** shipped with your code | Discouraged — each instance samples independently so the overall rate rises, and changing a rule requires a redeploy | Sampling rules defined in the X-Ray service (CloudWatch console → Settings → X-Ray traces → Sampling rules) | [Configuring sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html) |
 
-> **This table is the most important thing in the module.** Slides 26, 33, and 34 present the X-Ray
+> **This table is the most important thing in the module.** The original material presents the X-Ray
 > SDK and daemon as the only instrumentation path. Following it verbatim teaches a method that is no
 > longer recommended. You still need it to read existing code, but for anything new use the
 > OpenTelemetry path in [Section 12.3](#123-the-move-to-opentelemetry).
@@ -1871,32 +1874,32 @@ courseware**, so they carry no 🆕 or 🔄 marker.
 
 > — Source: [Configuring sampling rules](https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html)
 
-### 13.4 Items Added Since the Courseware
+### 13.4 What This Material Adds
 
-Items absent from the courseware that this document filled in from official documentation.
+Items the class did not cover that this document filled in from official documentation.
 
-| Item | Where in this document |
-|---|---|
-| That metric retention varies by period and older data is aggregated so the original resolution disappears | [Section 5.2](#52-retention-and-resolution) |
-| Metric time stamp constraints (two weeks past, two hours future) and the alarm misbehavior they cause | [Section 5.1](#51-metrics) |
-| How to publish custom metrics with `PutMetricData`, statistic set aggregation, and publishing zero | [Section 5.4](#54-publishing-custom-metrics) |
-| CloudWatch's OpenTelemetry metric model | [Section 5.5](#55-opentelemetry-metrics) |
-| The four missing-data options and the `missing` default | [Section 6.3](#63-treating-missing-data) |
-| M out of N evaluation, the evaluation range, and the premature-alarm logic | [Section 6.2](#62-the-real-evaluation-is-m-out-of-n) |
-| Composite alarms, PromQL alarms, and log alarms | [Section 6.4](#64-kinds-of-alarm) |
-| That the default log retention is indefinite, and the 72-hour deletion delay | [Section 7.3](#73-retention-and-log-classes) |
-| CloudWatch Logs Insights in full (three query languages, field indexes, limits, scan-volume charging) | [Section 7.4](#74-cloudwatch-logs-insights) |
-| The embedded metric format (EMF) and its cardinality trap | [Section 7.5](#75-turning-logs-into-metrics-emf) |
-| Dashboards and cross-account observability | [Section 4.3](#43-dashboards-and-cross-account-observability) |
-| Lambda recursive loop detection (about 16 invocations, on by default, detection limits) | [Section 9.3](#93-lambda-now-stops-infinite-loops-for-you) |
-| Inferred segments and which side's information the edge uses | [Section 11.2](#112-inferred-segments) |
-| X-Ray sampling in full (reservoir and rate, the parent-based property, where rules live) | [Section 11.4](#114-sampling) |
-| The tracing header structure and defending against forgery | [Section 11.5](#115-the-tracing-header) |
-| How to actually turn tracing on (console path, the SAM `Tracing` property, required permissions) | [Section 12.1](#121-the-settings-that-turn-tracing-on) |
-| The OpenTelemetry transition (concept mapping, the three paths, sampling strategies, annotation handling) | [Section 12.3](#123-the-move-to-opentelemetry) |
-| CloudWatch Application Signals and Transaction Search | [Section 10.6](#106-observability-capabilities-that-grew-into-cloudwatch) |
-| The 64 kB segment document limit and 30-day retention for traces and service graphs | [Section 11.1](#111-trace-segment-subsegment) and [Section 10.3](#103-the-trace-map) |
-| What to check when no traces appear in the lab | [Section 12.7](#127-lab-7) |
+| Item | Where in this document | Why it was added | Source |
+|---|---|---|---|
+| That metric retention varies by period and older data is aggregated so the original resolution disappears | [Section 5.2](#52-retention-and-resolution) | It is the practical trap you hit trying to read old metrics at their original resolution | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| Metric time stamp constraints (two weeks past, two hours future) and the alarm misbehavior they cause | [Section 5.1](#51-metrics) | A wrong time stamp is what drives an alarm into `INSUFFICIENT_DATA` | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| How to publish custom metrics with `PutMetricData`, statistic set aggregation, and publishing zero | [Section 5.4](#54-publishing-custom-metrics) | An arrow labeled "custom data" does not show how to publish it | [Publish custom metrics (PutMetricData / EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) |
+| CloudWatch's OpenTelemetry metric model | [Section 5.5](#55-opentelemetry-metrics) | It is the recommended model for new implementations and its data model differs | [Metrics concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html) |
+| The four missing-data options and the `missing` default | [Section 6.3](#63-treating-missing-data) | Picking the wrong option for the metric's nature makes an alarm misbehave | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| M out of N evaluation, the evaluation range, and the premature-alarm logic | [Section 6.2](#62-the-real-evaluation-is-m-out-of-n) | The "three consecutive" reading diverges from the real evaluation behavior | [Configuring how CloudWatch alarms treat missing data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/alarms-and-missing-data.html) |
+| Composite alarms, PromQL alarms, and log alarms | [Section 6.4](#64-kinds-of-alarm) | Knowing only single-metric alarms cannot design noise reduction or log-based alarms | [Using Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) |
+| That the default log retention is indefinite, and the 72-hour deletion delay | [Section 7.3](#73-retention-and-log-classes) | It is the most common cost leak in a lab account when left alone | [Amazon CloudWatch Logs concepts](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogsConcepts.html) |
+| CloudWatch Logs Insights in full (three query languages, field indexes, limits, scan-volume charging) | [Section 7.4](#74-cloudwatch-logs-insights) | Without querying and analyzing logs, one pillar of observability is empty | [Analyzing log data with CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html) |
+| The embedded metric format (EMF) and its cardinality trap | [Section 7.5](#75-turning-logs-into-metrics-emf) | It turns structured logs into metrics, and the trap is what prevents a bill explosion | [Embedding metrics within logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html) |
+| Dashboards and cross-account observability | [Section 4.3](#43-dashboards-and-cross-account-observability) | Dashboards are a feature in their own right and crossing Region/account boundaries is needed | [Using Amazon CloudWatch dashboards](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html) |
+| Lambda recursive loop detection (about 16 invocations, on by default, detection limits) | [Section 9.3](#93-lambda-now-stops-infinite-loops-for-you) | The "common fault pattern" now has a built-in defense | [Use Lambda recursive loop detection to prevent infinite loops](https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html) |
+| Inferred segments and which side's information the edge uses | [Section 11.2](#112-inferred-segments) | The explanation of how the DynamoDB node on the trace map appears is missing | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| X-Ray sampling in full (reservoir and rate, the parent-based property, where rules live) | [Section 11.4](#114-sampling) | It governs tracing cost and overhead yet is missing entirely | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| The tracing header structure and defending against forgery | [Section 11.5](#115-the-tracing-header) | It is how the sampling decision propagates and a security point against user forgery | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| How to actually turn tracing on (console path, the SAM `Tracing` property, required permissions) | [Section 12.1](#121-the-settings-that-turn-tracing-on) | Instrumented code alone produces no traces | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
+| The OpenTelemetry transition (concept mapping, the three paths, sampling strategies, annotation handling) | [Section 12.3](#123-the-move-to-opentelemetry) | The X-Ray SDK became discouraged, so the migration path has to be known | [Migrating from X-Ray instrumentation to OpenTelemetry instrumentation](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-migration.html) |
+| CloudWatch Application Signals and Transaction Search | [Section 10.6](#106-observability-capabilities-that-grew-into-cloudwatch) | The current capabilities that match the "modern development" objective sit outside the tool list | [Application Signals](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Application-Monitoring-Sections.html) |
+| The 64 kB segment document limit and 30-day retention for traces and service graphs | [Section 11.1](#111-trace-segment-subsegment) and [Section 10.3](#103-the-trace-map) | The size and retention limits of trace data affect design | [AWS X-Ray concepts](https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html) |
+| What to check when no traces appear in the lab | [Section 12.7](#127-lab-7) | It gives an ordered way to diagnose the "no traces" lab situation | [Visualize Lambda function invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
 
 ### 13.5 Items We Could Not Verify
 
@@ -1906,8 +1909,8 @@ What we could not confirm in documentation is written down as unconfirmed. We do
 |---|---|
 | The courseware's "knowledge cycle" diagram (people → data → information → knowledge → insight → action) | We could not find the same diagram in AWS official documentation. It appears to be specific to the courseware. This document only relays it ([Section 2.3](#23-the-observability-plan)) |
 | The definitions of MTTD, MTTI, MTBF and the formula `Availability = MTBF / (MTBF + MTTR)` | We could not confirm these definitions and this formula in AWS official documentation. Only MTTR was confirmed as used, in the Application Insights documentation ([Section 11.7](#117-operational-metric-acronyms)) |
-| The replacement interface name for `IHostingEnvironment` | It belongs to ASP.NET Core documentation, which is not an AWS-owned domain, so this project's sourcing rules do not allow citing it. We recorded only that the name is older ([Section 12.5](#125-the-coursewares-c-example)) |
-| X-Ray instrumentation with AWS SDK for Java 2.x | The `AmazonDynamoDBClientBuilder` the courseware names is a 1.x API. We did not verify the 2.x equivalent within this verification pass. Use the OpenTelemetry path for new applications ([Section 12.4](#124-the-coursewares-per-language-x-ray-sdk-configuration)) |
+| The replacement interface name for `IHostingEnvironment` | It belongs to ASP.NET Core documentation, which is not an AWS-owned domain, so this project's sourcing rules do not allow citing it. We recorded only that the name is older ([Section 12.5](#125-the-c-example)) |
+| X-Ray instrumentation with AWS SDK for Java 2.x | The `AmazonDynamoDBClientBuilder` covered above is a 1.x API. We did not verify the 2.x equivalent within this verification pass. Use the OpenTelemetry path for new applications ([Section 12.4](#124-per-language-x-ray-sdk-configuration)) |
 | The current maintenance status of the `AWS.Logger.*` NuGet packages the courseware lists | The package registry is not an AWS-owned domain and cannot be cited, and we could not find this list in AWS official documentation. We relayed the courseware's list ([Section 7.6](#76-net-packages-for-shipping-application-logs)) |
 | The full list of application types CloudWatch Application Insights supports | The overview documentation confirms SQL Server backends, IIS / web tiers, and the existence of SAP (ASE, HANA, NetWeaver) tutorials, but not the full list ([Section 9.1](#91-what-it-does)) |
 | Whether HTTP APIs (API Gateway v2) support X-Ray | The documentation we verified covers **REST APIs**. We could not confirm support for HTTP APIs, so this document describes only the REST API scope ([Section 12.1](#121-the-settings-that-turn-tracing-on)) |
