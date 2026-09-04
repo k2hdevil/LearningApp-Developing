@@ -19,8 +19,8 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 10](#10-changes-from-the-courseware) for what changed and how.
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 10](#10-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 31, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -39,7 +39,7 @@ After completing this module, you should be able to do the following:
 
 ### Where This Module Sits
 
-The courseware places this module first on day 3. It is where the pieces built in the previous two modules come together as one application.
+This module is the first module on day 3. It is where the pieces built in the previous two modules come together as one application.
 
 | Item | Content |
 |---|---|
@@ -57,25 +57,24 @@ Days 1 and 2 covered the following. This module revisits those pieces from an ar
 
 ### What This Module Covers
 
-The courseware divides 36 slides into seven sections. This document follows the same order.
+This module covers seven topics. This document follows the same order.
 
-| Courseware section | Slides | In this document |
-|---|---|---|
-| Modern applications | 5–14 | [Section 2](#2-modern-applications) · [Section 3](#3-from-monolith-to-microservices) |
-| Operating model - serverless | 15–18 | [Section 4](#4-the-serverless-operating-model) |
-| The application | 19–20 | [Section 5](#5-building-the-application) |
-| Orchestration with AWS Step Functions | 21–28 | [Section 6](#6-aws-step-functions) · [Section 7](#7-state-types-and-data-flow) · [Section 8](#8-service-integrations) |
-| Demonstration | 29–30 | [Section 9](#9-testing-and-operations) |
-| Checking your knowledge | 31–32 | (not covered in this document) |
-| Summary | 33–36 | [Section 8.3](#83-example-from-dynamodb-getitem-to-lambda-invoke) |
+| Topic | In this document |
+|---|---|
+| Modern applications | [Section 2](#2-modern-applications) · [Section 3](#3-from-monolith-to-microservices) |
+| Operating model - serverless | [Section 4](#4-the-serverless-operating-model) |
+| The application | [Section 5](#5-building-the-application) |
+| Orchestration with AWS Step Functions | [Section 6](#6-aws-step-functions) · [Section 7](#7-state-types-and-data-flow) · [Section 8](#8-service-integrations) |
+| Demonstration | [Section 9](#9-testing-and-operations) |
+| Summary | [Section 8.3](#83-example-from-dynamodb-getitem-to-lambda-invoke) |
 
-The courseware instructor notes scope the module this way: "We look at the benefits of modern application development with a focus on microservices, plus additional considerations including orchestration. Other modules focus on the development agility and observability of modern applications."
+The scope of this module is the benefits of modern application development with a focus on microservices, plus additional considerations including orchestration. The development agility and observability of modern applications are covered in other modules.
 
 ### 1.1 The Biggest Changes in This Module 🆕
 
-A great deal has been added to Step Functions since the courseware was written. Five things you will run into first in class are listed up front. The source for each item is in the corresponding section.
+A great deal has been added to Step Functions since the class. Five things you will run into first in class are listed up front. The source for each item is in the corresponding section.
 
-| What changed | Courseware | Current |
+| What changed | Before | Current |
 |---|---|---|
 | Workflow type | Not mentioned | You **must choose** Standard or Express when you create a state machine, and you cannot change it afterward ([Section 6.4](#64-workflow-types-standard-and-express)) |
 | Query language | JSONPath and `$` notation only | JSONata has been added and **JSONata is recommended for new state machines** ([Section 7.4](#74-jsonata-and-variables)) |
@@ -91,13 +90,13 @@ A great deal has been added to Step Functions since the courseware was written. 
 
 ### 2.1 The Three Pillars of a Modern Application
 
-The courseware presents the AWS definition of a modern application as follows.
+The AWS definition of a modern application is as follows.
 
 > AWS defines a modern application as a cloud-native application developed from a combination of modern technology, architecture, software delivery practices, and operational processes. Modern applications are built with a microservices architecture pattern, a serverless operating model, and an automated software delivery process.
 
 The three pillars are shown below. This module covers the first two; the development agility and observability of the third pillar are covered in other modules.
 
-| Pillar | Courseware content | In this document |
+| Pillar | Content | In this document |
 |---|---|---|
 | Architecture pattern | Microservices (completely independent) | [Section 3](#3-from-monolith-to-microservices) |
 | Operating model | Serverless | [Section 4](#4-the-serverless-operating-model) |
@@ -105,7 +104,7 @@ The three pillars are shown below. This module covers the first two; the develop
 
 ### 2.2 The Four Goals of a Modern Application
 
-These are the four characteristics presented in the instructor notes for courseware slide 6.
+These are the four characteristics a modern application aims for.
 
 | Characteristic | Content |
 |---|---|
@@ -120,14 +119,14 @@ The AWS whitepaper `Implementing Microservices on AWS` (published July 31, 2023)
 
 ### 2.3 What Is a Microservice
 
-Courseware slide 7 contrasts monoliths and microservices in one line each.
+Contrasting monoliths and microservices in one line each looks like this.
 
-| Item | Courseware slide body |
+| Item | Summary |
 |---|---|
 | Monolith | Performs every function |
 | Microservice | Performs one function / completely independent / API |
 
-The instructor notes define each as follows:
+Each is defined as follows:
 
 - **A monolithic application**: A tightly coupled service in which the user interface and the data are combined into a single program on a single platform. It is a self-contained and independent application, separate from other computing applications.
 - **Characteristics of microservices application services**: Strictly scoped / strongly encapsulated / loosely coupled / independently deployable / scalable
@@ -138,13 +137,13 @@ These five characteristics match the whitepaper. The whitepaper summarizes micro
 
 ### 2.4 Microservices Are Not Always the Answer 🆕
 
-The courseware lists only the benefits of microservices. The whitepaper adds a caveat. While microservices offer many benefits, you **must evaluate the requirements and cost of each use case, and in some cases a monolithic architecture or another approach may be more appropriate, so the decision must be made case by case with the scale, complexity, and specific use case in mind.**
+Looking only at the benefits of microservices misses a caveat that the whitepaper adds. While microservices offer many benefits, you **must evaluate the requirements and cost of each use case, and in some cases a monolithic architecture or another approach may be more appropriate, so the decision must be made case by case with the scale, complexity, and specific use case in mind.**
 
 There are two reasons to state this caveat in class.
 
 | Reason | Content |
 |---|---|
-| The cost of decomposition is real | The instructor notes for courseware slide 9 acknowledge it too: "Creating microservices or refactoring an existing monolithic application is not easy" |
+| The cost of decomposition is real | Creating microservices or refactoring an existing monolithic application is not easy |
 | Distributed transactions get harder | Once you split into a database per service you can no longer use two-phase commit (2PC) as in a relational database. You have to design compensating transactions yourself ([Section 3.8](#38-distributed-transactions-and-the-saga-orchestration-pattern)) |
 
 > — Source: [Implementing Microservices on AWS](https://docs.aws.amazon.com/whitepapers/latest/microservices-on-aws/microservices-on-aws.html)
@@ -155,9 +154,9 @@ There are two reasons to state this caveat in class.
 
 ### 3.1 Monolithic Applications
 
-Courseware slide 8 presents nine characteristics of a monolith. The left column is the courseware item; the right column is how the instructor notes describe the way it shows up in development.
+A monolith has nine characteristics. The left column is the characteristic; the right column describes the way it shows up in development.
 
-| Characteristic in the courseware | What makes it a problem |
+| Characteristic | What makes it a problem |
 |---|---|
 | Performs every function | One program holds presentation, logic, and data together |
 | Tightly coupled functions | High coupling means high dependency, which increases development and test complexity |
@@ -169,21 +168,21 @@ Courseware slide 8 presents nine characteristics of a monolith. The left column 
 | Rigid deployment schedule | Several teams are tied to a single deployment schedule |
 | Operational overhead | The whole thing has to be operated together |
 
-The structure the courseware uses as its example is the classic three-tier architecture, with "process note · search note · read note" all sitting together in the logic layer.
+The representative example is the classic three-tier architecture, with "process note · search note · read note" all sitting together in the logic layer.
 
-| Layer | Instructor notes description |
+| Layer | Description |
 |---|---|
 | Presentation | Manages HTTP requests and responds with HTML or JSON/XML (web service API) |
 | Business logic | The application server |
 | Data | Contains the data access objects that access the database server |
 
-The conclusion the instructor notes draw: "While this architecture is functional, if the business changes and grows quickly you cannot launch or update the application as fast as you would like."
+The conclusion: while this architecture is functional, if the business changes and grows quickly you cannot launch or update the application as fast as you would like.
 
 ### 3.2 Microservices Architecture
 
-Placing the seven characteristics from courseware slide 9 next to the monolith items from slide 8 makes it clear what is being changed.
+Placing the seven microservices characteristics next to the monolith items makes it clear what is being changed.
 
-| Item | Monolith (slide 8) | Microservices (slide 9) |
+| Item | Monolith | Microservices |
 |---|---|---|
 | Functional scope | Performs every function | Minimal function services |
 | Coupling | Tightly coupled functions | Deployed individually but interact with each other |
@@ -193,7 +192,7 @@ Placing the seven characteristics from courseware slide 9 next to the monolith i
 | Organizing principle | Organized around technical layers | Organized around business capabilities |
 | Operations | Operational overhead | Serverless and automated operating model |
 
-The instructor notes point out something the table can hide.
+There is something the table can hide.
 
 > A modern application consists of many of the same components found in a monolithic application, such as the data, logic, and presentation layers. But there are also some key differences. Each microservice is clearly distinct from the others, and each has its own persistence mechanism.
 
@@ -205,9 +204,9 @@ The characteristic "state is stored externally" ties directly to serverless comp
 
 ### 3.3 Benefits of a Microservices Architecture
 
-Courseware slide 10 presents six benefits. The sub-items from the instructor notes are included.
+A microservices architecture has six benefits. The sub-items are included.
 
-| Benefit | Sub-items from the instructor notes |
+| Benefit | Sub-items |
 |---|---|
 | Development agility | The code is readable / the technology stack is easy to change / collaboration between small teams increases / changes apply independently of other services |
 | Fast, independent deployment | Microservices deploy independently / deployment times are shorter / the deployment process is easy to automate |
@@ -216,19 +215,19 @@ Courseware slide 10 presents six benefits. The sub-items from the instructor not
 | Improved availability and resilience | Fault isolation is improved |
 | Organization around business capability | Services from other applications can be reused |
 
-The opening line of the instructor notes gives the basis for the list: "Because microservices are small, independent units, they provide the following benefits."
+The basis for the list, in one line: because microservices are small, independent units, they provide the following benefits.
 
 ### 3.4 Service Boundaries and Domain-Driven Design 🆕
 
-Courseware slide 11 presents the following as ways to start new development:
+The ways to start new development are as follows:
 
 - Build a culture of accountability so you can experiment
 - Use microservices to compose the application into individual pieces — well-defined interfaces through APIs / each microservice optimized for a single function / each service separate from the others
 - For example: domain-driven design — a microservice's function lives inside a domain context / define the integration points with other domains
 
-The courseware presents domain-driven design only as a one-line example. AWS Well-Architected reliability pillar **REL03-BP02** turns it into actionable guidance. Microservices use domain models and **bounded contexts** to draw service boundaries along business context boundaries. A bounded context isolates and encapsulates business logic so teams can better judge how to handle failures.
+Domain-driven design can easily stay a one-line example, but AWS Well-Architected reliability pillar **REL03-BP02** turns it into actionable guidance. Microservices use domain models and **bounded contexts** to draw service boundaries along business context boundaries. A bounded context isolates and encapsulates business logic so teams can better judge how to handle failures.
 
-The anti-patterns the documentation lists overlap exactly with "organized around technical layers" from courseware slide 8.
+The anti-patterns the documentation lists overlap exactly with the monolith's "organized around technical layers" seen earlier.
 
 | Category | Content |
 |---|---|
@@ -245,14 +244,14 @@ For decomposing a monolith, the **decompose by business capability, by subdomain
 
 ### 3.5 Integration Patterns: API Driven and Event Driven
 
-Courseware slide 12 divides integration into two categories.
+Integration divides into two categories.
 
-| Category | Processing | Courseware slide body |
+| Category | Processing | Description |
 |---|---|---|
 | API driven | Synchronous | Applications and services connect and communicate through APIs (AWS services provide service APIs) / HTTP and HTTPS communication protocols |
 | Event driven | Asynchronous | A message signaling that something happened (AWS resources can generate events on state change) / consumers subscribe to events / providers produce events |
 
-The four considerations in the instructor notes are worth carrying over verbatim.
+The four considerations are worth carrying over verbatim.
 
 - Modern applications use both types of integration.
 - Are you communicating within a service or between services? Services are generally wrapped in APIs but use messages and events internally.
@@ -272,13 +271,13 @@ Event-driven applications communicate with events that other services and system
 
 > — Source: [Transitioning to event-driven architecture](https://docs.aws.amazon.com/serverless/latest/devguide/serverless-transition.html)
 
-🆕 The whitepaper adds a third pattern here. Unlike the courseware, which presents two categories (API driven and event driven), the whitepaper covers three microservices patterns: **API driven, event driven, and data streaming.**
+🆕 The whitepaper adds a third pattern here. Beyond the two categories (API driven and event driven), the whitepaper covers three microservices patterns: **API driven, event driven, and data streaming.**
 
 > — Source: [Implementing Microservices on AWS](https://docs.aws.amazon.com/whitepapers/latest/microservices-on-aws/microservices-on-aws.html)
 
 ### 3.6 Services That Implement Event-Driven Integration 🆕
 
-Courseware slide 18 lists only the names Amazon EventBridge, Amazon SQS, and Amazon SNS in the application integration layer. Because choosing among them is a design decision, two points are expanded here.
+The application integration layer includes Amazon EventBridge, Amazon SQS, and Amazon SNS. Because choosing among them is a design decision, two points are expanded here.
 
 #### The Three Ways EventBridge Processes Events
 
@@ -314,7 +313,7 @@ When you place a queue between microservices you have to choose one of two types
 
 ### 3.7 Decoupling a Monolith and the Strangler Fig Pattern
 
-The guidance on courseware slide 13:
+The guidance for decoupling:
 
 - Start small with a small service that is a good candidate for separation
 - Minimize dependencies on the monolith
@@ -322,9 +321,9 @@ The guidance on courseware slide 13:
 - Separate functionality that changes frequently
 - For example: the strangler fig design pattern — a phased approach / progressively replace existing functionality with microservices
 
-The premise the instructor notes emphasize: "Decoupling a monolithic application requires a careful, incremental process."
+The premise to emphasize: decoupling a monolithic application requires a careful, incremental process.
 
-The link the courseware provides is still valid. The documentation describes the strangler fig pattern as a way, introduced by Martin Fowler, of **managing risk** when modernizing or rewriting a large monolithic system. The procedure is as follows.
+The documentation describes the strangler fig pattern as a way, introduced by Martin Fowler, of **managing risk** when modernizing or rewriting a large monolithic system. The procedure is as follows.
 
 | Step | Content |
 |---|---|
@@ -333,21 +332,21 @@ The link the courseware provides is still valid. The documentation describes the
 | 3 | Create a **new service** separate from the monolith and hand the proxy's implementation over to that new service |
 | 4 | Repeat steps 2–3 until all functionality of the legacy system has moved to new services. At that point the **legacy system can be retired** |
 
-The best practices the documentation gives overlap with the guidance on courseware slide 13 and add one more.
+The best practices the documentation gives overlap with the guidance above and add one more.
 
-| Best practice | Relationship to the courseware |
+| Best practice | Relationship to the guidance above |
 |---|---|
-| Choose components with good test coverage and low technical debt | 🆕 This criterion is not in the courseware |
+| Choose components with good test coverage and low technical debt | 🆕 This criterion is not in the guidance above |
 | Start with components that have scalability requirements | Aligns with "start small with a small service that is a good candidate for separation" |
 | Choose components whose business requirements change often and that are deployed often | The same as "separate functionality that changes frequently" |
 
 > — Source: [The strangler fig pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-aspnet-web-services/fig-pattern.html)
 
-The courseware points to `Advanced Developing on AWS` as the course that covers this topic in more depth.
+The course that covers this topic in more depth is `Advanced Developing on AWS`.
 
 ### 3.8 Distributed Transactions and the Saga Orchestration Pattern 🆕
 
-The "publish note workflow" on courseware slide 22 shows only the success path and the good/bad branches. It does not address **how to roll back changes that were already committed when a transaction spanning several services fails partway through.** The saga orchestration pattern fills that gap.
+The "publish note workflow" in [Section 6.1](#61-orchestrating-complex-distributed-workflows) shows only the success path and the good/bad branches. That flow alone does not address **how to roll back changes that were already committed when a transaction spanning several services fails partway through.** The saga orchestration pattern fills that gap.
 
 | Item | Content |
 |---|---|
@@ -370,14 +369,14 @@ It is not free. The considerations the documentation lists are as follows.
 
 ### 3.9 Software Delivery: DevOps
 
-Courseware slide 14 contrasts the single pipeline of a monolith with the independent per-service pipelines of microservices.
+Contrasting the single pipeline of a monolith with the independent per-service pipelines of microservices looks like this.
 
 | Category | Pipeline |
 |---|---|
 | Monolith | A **single** deployment pipeline shared by several teams (build → test → release → monitor) |
 | Microservices | An **independent** pipeline per service |
 
-The instructor notes, carried over verbatim:
+Expanding on that contrast:
 
 > Legacy applications have a single deployment pipeline shared by several teams. That process mostly creates a bottleneck. Teams that are empowered to move fast can deploy new features continuously, in most cases several times a day.
 > Operating an application that deploys several times a day is different from running an application that deploys once or twice a year. In a DevOps model, the development and operations teams share service ownership and joint responsibility.
@@ -392,11 +391,11 @@ The whitepaper describes the same direction. Moving from a monolith to microserv
 
 ### 4.1 What Is Serverless Computing
 
-The instructor notes for courseware slide 16 give the definition.
+The definition of serverless computing is as follows.
 
 > With serverless computing you can build and run applications and services without thinking about servers. In a serverless application you do not need to provision, scale, or manage servers. You can build services for nearly any type of application or backend service. Everything required to run and scale your application with high availability is handled automatically.
 
-The AWS serverless product page cites the same three characteristics of serverless technologies: **automatic scaling, built-in high availability, and a pay-for-use billing model.** It states that these technologies remove infrastructure management tasks such as capacity provisioning and patching so you can focus on writing code that serves your customers. The link to this page provided on courseware slide 18 is still valid.
+The AWS serverless product page cites the same three characteristics of serverless technologies: **automatic scaling, built-in high availability, and a pay-for-use billing model.** It states that these technologies remove infrastructure management tasks such as capacity provisioning and patching so you can focus on writing code that serves your customers.
 
 > — Source: [Serverless on AWS](https://aws.amazon.com/serverless/)
 
@@ -414,9 +413,9 @@ The whitepaper characterizes serverless with five principles.
 
 ### 4.2 What Goes Away with Serverless 🔄
 
-Courseware slide 16 places two lists side by side: "traditional deployment and operations" and "serverless deployment and operations." However, **in the extracted text the seven items in both lists are identical.** The original slide appears to have used strikethrough on the serverless side to show which tasks go away, but that cannot be distinguished from the text alone.
+Moving to serverless makes some operational tasks go away while others stay. Some source material places "traditional deployment and operations" and "serverless deployment and operations" in two side-by-side lists but distinguishes the tasks that go away only with strikethrough on the serverless side, so when carried into text the two lists look identical.
 
-The table below separates the two lists based on the instructor notes ("in a serverless application you do not need to provision, scale, or manage servers"). Because this is a courseware notation issue, no external documentation source is attached ([Section 10.1](#101-courseware-statements-that-do-not-match-the-facts)).
+The table below separates the two lists based on the definition that "in a serverless application you do not need to provision, scale, or manage servers." Because this is not the kind of fact external documentation can settle, no source is attached ([Section 10.1](#101-differences-from-the-courseware)).
 
 | What you used to do in traditional deployment and operations | With serverless |
 |---|---|
@@ -428,13 +427,13 @@ The table below separates the two lists based on the instructor notes ("in a ser
 | Continuous server patching, security, and monitoring | Server patching goes away. Application security and monitoring stay |
 | Application monitoring and maintenance | **Stays.** The scope narrows from servers to the application |
 
-The result the instructor notes emphasize: "With that overhead reduced, developers can invest more time and effort in building scalable, reliable products."
+The result: with that overhead reduced, developers can invest more time and effort in building scalable, reliable products.
 
 ### 4.3 Benefits of Serverless Computing
 
-The four items in the body of courseware slide 17 and the five items in the instructor notes, side by side.
+The benefits of serverless computing summarize into four items, and expanding them into five gives the following.
 
-| Slide body | Corresponding item in the instructor notes |
+| Summary | Expanded item |
 |---|---|
 | No servers to provision or manage | No infrastructure to provision, monitor, or manage |
 | Scales with usage | Scalability and fault tolerance are built in |
@@ -442,16 +441,16 @@ The four items in the body of courseware slide 17 and the five items in the inst
 | High availability and fault tolerance built in | Easy to write, deploy, and secure |
 | — | Enables best practices (events, stateless functions) |
 
-The scaling portion of the supplementary instructor notes is especially important.
+The scaling portion of the supplementary explanation is especially important.
 
 > You can scale your application automatically. Or you can scale your application by adjusting capacity — turning units of consumption (for example throughput, memory) on and off — rather than by individual server units.
 > Serverless applications have availability and fault tolerance built in. You do not need to design these capabilities, because the services running your application provide them by default.
 
 ### 4.4 The Serverless Application Stack 🔄
 
-Courseware slide 18 places services into nine layers.
+The serverless application stack places services into nine layers.
 
-| Layer | Services listed in the courseware |
+| Layer | Services |
 |---|---|
 | Compute | AWS Lambda, AWS Fargate |
 | API proxy | Amazon API Gateway, AWS AppSync |
@@ -463,15 +462,15 @@ Courseware slide 18 places services into nine layers.
 | Developer tools | AWS tools and SDKs |
 | Observability | Amazon CloudWatch, AWS X-Ray |
 
-🔄 There is an internal courseware inconsistency here. The instructor notes say **"the three layers of your stack"** and then list only compute, application integration, and data storage. The slide body presents nine layers. The instructor notes also place AWS Step Functions under "application integration," while the slide body gives it its own "orchestration" layer. This document organizes the material around the nine layers in the slide body and treats the three layers from the instructor notes as the core three pillars among them. Because this is a courseware inconsistency, no external documentation source is attached ([Section 10.1](#101-courseware-statements-that-do-not-match-the-facts)).
+🔄 There is a point where the material disagrees with itself here. Some source material says **"the three layers of your stack"** and lists only compute, application integration, and data storage, yet it both places AWS Step Functions under "application integration" and gives it a separate "orchestration" layer, which conflict. This document organizes around the nine layers and treats the three layers as the core three pillars among them. Because this is not the kind of fact external documentation can settle, no source is attached ([Section 10.1](#101-differences-from-the-courseware)).
 
-| The three layers in the instructor notes | Services listed in the instructor notes | Corresponding layers in the slide body |
+| The core three layers | Services listed | Corresponding layers among the nine |
 |---|---|---|
 | Compute | AWS Lambda, AWS Fargate | Compute |
 | Application integration | Amazon EventBridge, AWS Step Functions, Amazon SQS, Amazon SNS | Application integration + orchestration |
 | Data storage | Amazon S3, Amazon DynamoDB, Amazon EFS, Amazon Aurora | Database + storage |
 
-The instructor notes add Amazon CloudWatch and AWS X-Ray as services that support the post-production lifecycle.
+Amazon CloudWatch and AWS X-Ray are added as services that support the post-production lifecycle.
 
 The relationship in which Step Functions invokes Lambda in this stack is also confirmed on the Lambda side. In the "services that can invoke Lambda functions" table, **AWS Step Functions is classified as synchronous or asynchronous invocation**, and Amazon EventBridge is classified as asynchronous for event buses and rules and synchronous or asynchronous for pipes. A function can have multiple triggers, each trigger behaves like an independent client, and each event Lambda passes to the function contains data from only one trigger. Triggers are **stored and managed by the service that generates the events**, not by Lambda.
 
@@ -479,7 +478,7 @@ The relationship in which Step Functions invokes Lambda in this stack is also co
 
 ### 4.5 Automatic Scaling Has Limits Too 🆕
 
-Courseware slide 17 states "scales with usage" and "you can scale your application automatically." It does not say within what limits that automatic scaling happens. The Lambda concurrency concepts verified in module 9 are reused here.
+Serverless promotes "scales with usage" and "you can scale your application automatically," but it does not make clear within what limits that automatic scaling happens. The Lambda concurrency concepts verified in module 9 are reused here.
 
 | Item | Content |
 |---|---|
@@ -489,13 +488,13 @@ Courseware slide 17 states "scales with usage" and "you can scale your applicati
 | Reserved concurrency | Reserves a portion of the account concurrency for that function alone. **There is no additional charge for the configuration itself** |
 | Provisioned concurrency | A number of pre-initialized execution environment instances. It reduces cold start latency and **incurs an additional charge** |
 
-So it is not "grows automatically without limit" but "grows automatically within the account limit." You also need to know that the independent scaling per microservice presented as a benefit on courseware slide 10 shares that same account limit.
+So it is not "grows automatically without limit" but "grows automatically within the account limit." You also need to know that the independent scaling per microservice, presented earlier as a benefit, shares that same account limit.
 
 > — Source: [Understanding Lambda function scaling](https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html)
 
 ### 4.6 Choosing Between Lambda and Fargate 🆕
 
-Courseware slide 18 only places Lambda and Fargate side by side in the compute layer. The AWS decision guide lays out the differences. The two services **share** these benefits: reduced operational burden, usage-based billing, fast deployment, built-in high availability, simplified compliance, and focus on code.
+The compute layer places Lambda and Fargate side by side. The AWS decision guide lays out the differences. The two services **share** these benefits: reduced operational burden, usage-based billing, fast deployment, built-in high availability, simplified compliance, and focus on code.
 
 | Item | AWS Fargate | AWS Lambda |
 |---|---|---|
@@ -515,7 +514,7 @@ The Serverless Developer Guide offers the same criterion. If a microservice is u
 
 ### 5.1 The Application Built in This Course
 
-Courseware slide 20 gathers the application built throughout the course onto one page. The instructor notes summarize it as: "Think about the application you built in this course. It is a modern application that is cloud native and serverless."
+Gathering the application built throughout the course onto one page looks like this. The application built in this course is a modern application that is cloud native and serverless.
 
 | Element | Content |
 |---|---|
@@ -523,7 +522,7 @@ Courseware slide 20 gathers the application built throughout the course onto one
 | Application functions | List / Search / Delete / Create·Update / Dictate |
 | AWS services | Amazon API Gateway, Amazon Cognito, IAM, DynamoDB, Amazon Polly, AWS X-Ray, AWS SAM, Amazon CloudWatch |
 
-The list of what is absent, from the instructor notes, shows the character of this application best: **because it is serverless, there is no load balancer and no server.**
+What is absent shows the character of this application best: **because it is serverless, there is no load balancer and no server.**
 
 API Gateway, the entry point for this application, was covered in module 10. API Gateway provides both REST APIs and HTTP APIs, which differ in features and pricing, and the documentation compares the features of the two types side by side. Which type you choose is the entry point design for this application.
 
@@ -531,7 +530,7 @@ API Gateway, the entry point for this application, was covered in module 10. API
 
 ### 5.2 Modern Application Characteristics in This Application
 
-Courseware slide 20 asks "which modern application characteristics apply to the application?" and presents six items. Attaching where each one shows up in this application makes the slide much easier to read.
+Six modern application characteristics apply to this application. Attaching where each one shows up in this application makes them much easier to read.
 
 | Characteristic | In this application |
 |---|---|
@@ -542,7 +541,7 @@ Courseware slide 20 asks "which modern application characteristics apply to the 
 | Independent deployment | Functions can be deployed individually |
 | Serverless | There is no load balancer and no server |
 
-The instructor notes leave the topic open with "what else could you do?" Step Functions in the next section is one answer. As functions multiply, something has to manage the ordering, branching, parallelism, and retries between them, and building that as a workflow instead of writing it as code is orchestration.
+That leaves the question open: what else could you do? Step Functions in the next section is one answer. As functions multiply, something has to manage the ordering, branching, parallelism, and retries between them, and building that as a workflow instead of writing it as code is orchestration.
 
 ---
 
@@ -550,33 +549,41 @@ The instructor notes leave the topic open with "what else could you do?" Step Fu
 
 ### 6.1 Orchestrating Complex Distributed Workflows
 
-The one-line summary on courseware slide 22: "Manage the state of distributed tasks while reducing application code and improving resilience."
+The one-line summary: manage the state of distributed tasks while reducing application code and improving resilience.
 
-The instructor notes present the problem first.
+The problem comes first.
 
 > Modern cloud applications are typically composed of many services and components. As an application grows, you have to write more and more code to coordinate the interactions of all those components.
 
-The example the courseware uses is a "publish note workflow." The flow is as follows.
+A representative example is a "publish note workflow." The flow is as follows.
 
-| Step | Content |
-|---|---|
-| Entry | A client calls API Gateway with POST, and API Gateway starts the workflow |
-| Parallel | Writing a custom log entry and sentiment detection (Amazon Comprehend) run **at the same time** |
-| Branch | Decide "good or bad?" It could be an error, or flagged inappropriate language |
-| Good | Record the transaction |
-| Bad | Notify an administrator (Amazon SES) |
+```text
+client --POST--> API Gateway --start--> workflow
+                                           |
+                     +-------- run in parallel --------+
+                     |                                 |
+               write log entry            sentiment detection (Comprehend)
+                     |                                 |
+                     +---------------+-----------------+
+                                     |
+                            [ good or bad? ]
+                              /            \
+                           good            bad
+                             |               |
+                    record transaction  notify admin (SES)
+```
 
-The last sentence of the instructor notes is the theme of this section: "AWS Step Functions provides serverless orchestration of these interactions."
+The theme of this section, in one sentence: AWS Step Functions provides serverless orchestration of these interactions.
 
-The API Gateway that receives the client POST in this diagram is the same service covered in module 10. API Gateway is also an optimized integration target for Step Functions, and it can serve as the entry point that invokes a synchronous Express workflow ([Section 6.4](#64-workflow-types-standard-and-express) · [Section 8.2](#82-optimized-integrations-and-aws-sdk-integrations)).
+The API Gateway that receives the client POST in this flow is the same service covered in module 10. API Gateway is also an optimized integration target for Step Functions, and it can serve as the entry point that invokes a synchronous Express workflow ([Section 6.4](#64-workflow-types-standard-and-express) · [Section 8.2](#82-optimized-integrations-and-aws-sdk-integrations)).
 
 > — Source: [Choose between REST APIs and HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html)
 
 ### 6.2 Business Logic Orchestration Patterns
 
-Courseware slide 23 presents six patterns. The state type or field that actually implements each is added on the right.
+There are six business logic orchestration patterns. The state type or field that actually implements each is added on the right.
 
-| Pattern | Courseware notation | State or field that implements it |
+| Pattern | Notation | State or field that implements it |
 |---|---|---|
 | Sequential | Sequential tasks (A → B) | The `Next` field of a `Task` state |
 | Choice | Task choice based on data (A → ? → B / C) | The `Choice` state ([Section 7.5](#75-the-choice-state)) |
@@ -585,11 +592,11 @@ Courseware slide 23 presents six patterns. The state type or field that actually
 | Wait | Wait for a duration, a timestamp, or dynamically (A) | The `Wait` state |
 | Exception handling | Try/Catch/Finally (A) | The `Catch` field ([Section 7.8](#78-error-handling-retry-and-catch)) |
 
-The criterion in the instructor notes: "Instead of writing code through a Lambda function that handles business logic, retries, and timeouts, you can use Step Functions." That choice has a cost, so read it together with the billing model in [Section 6.6](#66-pricing-model).
+The criterion: instead of writing code through a Lambda function that handles business logic, retries, and timeouts, you can use Step Functions. That choice has a cost, so read it together with the billing model in [Section 6.6](#66-pricing-model).
 
 ### 6.3 The Definition of Step Functions
 
-The instructor notes for courseware slide 24 and the official documentation agree. Distinguishing the terms precisely is the most important thing in this module.
+The definition of Step Functions agrees with the official documentation. Distinguishing the terms precisely is the most important thing in this module.
 
 | Term | Definition |
 |---|---|
@@ -601,7 +608,7 @@ The instructor notes for courseware slide 24 and the official documentation agre
 
 The documentation states that you use Step Functions to create workflows to build distributed applications, automate processes, orchestrate microservices, and create data and machine learning pipelines. In the console you can visualize, edit, and debug workflows and inspect the status of each step.
 
-The five "workflow management" items on courseware slide 24 are also the basis for the answer to knowledge check question 6 on slide 32.
+The workflow manages the following five things.
 
 | What the workflow manages |
 |---|
@@ -615,7 +622,7 @@ The five "workflow management" items on courseware slide 24 are also the basis f
 
 ### 6.4 Workflow Types: Standard and Express 🆕
 
-The courseware does not mention workflow types at all. Yet when you create a state machine you **must choose Standard (the default) or Express, and that type cannot be changed after creation.** It is the choice on the first screen in the lab, so the courseware alone cannot answer it.
+Workflow types are an easy thing to miss. When you create a state machine you **must choose Standard (the default) or Express, and that type cannot be changed after creation.** It is the choice on the first screen in the lab.
 
 | Item | Standard | Express |
 |---|---|---|
@@ -641,9 +648,9 @@ Express has two kinds of execution: synchronous (`StartSyncExecution`) and async
 
 ### 6.5 How to Define a Workflow 🔄
 
-Courseware slide 25 presents three steps.
+Defining a workflow is a three-step process.
 
-| Step | Courseware notation |
+| Step | Notation |
 |---|---|
 | Define | JSON - Amazon States language |
 | Visualize | State Function Workflow Studio |
@@ -651,7 +658,7 @@ Courseware slide 25 presents three steps.
 
 🔄 Two corrections.
 
-**First, the tool name.** The slide body says "State Function Workflow Studio" while the instructor notes on the same slide say "Workflow Studio." The official name is **Workflow Studio**. The courseware also presents it as console-only, but it is now available in **AWS Infrastructure Composer** and through the **AWS Toolkit for VS Code** in addition to the Step Functions console, and in VS Code you can also test individual states.
+**First, the tool name.** Some source material writes this tool as "State Function Workflow Studio," but the official name is **Workflow Studio**. It is also easily assumed to be console-only, yet it is now available in **AWS Infrastructure Composer** and through the **AWS Toolkit for VS Code** in addition to the Step Functions console, and in VS Code you can also test individual states.
 
 | Workflow Studio | Content |
 |---|---|
@@ -665,7 +672,7 @@ Courseware slide 25 presents three steps.
 
 > — Source: [Developing workflows in Step Functions Workflow Studio](https://docs.aws.amazon.com/step-functions/latest/dg/workflow-studio.html)
 
-**Second, the ASL reference documentation.** The courseware gives only `states-language.net`, which is not an AWS domain, as the ASL link. There is an ASL page in the official AWS documentation as well, and that page references both the Amazon States Language Specification and `Statelint`, a tool that validates ASL code.
+**Second, the ASL reference documentation.** Only `states-language.net`, which is not an AWS domain, is commonly cited as the ASL link. There is an ASL page in the official AWS documentation as well, and that page references both the Amazon States Language Specification and `Statelint`, a tool that validates ASL code.
 
 | Amazon States Language | Content |
 |---|---|
@@ -675,11 +682,11 @@ Courseware slide 25 presents three steps.
 
 > — Source: [Using Amazon States Language to define Step Functions workflows](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html)
 
-The run-and-monitor path in the instructor notes matches the documentation: "In the AWS Management Console you can visualize a running workflow. You can also log and monitor workflows using Amazon CloudWatch metrics, CloudWatch Logs, AWS X-Ray, and other tools." What those "other tools" are is in [Section 9.2](#92-logging-and-monitoring).
+The run-and-monitor path matches the documentation: in the AWS Management Console you can visualize a running workflow, and you can log and monitor workflows using Amazon CloudWatch metrics, CloudWatch Logs, AWS X-Ray, and other tools. What those "other tools" are is in [Section 9.2](#92-logging-and-monitoring).
 
 ### 6.6 Pricing Model 🆕
 
-The courseware does not cover the Step Functions billing model. Yet because slide 23 recommends using Step Functions "instead of writing code through a Lambda function that handles business logic, retries, and timeouts," you need to know **what retries are billed as** in order to make that design decision.
+The Step Functions billing model is often overlooked. Yet because [Section 6.2](#62-business-logic-orchestration-patterns) recommended using Step Functions instead of writing code through a Lambda function that handles business logic, retries, and timeouts, you need to know **what retries are billed as** in order to make that design decision.
 
 | Item | Standard | Express |
 |---|---|---|
@@ -697,7 +704,7 @@ Billing for the `Map` state depends on the mode. **Distributed Map is billed one
 
 ### 6.7 Service Quotas 🆕
 
-The courseware presents no Step Functions quotas. These are the values you hit as soon as you apply the iteration pattern from courseware slide 27 in production, so they are collected here.
+These are the values you hit as soon as you apply the iteration pattern from [Section 7.7](#77-example-iterating-a-loop-with-lambda) in production, so they are collected here.
 
 | Category | Item | Value |
 |---|---|---|
@@ -727,9 +734,9 @@ New AWS accounts start with a reduced state transition quota that is raised auto
 
 ### 7.1 The Eight State Types 🔄
 
-The instructor notes for courseware slide 26 present seven items and **group Succeed and Fail into one.** The official workflow state reference list has **eight**, and Workflow Studio classifies the seven other than `Task` as Flow states. The description of each state itself matches between the courseware and the documentation.
+Some material counts seven items and **groups Succeed and Fail into one**, but the official workflow state reference list has **eight**, and Workflow Studio classifies the seven other than `Task` as Flow states. The description of each state itself matches the documentation.
 
-| State | Instructor notes description | Workflow Studio category |
+| State | Description | Workflow Studio category |
 |---|---|---|
 | `Task` | A single unit of work performed by the state machine | Actions |
 | `Choice` | Chooses the appropriate branch of the flow | Flow |
@@ -737,7 +744,7 @@ The instructor notes for courseware slide 26 present seven items and **group Suc
 | `Map` | Runs the same steps for multiple items of an array in the state input | Flow |
 | `Pass` | Passes its input to its output as is, or combined with some modified data | Flow |
 | `Wait` | Delays the flow for a specified duration | Flow |
-| `Succeed` | The courseware groups this with Fail as "stops the flow based on pass/fail" | Flow |
+| `Succeed` | Sometimes described together with Fail as "stops the flow based on pass/fail" | Flow |
 | `Fail` | Same | Flow |
 
 Rules that apply to every state:
@@ -757,7 +764,7 @@ The difference between `Map` and `Parallel` is easy to confuse. `Parallel` runs 
 
 ### 7.2 Inside a Task State
 
-The subtitle of courseware slide 26 is "how JSON information moves through a task state." The diagram presents three things a state can invoke.
+A task state can be understood as "how JSON information moves through a task state." There are three things a state can invoke.
 
 | Invocation target | In this document |
 |---|---|
@@ -765,19 +772,19 @@ The subtitle of courseware slide 26 is "how JSON information moves through a tas
 | Lambda functions | [Section 8.4](#84-the-optimized-lambda-integration) |
 | Activity workers | [Section 8.5](#85-activity-workers) |
 
-The instructor notes summarize the data flow in a single passage.
+The data flow can be summarized in a single passage.
 
 > In a state machine, all work is performed through tasks. AWS Step Functions lets you coordinate work across multiple tasks. Input information is passed in through InputPath. The relevant parameters are resolved and the state is set. Then the code is invoked. ResultPath determines what happens with the output data.
 
-That passage connects directly to knowledge check question 3 in this module. **In a state machine all work is performed by tasks, and a task may invoke a Lambda function or may invoke another service.** It is not "all work is performed by Lambda functions."
+One point deserves to be stated precisely here. **In a state machine all work is performed by tasks, and a task may invoke a Lambda function or may invoke another service.** It is not "all work is performed by Lambda functions."
 
 > — Source: [What is Step Functions?](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html)
 
 ### 7.3 The Five JSONPath Data Flow Fields 🔄
 
-There is an internal courseware inconsistency on slide 26. **The diagram shows four fields and the instructor notes on the same slide list three manipulation fields, and the two lists disagree.**
+This field list is prone to disagreeing with itself. **Some source material shows four fields in a diagram and lists three manipulation fields in the body, and the two lists disagree.**
 
-| Field | Slide diagram | Instructor notes |
+| Field | Diagram | Body |
 |---|---|---|
 | `InputPath` | Present | Present |
 | `Parameters` | Present | Present |
@@ -787,7 +794,7 @@ There is an internal courseware inconsistency on slide 26. **The diagram shows f
 
 The accurate list has **five** fields, and **they are applied in the order below.**
 
-| Order | Field | What it does | Courseware slide description |
+| Order | Field | What it does | Description |
 |---|---|---|---|
 | 1 | `InputPath` | Selects the part of the JSON input to pass to the task | "Determines the part of the JSON input to pass to the task" |
 | 2 | `Parameters` | Adjusts the data to send to the action | "Passes information to the API action of the connected resource" |
@@ -802,7 +809,7 @@ There is one more constraint to know. **By default, state output is passed only 
 
 ### 7.4 JSONata and Variables 🆕
 
-Courseware slides 26, 27, and 36 cover only JSONPath-based fields and `$` notation. Step Functions now supports **JSONata** as a query and transformation language, and **JSONata is recommended for new state machines.** The reason the courseware examples still work is that a state machine that does not specify a query language **defaults to JSONPath for backward compatibility.**
+It is easy to cover only JSONPath-based fields and `$` notation, but Step Functions now supports **JSONata** as a query and transformation language, and **JSONata is recommended for new state machines.** The reason existing JSONPath examples still work is that a state machine that does not specify a query language **defaults to JSONPath for backward compatibility.**
 
 #### JSONata
 
@@ -835,7 +842,7 @@ The `Assign` and `Output` steps are **performed in parallel**, so data transform
 
 ### 7.5 The Choice State 🆕
 
-The courseware describes the `Choice` state only as "chooses the appropriate branch of the flow." This is the spot that breaks state machines in practice, so it deserves a closer look.
+The `Choice` state is summarized as "chooses the appropriate branch of the flow." This is the spot that breaks state machines in practice, so it deserves a closer look.
 
 | Field | Required | Content |
 |---|---|---|
@@ -843,7 +850,7 @@ The courseware describes the `Choice` state only as "chooses the appropriate bra
 | `Default` | Optional (**recommended**) | The name of the state to transition to when no Choice Rule evaluates to `true` |
 | `End` | **Not supported** | A `Choice` state does not support the `End` field, and `Next` is used only inside the `Choices` field |
 
-The most important pitfall: **if no `Choices` evaluates to `true` and there is no `Default`, the state cannot be exited and the state machine throws an error.** The example on courseware slide 27 specifying `Default: Done` matches the documentation's recommendation.
+The most important pitfall: **if no `Choices` evaluates to `true` and there is no `Default`, the state cannot be exited and the state machine throws an error.** The example in [Section 7.7](#77-example-iterating-a-loop-with-lambda) specifying `Default: Done` matches the documentation's recommendation.
 
 The form of a Choice Rule depends on the query language.
 
@@ -856,7 +863,7 @@ The form of a Choice Rule depends on the query language.
 
 ### 7.6 The Map State: Inline and Distributed 🆕
 
-The courseware's `Map` description does not distinguish processing modes. The `Map` state now has **two processing modes**, and which one you use changes concurrency, input source, and billing.
+The `Map` state is often described without distinguishing processing modes. It now has **two processing modes**, and which one you use changes concurrency, input source, and billing.
 
 | Item | Inline mode (default) | Distributed mode |
 |---|---|---|
@@ -885,7 +892,7 @@ When you run in Distributed mode, Step Functions creates a **`Map Run`** resourc
 | `Iterator` | **`ItemProcessor`** | Deprecated. The documentation **strongly recommends** changing it |
 | `Parameters` inside `Map` | **`ItemSelector`** | Deprecated |
 
-Note: the `Iterator` on courseware slide 27 is **the name of a Task state, not a field of the Map state**, so it is unrelated to this deprecation. `MaxConcurrency` sets an upper bound on the number of parallel iterations, and once the input array has more than 40 items concurrent iterations are more likely to be limited.
+Note: the `Iterator` in [Section 7.7](#77-example-iterating-a-loop-with-lambda) is **the name of a Task state, not a field of the Map state**, so it is unrelated to this deprecation. `MaxConcurrency` sets an upper bound on the number of parallel iterations, and once the input array has more than 40 items concurrent iterations are more likely to be limited.
 
 > — Source: [Using Map state in Distributed mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-distributed.html)
 
@@ -893,9 +900,9 @@ Note: the `Iterator` on courseware slide 27 is **the name of a Task state, not a
 
 ### 7.7 Example: Iterating a Loop with Lambda 🔄
 
-The ASL definition from courseware slide 27. Two things have been corrected from the courseware original.
+The ASL definition of the iteration pattern. Two things have been corrected from the original.
 
-| What was corrected | Courseware | This document |
+| What was corrected | Original | This document |
 |---|---|---|
 | Closing quotation marks | In `"Next": "Iterator“` and similar, the closing mark is a **left double quotation mark** rather than a straight quote, so it does not parse as JSON | Corrected to straight quotes |
 | Account ID | `arn:aws:lambda:us-east-1:12342:function:Iterate` — the account ID field has only **five digits** | The 12-digit example value `123456789012` |
@@ -947,7 +954,7 @@ The general ARN format is `arn:partition:service:region:account-id:resource-id`,
 }
 ```
 
-The role of each state matches both the courseware instructor notes and the official tutorial.
+The role of each state matches the official tutorial.
 
 | State | Role |
 |---|---|
@@ -957,7 +964,7 @@ The role of each state matches both the courseware instructor notes and the offi
 | `ExampleWork` | A **stub** for the work you want to perform during the execution. In this example it is a `Pass` state; **in a real implementation it would be a `Task` state** |
 | `Done` | The final state of the execution |
 
-The tutorial URL the courseware provides is still valid. The documentation also explains when to use this pattern. It is used **when you need to track the number of loops in a state machine**, and it helps break a large task or a long-running execution into smaller pieces, or end an execution after a certain number of events. A similar implementation can periodically end and restart a long-running execution to **avoid exceeding service quotas** for Step Functions, Lambda, and other AWS services. The Lambda runtime selected in the current documentation is Node.js.
+This tutorial URL is still valid. The documentation also explains when to use this pattern. It is used **when you need to track the number of loops in a state machine**, and it helps break a large task or a long-running execution into smaller pieces, or end an execution after a certain number of events. A similar implementation can periodically end and restart a long-running execution to **avoid exceeding service quotas** for Step Functions, Lambda, and other AWS services. The Lambda runtime selected in the current documentation is Node.js.
 
 > — Source: [Iterate a loop with a Lambda function in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-create-iterate-pattern-section.html)
 
@@ -986,7 +993,7 @@ exports.handler = async function (event) {
 
 ### 7.8 Error Handling: Retry and Catch 🆕
 
-`Retry` and `Catch` appear in the definition on courseware slide 36, but the courseware shows them only as an example and does not explain the fields' default values or constraints.
+`Retry` and `Catch` appear in the definition in [Section 8.3](#83-example-from-dynamodb-getitem-to-lambda-invoke), but they are shown only as an example, and the fields' default values and constraints are not clear.
 
 | Default behavior | Content |
 |---|---|
@@ -1024,7 +1031,7 @@ The other built-in errors are as follows.
 | `MaxDelaySeconds` | Optional | — | Greater than 0 and less than 31622401 |
 | `JitterStrategy` | Optional | — | — |
 
-The documentation explicitly states that **production code must handle Lambda service exceptions such as `Lambda.ServiceException` and `Lambda.SdkClientException`.** The `Retry` block on courseware slide 36 is exactly that form ([Section 8.3](#83-example-from-dynamodb-getitem-to-lambda-invoke)).
+The documentation explicitly states that **production code must handle Lambda service exceptions such as `Lambda.ServiceException` and `Lambda.SdkClientException`.** The `Retry` block in [Section 8.3](#83-example-from-dynamodb-getitem-to-lambda-invoke) is exactly that form.
 
 Retries are not free. In a Standard workflow **each retry is billed as an additional state transition** ([Section 6.6](#66-pricing-model)).
 
@@ -1036,9 +1043,9 @@ Retries are not free. In a Standard workflow **each retry is billed as an additi
 
 ### 8.1 The Three Integration Patterns 🆕
 
-The instructor notes for courseware slide 28 describe the three integration patterns but **do not give their official names or their ASL notation.** In the lab you need those names the moment you add a suffix to a resource URI.
+The three integration patterns are often described **without their official names or their ASL notation.** In the lab you need those names the moment you add a suffix to a resource URI.
 
-| Official pattern name | Instructor notes description | ASL resource URI notation | Standard | Express |
+| Official pattern name | Description | ASL resource URI notation | Standard | Express |
 |---|---|---|---|---|
 | **Request Response** (default) | Call a service and let Step Functions move to the next state as soon as it gets an HTTP response | **No** suffix | Supported | Supported |
 | **Run a Job** | Call a service and have Step Functions wait until the job completes | **`.sync`** | Supported | **Not supported** |
@@ -1060,7 +1067,7 @@ An ASL `Resource` value is a unique name that follows the ARN format, but **it o
 
 ### 8.2 Optimized Integrations and AWS SDK Integrations 🆕
 
-Courseware slide 28 presents integration targets only as nine services (AWS Lambda, AWS Batch, AWS Fargate, Amazon ECS, Amazon DynamoDB, Amazon SNS, Amazon SQS, AWS Glue, Amazon SageMaker) plus "and many more." There are now **two distinct integration types.**
+It is easy to see integration targets only as nine services (AWS Lambda, AWS Batch, AWS Fargate, Amazon ECS, Amazon DynamoDB, Amazon SNS, Amazon SQS, AWS Glue, Amazon SageMaker) plus "and many more." There are now **two distinct integration types.**
 
 | Item | Optimized integrations | AWS SDK integrations |
 |---|---|---|
@@ -1093,18 +1100,19 @@ That last row is where labs get stuck most often. With an AWS SDK integration th
 
 ### 8.3 Example: From DynamoDB GetItem to Lambda Invoke 🔄
 
-The second ASL definition, from courseware slide 36. Several internal courseware problems overlap on this slide, so it needs cleanup.
+The second ASL definition. In some source material several problems overlap in this example, so it needs cleanup.
 
-| The courseware problem | How this document handles it |
+| The problem in the original | How this document handles it |
 |---|---|
-| The slide title is the same as slide 27, "Example: Iterating a loop with Lamda," but the content is not loop iteration — it is a **sequential workflow** of DynamoDB `GetItem` → Lambda `invoke`. The title appears to have been copied from slide 27 | Changed to a title that matches the content |
+| The title is the same as the iteration pattern example, "Example: Iterating a loop with Lamda," but the content is not loop iteration — it is a **sequential workflow** of DynamoDB `GetItem` → Lambda `invoke`. The title appears to have been copied from the iteration example | Changed to a title that matches the content |
 | The `Comment` value is `"Example of the Amazon States Language using a Pass state"`, but **there is no `Pass` state** in this definition | The `Comment` was corrected to match the content |
-| The instructor notes write the state name as `DynamoDBGetItem` (no space), while the state name in the code is `DynamoDB GetItem` (with a space) | Standardized **on the code** |
-| The instructor notes write the parameter name as `tableName` (lowercase t), while the code uses `TableName` | Standardized **on the code** |
+| Some material writes the state name as `DynamoDBGetItem` (no space), while the state name in the code is `DynamoDB GetItem` (with a space) | Standardized **on the code** |
+| Some material writes the parameter name as `tableName` (lowercase t), while the code uses `TableName` | Standardized **on the code** |
 | The `Next` target of `Catch` is `"Fail"`, but the text is truncated so we cannot confirm that state was defined | The `Fail` state has been **included** in the definition |
 | The `FunctionName` ARN contains a 12-digit number that looks like a real account | Replaced with the example value `123456789012` |
+| The title of the iteration pattern example also misspells "Lamda" | — |
 
-The courseware original is truncated after `MaxAttempts`. The definition below fills in `BackoffRate` with the default of **2.0** stated in the documentation ([Section 7.8](#78-error-handling-retry-and-catch)).
+The original is truncated after `MaxAttempts`. The definition below fills in `BackoffRate` with the default of **2.0** stated in the documentation ([Section 7.8](#78-error-handling-retry-and-catch)).
 
 ```json
 {
@@ -1156,12 +1164,12 @@ The courseware original is truncated after `MaxAttempts`. The definition below f
 }
 ```
 
-The courseware instructor notes, carried over verbatim:
+The behavior of this definition, explained:
 
 > The state machine starts at the DynamoDBGetItem state. (…) This task is performed by a resource using an Amazon Resource Name (ARN). The tableName: NoteInventory parameter and the key parameter use the '$' notation to pull values from the input. ResultPath is updated with the retrieved value of the item. If an error occurs, the error is caught and the flow is sent to the fail state. On success, the flow continues to the Lambda Invoke state.
 > In the Lambda Invoke state, note the retry statement.
 
-Verified against the documentation, the courseware's `Retry` block (`Lambda.ServiceException`, `Lambda.AWSLambdaException`, `Lambda.SdkClientException`, `IntervalSeconds` 2, `MaxAttempts` 6) and `Catch` block (`ErrorEquals: States.ALL`) **match the actual field structure.** In other words the courseware chose this example well.
+Verified against the documentation, the `Retry` block (`Lambda.ServiceException`, `Lambda.AWSLambdaException`, `Lambda.SdkClientException`, `IntervalSeconds` 2, `MaxAttempts` 6) and `Catch` block (`ErrorEquals: States.ALL`) **match the actual field structure.** In other words it is a well-chosen example.
 
 > — Source: [Handling errors in Step Functions workflows](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html)
 
@@ -1179,7 +1187,7 @@ If you understand why `OutputPath` is `$.Payload` in the example above, you unde
 | Callback pattern | Adding `.waitForTaskToken` implements the callback pattern, and you **put the `TaskToken` in the payload** |
 | Asynchronous invocation | The `InvocationType` parameter allows asynchronous invocation, and with an asynchronous invocation the **heartbeat timeout starts immediately** |
 
-There is also an **alternative** of specifying the function ARN directly in the `Resource` field (the form on courseware slide 27). That has two differences.
+There is also an **alternative** of specifying the function ARN directly in the `Resource` field (the form in [Section 7.7](#77-example-iterating-a-loop-with-lambda)). That has two differences.
 
 | Alternative (function ARN specified directly) | Content |
 |---|---|
@@ -1205,7 +1213,7 @@ If you use the `Qualifier` parameter or specify a version or alias in `FunctionN
 
 ### 8.5 Activity Workers 🆕
 
-The diagram on courseware slide 26 includes "activity worker" as something a state can invoke but never explains it. That is **Activities** — a way to have the task of a state machine performed by **a worker that runs outside Step Functions.**
+The things a task state can invoke also include an "activity worker." That is **Activities** — a way to have the task of a state machine performed by **a worker that runs outside Step Functions.**
 
 | Item | Content |
 |---|---|
@@ -1225,7 +1233,7 @@ Remember one constraint: **Activities are supported only in Standard workflows**
 
 ### 8.6 HTTP Task 🆕
 
-Courseware slide 28 presents integration targets only as AWS services and does not cover **how to call an HTTPS endpoint outside AWS.** That is the HTTP Task.
+Seeing integration targets only as AWS services leaves out **how to call an HTTPS endpoint outside AWS.** That is the HTTP Task.
 
 | Item | Content |
 |---|---|
@@ -1271,7 +1279,7 @@ Courseware slide 28 presents integration targets only as AWS services and does n
 
 ## 9. Testing and Operations
 
-The demonstration on courseware slides 29–30 shows six items.
+The demonstration shows six items.
 
 | Demonstration item | Where it is covered in this document |
 |---|---|
@@ -1282,7 +1290,7 @@ The demonstration on courseware slides 29–30 shows six items.
 | Running | This section |
 | Integrations | [Section 8](#8-service-integrations) |
 
-What the demonstration does not cover is **testing.** Because the slides make no mention of it, this section fills the gap.
+What the demonstration does not cover is **testing.** Because it goes unmentioned, this section fills the gap.
 
 ### 9.1 Testing an Individual State 🆕
 
@@ -1296,7 +1304,7 @@ There is a way to check a single state without running the whole state machine.
 
 #### Two Unsupported Tools
 
-The two tools you run into first when looking for a local testing approach are **explicitly marked unsupported** in the current documentation. The courseware does not mention them, but they are worth knowing about.
+The two tools you run into first when looking for a local testing approach are **explicitly marked unsupported** in the current documentation. They are worth knowing about.
 
 | Tool | Status | Content |
 |---|---|---|
@@ -1309,7 +1317,7 @@ The documentation directs you to **unit test state machine logic before deployme
 
 ### 9.2 Logging and Monitoring 🆕
 
-The instructor notes for courseware slide 25 say "Amazon CloudWatch metrics, CloudWatch Logs, AWS X-Ray, and other tools." Filling in those "other tools" gives six.
+The logging and monitoring path is often summarized as "Amazon CloudWatch metrics, CloudWatch Logs, AWS X-Ray, and other tools." Filling in those "other tools" gives six.
 
 | Tool | What you see |
 |---|---|
@@ -1320,13 +1328,13 @@ The instructor notes for courseware slide 25 say "Amazon CloudWatch metrics, Clo
 | **X-Ray** | Tracing data |
 | **User Notifications** | Event notifications |
 
-What the courseware lumps into "other tools" is CloudTrail (API call auditing), EventBridge event delivery, and User Notifications.
+What tends to get lumped into "other tools" is CloudTrail (API call auditing), EventBridge event delivery, and User Notifications.
 
 > — Source: [Logging and monitoring AWS Step Functions service performance](https://docs.aws.amazon.com/step-functions/latest/dg/monitoring-logging.html)
 
 ### 9.3 Versions and Aliases 🆕
 
-The courseware does not cover state machine versions and aliases. They are the **Step Functions deployment unit** corresponding to Lambda versions and aliases in module 9 and API Gateway stages in module 10, so this is a gap in the course flow.
+State machine versions and aliases are the **Step Functions deployment unit** corresponding to Lambda versions and aliases in module 9 and API Gateway stages in module 10, so this is an easy gap to leave in the course flow.
 
 | Item | Content |
 |---|---|
@@ -1344,7 +1352,7 @@ The courseware does not cover state machine versions and aliases. They are the *
 
 ### 9.4 Restarting a Failed Execution with redrive 🆕
 
-Courseware slides 23 and 24 emphasize "retry a failed task" and "manages failures and retries." `Retry` is recovery at the **state level.** redrive, which is recovery at the **execution level**, is missing from the courseware.
+Earlier we emphasized "retry a failed task" and "manages failures and retries." `Retry` is recovery at the **state level.** redrive, which is recovery at the **execution level**, is a separate thing to know.
 
 | Item | Content |
 |---|---|
@@ -1371,75 +1379,75 @@ Eligibility requires all of the following.
 
 ## 10. Changes from the Courseware
 
-These are items in the courseware (the instructor deck) that differ from current behavior. Because learners have the official courseware in hand, we record what changed and why.
+Since learners may have the official courseware in front of them, this section gathers in one place where this material diverges from it. The evidence behind every item marked new or corrected in the sections above is here.
 
-### 10.1 Courseware Statements That Do Not Match the Facts
+### 10.1 Differences from the Courseware
 
-The first four items were verified against external documentation. The last four are **internal inconsistencies where the courseware body and the instructor notes disagree**, so they are not the kind of thing external documentation can verify. Those rows have `—` in the source column.
+The first four items were verified against external documentation. The last four are **internal inconsistencies where the original disagrees with itself**, so they are not the kind of thing external documentation can verify. Those rows have `—` in the source column.
 
 | Item | Courseware statement | Verified content | Source |
 |---|---|---|---|
-| Name of the visualization tool (slide 25) | The body says `State Function Workflow Studio`; the instructor notes on the same slide say `Workflow Studio` | The official name is **Workflow Studio**. It is the visual tool for editing workflows in the Step Functions console and offers the Design, Code, and Config modes. In addition to the console it is available in **AWS Infrastructure Composer** and the **AWS Toolkit for VS Code** | [Workflow Studio](https://docs.aws.amazon.com/step-functions/latest/dg/workflow-studio.html) |
-| Account ID in a `Resource` ARN (slide 27) | `arn:aws:lambda:us-east-1:12342:function:Iterate` — the account ID field has only **five digits** | The general ARN format is `arn:partition:service:region:account-id:resource-id`, and `account-id` is a **12-digit** AWS account ID without hyphens (documentation example `123456789012`). The courseware value is not a valid ARN. Conversely, the `FunctionName` ARN on slide 36 contains a 12-digit number that looks like a real account, so this document replaced both with example values | [Amazon Resource Names (ARNs)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html) |
-| Number of state types (slide 26) | The instructor notes group `Succeed or Fail` into one item and present **7** | The official workflow state reference list has **8**: `Task`, `Choice`, `Parallel`, `Map`, `Pass`, `Wait`, `Succeed`, `Fail`. Workflow Studio classifies the 7 other than `Task` (Actions) as Flow states. The description of each state itself matches the documentation | [Discovering workflow states](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-states.html) |
-| Input/output processing fields (slide 26) | The diagram shows **4** (`InputPath`, `Parameters`, `ResultPath`, `OutputPath`) and the instructor notes on the same slide list **3** (`InputPath`, `Parameters`, `ResultSelector`) — **they disagree** | The accurate list for a state machine using JSONPath has **5** fields, applied in the order `InputPath` → `Parameters` → `ResultSelector` → `ResultPath` → `OutputPath` | [Processing input and output](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-input-output-filtering.html) |
-| Lost strikethrough in the serverless list (slide 16) | The seven items in the "traditional deployment and operations" and "serverless deployment and operations" lists were **extracted as identical text** | The original slide appears to have used strikethrough on the serverless side to show which tasks go away, but that cannot be distinguished from the text alone. This document separated what goes away in a table, based on the instructor notes ([Section 4.2](#42-what-goes-away-with-serverless)) | — (see [Section 10.5](#105-items-we-could-not-verify)) |
-| "Three layers" versus nine layers (slide 18) | The instructor notes say "the three layers of your stack" and list compute, application integration, and data storage. The slide body presents **nine layers** | The instructor notes also place Step Functions under "application integration" while the slide body gives it its own "orchestration" layer. This document organizes around the nine layers in the body and marks the three layers from the notes as the core three pillars among them ([Section 4.4](#44-the-serverless-application-stack)) | — (see [Section 10.5](#105-items-we-could-not-verify)) |
-| Title and `Comment` on slide 36 | The title is the same as slide 27, "Example: Iterating a loop with Lamda," but the content is a DynamoDB `GetItem` → Lambda `invoke` sequential workflow. The `Comment` value is `"...using a Pass state"` while the definition has no `Pass` state | The instructor notes write the state name as `DynamoDBGetItem` (no space) and the parameter as `tableName` (lowercase t), while the code uses `DynamoDB GetItem` and `TableName`. The title on slide 27 also misspells "Lamda." This document corrected the title and `Comment` to match the content and standardized the names on the code ([Section 8.3](#83-example-from-dynamodb-getitem-to-lambda-invoke)) | — (see [Section 10.5](#105-items-we-could-not-verify)) |
-| Closing quotation marks in the ASL definition (slide 27) | In `"Next": "Iterator“` and similar, the closing mark is a **left double quotation mark** (`“`) rather than a straight quote (`"`) | As written it does not parse as JSON. We also cannot confirm whether a state named `Fail` — the `Catch` target on slide 36 — was defined, because the text is truncated. This document corrected the quotes to produce parseable JSON and included the `Fail` state in the definition | — (see [Section 10.5](#105-items-we-could-not-verify)) |
+| Name of the visualization tool | Some source material says `State Function Workflow Studio`; elsewhere it says `Workflow Studio` | The official name is **Workflow Studio**. It is the visual tool for editing workflows in the Step Functions console and offers the Design, Code, and Config modes. In addition to the console it is available in **AWS Infrastructure Composer** and the **AWS Toolkit for VS Code** | [Workflow Studio](https://docs.aws.amazon.com/step-functions/latest/dg/workflow-studio.html) |
+| Account ID in a `Resource` ARN | `arn:aws:lambda:us-east-1:12342:function:Iterate` — the account ID field has only **five digits** | The general ARN format is `arn:partition:service:region:account-id:resource-id`, and `account-id` is a **12-digit** AWS account ID without hyphens (documentation example `123456789012`). The courseware value is not a valid ARN. Conversely, the `FunctionName` ARN in the sequential workflow example contains a 12-digit number that looks like a real account, so this document replaced both with example values | [Amazon Resource Names (ARNs)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html) |
+| Number of state types | Some source material groups `Succeed or Fail` into one item and presents **7** | The official workflow state reference list has **8**: `Task`, `Choice`, `Parallel`, `Map`, `Pass`, `Wait`, `Succeed`, `Fail`. Workflow Studio classifies the 7 other than `Task` (Actions) as Flow states. The description of each state itself matches the documentation | [Discovering workflow states](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-states.html) |
+| Input/output processing fields | The original shows **4** (`InputPath`, `Parameters`, `ResultPath`, `OutputPath`) in a diagram and lists **3** (`InputPath`, `Parameters`, `ResultSelector`) in the body — **they disagree** | The accurate list for a state machine using JSONPath has **5** fields, applied in the order `InputPath` → `Parameters` → `ResultSelector` → `ResultPath` → `OutputPath` | [Processing input and output](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-input-output-filtering.html) |
+| Lost strikethrough in the serverless list | The seven items in the "traditional deployment and operations" and "serverless deployment and operations" lists were **extracted as identical text** | The original appears to have used strikethrough on the serverless side to show which tasks go away, but that cannot be distinguished from the text alone. This document separated what goes away in a table, based on the serverless definition ([Section 4.2](#42-what-goes-away-with-serverless)) | — (see [Section 10.5](#105-items-we-could-not-verify)) |
+| "Three layers" versus nine layers | The original says "the three layers of your stack" and lists compute, application integration, and data storage, yet presents **nine layers** in the body | The same material also places Step Functions under "application integration" while giving it its own "orchestration" layer. This document organizes around the nine layers and marks the three layers as the core three pillars among them ([Section 4.4](#44-the-serverless-application-stack)) | — (see [Section 10.5](#105-items-we-could-not-verify)) |
+| The title and `Comment` of the example | The title is the same as the iteration pattern example, "Example: Iterating a loop with Lamda," but the content is a DynamoDB `GetItem` → Lambda `invoke` sequential workflow. The `Comment` value is `"...using a Pass state"` while the definition has no `Pass` state | Some source material writes the state name as `DynamoDBGetItem` (no space) and the parameter as `tableName` (lowercase t), while the code uses `DynamoDB GetItem` and `TableName`. The title of the iteration pattern example also misspells "Lamda." This document corrected the title and `Comment` to match the content and standardized the names on the code ([Section 8.3](#83-example-from-dynamodb-getitem-to-lambda-invoke)) | — (see [Section 10.5](#105-items-we-could-not-verify)) |
+| Closing quotation marks in the ASL definition | In `"Next": "Iterator“` and similar, the closing mark is a **left double quotation mark** (`“`) rather than a straight quote (`"`) | As written it does not parse as JSON. We also cannot confirm whether a state named `Fail` — the `Catch` target in the sequential workflow example — was defined, because the text is truncated. This document corrected the quotes to produce parseable JSON and included the `Fail` state in the definition | — (see [Section 10.5](#105-items-we-could-not-verify)) |
 
 ### 10.2 Changed Behavior and Defaults
 
 | Item | Courseware statement | Current | Source |
 |---|---|---|---|
-| Workflow type selection | Slides 24 and 25 introduce Step Functions and present the define-visualize-run flow but **never mention workflow types** | You **must choose Standard (the default) or Express** when you create a state machine, and you cannot change it after creation. Standard is up to 1 year, exactly-once, and billed by state transitions; Express is up to 5 minutes, at-least-once (asynchronous) or at-most-once (synchronous), and billed by number of executions and duration. Express does not support the `.sync` or `.waitForTaskToken` patterns, Distributed Map, Activities, or redrive | [Choosing workflow type](https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html) |
-| How data is passed and transformed | All of slide 26 and the ASL definitions on slides 27 and 36 explain it **only with JSONPath-based fields and `$` notation** | **JSONata** has been added as a query and transformation language, and **JSONata is recommended for new state machines.** Selecting JSONata reduces the five JSONPath fields to just `Arguments` and `Output`, and `.$` is not used in JSON key names. In addition, the `Assign` field of **variables** lets you reference data stored in one step from any later step. A state machine that does not specify a query language defaults to JSONPath for backward compatibility, so **the courseware examples still work** | [Transforming data with JSONata](https://docs.aws.amazon.com/step-functions/latest/dg/transforming-data.html) |
-| Scope of integration targets | Slide 28 presents nine services plus "and many more" | There are now two integration types. **Optimized integrations** provide customized options for specific services and the table lists 21 services, while **AWS SDK integrations** call the API actions of over 200 services directly in the form `arn:aws:states:::aws-sdk:service:API`. In addition, an **HTTP Task** using the `arn:aws:states:::http:invoke` resource can call HTTPS APIs outside AWS | [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) |
-| Processing modes of the `Map` state | The instructor notes for slide 26 describe it only as "runs the same steps for multiple items of an array in the state input," so **processing modes are not distinguished** | **Inline** (the default) takes only a JSON array as input, supports up to **40** concurrent iterations, and adds iteration history to the parent execution history. **Distributed** runs each iteration as a child workflow execution with its own execution history (**10,000 parallel** if not specified), can read input from large-scale data sources in Amazon S3, and is **Standard only** | [Map state in Distributed mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-distributed.html) |
-| Amazon CloudWatch Events | Slide 18 lists only the EventBridge name and **does not cover the former name** | Amazon EventBridge was previously called **Amazon CloudWatch Events**. The default event bus and the rules created in CloudWatch Events also appear in the EventBridge console, and because it **uses the same API, existing code continues to work.** However, new features added to EventBridge (partner events, the schema registry, EventBridge Pipes, and so on) are not added to CloudWatch Events | [EventBridge is the evolution of CloudWatch Events](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) |
+| Workflow type selection | The courseware introduces Step Functions and presents the define-visualize-run flow but **never mentions workflow types** | You **must choose Standard (the default) or Express** when you create a state machine, and you cannot change it after creation. Standard is up to 1 year, exactly-once, and billed by state transitions; Express is up to 5 minutes, at-least-once (asynchronous) or at-most-once (synchronous), and billed by number of executions and duration. Express does not support the `.sync` or `.waitForTaskToken` patterns, Distributed Map, Activities, or redrive | [Choosing workflow type](https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html) |
+| How data is passed and transformed | The courseware's ASL definitions explain it **only with JSONPath-based fields and `$` notation** | **JSONata** has been added as a query and transformation language, and **JSONata is recommended for new state machines.** Selecting JSONata reduces the five JSONPath fields to just `Arguments` and `Output`, and `.$` is not used in JSON key names. In addition, the `Assign` field of **variables** lets you reference data stored in one step from any later step. A state machine that does not specify a query language defaults to JSONPath for backward compatibility, so **the courseware examples still work** | [Transforming data with JSONata](https://docs.aws.amazon.com/step-functions/latest/dg/transforming-data.html) |
+| Scope of integration targets | The courseware presents nine services plus "and many more" | There are now two integration types. **Optimized integrations** provide customized options for specific services and the table lists 21 services, while **AWS SDK integrations** call the API actions of over 200 services directly in the form `arn:aws:states:::aws-sdk:service:API`. In addition, an **HTTP Task** using the `arn:aws:states:::http:invoke` resource can call HTTPS APIs outside AWS | [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) |
+| Processing modes of the `Map` state | The courseware describes it only as "runs the same steps for multiple items of an array in the state input," so **processing modes are not distinguished** | **Inline** (the default) takes only a JSON array as input, supports up to **40** concurrent iterations, and adds iteration history to the parent execution history. **Distributed** runs each iteration as a child workflow execution with its own execution history (**10,000 parallel** if not specified), can read input from large-scale data sources in Amazon S3, and is **Standard only** | [Map state in Distributed mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-distributed.html) |
+| Amazon CloudWatch Events | The courseware lists only the EventBridge name and **does not cover the former name** | Amazon EventBridge was previously called **Amazon CloudWatch Events**. The default event bus and the rules created in CloudWatch Events also appear in the EventBridge console, and because it **uses the same API, existing code continues to work.** However, new features added to EventBridge (partner events, the schema registry, EventBridge Pipes, and so on) are not added to CloudWatch Events | [EventBridge is the evolution of CloudWatch Events](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cwe-now-eb.html) |
 
 ### 10.3 Discouraged and Unsupported Items
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
-| The `Iterator` field of the `Map` state and the `Parameters` field inside `Map` | **Deprecated.** Existing definitions continue to work, but the documentation strongly recommends changing them | `Iterator` → **`ItemProcessor`**, `Parameters` inside `Map` → **`ItemSelector`**. The `Iterator` on courseware slide 27 is **the name of a Task state**, not a field of the Map state, so it is unrelated to this deprecation | [Map state in Inline mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-inline.html) |
+| The `Iterator` field of the `Map` state and the `Parameters` field inside `Map` | **Deprecated.** Existing definitions continue to work, but the documentation strongly recommends changing them | `Iterator` → **`ItemProcessor`**, `Parameters` inside `Map` → **`ItemSelector`**. The `Iterator` in the iteration pattern example is **the name of a Task state**, not a field of the Map state, so it is unrelated to this deprecation | [Map state in Inline mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-inline.html) |
 | **AWS Step Functions Local** and the data flow simulator | **Unsupported.** Step Functions Local does not provide feature parity and does not support optimized service integrations, cross-account access, or Distributed Map | Test individual states with **Test State** in the console or the **`TestState` API**. You can also test individual states inside Workflow Studio in the AWS Toolkit for VS Code | [Testing and debugging state machines](https://docs.aws.amazon.com/step-functions/latest/dg/test-and-debug.html) |
 
 The courseware does not mention either tool. They are left here because they are the first path learners take when looking for a local testing method.
 
-### 10.4 Items Added After the Courseware
+### 10.4 What This Material Adds
 
-| Item | Summary | Source |
-|---|---|---|
-| Standard and Express workflow types | Maximum execution duration 1 year/5 minutes, exactly-once/at-least-once and at-most-once, execution history 90 days/not stored, billing by state transitions/by executions, duration, and memory. Express does not support `.sync`, `.waitForTaskToken`, Distributed Map, Activities, or redrive. A synchronous Express execution expires after 60 seconds in the console | [Choosing workflow type](https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html) |
-| The JSONata query language | Implements the JSONata 2.0.6 specification (no `$eval`, uses `$parse`). The `QueryLanguage` field can be set at the state machine top level and on individual states. Expression syntax `"{% ... %}"`, and leading or trailing whitespace is a validation error. Reserved variable `$states` (`input`, `result`, `errorOutput`, `context`) | [Transforming data with JSONata](https://docs.aws.amazon.com/step-functions/latest/dg/transforming-data.html) |
-| Workflow variables | Declared and assigned with `Assign`. Up to 256 KiB per state, names up to 80 characters, Unicode Identifier rules. Available on `Pass`, `Task`, `Map`, `Parallel`, `Choice`, and `Wait`. Workflow-local scope, with the inside of `Parallel` and `Map` states forming a separate scope | [Passing data between states with variables](https://docs.aws.amazon.com/step-functions/latest/dg/workflow-variables.html) |
-| Official names and ASL notation of the three integration patterns | **Request Response** (no suffix) / **Run a Job** (`.sync`) / **Wait for a Callback with Task Token** (`.waitForTaskToken`). A callback resumes with `SendTaskSuccess` or `SendTaskFailure` and can wait up to the one-year quota. The `arn:aws:states:` prefix is the integration namespace and `:::` means the Region and account are empty | [Service integration patterns](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html) |
-| AWS SDK integrations | Call the API actions of over 200 services in the form `arn:aws:states:::aws-sdk:serviceName:apiAction`. Parameters are PascalCase, and error names are `ServiceName.ErrorName` always with the `Exception` suffix. **IAM policies are not generated automatically**, so the role policy must be configured manually | [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) |
-| HTTP Task | `arn:aws:states:::http:invoke`. Calls third-party SaaS public APIs and private APIs inside a VPC. EventBridge connection (Basic, OAuth, API Key) and a Secrets Manager secret. `ApiEndpoint` and `Method` required. 60-second hard timeout, `States.Http.Socket` error, no mTLS, token bucket 300/300 | [Call HTTPS APIs](https://docs.aws.amazon.com/step-functions/latest/dg/call-https-apis.html) |
-| Distributed Map and `Map Run` | A child workflow execution per iteration. 10,000 parallel if not specified. Input from a single JSON or CSV file or a set of objects in S3. The `Map Run` resource and the `DescribeMapRun` API. The `ItemReader`, `ItemProcessor`, `Label`, and `ResultWriter` fields, and the `states:StartExecution` and `states:DescribeExecution` permissions | [Map state in Distributed mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-distributed.html) |
-| Constraints of the `Choice` state | `Choices` is required (at least one rule) and `Default` is recommended. **If there is no `Default` and no rule evaluates to `true`, the state machine throws an error.** `Choice` does not support `End`. A JSONPath rule uses `Variable` plus an operator (with a `Path` suffix on the operator to compare against another value); a JSONata rule uses `Condition` plus a per-rule `Assign` | [Choice workflow state](https://docs.aws.amazon.com/step-functions/latest/dg/state-choice.html) |
-| Default values and constraints of the error handling fields | Every state except `Pass` and `Wait` can raise an error. A catcher is available only on `Task`, `Parallel`, and `Map`. `States.ALL` must appear alone and cannot catch `States.DataLimitExceeded` or `States.Runtime`. Retrier defaults are `IntervalSeconds` 1, `MaxAttempts` 3, and `BackoffRate` 2.0, with `MaxDelaySeconds` and `JitterStrategy` supported | [Handling errors](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html) |
-| The Activities behavior model | `CreateActivity` → `GetActivityTask` polling → `SendTaskSuccess`/`SendTaskFailure`. `SendTaskHeartbeat` allows waiting up to one year. On timeout the token is invalidated and `TaskTimedOut` is raised. Activities are not versioned, so a backward-incompatible change requires a new activity. **Standard only** | [Activities in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-activities.html) |
-| State machine versions and aliases | A numbered, immutable snapshot. The ARN is the state machine ARN plus `:number`. `StartExecution` can be called with a version ARN. Numbers are never reused. Only the definition, IAM role, tracing, and logging configuration can differ between versions. 1,000 versions per state machine | [State machine versions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-state-machine-version.html) |
-| Execution redrive | Resumes a failed, aborted, or timed-out Standard execution from within the last 14 days, starting at the failed step. Successful steps are not run again. Same definition, same execution ARN. Billed as state transitions. Retry counts reset to 0. Eligibility requires a start on or after 2023-11-15, a status other than `SUCCEEDED`, within 14 days, within 1 year, and an event history of fewer than 24,999 | [Restarting executions with redrive](https://docs.aws.amazon.com/step-functions/latest/dg/redrive-executions.html) |
-| Testing an individual state with `TestState` | Test State in the console and the `TestState` API. `inspectionLevel` is `INFO` (default), `DEBUG`, or `TRACE` (`TRACE` is HTTP Task only and shows the raw HTTP request and response). The documentation points to this as the pre-deployment unit test path | [Testing and debugging state machines](https://docs.aws.amazon.com/step-functions/latest/dg/test-and-debug.html) |
-| The current form of Workflow Studio | The Design, Code, and Config modes. The Actions, Flow, and Patterns tabs of the States browser. Validates and generates the definition when a state is modified. Available in AWS Infrastructure Composer and the AWS Toolkit for VS Code in addition to the console | [Workflow Studio](https://docs.aws.amazon.com/step-functions/latest/dg/workflow-studio.html) |
-| The official ASL documentation and `.asl.json` | There is an ASL page in the AWS documentation, and it references both the Amazon States Language Specification and the `Statelint` validation tool. **When saving a definition outside the console, use the `.asl.json` extension** | [Amazon States Language](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html) |
-| Details of the optimized Lambda integration | The response `Payload` is parsed from escaped JSON into JSON. An exception inside the function fails the Task. The task result is nested with `ExecutedVersion`, `Payload`, `SdkHttpMetadata`, `SdkResponseMetadata`, and `StatusCode`. Specifying the function ARN directly disallows `.waitForTaskToken` and returns only the output. Using `Qualifier` requires the qualifier in the IAM resource ARN as well | [Invoke Lambda with Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/connect-lambda.html) |
-| Step Functions service quotas | Names 80 characters, definition 1 MB, input/output 256 KiB, Standard execution history 25,000 events, maximum open executions 1,000,000 (excluding Express), open Map Runs 1,000, redrive 14 days, versions 1,000 and aliases 100, HTTP Task 60 seconds. New accounts start with a reduced state transition quota | [Quotas for Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/service-quotas.html) |
-| The Step Functions pricing model | Standard is billed by number of state transitions (including retries); Express by number of requests and duration (rounded up to 100 ms) and memory (in 64 MB increments). The free tier of 4,000 state transitions per month is indefinite. Express console testing also counts as a request. Distributed Map is billed one state transition per iteration; Inline Map is not | [AWS Step Functions Pricing](https://aws.amazon.com/step-functions/pricing/) |
-| Six logging and monitoring tools | CloudWatch metrics, EventBridge event delivery, CloudTrail API calls, CloudWatch Logs, X-Ray tracing, User Notifications | [Logging and monitoring](https://docs.aws.amazon.com/step-functions/latest/dg/monitoring-logging.html) |
-| The saga orchestration pattern | When 2PC cannot be used in a distributed system, a central orchestrator and compensatory transactions maintain data integrity. Considerations are complexity, eventual consistency, idempotency, lack of transaction isolation (semantic locks), observability, latency, and single point of failure. Implemented with a Step Functions Standard workflow | [Saga orchestration pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/saga-orchestration.html) |
-| Bounded contexts and domain-driven design | REL03-BP02. Set service boundaries with domain models and bounded contexts. Anti-patterns are organizing teams around technical domains, applications spanning multiple domain responsibilities, and sharing domain dependencies. Event storming, bubble context, anti-corruption layer. Monolith decomposition by business capability, by subdomain, and by transaction | [REL03-BP02](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_service_architecture_business_domains.html) |
-| Three microservices patterns and a caveat | The whitepaper presents API driven, event driven, and **data streaming**. It also adds the caveat to "consider the scale, complexity, and specific use case and decide case by case, because in some cases a monolithic architecture or another approach may be more appropriate" | [Implementing Microservices on AWS](https://docs.aws.amazon.com/whitepapers/latest/microservices-on-aws/microservices-on-aws.html) |
-| The three ways EventBridge processes events | **Event buses** (many sources to many targets with optional transformation before delivery), **Pipes** (point-to-point from a single source to a single target with advanced transformation and enrichment), and **Scheduler** (recurring cron and rate schedules, one-time invocations, flexible delivery time windows, retry limits, and maximum retention time) | [What Is Amazon EventBridge?](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) |
-| SQS standard and FIFO queues | Standard offers nearly unlimited API calls per second, at-least-once delivery, and best-effort ordering. FIFO offers 3,000 messages per second with batching (30,000 transactions in high throughput mode), exactly-once processing, ordering within a message group, and `MessageDeduplicationId` | [Amazon SQS queue types](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html) |
-| The Lambda concurrency limit | Concurrency = average requests per second × average processing time in seconds. 1,000 by default per Region (can be raised). Reserved concurrency has no additional charge; provisioned concurrency does | [Lambda concurrency](https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html) |
-| Criteria for choosing between Fargate and Lambda | Execution time: no hard limit on Fargate / 15 minutes per invocation on Lambda. State: Fargate can hold memory state / Lambda is stateless. Concurrency: Fargate by cluster capacity / Lambda 1,000 by default. Long-running and batch work suits Fargate; event-driven work suits Lambda | [AWS Fargate or AWS Lambda](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html) |
-| Transitioning to event-driven architecture | The first step of the serverless learning path. An event represents a change or update in state and can carry state or only identifiers. The eight request/response steps are divided among API Gateway, Lambda, and DynamoDB. Producers do not know their consumers, which makes extension easier | [Transitioning to event-driven architecture](https://docs.aws.amazon.com/serverless/latest/devguide/serverless-transition.html) |
-| The strangler fig pattern procedure and best practices | Proxy → pass-through → move the implementation to a new service → repeat → retire the legacy system. Best practices are components with good test coverage and low technical debt, components with scalability requirements, and components that change and deploy often | [The strangler fig pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-aspnet-web-services/fig-pattern.html) |
-| The purpose of the loop iteration tutorial | For tracking the number of loops in a state machine. Breaks a large task or long-running execution into smaller pieces, or ends an execution after a certain number of events. Also used to periodically end and restart a long-running execution to avoid exceeding service quotas. The runtime selected in the current documentation is Node.js | [Iterate a loop with a Lambda function](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-create-iterate-pattern-section.html) |
+| Item | Summary | Why it was added | Source |
+|---|---|---|---|
+| Standard and Express workflow types | Maximum execution duration 1 year/5 minutes, exactly-once/at-least-once and at-most-once, execution history 90 days/not stored, billing by state transitions/by executions, duration, and memory. Express does not support `.sync`, `.waitForTaskToken`, Distributed Map, Activities, or redrive. A synchronous Express execution expires after 60 seconds in the console | You must choose it on the first screen when creating a state machine and cannot change it later, so knowing what to pick and when keeps you from getting stuck in the lab | [Choosing workflow type](https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html) |
+| The JSONata query language | Implements the JSONata 2.0.6 specification (no `$eval`, uses `$parse`). The `QueryLanguage` field can be set at the state machine top level and on individual states. Expression syntax `"{% ... %}"`, and leading or trailing whitespace is a validation error. Reserved variable `$states` (`input`, `result`, `errorOutput`, `context`) | It is the recommended query language for new state machines, so you meet it by default in the lab console and need to read it alongside the courseware's JSONPath examples | [Transforming data with JSONata](https://docs.aws.amazon.com/step-functions/latest/dg/transforming-data.html) |
+| Workflow variables | Declared and assigned with `Assign`. Up to 256 KiB per state, names up to 80 characters, Unicode Identifier rules. Available on `Pass`, `Task`, `Map`, `Parallel`, `Choice`, and `Wait`. Workflow-local scope, with the inside of `Parallel` and `Map` states forming a separate scope | They are what you reach for once state output passed only to the next step is not enough, which real designs routinely require | [Passing data between states with variables](https://docs.aws.amazon.com/step-functions/latest/dg/workflow-variables.html) |
+| Official names and ASL notation of the three integration patterns | **Request Response** (no suffix) / **Run a Job** (`.sync`) / **Wait for a Callback with Task Token** (`.waitForTaskToken`). A callback resumes with `SendTaskSuccess` or `SendTaskFailure` and can wait up to the one-year quota. The `arn:aws:states:` prefix is the integration namespace and `:::` means the Region and account are empty | You need these names the moment you add a suffix to a resource URI, so they come up at the very first step of the lab | [Service integration patterns](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html) |
+| AWS SDK integrations | Call the API actions of over 200 services in the form `arn:aws:states:::aws-sdk:serviceName:apiAction`. Parameters are PascalCase, and error names are `ServiceName.ErrorName` always with the `Exception` suffix. **IAM policies are not generated automatically**, so the role policy must be configured manually | IAM policies are not generated automatically, and without knowing this the state machine is created but the execution fails with a permissions error | [AWS SDK service integrations](https://docs.aws.amazon.com/step-functions/latest/dg/supported-services-awssdk.html) |
+| HTTP Task | `arn:aws:states:::http:invoke`. Calls third-party SaaS public APIs and private APIs inside a VPC. EventBridge connection (Basic, OAuth, API Key) and a Secrets Manager secret. `ApiEndpoint` and `Method` required. 60-second hard timeout, `States.Http.Socket` error, no mTLS, token bucket 300/300 | It is the only built-in way to call SaaS and private APIs outside AWS, which the courseware does not cover but real scenarios need | [Call HTTPS APIs](https://docs.aws.amazon.com/step-functions/latest/dg/call-https-apis.html) |
+| Distributed Map and `Map Run` | A child workflow execution per iteration. 10,000 parallel if not specified. Input from a single JSON or CSV file or a set of objects in S3. The `Map Run` resource and the `DescribeMapRun` API. The `ItemReader`, `ItemProcessor`, `Label`, and `ResultWriter` fields, and the `states:StartExecution` and `states:DescribeExecution` permissions | It is the only option for large-scale processing beyond the 256 KiB, 25,000-event, and 40-iteration limits, which you inevitably hit as scale grows | [Map state in Distributed mode](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-distributed.html) |
+| Constraints of the `Choice` state | `Choices` is required (at least one rule) and `Default` is recommended. **If there is no `Default` and no rule evaluates to `true`, the state machine throws an error.** `Choice` does not support `End`. A JSONPath rule uses `Variable` plus an operator (with a `Path` suffix on the operator to compare against another value); a JSONata rule uses `Condition` plus a per-rule `Assign` | A single missing `Default` halts the state machine with a runtime error, so this guards the spot that breaks most often in practice | [Choice workflow state](https://docs.aws.amazon.com/step-functions/latest/dg/state-choice.html) |
+| Default values and constraints of the error handling fields | Every state except `Pass` and `Wait` can raise an error. A catcher is available only on `Task`, `Parallel`, and `Map`. `States.ALL` must appear alone and cannot catch `States.DataLimitExceeded` or `States.Runtime`. Retrier defaults are `IntervalSeconds` 1, `MaxAttempts` 3, and `BackoffRate` 2.0, with `MaxDelaySeconds` and `JitterStrategy` supported | Without the retry and exception defaults and the `States.ALL` constraints, resilience design does not behave as intended | [Handling errors](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html) |
+| The Activities behavior model | `CreateActivity` → `GetActivityTask` polling → `SendTaskSuccess`/`SendTaskFailure`. `SendTaskHeartbeat` allows waiting up to one year. On timeout the token is invalidated and `TaskTimedOut` is raised. Activities are not versioned, so a backward-incompatible change requires a new activity. **Standard only** | It is how a task is handed to a worker outside Step Functions, connecting the 'activity worker' in the diagram to what it actually is | [Activities in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-activities.html) |
+| State machine versions and aliases | A numbered, immutable snapshot. The ARN is the state machine ARN plus `:number`. `StartExecution` can be called with a version ARN. Numbers are never reused. Only the definition, IAM role, tracing, and logging configuration can differ between versions. 1,000 versions per state machine | They are the deployment unit corresponding to Lambda versions/aliases and API Gateway stages, completing the deployment flow from earlier modules | [State machine versions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-state-machine-version.html) |
+| Execution redrive | Resumes a failed, aborted, or timed-out Standard execution from within the last 14 days, starting at the failed step. Successful steps are not run again. Same definition, same execution ARN. Billed as state transitions. Retry counts reset to 0. Eligibility requires a start on or after 2023-11-15, a status other than `SUCCEEDED`, within 14 days, within 1 year, and an event history of fewer than 24,999 | It is execution-level recovery that `Retry` (state level) cannot do, needed to resume a failed execution instead of rerunning it from the start | [Restarting executions with redrive](https://docs.aws.amazon.com/step-functions/latest/dg/redrive-executions.html) |
+| Testing an individual state with `TestState` | Test State in the console and the `TestState` API. `inspectionLevel` is `INFO` (default), `DEBUG`, or `TRACE` (`TRACE` is HTTP Task only and shows the raw HTTP request and response). The documentation points to this as the pre-deployment unit test path | It is the pre-deployment unit test path that verifies logic without deploying and running the whole state machine, speeding up the dev loop | [Testing and debugging state machines](https://docs.aws.amazon.com/step-functions/latest/dg/test-and-debug.html) |
+| The current form of Workflow Studio | The Design, Code, and Config modes. The Actions, Flow, and Patterns tabs of the States browser. Validates and generates the definition when a state is modified. Available in AWS Infrastructure Composer and the AWS Toolkit for VS Code in addition to the console | It aligns the tool the courseware introduced as console-only under an old name with its current shape (three modes, multiple editing locations) to match the lab screen | [Workflow Studio](https://docs.aws.amazon.com/step-functions/latest/dg/workflow-studio.html) |
+| The official ASL documentation and `.asl.json` | There is an ASL page in the AWS documentation, and it references both the Amazon States Language Specification and the `Statelint` validation tool. **When saving a definition outside the console, use the `.asl.json` extension** | You need the extension rule for saving definitions outside the console and the official AWS ASL reference to work with state machines as IaC | [Amazon States Language](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html) |
+| Details of the optimized Lambda integration | The response `Payload` is parsed from escaped JSON into JSON. An exception inside the function fails the Task. The task result is nested with `ExecutedVersion`, `Payload`, `SdkHttpMetadata`, `SdkResponseMetadata`, and `StatusCode`. Specifying the function ARN directly disallows `.waitForTaskToken` and returns only the output. Using `Qualifier` requires the qualifier in the IAM resource ARN as well | It explains why the example needs `OutputPath: $.Payload`, making the real behavior of nested integration results understandable | [Invoke Lambda with Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/connect-lambda.html) |
+| Step Functions service quotas | Names 80 characters, definition 1 MB, input/output 256 KiB, Standard execution history 25,000 events, maximum open executions 1,000,000 (excluding Express), open Map Runs 1,000, redrive 14 days, versions 1,000 and aliases 100, HTTP Task 60 seconds. New accounts start with a reduced state transition quota | You hit values like name length, definition size, and input/output size directly in practice, so you need them at design time | [Quotas for Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/service-quotas.html) |
+| The Step Functions pricing model | Standard is billed by number of state transitions (including retries); Express by number of requests and duration (rounded up to 100 ms) and memory (in 64 MB increments). The free tier of 4,000 state transitions per month is indefinite. Express console testing also counts as a request. Distributed Map is billed one state transition per iteration; Inline Map is not | Design choices translate straight into cost (retries billed as state transitions, for example), which the decision to adopt Step Functions depends on | [AWS Step Functions Pricing](https://aws.amazon.com/step-functions/pricing/) |
+| Six logging and monitoring tools | CloudWatch metrics, EventBridge event delivery, CloudTrail API calls, CloudWatch Logs, X-Ray tracing, User Notifications | It fills in what the courseware lumped into 'other tools,' giving the full picture of how to observe the workflow in operation | [Logging and monitoring](https://docs.aws.amazon.com/step-functions/latest/dg/monitoring-logging.html) |
+| The saga orchestration pattern | When 2PC cannot be used in a distributed system, a central orchestrator and compensatory transactions maintain data integrity. Considerations are complexity, eventual consistency, idempotency, lack of transaction isolation (semantic locks), observability, latency, and single point of failure. Implemented with a Step Functions Standard workflow | The courseware's workflow example does not address rolling back a transaction spanning several services that fails partway through | [Saga orchestration pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/saga-orchestration.html) |
+| Bounded contexts and domain-driven design | REL03-BP02. Set service boundaries with domain models and bounded contexts. Anti-patterns are organizing teams around technical domains, applications spanning multiple domain responsibilities, and sharing domain dependencies. Event storming, bubble context, anti-corruption layer. Monolith decomposition by business capability, by subdomain, and by transaction | It turns the domain-driven design the courseware gave as a one-line example into actionable guidance for setting service boundaries | [REL03-BP02](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/rel_service_architecture_business_domains.html) |
+| Three microservices patterns and a caveat | The whitepaper presents API driven, event driven, and **data streaming**. It also adds the caveat to "consider the scale, complexity, and specific use case and decide case by case, because in some cases a monolithic architecture or another approach may be more appropriate" | It supplements the courseware's two-pattern, benefits-only presentation with a third pattern and the 'not always the answer' caveat | [Implementing Microservices on AWS](https://docs.aws.amazon.com/whitepapers/latest/microservices-on-aws/microservices-on-aws.html) |
+| The three ways EventBridge processes events | **Event buses** (many sources to many targets with optional transformation before delivery), **Pipes** (point-to-point from a single source to a single target with advanced transformation and enrichment), and **Scheduler** (recurring cron and rate schedules, one-time invocations, flexible delivery time windows, retry limits, and maximum retention time) | It distinguishes when to use each part of EventBridge, which the courseware only listed by name, to support design decisions | [What Is Amazon EventBridge?](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) |
+| SQS standard and FIFO queues | Standard offers nearly unlimited API calls per second, at-least-once delivery, and best-effort ordering. FIFO offers 3,000 messages per second with batching (30,000 transactions in high throughput mode), exactly-once processing, ordering within a message group, and `MessageDeduplicationId` | Placing a queue between microservices forces a real choice of one type, so this provides the criteria | [Amazon SQS queue types](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html) |
+| The Lambda concurrency limit | Concurrency = average requests per second × average processing time in seconds. 1,000 by default per Region (can be raised). Reserved concurrency has no additional charge; provisioned concurrency does | Knowing that 'scales automatically' happens within an account limit rather than infinitely makes scaling design accurate | [Lambda concurrency](https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html) |
+| Criteria for choosing between Fargate and Lambda | Execution time: no hard limit on Fargate / 15 minutes per invocation on Lambda. State: Fargate can hold memory state / Lambda is stateless. Concurrency: Fargate by cluster capacity / Lambda 1,000 by default. Long-running and batch work suits Fargate; event-driven work suits Lambda | It splits the two compute options the courseware only placed side by side, by execution time, state, and concurrency, to guide workload choice | [AWS Fargate or AWS Lambda](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html) |
+| Transitioning to event-driven architecture | The first step of the serverless learning path. An event represents a change or update in state and can carry state or only identifiers. The eight request/response steps are divided among API Gateway, Lambda, and DynamoDB. Producers do not know their consumers, which makes extension easier | It is the first step of the serverless learning path, so understanding how services interact through events unlocks later design | [Transitioning to event-driven architecture](https://docs.aws.amazon.com/serverless/latest/devguide/serverless-transition.html) |
+| The strangler fig pattern procedure and best practices | Proxy → pass-through → move the implementation to a new service → repeat → retire the legacy system. Best practices are components with good test coverage and low technical debt, components with scalability requirements, and components that change and deploy often | It makes the decoupling procedure the courseware only linked to concrete, with steps and selection criteria, so monolith decomposition is actionable | [The strangler fig pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-aspnet-web-services/fig-pattern.html) |
+| The purpose of the loop iteration tutorial | For tracking the number of loops in a state machine. Breaks a large task or long-running execution into smaller pieces, or ends an execution after a certain number of events. Also used to periodically end and restart a long-running execution to avoid exceeding service quotas. The runtime selected in the current documentation is Node.js | Knowing when to use this pattern (tracking loop counts, avoiding quota limits) is what lets you carry the example into practice | [Iterate a loop with a Lambda function](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-create-iterate-pattern-section.html) |
 
 ### 10.5 Items We Could Not Verify
 
@@ -1447,16 +1455,16 @@ We record these honestly. Confirm them before stating them definitively in class
 
 | Item | Status |
 |---|---|
-| An AWS documentation definition of "modern application" | **We could not find an AWS documentation page carrying the same wording** as the definition in the instructor notes for courseware slide 6 (a cloud-native application developed from a combination of modern technology, architecture, software delivery practices, and operational processes). What we did confirm is that the `Implementing Microservices on AWS` whitepaper describes microservices, serverless, and event-driven architecture in the same direction. This document carries the courseware definition over **explicitly attributed to the courseware** |
+| An AWS documentation definition of "modern application" | **We could not find an AWS documentation page carrying the same wording** as the definition in the courseware (a cloud-native application developed from a combination of modern technology, architecture, software delivery practices, and operational processes). What we did confirm is that the `Implementing Microservices on AWS` whitepaper describes microservices, serverless, and event-driven architecture in the same direction. This document carries the courseware definition over **explicitly attributed to the courseware** |
 | The full list of services with optimized integrations | We confirmed that integrations are divided into optimized integrations and AWS SDK integrations, that the optimized integration table **lists 21 services**, and that AWS SDK integrations support over 200 services. **We did not retrieve the full list of names of those 21 services.** This document lists only the five the documentation gives as examples: API Gateway, Athena, AWS Batch, Bedrock, and Bedrock AgentCore. If you need to know whether a specific service has an optimized integration for a lab, check the integration table directly |
-| Whether the current documentation recommends replacing the loop iteration pattern with the `Map` state | We confirmed that the tutorial referenced on courseware slide 27 is still valid and that the documentation explains the purpose of the pattern. **We did not find a statement that the documentation recommends using the `Map` state instead of this pattern.** Because the two features solve different problems (tracking loop counts versus processing array items in parallel), we did not state it definitively |
-| Whether the `Fail` state that `Catch` targets on slide 36 was defined in the courseware original | The extracted text is truncated after `MaxAttempts`, so **we cannot confirm it.** This document added a `Fail` state to produce a parseable definition. For the same reason we cannot know the courseware original's `BackoffRate` value and filled it in with the documented default of 2.0 |
-| Four courseware notation errors | The lost strikethrough on slide 16, the "three layers" on slide 18, the title and `Comment` mismatch on slide 36, and the left double quotation marks on slide 27 are all cases where **the courseware body and the instructor notes disagree, or the notation broke during extraction.** They are not the kind of fact AWS documentation can verify, so we corrected only the notation without attaching a source citation |
-| Amazon SNS FIFO topics | Because courseware slide 18 lists Amazon SNS, we intended to cover SNS FIFO topics symmetrically with SQS, but **we did not retrieve the SNS documentation.** What we verified in this document is only the SQS standard and FIFO queues |
-| AWS App Runner and other serverless services outside the courseware list | We intended to check whether services have been added to the serverless stack on courseware slide 18 since, but what we confirmed reaches only **EventBridge Pipes and Scheduler**. The current position of App Runner and other container and compute options was **not retrieved** |
+| Whether the current documentation recommends replacing the loop iteration pattern with the `Map` state | We confirmed that the tutorial referenced by the courseware is still valid and that the documentation explains the purpose of the pattern. **We did not find a statement that the documentation recommends using the `Map` state instead of this pattern.** Because the two features solve different problems (tracking loop counts versus processing array items in parallel), we did not state it definitively |
+| Whether the `Fail` state that `Catch` targets in the sequential workflow example was defined in the courseware original | The extracted text is truncated after `MaxAttempts`, so **we cannot confirm it.** This document added a `Fail` state to produce a parseable definition. For the same reason we cannot know the courseware original's `BackoffRate` value and filled it in with the documented default of 2.0 |
+| Four courseware notation errors | The lost strikethrough in the serverless list, the "three layers" versus nine layers, the title and `Comment` mismatch of the sequential workflow example, and the left double quotation marks in the iteration pattern example are all cases where **the courseware disagrees with itself, or the notation broke during extraction.** They are not the kind of fact AWS documentation can verify, so we corrected only the notation without attaching a source citation |
+| Amazon SNS FIFO topics | Because the courseware lists Amazon SNS, we intended to cover SNS FIFO topics symmetrically with SQS, but **we did not retrieve the SNS documentation.** What we verified in this document is only the SQS standard and FIFO queues |
+| AWS App Runner and other serverless services outside the courseware list | We intended to check whether services have been added to the courseware's serverless stack since, but what we confirmed reaches only **EventBridge Pipes and Scheduler**. The current position of App Runner and other container and compute options was **not retrieved** |
 | Lambda SnapStart · function URLs · response streaming | These were candidates for updating the serverless operating model section, but this module covers only **the concurrency limit** using the module 9 source. The other three features were not retrieved in this module, so they are not covered |
 | The circuit breaker pattern | We intended to cover it alongside saga orchestration as a microservices resilience pattern, but **we did not retrieve that documentation.** The only distributed transaction pattern this document covers is saga orchestration |
 | Monolith decomposition patterns related to splitting databases | We confirmed that REL03-BP02 mentions the **decompose by business capability, by subdomain, and by transaction** patterns for decomposing a monolith. Documentation describing each pattern individually, or a pattern dedicated to splitting databases, was **not retrieved** |
 | Event stores | For the components of an event-driven architecture we verified event buses and pipes from the EventBridge documentation. **Documentation on event stores and event sourcing was not retrieved** |
-| How Amazon Comprehend and Amazon SES are used on slide 22 | The courseware diagram indicates Amazon Comprehend for sentiment detection and Amazon SES for notifying an administrator. **We did not retrieve the documentation for either service**, and this document carries the courseware diagram's description over as is |
-| The Lab 6 workflow | Courseware slide 2 previews Lab 6 (authenticating users with Amazon Cognito), but this module contains no lab content. It is in the scope of module 12 |
+| How Amazon Comprehend and Amazon SES are used | The courseware diagram indicates Amazon Comprehend for sentiment detection and Amazon SES for notifying an administrator. **We did not retrieve the documentation for either service**, and this document carries the courseware diagram's description over as is |
+| The Lab 6 workflow | The courseware previews Lab 6 (authenticating users with Amazon Cognito), but this module contains no lab content. It is in the scope of module 12 |
