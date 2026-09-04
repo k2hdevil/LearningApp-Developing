@@ -18,8 +18,8 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 9](#9-changes-from-the-courseware) for what changed and how.
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 9](#9-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 30, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -44,7 +44,7 @@ After completing this module, you should be able to do the following:
 | Lab 3 | Developing a solution with Amazon DynamoDB |
 | Module 9 | Processing your application logic |
 
-The diagram on courseware slide 2 labels the scope of this module as AWS Cloud / Amazon DynamoDB / Notes table and global secondary index / Querying and accessing data.
+This module covers Amazon DynamoDB, tables and global secondary indexes, and how to query and access that data.
 
 ### What Day 1 Covered
 
@@ -63,16 +63,16 @@ From this module on, the focus is the application's data tier. Application users
 
 ### 2.1 Comparing AWS Database Services 🔄
 
-The table on courseware slide 6 has four rows, and the table itself carries a footnote: "This table is not a complete list of AWS database services."
+Simplified into four database types (this is not a complete list):
 
-| Database type | Use cases | AWS services as listed in the courseware |
+| Database type | Use cases | Representative AWS services |
 |---|---|---|
 | Relational | Traditional applications, ERP, CRM, ecommerce | Amazon RDS, Amazon Redshift |
 | Key-value | High-traffic web applications, ecommerce systems, gaming applications | Amazon DynamoDB |
 | Graph | Data analytics, fraud detection, social networking, recommendation engines | Amazon Neptune |
 | In-memory caching | Caching, session management, gaming leaderboards | Amazon ElastiCache |
 
-The current AWS database decision guide presents **more than 15 database options** and classifies the data models as relational, key-value, document, in-memory, graph, time series, vector, and wide column. Three things differ from the courseware table.
+The current AWS database decision guide presents **more than 15 database options** and classifies the data models as relational, key-value, document, in-memory, graph, time series, vector, and wide column. Three things differ from the simplified four-type table above.
 
 | Category | Data model | Services |
 |---|---|---|
@@ -84,10 +84,10 @@ The current AWS database decision guide presents **more than 15 database options
 | Non-relational | Time series | Amazon Timestream |
 | Non-relational | Wide column | Amazon Keyspaces (for Apache Cassandra) |
 
-- **Amazon Aurora is classified as its own family, not as one of the engines RDS supports.** The courseware instructor notes place Aurora in the RDS engine list.
-- **Db2** has been added to the RDS engine list. It is not in the courseware.
-- **Amazon Redshift is an OLAP (data warehousing) service** and is not included in this OLTP table. The courseware places Redshift in the relational row alongside RDS.
-- Amazon MemoryDB, Aurora DSQL, Aurora PostgreSQL Limitless Database, and the vector data model are not in the courseware.
+- **Amazon Aurora is classified as its own family, not as one of the engines RDS supports.**
+- **Db2** is included in the RDS engine list.
+- **Amazon Redshift is an OLAP (data warehousing) service** and is not included in this OLTP table.
+- Amazon MemoryDB, Aurora DSQL, Aurora PostgreSQL Limitless Database, and the vector data model also appear in this classification.
 
 This decision guide was updated on June 2, 2026.
 
@@ -95,8 +95,7 @@ This decision guide was updated on June 2, 2026.
 
 | Item | Content |
 |---|---|
-| Courseware states | A fully managed in-memory data cache supporting the **Redis or Memcached** engines |
-| Current | Supports three engines: **Valkey, Memcached, and Redis OSS**. Offers serverless and node-based deployment options |
+| Supported engines | Supports three engines: **Valkey, Memcached, and Redis OSS**. Offers serverless and node-based deployment options |
 | Performance | Optimized as an ephemeral cache with microsecond reads and sub-millisecond writes |
 | Dividing line | If you need full data durability together with sub-millisecond reads, use **Amazon MemoryDB** |
 
@@ -104,7 +103,7 @@ This decision guide was updated on June 2, 2026.
 
 ### 2.2 Relational and Non-Relational Databases 🔄
 
-The comparison table from courseware slide 7.
+Comparing relational and NoSQL across several aspects:
 
 | Aspect | Relational | NoSQL (non-relational) |
 |---|---|---|
@@ -127,13 +126,13 @@ An example of horizontal scaling: when storing information for 100,000 users in 
 
 #### How DynamoDB Differs from a Relational Database 🆕
 
-DynamoDB **does not support the JOIN operator.** For that reason, the official documentation recommends **denormalizing your data model**, which is the opposite of relational design. This is what the courseware table's "Querying — focuses on collection of documents" row means in practice.
+DynamoDB **does not support the JOIN operator.** For that reason, the official documentation recommends **denormalizing your data model**, which is the opposite of relational design. This is what the table's "Querying — focuses on collection of documents" row means in practice.
 
 > — Source: [What is Amazon DynamoDB?](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html)
 
 #### ACID Support in DynamoDB 🆕
 
-The courseware instructor notes only mention that "DynamoDB supports ACID through DynamoDB transactions." The verified content is as follows.
+DynamoDB supports ACID through DynamoDB transactions. The verified details are as follows.
 
 | Item | Content |
 |---|---|
@@ -148,7 +147,7 @@ The courseware instructor notes only mention that "DynamoDB supports ACID throug
 
 ### 2.3 Representing the Same Data in SQL and NoSQL
 
-Courseware slide 8 shows the same Notes data side by side as rows and columns and as JSON documents.
+Seeing the same Notes data side by side as rows and columns and as JSON documents makes the difference clear.
 
 | UserId | NoteId | Note | Favorite |
 |---|---|---|---|
@@ -166,7 +165,7 @@ In the relational representation the `Favorite` column exists on every row and i
 
 ### 2.4 Where DynamoDB Sits in the Application Architecture
 
-The diagram on courseware slide 9 arranges the components of the lab application as follows.
+In the lab application, DynamoDB sits at the data layer. The full set of components, organized by layer:
 
 | Layer | Components |
 |---|---|
@@ -179,7 +178,7 @@ The diagram on courseware slide 9 arranges the components of the lab application
 
 ### 2.5 Why Choose DynamoDB for Application Development 🔄
 
-Courseware slide 10 presents the benefits as six labels: performance at scale / serverless / enterprise ready / fully managed / low-latency queries / fine-grained access control.
+The benefits of choosing DynamoDB for application development are as follows.
 
 | Benefit | Content |
 |---|---|
@@ -193,16 +192,11 @@ Courseware slide 10 presents the benefits as six labels: performance at scale / 
 
 #### Latency Wording 🔄
 
-| Item | Wording |
-|---|---|
-| Courseware states | "**less than 10 milliseconds** of latency at any scale", "average service-side latency is typically under 10 milliseconds" |
-| Current official wording | **Single-digit millisecond** performance at any scale |
-
-Whether the courseware figure of "under 10 milliseconds" was once the official wording could not be verified (see [Section 9.5](#95-items-that-could-not-be-verified)). Using the current wording in class is the safer choice.
+The current official wording is **single-digit millisecond** performance at any scale. The figure "under 10 milliseconds" is sometimes used, but whether it was once the official wording could not be verified (see [Section 9.5](#95-items-that-could-not-be-verified)), so the current wording is the safer choice.
 
 #### Resilience and Backups 🆕
 
-The courseware only states, under the fully managed benefit, that DynamoDB "provides point-in-time recovery, backup, and restore for all tables." The verified content is as follows.
+DynamoDB provides point-in-time recovery, backup, and restore for all tables. The verified details are as follows.
 
 | Item | Content |
 |---|---|
@@ -227,7 +221,7 @@ The courseware only states, under the fully managed benefit, that DynamoDB "prov
 | Item | Row or tuple |
 | Attribute | Column |
 
-The Notes table example from courseware slide 12. `UserId` is the partition key (required) and `NoteId` is the sort key (optional).
+Here is a Notes table example. `UserId` is the partition key (required) and `NoteId` is the sort key (optional).
 
 | UserId | NoteId | Note | Favorite |
 |---|---|---|---|
@@ -254,7 +248,7 @@ DynamoDB stores data in **partitions** and divides a table's items across multip
 | When more partitions are allocated | When you increase provisioned throughput beyond what the existing partitions can support, or when an existing partition fills up |
 | Global secondary indexes | GSIs are also composed of partitions, and **index data is stored separately from the base table** |
 
-Courseware slide 10 states that DynamoDB "uses automatic partitioning and SSD technologies to meet your throughput needs as data volumes and performance requirements grow." The conditions the documentation actually describes for allocating additional partitions are the two in the table above.
+As data volumes and performance requirements grow, DynamoDB uses automatic partitioning and SSD technologies to meet your throughput needs. The conditions the documentation actually describes for allocating additional partitions are the two in the table above.
 
 > — Source: [Partitions and data distribution in DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html)
 
@@ -265,7 +259,7 @@ Courseware slide 10 states that DynamoDB "uses automatic partitioning and SSD te
 | Hash attribute | Partition key | Derives from the way DynamoDB uses an **internal hash function** to distribute data items evenly across partitions based on the partition key value |
 | Range attribute | Sort key | Derives from the way items with the same partition key are stored **physically close together, in sorted order by sort key value** |
 
-Primary key attributes carry the following constraints, none of which are in the courseware.
+Primary key attributes carry the following constraints.
 
 - Every primary key attribute must be **scalar**, and the only permitted data types are **String, Number, and Binary**.
 - Non-key attributes have no such restriction.
@@ -277,7 +271,7 @@ Primary key attributes carry the following constraints, none of which are in the
 
 An item is a collection of attributes. Each attribute has a name, a data type, and a value. DynamoDB is not constrained by a predefined schema.
 
-The JSON example from courseware slide 13. The original has no comma after `"Tags"`, which makes it invalid JSON, so the comma has been added here (see [Section 9.1](#91-where-the-courseware-is-factually-incorrect)).
+Here is a JSON example of an item holding several data types.
 
 ```json
 {
@@ -301,7 +295,7 @@ The types in that example: string (`Note`, `Favorite`) / Boolean (`Active`) / li
 | Document types | List, map | Represent complex structures with nested attributes up to **32 levels** deep. Maps are well suited to storing JSON-formatted documents |
 | **Set types** | String set, number set, binary set | All elements of a set must be **the same type**, values must be **unique**, and **order is not preserved** |
 
-🔄 The courseware calls the third category "multi-valued types." The category name in the official documentation is **Set Types**.
+🔄 The official documentation name for the third category is **Set Types** (not "multi-valued types").
 
 #### Data Type Descriptors 🆕
 
@@ -322,7 +316,7 @@ The low-level API protocol requires data type descriptors. Here is the full list
 
 ### 3.4 Size and Naming Constraints 🆕
 
-The courseware states that "item size is determined by adding the length of the attribute names and the length of the values, and the maximum item size is 400 KB." Here is the full set of verified constraints.
+Item size is determined by adding the length of the attribute names and the length of the values, and the maximum item size is 400 KB. Here is the full set of verified constraints.
 
 | Subject | Constraint |
 |---|---|
@@ -348,7 +342,7 @@ Attribute names count toward read request unit consumption and toward storage an
 
 Every table has a primary key that uniquely identifies each item. There are two types.
 
-| Type | Composition | How uniqueness is determined | Index creation as described in the courseware |
+| Type | Composition | How uniqueness is determined | Index that is created |
 |---|---|---|---|
 | Partition key (simple primary key) | 1 partition key attribute | Uniquely identified by the partition key value. No two items can have the same partition key value | An **unordered index** on the partition key attribute |
 | Partition key and sort key (composite primary key) | Partition key plus sort key | Uniquely identified by the **combination** of the two values. Multiple items can share a partition key value, but their sort key values must differ | An unordered index on the partition key attribute and an **ordered index** on the sort key attribute |
@@ -356,7 +350,7 @@ Every table has a primary key that uniquely identifies each item. There are two 
 - In a table with only a partition key, DynamoDB uses the partition key value as **input to an internal hash function** to determine the partition an item is stored in.
 - In a composite primary key table, all items with the same partition key value are **stored together, ordered by sort key value**.
 
-The example on courseware slide 14 is a Notes table with `UserId` as the partition key and `NoteId` as the sort key. Each `UserId` can have multiple notes, which makes it possible to **query all notes belonging to a particular user**.
+Here is a Notes table with `UserId` as the partition key and `NoteId` as the sort key. Each `UserId` can have multiple notes, which makes it possible to **query all notes belonging to a particular user**.
 
 | UserId | NoteId | Note | Favorite |
 |---|---|---|---|
@@ -372,7 +366,7 @@ You can use DynamoDB as both a key-value store and a document store. **The prima
 
 ### 3.6 Read and Write Capacity Units 🆕
 
-Courseware slide 15 explains the on-demand units (RRUs and WRUs) and slide 16 the provisioned units (RCUs and WCUs). All four definitions in one table:
+The capacity units are the on-demand RRUs and WRUs and the provisioned RCUs and WCUs. All four definitions in one table:
 
 | Mode | Unit | Definition |
 |---|---|---|
@@ -381,9 +375,9 @@ Courseware slide 15 explains the on-demand units (RRUs and WRUs) and slide 16 th
 | On-demand | 1 RRU | **One strongly consistent read per second** for an item up to 4 KB, or **two eventually consistent reads per second** |
 | On-demand | 1 WRU | **One write per second** for an item up to 1 KB |
 
-The courseware statement on slide 15 that "an eventually consistent read requires 0.5 RRU" says the same thing as "two reads for one unit" above.
+The statement that "an eventually consistent read requires 0.5 RRU" says the same thing as "two reads for one unit" above.
 
-Transactional requests consume **double the units**. This is not in the courseware.
+Transactional requests consume **double the units**.
 
 | Request | Units consumed |
 |---|---|
@@ -394,7 +388,7 @@ Transactional requests consume **double the units**. This is not in the coursewa
 
 ### 3.7 Capacity Modes (Pricing Options) 🔄
 
-The comparison from courseware slide 16.
+Comparing the two capacity modes:
 
 | On-demand | Provisioned |
 |---|---|
@@ -405,7 +399,7 @@ The comparison from courseware slide 16.
 
 #### On-Demand Capacity Mode 🆕
 
-**On-demand mode is the default and the recommended throughput option.** The courseware gets that much right. The verified scaling behavior is as follows.
+**On-demand mode is the default and the recommended throughput option.** The verified scaling behavior is as follows.
 
 | Item | Content |
 |---|---|
@@ -446,22 +440,22 @@ The comparison from courseware slide 16.
 
 > — Source: [Quotas in Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html), [Constraints in Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html)
 
-#### One Contradiction Inside the Courseware 🔄
+#### What Each Unit Represents 🔄
 
-The last sentence of the instructor notes on courseware slide 16 reads: "The important difference is that RRUs and WRUs in on-demand mode represent capacity used, whereas **RCUs and WCUs in on-demand mode** represent reserved capacity." RCUs and WCUs are the units of provisioned capacity mode, so the second "on-demand" is a typo for "provisioned." Earlier in the same notes the courseware correctly states that "throughput in provisioned mode is specified in RCUs and WCUs."
+It is easy to get confused about which mode each of the four units belongs to and what it represents. RCUs and WCUs are the units of **provisioned capacity mode**, not on-demand.
 
-| Item | Correct statement |
+| Item | What it represents |
 |---|---|
 | RRUs and WRUs in on-demand mode | Capacity **used** |
 | RCUs and WCUs in provisioned capacity mode | **Reserved (provisioned)** capacity |
 
-The on-demand pricing link cited in the courseware, `https://aws.amazon.com/dynamodb/pricing/on-demand/`, now redirects to the consolidated pricing page.
+On-demand pricing information is now on the consolidated pricing page.
 
 > — Source: [Constraints in Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html), [Amazon DynamoDB pricing](https://aws.amazon.com/dynamodb/pricing/on-demand/)
 
 ### 3.8 Maximum Throughput for On-Demand Tables 🆕
 
-A capability that is not in the courseware. On an on-demand table you can **optionally specify a maximum read and write throughput per second for an individual table and its associated GSIs.** It is a safeguard against unexpected traffic spikes driving up cost.
+On an on-demand table you can **optionally specify a maximum read and write throughput per second for an individual table and its associated GSIs.** It is a safeguard against unexpected traffic spikes driving up cost.
 
 | Item | Content |
 |---|---|
@@ -476,7 +470,7 @@ A capability that is not in the courseware. On an on-demand table you can **opti
 
 ### 3.9 Read Consistency 🆕
 
-The courseware comparison table describes NoSQL consistency only as "eventual and strong." The actual rules in DynamoDB are as follows.
+It is easy to summarize NoSQL consistency as just "eventual and strong," but the actual rules in DynamoDB differ by target.
 
 | Subject | Supported consistency |
 |---|---|
@@ -515,13 +509,13 @@ DynamoDB automatically creates an index based on the table's primary key and aut
 | Global secondary indexes per table | Default quota of **20** |
 | Total projected attributes | Up to **100** user-specified projected attributes across all of a table's LSIs and GSIs combined. This quota applies only when `ProjectionType` is `INCLUDE`, not for `KEYS_ONLY` or `ALL`. Projecting the same attribute name into two indexes counts as two |
 
-🔄 The quota documentation cited in the courseware, `Limits.html`, now redirects to `ServiceQuotas.html`, and the documentation has been split into two pages. Adjustable service quotas are in **ServiceQuotas.html**, while fixed constraints such as item sizes, key lengths, and data types are in **Constraints.html**.
+🔄 The quota documentation is split into two pages. Adjustable service quotas are in **ServiceQuotas.html**, while fixed constraints such as item sizes, key lengths, and data types are in **Constraints.html**.
 
 > — Source: [Quotas in Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html), [Constraints in Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html)
 
 ### 3.11 Local Secondary Index Example 🔄
 
-Courseware slide 18 shows a `NotesByFavorites` local secondary index on the Notes table. The slide label reads: "Read and write capacity units are inherited from the base table."
+Here is a `NotesByFavorites` local secondary index on the Notes table. An LSI's read and write capacity units are inherited from the base table.
 
 Base table:
 
@@ -544,14 +538,13 @@ A local secondary index is "local" because **the index sits in the same table pa
 
 | Item | Content |
 |---|---|
-| Courseware states | "This sort key can be a **scalar attribute**" |
-| Verified content | The sort key of an LSI must be a **non-key base table attribute of type String, Number, or Binary** |
-| Additional constraint | The primary key of an LSI **must be composite** (partition key plus sort key) |
-| Additional constraint | Every attribute in an index key schema must be a **top-level attribute**, and **document and set types are not allowed** |
+| Sort key type | The sort key of an LSI must be a **non-key base table attribute of type String, Number, or Binary** (not simply a "scalar attribute") |
+| Primary key composition | The primary key of an LSI **must be composite** (partition key plus sort key) |
+| Attribute position | Every attribute in an index key schema must be a **top-level attribute**, and **document and set types are not allowed** |
 
 #### The 10 GB Item Collection Limit 🔄
 
-An item collection is the set of items that share the same partition key attribute value. The courseware states unconditionally that "the total size of an item collection cannot exceed 10 GB," but this constraint applies **only to tables that have one or more local secondary indexes.**
+An item collection is the set of items that share the same partition key attribute value. The "total size of an item collection cannot exceed 10 GB" constraint does not apply unconditionally; it applies **only to tables that have one or more local secondary indexes.**
 
 | Condition | Behavior |
 |---|---|
@@ -566,7 +559,7 @@ The reason this constraint exists only for LSIs is locality. A GSI's item collec
 
 ### 3.12 Global Secondary Index Example
 
-Courseware slide 19 shows a `NotesByUserId` global secondary index on the Notes table. The base table and the index are shown with **separate RCUs and WCUs**.
+Here is a `NotesByUserId` global secondary index on the Notes table. The base table and the index each have **their own RCUs and WCUs**.
 
 Base table:
 
@@ -588,7 +581,7 @@ A global secondary index is "global" because queries on the index **can span all
 
 ### 3.13 Comparing LSIs and GSIs 🆕
 
-The courseware lists seven characteristics for each index on slides 18 and 19. Organized by the comparison categories in the official documentation:
+Organized by the comparison categories in the official documentation:
 
 | Comparison | Global secondary index (GSI) | Local secondary index (LSI) |
 |---|---|---|
@@ -612,7 +605,7 @@ Points that apply to both:
 
 ### 3.14 Vector Indexes 🆕
 
-An index family that is not in the courseware. DynamoDB currently supports two families of indexes.
+DynamoDB currently supports two families of indexes.
 
 | Family | Purpose | Read operation |
 |---|---|---|
@@ -636,7 +629,7 @@ An index family that is not in the courseware. DynamoDB currently supports two f
 
 ### 4.1 Ways to Access DynamoDB
 
-The access paths listed on courseware slide 21.
+The paths for accessing DynamoDB are as follows.
 
 | Path | Purpose |
 |---|---|
@@ -659,12 +652,7 @@ The access paths listed on courseware slide 21.
 
 #### Tool Composition 🔄
 
-| Item | Tools |
-|---|---|
-| Courseware states | Data modeler / **visualizer** / operation builder — **three** |
-| Current DynamoDB documentation | Data modeler / operation builder — **two** |
-
-The current documentation does not treat visualization as a separate tool. The data modeler handles sample data composition and access pattern validation as well.
+The current DynamoDB documentation presents the NoSQL Workbench tools as **two**: the data modeler and the operation builder. It does not treat visualization as a separate tool; the data modeler handles sample data composition and access pattern validation as well.
 
 | Tool | Role |
 |---|---|
@@ -728,7 +716,7 @@ aws dynamodb list-tables --endpoint-url http://localhost:8000
 
 #### Differences from the Web Service 🆕
 
-The courseware covers only the local endpoint and the cost savings. The differences below are not in the courseware.
+DynamoDB local behaves differently from the web service in a few places.
 
 | Item | Behavior in DynamoDB local |
 |---|---|
@@ -745,16 +733,18 @@ The courseware covers only the local endpoint and the cost savings. The differen
 
 PartiQL is a **SQL-compatible query language** used to select, insert, update, and delete data in DynamoDB. You can run ad hoc queries with it.
 
-| Where you can use it | Note |
-|---|---|
-| AWS Management Console | Matches the courseware |
-| NoSQL Workbench | Matches the courseware |
-| AWS Command Line Interface | Matches the courseware |
-| The DynamoDB API for PartiQL | The courseware says "DynamoDB API" |
+PartiQL can be used in the following four places.
+
+| Where you can use it |
+|---|
+| AWS Management Console |
+| NoSQL Workbench |
+| AWS Command Line Interface |
+| The DynamoDB API for PartiQL |
 
 PartiQL operations provide **the same availability, latency, and performance** as the other DynamoDB data plane operations.
 
-The Python example from courseware slide 24.
+A Python example that runs a parameterized PartiQL statement.
 
 ```python
 import boto3
@@ -768,12 +758,10 @@ resp = dynamodb.execute_statement(
 print(resp["Items"])
 ```
 
-#### Constraints Not in the Courseware 🆕
+#### PartiQL Constraints 🆕
 
 - DynamoDB supports only a **subset** of the PartiQL query language.
 - **The Amazon Ion data format and Ion literals are not supported.**
-
-The courseware instructor notes also cite the PartiQL project site `https://partiql.org/`. The factual basis in this material is the official AWS documentation.
 
 > — Source: [PartiQL - a SQL-compatible query language for Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html)
 
@@ -781,21 +769,21 @@ The courseware instructor notes also cite the PartiQL project site `https://part
 
 Interacting with DynamoDB through the AWS CLI lets you automate work from the command line with scripts. Use it for ad hoc tasks such as creating a table or adding a new item.
 
-The command from courseware slide 25. Because it exposes the low-level API directly, it is a good place to see that **every attribute in an item carries a data type descriptor.**
+Here is a `put-item` command example. Because it exposes the low-level API directly, it is a good place to see that **every attribute in an item carries a data type descriptor.**
 
 ```bash
 aws dynamodb put-item --table-name Notes --item '{"UserId":{"S":"StudentA"},"NoteId":{"N":"11"},"Note":{"S":"HelloWorld!"}}'
 ```
 
-🔄 The table on slide 25 that shows the result of this command has the header `UserId \| NoteId \| Notes \| Favorite`. Every other slide in the deck (8, 12, 13, 14, 18, 19) and the item JSON in the `put-item` command above all use `Note` as the attribute name. `Notes` is a **typo confusing the attribute name with the table name.**
+The attribute name is `Note` (take care not to confuse it with the table name `Notes`).
 
-This material keeps the `put-item` command exactly as the courseware presents it. The command itself was not verified against the AWS CLI documentation (see [Section 9.5](#95-items-that-could-not-be-verified)). The CLI usage pattern that was verified is the `list-tables` example in [Section 4.3](#43-dynamodb-local).
+The `put-item` command itself was not verified against the AWS CLI documentation (see [Section 9.5](#95-items-that-could-not-be-verified)). The CLI usage pattern that was verified is the `list-tables` example in [Section 4.3](#43-dynamodb-local).
 
 > — Source: [Core components of Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
 
-### 4.6 Demo: NoSQL Workbench
+### 4.6 Try It in NoSQL Workbench
 
-Courseware slides 26–27 are the NoSQL Workbench demonstration segment. In class you walk through the two tools from [Section 4.2](#42-nosql-workbench) — the data modeler and the operation builder — on screen. Since the default capacity mode became on-demand in 3.13.5, the live screens may differ from older screenshots.
+Working through the two tools from [Section 4.2](#42-nosql-workbench) — the data modeler and the operation builder — on screen helps the material stick. Since the default capacity mode became on-demand in 3.13.5, a table created with the default settings is now an on-demand table, unlike older screenshots.
 
 ---
 
@@ -803,7 +791,16 @@ Courseware slides 26–27 are the NoSQL Workbench demonstration segment. In clas
 
 ### 5.1 How the AWS SDKs Process a Request
 
-The diagram on courseware slides 29–30 shows requests and responses flowing in both directions through application → AWS SDK (object persistence interface / document interface / low-level interface) → DynamoDB AWS REST API → DynamoDB in the AWS Cloud.
+Requests and responses flow in both directions from the application through the AWS SDK to DynamoDB and back.
+
+```text
+  ┌──────────────┐  request  ┌────────────────────────────────┐   HTTP(S)   ┌──────────────┐
+  │  Application  │ ────────▶ │  AWS SDK                        │ ──────────▶ │  DynamoDB     │
+  │              │           │  · object persistence interface  │  REST API   │  (AWS Cloud)  │
+  │              │ ◀──────── │  · document interface            │ ◀────────── │              │
+  └──────────────┘  response │  · low-level interface           │             └──────────────┘
+                             └────────────────────────────────┘
+```
 
 | Step | Content |
 |---|---|
@@ -826,9 +823,9 @@ Work each AWS SDK performs on your behalf, so that **you do not have to write co
 
 ### 5.2 Comparing the Programming Interfaces 🔄
 
-The table from courseware slide 31.
+The three interfaces summarized:
 
-| Interface | Data type descriptors | Supported languages as listed in the courseware | Characteristics |
+| Interface | Data type descriptors | Supported languages | Characteristics |
 |---|---|---|---|
 | Object persistence interface | Mapped data types | Java, .NET | Object-centric code |
 | Document interface | Data type descriptors are implied | Java, .NET, Node.js, **AWS SDK for JavaScript in the Browser** | Built-in JSON utilities |
@@ -842,7 +839,7 @@ The verified content:
 | Document interface | Performs data plane operations (create, read, update, delete) on tables and indexes. You do not specify data type descriptors, because the data types are implied by the semantics of the data itself. Also provides ways to convert JSON documents to and from native DynamoDB data types | Java, .NET, Node.js, **JavaScript SDK** |
 | Object persistence interface | Does not perform data plane operations directly. Instead you **create objects that represent items** in tables and indexes and work only with those objects, which lets you write **object-centric code** rather than database-centric code | Java, .NET |
 
-🔄 The courseware lists the document interface as supported by "AWS SDK for JavaScript in the Browser." The current documentation says **JavaScript SDK** and points to the AWS SDK for JavaScript v3 documentation.
+🔄 The current documentation lists the document interface's support as **JavaScript SDK** (pointing to the AWS SDK for JavaScript v3 documentation), not "AWS SDK for JavaScript in the Browser."
 
 #### What the Higher-Level Interfaces Actually Are 🔄
 
@@ -858,7 +855,7 @@ With a higher-level interface you define the relationship between your program's
 
 ### 5.3 Account-Based Endpoints 🆕
 
-A change that is not in the courseware. AWS is rolling out SDK support for **AWS account-based endpoints** for DynamoDB, starting with the AWS SDK for Java V1 on **September 4, 2024**.
+AWS is rolling out SDK support for **AWS account-based endpoints** for DynamoDB, starting with the AWS SDK for Java V1 on **September 4, 2024**.
 
 | Item | Content |
 |---|---|
@@ -873,20 +870,20 @@ A change that is not in the courseware. AWS is rolling out SDK support for **AWS
 
 ## 6. DynamoDB Dependencies
 
-### 6.1 The Courseware SDK Dependency Table 🔄
+### 6.1 SDK Dependency Overview 🔄
 
-The table exactly as it appears on courseware slide 33.
+The low-level and higher-level API namespaces per language are commonly summarized as follows.
 
 | API | Python | .NET | Java |
 |---|---|---|---|
 | Low-level | `boto3.dynamodb.conditions`<br>`boto3.dynamodb.types` | `Amazon.DynamoDBv2.Model` | `com.amazonaws.services.dynamodbv2.AmazonDynamoDB` |
 | Higher-level | *(empty)* | `Amazon.DynamoDBv2.DataModel` | `com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper` |
 
-There are three things in this table that needed verification, and all three differ from current documentation. The sections below cover them language by language.
+This table differs from the currently recommended namespaces in each language. The sections below cover them language by language.
 
 ### 6.2 Java Dependencies 🔄
 
-Both Java entries in the courseware table are **AWS SDK for Java 1.x namespaces** (`com.amazonaws.services.dynamodbv2.*`), and 1.x **reached end-of-support on December 31, 2025**. AWS recommends **migrating to the AWS SDK for Java 2.x** to keep receiving new features, availability improvements, and security updates.
+`com.amazonaws.services.dynamodbv2.*` is an **AWS SDK for Java 1.x namespace**, and 1.x **reached end-of-support on December 31, 2025**. AWS recommends **migrating to the AWS SDK for Java 2.x** to keep receiving new features, availability improvements, and security updates.
 
 | Layer | 2.x namespace |
 |---|---|
@@ -906,13 +903,13 @@ DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
 
 The official examples note that **using the Enhanced Client is the better approach** when getting an item.
 
-It is also worth pointing out that SDK generations are mixed within the courseware itself. The dependency table on slide 33 uses 1.x namespaces, while the example code on slide 35, covered in [Section 7.1](#71-java-example-creating-a-service-client), already uses the 2.x `DynamoDbClient.builder()` syntax.
+For reference, the example code in [Section 7.1](#71-java-example-creating-a-service-client) already uses the 2.x `DynamoDbClient.builder()` syntax, so keeping the dependencies on 2.x namespaces is consistent.
 
 > — Source: [Programmatic interfaces that work with DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKs.Interfaces.html), [AWS SDK for Java 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html)
 
 ### 6.3 Python (boto3) Dependencies 🔄
 
-The higher-level cell for Python is empty in the courseware table, and `boto3.dynamodb.conditions` and `boto3.dynamodb.types` are placed in the low-level cell. The official documentation describes those two modules as **DynamoDB customizations used with the `Table` resource (`dynamodb.Table`).**
+The official documentation describes the two modules `boto3.dynamodb.conditions` and `boto3.dynamodb.types` as **DynamoDB customizations used with the `Table` resource (`dynamodb.Table`).**
 
 | Module or class | Purpose |
 |---|---|
@@ -946,7 +943,7 @@ The mapping between Python types and DynamoDB types:
 | `list` | `L` |
 | `dict` | `M` |
 
-#### Why the Higher-Level Cell Is Empty 🔄
+#### boto3's Higher-Level Interface 🔄
 
 In boto3 the higher-level equivalent is the **resources interface** (`boto3.resource('dynamodb')` and `dynamodb.Table`). The AWS Python SDK team, however, has **no plans to add new features to it.**
 
@@ -961,7 +958,7 @@ In boto3 the higher-level equivalent is the **resources interface** (`boto3.reso
 
 ### 6.4 .NET Dependencies 🔄
 
-The courseware table lists .NET in only two rows and **omits the namespace that corresponds to the document interface.**
+.NET has three layers — low-level, document model, and object persistence — each with its own namespace.
 
 | Layer | Namespace | Key elements |
 |---|---|---|
@@ -979,7 +976,7 @@ using Amazon.DynamoDBv2.DataModel;      // Object persistence model
 
 #### The Object Persistence Model and `DynamoDBContext`
 
-The courseware correctly states that `DynamoDBContext` is the entry point to DynamoDB.
+`DynamoDBContext` is the entry point to DynamoDB.
 
 | Item | Content |
 |---|---|
@@ -999,7 +996,7 @@ The courseware correctly states that `DynamoDBContext` is the entry point to Dyn
 
 Before you can send requests to an AWS service you have to **create a service client object.** You instantiate it with the static factory method `builder()`.
 
-The "get the client builder" example from courseware slide 35.
+The following example creates a client with a specified profile and Region.
 
 ```java
 DynamoDbClient client = DynamoDbClient.builder()
@@ -1037,7 +1034,7 @@ DynamoDbClient client = DynamoDbClient.create();
 
 #### Managing the Client Lifecycle 🆕
 
-Not in the courseware, but immediately relevant in production.
+Client lifecycle management is immediately relevant in production.
 
 | Item | Content |
 |---|---|
@@ -1047,22 +1044,19 @@ Not in the courseware, but immediately relevant in production.
 | Specifying a Region | Not mandatory for every AWS service, but setting the Region in your application is a **best practice** |
 | Cleanup | When you no longer need a client, call `close()` to release resources. Service clients implement `Autoclosable`, so they are closed automatically in a **try-with-resources** statement |
 
-#### The Courseware Warning About Plaintext Keys
+#### A Warning About Plaintext Keys
 
-Courseware slide 35 attaches a warning to the `StaticCredentialsProvider` example. The original wording contains a typo; the meaning is that you should generally not use this type of code in an application, and if you must include it, take appropriate care that plaintext keys are not exposed in your code, on the network, or even in computer memory.
+Code that supplies plaintext keys through `StaticCredentialsProvider`, like the local endpoint example above, calls for care. Generally, do not use this kind of code in an application, and if you must include it, take appropriate care that plaintext keys are not exposed in your code, on the network, or even in computer memory.
 
-#### Documentation Path 🔄
+#### Where the Documentation Lives 🔄
 
-| Item | Content |
-|---|---|
-| URL cited in the courseware | `sdk-for-java/latest/developer-guide/using.html` — now the **chapter table of contents page** for "Using the AWS SDK for Java 2.x" |
-| Where the content actually lives | The "Create a service client" section of the child page `work-witih-clients.html` |
+The detailed explanation of creating a service client is in the "Create a service client" section of the "Making AWS service requests" document.
 
 > — Source: [Making AWS service requests using the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/work-witih-clients.html), [Using the AWS SDK for Java 2.x](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/using.html)
 
 ### 7.2 Python Example: Creating a Service Client 🔄
 
-The code from courseware slide 36. The original comment above `boto3.client('dynamodb')` reads "get the service resource," but in boto3 `client()` and `resource()` are **separate interfaces**, so that comment is wrong. The comment has been corrected here.
+The following example creates a table through the client interface. In boto3 `client()` and `resource()` are **separate interfaces**, so take care not to confuse them in the comments.
 
 ```python
 import boto3
@@ -1088,7 +1082,7 @@ table = dynamodb.create_table(
 
 ### 7.3 `BillingMode` in `create_table` 🆕
 
-The `BillingMode='PAY_PER_REQUEST'` used in the courseware example is still valid and is the **recommended value.**
+The `BillingMode='PAY_PER_REQUEST'` used in the example above is still valid and is the **recommended value.**
 
 | Value | Meaning | Recommended for |
 |---|---|---|
@@ -1109,7 +1103,7 @@ The `BillingMode='PAY_PER_REQUEST'` used in the courseware example is still vali
 | Asynchronous behavior | `CreateTable` is asynchronous. It immediately returns a `TableStatus` of **`CREATING`** and becomes **`ACTIVE`** once creation completes. Reads and writes are possible only on an `ACTIVE` table |
 | Name uniqueness | Within an AWS account, table names must be **unique per Region**. You can have two tables with the same name in different Regions |
 | Indexes | Up to 20 GSIs and up to 5 LSIs can be defined at creation. Each global secondary index supports up to 4 partition keys and up to 4 sort keys |
-| Parameters not in the courseware | `DeletionProtectionEnabled`, `OnDemandThroughput` (`MaxReadRequestUnits` and `MaxWriteRequestUnits`), `WarmThroughput`, `ResourcePolicy`, `SSESpecification`, `StreamSpecification`, `TableClass`, `Tags`, `VectorIndexes` |
+| Other optional parameters | `DeletionProtectionEnabled`, `OnDemandThroughput` (`MaxReadRequestUnits` and `MaxWriteRequestUnits`), `WarmThroughput`, `ResourcePolicy`, `SSESpecification`, `StreamSpecification`, `TableClass`, `Tags`, `VectorIndexes` |
 
 `OnDemandThroughput` is the maximum throughput setting from [Section 3.8](#38-maximum-throughput-for-on-demand-tables), and `VectorIndexes` is the vector index feature from [Section 3.14](#314-vector-indexes).
 
@@ -1133,7 +1127,7 @@ The Amazon DynamoDB low-level API is DynamoDB's **protocol-level interface.** At
 
 ### 8.2 Request Format: GetItem
 
-The request example from courseware slide 39.
+The following is a `GetItem` request example.
 
 ```http
 POST / HTTP/1.1
@@ -1179,7 +1173,7 @@ The reason a numeric value is wrapped as `{"N": "1"}` is the data type descripto
 
 ### 8.3 Response Format
 
-The response example from courseware slide 40.
+The following is the corresponding response example.
 
 ```http
 HTTP/1.1 200 OK
@@ -1211,7 +1205,7 @@ If DynamoDB cannot process a request it returns an HTTP error code and a message
 
 ### 8.4 DescribeTable Requests and Responses 🆕
 
-The courseware uses only `GetItem` as an example. `DescribeTable` is included here to show that the same format applies to other operations, with only the operation name in `X-Amz-Target` changing.
+The same request format applies to other operations. In the `DescribeTable` example, only the operation name in `X-Amz-Target` changes.
 
 ```http
 POST / HTTP/1.1
@@ -1246,7 +1240,7 @@ When a request fails, DynamoDB responds with three components.
 | Exception name | `ResourceNotFoundException` |
 | Error message | `Requested resource not found: Table: tablename not found` |
 
-The response example from courseware slide 41.
+The following is an error response example.
 
 ```http
 HTTP/1.1 400 Bad Request
@@ -1261,13 +1255,13 @@ Date: Thu, 15 Mar 2012 23:56:23 GMT
 }
 ```
 
-🔄 The courseware example message `Table: UserNote not found` appears in the official documentation example as `Table: tablename not found`. It is the same error, with a different table name.
+🔄 In the official documentation example this message appears as `Table: tablename not found`. It is the same error, with a different table name.
 
 The AWS SDK propagates errors to your application, so you can **handle them with try-catch logic.**
 
 #### HTTP 400 — Request Problems
 
-Indicates a problem with the request, such as an authentication failure, a missing required parameter, or exceeding a table's provisioned throughput. **You have to correct the problem in your application before resubmitting the request.** Here is the full exception list, which is not in the courseware.
+Indicates a problem with the request, such as an authentication failure, a missing required parameter, or exceeding a table's provisioned throughput. **You have to correct the problem in your application before resubmitting the request.** The full exception list is as follows.
 
 | Exception |
 |---|
@@ -1312,18 +1306,18 @@ Indicates a problem that AWS needs to resolve. It may be a transient error, so y
 
 ## 9. Changes from the Courseware
 
-The following items in the courseware (instructor deck) differ from current behavior. Learners typically have the official courseware alongside this material, so what changed and why is recorded here.
+Since learners may have the official courseware in front of them, this section gathers in one place where this material diverges from it. The evidence behind every item marked new or corrected in the sections above is here.
 
-### 9.1 Where the Courseware Is Factually Incorrect
+### 9.1 Differences from the Courseware
 
 | Item | Courseware states | Verified content | Source |
 |---|---|---|---|
-| Which mode RCUs and WCUs belong to (slide 16 instructor notes, last paragraph) | "RRUs and WRUs in on-demand mode represent capacity used, whereas **RCUs and WCUs in on-demand mode** represent reserved capacity" | RCUs and WCUs are units of **provisioned capacity mode**. The second "on-demand" is a typo for "provisioned," and it contradicts both the earlier part of the same notes and the slide body | [DynamoDB constraints](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html) |
-| The 10 GB item collection limit (slide 18) | "The total size of an item collection cannot exceed 10 GB" — stated unconditionally | The constraint applies **only to tables with one or more LSIs**. Without an LSI, DynamoDB splits item collections across multiple partitions automatically. 10 GB is the maximum size of a partition | [DynamoDB constraints](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html) |
-| LSI sort key constraints (slide 18) | "This sort key can be a scalar attribute" | It must be a **non-key, top-level base table attribute of type String, Number, or Binary**. An LSI primary key must be composite, and document and set types cannot be used in an index key schema | [Secondary indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html) |
-| The comment in the Python example (slide 36) | The comment "get the service resource" sits directly above `dynamodb = boto3.client('dynamodb')` | In boto3, `client()` and `resource()` are **separate interfaces**. A resource is obtained with `boto3.resource('dynamodb')` | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
-| The column name in the result table (slide 25) | The header reads `UserId \| NoteId \| Notes \| Favorite` | The attribute name is `Note`. Slides 8, 12, 13, 14, 18, and 19 of the same deck and the item JSON in the `put-item` command all use `Note`. `Notes` is a **typo confusing the attribute name with the table name** | [DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) |
-| JSON example syntax (slide 13) | There is no comma after `"Tags": ["DynamoDB", "NoSQL"]`, so it does not connect to the following `"Meta"` entry. As written it is not valid JSON | This material adds the comma to make it valid JSON ([Section 3.3](#33-items-and-attribute-types)) | [Data types and naming rules](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html) |
+| Which mode RCUs and WCUs belong to | "RRUs and WRUs in on-demand mode represent capacity used, whereas **RCUs and WCUs in on-demand mode** represent reserved capacity" | RCUs and WCUs are units of **provisioned capacity mode**. The second "on-demand" is a typo for "provisioned" | [DynamoDB constraints](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html) |
+| The 10 GB item collection limit | "The total size of an item collection cannot exceed 10 GB" — stated unconditionally | The constraint applies **only to tables with one or more LSIs**. Without an LSI, DynamoDB splits item collections across multiple partitions automatically. 10 GB is the maximum size of a partition | [DynamoDB constraints](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html) |
+| LSI sort key constraints | "This sort key can be a scalar attribute" | It must be a **non-key, top-level base table attribute of type String, Number, or Binary**. An LSI primary key must be composite, and document and set types cannot be used in an index key schema | [Secondary indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html) |
+| The comment in the Python example | The comment "get the service resource" sits directly above `dynamodb = boto3.client('dynamodb')` | In boto3, `client()` and `resource()` are **separate interfaces**. A resource is obtained with `boto3.resource('dynamodb')` | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
+| The column name in the result table | The header reads `UserId \| NoteId \| Notes \| Favorite` | The attribute name is `Note`. Other examples and the item JSON in the `put-item` command all use `Note`. `Notes` is a **typo confusing the attribute name with the table name** | [DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) |
+| JSON example syntax | There is no comma after `"Tags": ["DynamoDB", "NoSQL"]`, so it does not connect to the following `"Meta"` entry. As written it is not valid JSON | This material adds the comma to make it valid JSON ([Section 3.3](#33-items-and-attribute-types)) | [Data types and naming rules](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html) |
 
 ### 9.2 Where Behavior or Defaults Changed
 
@@ -1331,39 +1325,39 @@ The following items in the courseware (instructor deck) differ from current beha
 |---|---|---|---|
 | Latency wording | "less than 10 milliseconds of latency at any scale", "average service-side latency is typically under 10 milliseconds" | **Single-digit millisecond** performance at any scale | [What is Amazon DynamoDB?](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) |
 | ElastiCache supported engines | "fully managed Redis or Memcached engines" | Three engines: **Valkey, Memcached, and Redis OSS**, with serverless and node-based deployment options | [AWS database decision guide](https://docs.aws.amazon.com/decision-guides/latest/databases-on-aws-how-to-choose/databases-on-aws-how-to-choose.html) |
-| The AWS database service comparison table | Puts RDS and Redshift together in the relational row and lists Aurora as one of the engines RDS supports | Relational OLTP is the **Aurora family plus 6 RDS engines = 9 engines**, with Aurora as its own family. **Db2** has been added, and **Redshift is separated out as OLAP**. MemoryDB, Aurora DSQL, Aurora PostgreSQL Limitless Database, and the vector data model are not in the courseware | [AWS database decision guide](https://docs.aws.amazon.com/decision-guides/latest/databases-on-aws-how-to-choose/databases-on-aws-how-to-choose.html) |
+| The AWS database service comparison table | Puts RDS and Redshift together in the relational row and lists Aurora as one of the engines RDS supports | Relational OLTP is the **Aurora family plus 6 RDS engines = 9 engines**, with Aurora as its own family. **Db2** is included, and **Redshift is separated out as OLAP**. MemoryDB, Aurora DSQL, Aurora PostgreSQL Limitless Database, and the vector data model also appear | [AWS database decision guide](https://docs.aws.amazon.com/decision-guides/latest/databases-on-aws-how-to-choose/databases-on-aws-how-to-choose.html) |
 | NoSQL Workbench tool composition | Data modeler / visualizer / operation builder — **three** | The DynamoDB documentation lists only **two: the data modeler and the operation builder**, with no separate visualizer. The data modeler handles sample data composition and access pattern validation, and NoSQL Workbench now **includes DynamoDB local**. The Amazon Keyspaces documentation still has a visualizer entry | [NoSQL Workbench](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html) |
-| Quota documentation path | Slide 17 cites `developerguide/Limits.html` | It redirects to `ServiceQuotas.html`, and the documentation has been split in two. Adjustable quotas are in **ServiceQuotas.html**; fixed constraints such as item sizes, key lengths, and data types are in **Constraints.html** | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
-| Java SDK documentation path | Slide 35 cites `sdk-for-java/latest/developer-guide/using.html` directly for "Create a service client" | That URL is the **chapter table of contents page**. The content is in the "Create a service client" section of the child page `work-witih-clients.html` | [Making AWS service requests with the Java SDK](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/work-witih-clients.html) |
-| On-demand pricing page path | Slide 15 cites `aws.amazon.com/dynamodb/pricing/on-demand/` | It redirects to the consolidated pricing page `aws.amazon.com/dynamodb/pricing/` | [Amazon DynamoDB pricing](https://aws.amazon.com/dynamodb/pricing/on-demand/) |
+| Quota documentation path | `developerguide/Limits.html` | It redirects to `ServiceQuotas.html`, and the documentation has been split in two. Adjustable quotas are in **ServiceQuotas.html**; fixed constraints such as item sizes, key lengths, and data types are in **Constraints.html** | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
+| Java SDK documentation path | `sdk-for-java/latest/developer-guide/using.html` cited directly for "Create a service client" | That URL is the **chapter table of contents page**. The content is in the "Create a service client" section of the child page `work-witih-clients.html` | [Making AWS service requests with the Java SDK](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/work-witih-clients.html) |
+| On-demand pricing page path | `aws.amazon.com/dynamodb/pricing/on-demand/` | It redirects to the consolidated pricing page `aws.amazon.com/dynamodb/pricing/` | [Amazon DynamoDB pricing](https://aws.amazon.com/dynamodb/pricing/on-demand/) |
 
 ### 9.3 Discouraged or End-of-Support Items
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
-| The `com.amazonaws.services.dynamodbv2.*` namespaces in the Java column of slide 33 (AWS SDK for Java 1.x) | **Reached end-of-support on December 31, 2025** | For the low level, `software.amazon.awssdk.services.dynamodb.DynamoDbClient` and `software.amazon.awssdk.services.dynamodb.model.*`; for the higher level, `software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient` (DynamoDB Enhanced Client) | [Java SDK 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html) |
+| The Java `com.amazonaws.services.dynamodbv2.*` namespaces (AWS SDK for Java 1.x) | **Reached end-of-support on December 31, 2025** | For the low level, `software.amazon.awssdk.services.dynamodb.DynamoDbClient` and `software.amazon.awssdk.services.dynamodb.model.*`; for the higher level, `software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient` (DynamoDB Enhanced Client) | [Java SDK 1.x end-of-support](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/getting-started.html) |
 | The boto3 resources interface (`boto3.resource('dynamodb')`, `dynamodb.Table`) | No new features planned. Existing interfaces continue to operate for the lifecycle of boto3 | The client interface `boto3.client('dynamodb')` | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
 
-When explaining why the Python higher-level cell on courseware slide 33 is empty, mention the second item too. The resources interface is exactly what corresponds to the higher level in boto3.
+The resources interface is exactly what corresponds to the higher level in boto3 (see [Section 6.3](#63-python-boto3-dependencies)).
 
-### 9.4 Added Since the Courseware
+### 9.4 What This Material Adds
 
-| Item | Summary | Source |
-|---|---|---|
-| Maximum throughput for on-demand tables | Specify a maximum read and write throughput per second for an individual table and its GSIs. Exceeding it returns `ThrottlingException`. Not applied by default | [On-demand maximum throughput](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode-max-throughput.html) |
-| Vector indexes | An index family for similarity search over vector embeddings. Read with `SearchVectors` rather than `Query` or `Scan`. 5 per table (adjustable), up to 4,096 dimensions | [Secondary indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html) |
-| Capacity mode switching rules | Provisioned to on-demand up to 4 times in a 24-hour rolling window; on-demand to provisioned at any time | [DynamoDB constraints](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html) |
-| AWS account-based endpoints | `https://(account-id).ddb.(region).amazonaws.com`. Rollout began with Java V1 on September 4, 2024. Updated SDKs use it automatically | [SDK support overview](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKOverview.html) |
-| Java 2.x DynamoDB Enhanced Client | The higher-level interface in 2.x, replacing `DynamoDBMapper` from 1.x | [Higher-level programming interfaces](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HigherLevelInterfaces.html) |
-| The .NET document model namespace | `Amazon.DynamoDBv2.DocumentModel` (`Table`, `Document`), which the courseware omits | [.NET document model](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKMidLevel.html) |
-| New `CreateTable` parameters | `DeletionProtectionEnabled`, `OnDemandThroughput`, `WarmThroughput`, `ResourcePolicy`, `TableClass`, `Tags`, `VectorIndexes`. GSIs support multiple partition keys and sort keys | [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html) |
-| Transaction limits in detail | Up to 100 operations each for `TransactWriteItems` and `TransactGetItems`, 4 MB aggregate item size per transaction, two reads or writes consumed per item for prepare and commit, and no transactions against indexes | [DynamoDB transactions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transactions.html) |
-| PITR retention window | Restore to any point in time (to the second) within the last 35 days, with a configurable 1-to-35-day recovery window. Three-AZ replication and a 99.99% availability SLA (99.999% for global tables) | [What is Amazon DynamoDB?](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) |
-| Total projected attribute quota | 100 user-specified projected attributes across all of a table's LSIs and GSIs combined, applying only when `ProjectionType` is `INCLUDE` | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
-| The list of DynamoDB local limitations | No PITR, `billingModeSummary` always `null`, provisioned throughput settings ignored, no parallel scans, and item collection metrics and sizes not tracked | [DynamoDB local usage notes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html) |
-| NoSQL Workbench default capacity mode change | Since 3.13.5 (February 24, 2025) the capacity mode in default table settings is on-demand, so the default settings produce an on-demand table | [NoSQL Workbench release history](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkbenchDocumentHistory.html) |
-| The eventual consistency trap in `DescribeTable` | Calling it right after `CreateTable` can return `ResourceNotFoundException`. Index sizes and item counts refresh roughly every six hours | [DescribeTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) |
-| The `ThrottlingReason` field | Throttling-related exceptions include a list of fields indicating the cause | [Error handling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html) |
+| Item | Why it was added | Summary | Source |
+|---|---|---|---|
+| Maximum throughput for on-demand tables | A safeguard against unexpected traffic driving up cost in on-demand mode, which the courseware does not cover | Specify a maximum read and write throughput per second for an individual table and its GSIs. Exceeding it returns `ThrottlingException`. Not applied by default | [On-demand maximum throughput](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode-max-throughput.html) |
+| Vector indexes | A new index family used in generative AI workloads, worth knowing conceptually | An index family for similarity search over vector embeddings. Read with `SearchVectors` rather than `Query` or `Scan`. 5 per table (adjustable), up to 4,096 dimensions | [Secondary indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html) |
+| Capacity mode switching rules | There are limits on how often you can switch modes, which affect operational planning | Provisioned to on-demand up to 4 times in a 24-hour rolling window; on-demand to provisioned at any time | [DynamoDB constraints](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html) |
+| AWS account-based endpoints | Updated SDKs use the new endpoint automatically, so the behavior change matters | `https://(account-id).ddb.(region).amazonaws.com`. Rollout began with Java V1 on September 4, 2024. Updated SDKs use it automatically | [SDK support overview](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKOverview.html) |
+| Java 2.x DynamoDB Enhanced Client | Shows the higher-level interface that replaces the courseware's 1.x `DynamoDBMapper` in 2.x | The higher-level interface in 2.x, replacing `DynamoDBMapper` from 1.x | [Higher-level programming interfaces](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HigherLevelInterfaces.html) |
+| The .NET document model namespace | The courseware's .NET dependency table omits the document model layer | `Amazon.DynamoDBv2.DocumentModel` (`Table`, `Document`) | [.NET document model](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DotNetSDKMidLevel.html) |
+| New `CreateTable` parameters | Deletion protection, tags, maximum throughput, and other frequently used parameters are absent from the courseware example | `DeletionProtectionEnabled`, `OnDemandThroughput`, `WarmThroughput`, `ResourcePolicy`, `TableClass`, `Tags`, `VectorIndexes`. GSIs support multiple partition keys and sort keys | [CreateTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html) |
+| Transaction limits in detail | ACID is only mentioned, without the limits needed for real design | Up to 100 operations each for `TransactWriteItems` and `TransactGetItems`, 4 MB aggregate item size per transaction, two reads or writes consumed per item for prepare and commit, and no transactions against indexes | [DynamoDB transactions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transactions.html) |
+| PITR retention window | "Provides point-in-time recovery" alone does not convey the actual restore range or availability | Restore to any point in time (to the second) within the last 35 days, with a configurable 1-to-35-day recovery window. Three-AZ replication and a 99.99% availability SLA (99.999% for global tables) | [What is Amazon DynamoDB?](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) |
+| Total projected attribute quota | A combined limit you hit when designing several indexes, absent from the courseware | 100 user-specified projected attributes across all of a table's LSIs and GSIs combined, applying only when `ProjectionType` is `INCLUDE` | [DynamoDB quotas](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html) |
+| The list of DynamoDB local limitations | Without knowing how local differs from the web service, local debugging goes wrong | No PITR, `billingModeSummary` always `null`, provisioned throughput settings ignored, no parallel scans, and item collection metrics and sizes not tracked | [DynamoDB local usage notes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html) |
+| NoSQL Workbench default capacity mode change | It is the reason live screens differ from older screenshots, felt directly in the lab | Since 3.13.5 (February 24, 2025) the capacity mode in default table settings is on-demand, so the default settings produce an on-demand table | [NoSQL Workbench release history](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkbenchDocumentHistory.html) |
+| The eventual consistency trap in `DescribeTable` | A common trap where a query right after creation can fail, absent from the courseware | Calling it right after `CreateTable` can return `ResourceNotFoundException`. Index sizes and item counts refresh roughly every six hours | [DescribeTable API](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DescribeTable.html) |
+| The `ThrottlingReason` field | A recent field useful for diagnosing the cause of throttling | Throttling-related exceptions include a list of fields indicating the cause | [Error handling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html) |
 
 ### 9.5 Items That Could Not Be Verified
 
@@ -1375,4 +1369,4 @@ Recorded honestly. Confirm these before stating them definitively in class.
 | The courseware figure of "under 10 milliseconds" | Whether this figure was once the official wording could not be verified. Only that the current official wording is "single-digit millisecond" was confirmed. For that reason this material does not claim that "under 10 milliseconds was correct in the past" |
 | When the visualizer was merged in | That the current DynamoDB NoSQL Workbench documentation presents only two tools was confirmed. However, **which release** merged the visualizer into the data modeler could not be pinned down, because only part of the release history was reviewed |
 | The causal claim that "automatic partitioning meets throughput needs as data volumes and performance requirements grow" | That partitions are SSD-backed and that DynamoDB manages and allocates them automatically was confirmed. However, no documentation wording was found that supports the courseware's causal phrasing as stated, so the body includes only the allocation conditions the documentation actually describes ([Section 3.2](#32-partitions-and-data-distribution)) |
-| The `put-item` command on slide 25 | This command itself was not verified against the AWS CLI documentation. It is kept with a note that it comes from the courseware; the CLI usage pattern that was verified is the `list-tables` example in the DynamoDB local documentation ([Section 4.5](#45-aws-cli)) |
+| The `put-item` command example | This command itself was not verified against the AWS CLI documentation. The CLI usage pattern that was verified is the `list-tables` example in the DynamoDB local documentation ([Section 4.5](#45-aws-cli)) |
