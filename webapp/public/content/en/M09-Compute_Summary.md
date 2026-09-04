@@ -19,10 +19,10 @@
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against official AWS documentation.
-> - 🔄 Content where the original instructor deck differs from current behavior and has been corrected. See [Section 10](#10-changes-from-the-courseware) for what changed and how.
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Section 10](#10-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 30, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
-> - This is the module with the largest gap between the courseware and current documentation in this course. The quota table on courseware slide 50 is explicitly labeled **"as of September 2021"**, and the runtime list, SnapStart coverage, and asynchronous payload limit have all changed since then.
+> - This is the module with the largest gap between then and now in this course. Lambda's quotas, runtime list, SnapStart coverage, and asynchronous payload limit have all changed considerably since.
 
 ---
 
@@ -51,19 +51,16 @@ So far you have stored data and hosted a website with Amazon S3 (Modules 5 and 6
 
 ### Sections in This Module
 
-This follows the courseware slide order exactly.
-
-| Slides | Section | This document |
-|---|---|---|
-| 4–6 | Compute services | [Section 2](#2-compute-services) |
-| 7–10 | How AWS Lambda works | [Section 3](#3-how-aws-lambda-works) |
-| 11–17 | AWS Lambda invocation models | [Section 4](#4-aws-lambda-invocation-models) |
-| 18–21 | Permissions | [Section 5](#5-permissions) |
-| 22–38 | Development | [Section 6](#6-development) |
-| 39–45 | Testing | [Section 7](#7-testing) |
-| 46–50 | Deployment | [Section 8](#8-deployment) |
-| 51–52, 55–56 | Demo, Lab 4 | [Section 9](#9-demo-and-lab-4) |
-| 53–54, 57–59 | Knowledge check, summary | (not covered in this document) |
+| Section | This document |
+|---|---|
+| Compute services | [Section 2](#2-compute-services) |
+| How AWS Lambda works | [Section 3](#3-how-aws-lambda-works) |
+| AWS Lambda invocation models | [Section 4](#4-aws-lambda-invocation-models) |
+| Permissions | [Section 5](#5-permissions) |
+| Development | [Section 6](#6-development) |
+| Testing | [Section 7](#7-testing) |
+| Deployment | [Section 8](#8-deployment) |
+| Demo, Lab 4 | [Section 9](#9-demo-and-lab-4) |
 
 ---
 
@@ -71,16 +68,16 @@ This follows the courseware slide order exactly.
 
 ### 2.1 Compute Services Overview
 
-AWS offers three types of compute. Courseware slide 5 shows an axis where the **level of abstraction** increases from left to right.
+AWS offers three types of compute, arranged so that the **level of abstraction** increases from instances to serverless.
 
-| Type | Service | Slide description |
+| Type | Service | Description |
 |---|---|---|
 | Instances | Amazon EC2 | Scalable compute capacity |
 | Containers | Amazon ECS | Fully managed container orchestration |
 | Containers | Amazon EKS | Fully managed container orchestration using Kubernetes |
 | Serverless | AWS Lambda | Event-driven serverless compute |
 
-| Type | Courseware instructor notes |
+| Type | Details |
 |---|---|
 | Instances | The traditional way of thinking about infrastructure. You have full control over compute resources with deep access and customization. With Amazon EC2 you control the physical server instances, so you need a load balancer to distribute traffic, and you might have to start or stop instances based on traffic or demand |
 | Containers | A container virtualization system is smaller, more portable, and easier to manage than a full virtual management system. A container is a software package that includes the application, code, configuration, and dependencies, and a cluster is a logical grouping of tasks and services that use one or more containers. ECS and EKS clusters can run on EC2 instances, and when a container fails and the failure is detected it can be replaced with another container |
@@ -88,7 +85,7 @@ AWS offers three types of compute. Courseware slide 5 shows an axis where the **
 
 ### 2.2 How Current Documentation Classifies Compute Services 🆕
 
-The courseware's three-way split (instances / containers / serverless) matches the current decision guide. What changed is the **breadth of the choices**.
+The three-way split (instances / containers / serverless) matches the current decision guide. What has widened is the **breadth of the choices**.
 
 | Category | Services in current documentation |
 |---|---|
@@ -96,17 +93,17 @@ The courseware's three-way split (instances / containers / serverless) matches t
 | Containers | Amazon ECS, Amazon ECS Anywhere, Amazon EKS, Amazon EKS Anywhere, Amazon ECR, AWS Batch |
 | Serverless | **AWS Fargate**, **AWS Lambda** |
 
-🆕 The courseware puts only Lambda in the serverless column and mentions Fargate only in the instructor notes. Current documentation **classifies Fargate as serverless compute alongside Lambda**. You can run containers on EC2 instances you manage, or on Fargate, which is AWS managed compute.
+🆕 Current documentation **classifies Fargate as serverless compute alongside Lambda**. You can run containers on EC2 instances you manage, or on Fargate, which is AWS managed compute.
 
 > — Source: [Choosing an AWS compute service](https://docs.aws.amazon.com/decision-guides/latest/compute-on-aws-how-to-choose/choosing-aws-compute-service.html)
 
-The instructor note "AWS Fargate is supported on ECS and EKS, which run containers in a serverless compute model" is still accurate. The Amazon EKS User Guide also has a topic on running Kubernetes pods on Fargate, and Fargate profiles control which pods start on Fargate. Each pod that runs on Fargate has its own compute boundary and does not share the kernel, CPU, memory, or elastic network interface with another pod.
+AWS Fargate is supported on ECS and EKS, which run containers in a serverless compute model. The Amazon EKS User Guide also has a topic on running Kubernetes pods on Fargate, and Fargate profiles control which pods start on Fargate. Each pod that runs on Fargate has its own compute boundary and does not share the kernel, CPU, memory, or elastic network interface with another pod.
 
 > — Source: [Simplify compute management with AWS Fargate (Amazon EKS)](https://docs.aws.amazon.com/eks/latest/userguide/fargate.html)
 
-### 2.3 Compute Service Comparison (Courseware Slide 6)
+### 2.3 Compute Service Comparison
 
-The courseware table, reproduced as-is.
+A side-by-side comparison of the three compute types.
 
 | Category | EC2 | ECS/EKS | Lambda |
 |---|---|---|---|
@@ -115,7 +112,7 @@ The courseware table, reproduced as-is.
 | Pricing model | Based on infrastructure consumption | Based on infrastructure consumption | Pay per request |
 | Scalability and concurrency | Full control over configuration and scaling | You control the number and size of instances | Implicit scaling |
 
-Courseware instructor notes:
+Additional notes:
 
 - The Lambda pricing model charges per invocation, execution time, and memory usage.
 - Amazon EC2 — You can provision additional instances and increase AMI size.
@@ -123,7 +120,7 @@ Courseware instructor notes:
 
 ### 2.4 Fargate Compared with Lambda 🆕
 
-The courseware compares containers with serverless side by side, but it does not address the choice between the two **serverless** options. Here is the comparison from the current decision guide.
+Beyond comparing containers with serverless, it helps to compare the two **serverless** options directly. Here is the comparison from the current decision guide.
 
 | Item | AWS Fargate | AWS Lambda |
 |---|---|---|
@@ -146,7 +143,7 @@ Selection guidance from current documentation: consider Lambda functions for eve
 
 ### 2.5 Lambda Pricing Structure 🔄
 
-The courseware only says "per invocation, execution time, and memory usage." Here is the structure on the current pricing page.
+Beyond "per invocation, execution time, and memory usage," here is the structure on the current pricing page.
 
 | Item | Content |
 |---|---|
@@ -168,7 +165,15 @@ The courseware only says "per invocation, execution time, and memory usage." Her
 
 As data flows through your application, Lambda can run code in response to observable events. Lambda runs when an event triggers it.
 
-Slide diagram: event source → invoke → AWS Lambda (function code) → services / internet / optional response.
+The overall flow: an event source invokes Lambda, the function code runs, and the code interacts with other AWS services or the internet before optionally returning a response.
+
+```text
+  ┌──────────────┐  invoke  ┌────────────────────────┐  ──────▶  services
+  │  event source  │ ───────▶ │  AWS Lambda (function    │  ──────▶  internet
+  │  (S3, DynamoDB, │          │   code)                 │  ◀──────  optional response
+  │   API GW ...)   │          └────────────────────────┘
+  └──────────────┘
+```
 
 | Event source type | Examples |
 |---|---|
@@ -180,13 +185,13 @@ The code that AWS Lambda runs is a **Lambda function**. Lambda functions are **s
 
 ### 3.2 Event Sources That Invoke Lambda 🔄
 
-Courseware slide 9 qualifies its list with "including but not limited to" and then presents the following.
+Event sources can be grouped as follows (this is not an exhaustive list).
 
-| Category | Courseware list |
+| Category | Examples |
 |---|---|
 | Data stores | Amazon S3, Amazon DynamoDB, Amazon Kinesis, Amazon Cognito |
-| Endpoints | Amazon API Gateway, AWS IoT, AWS Step Functions, Amazon Alexa |
-| Development and management tools | AWS CloudFormation, AWS CloudTrail, AWS CodePipeline, Amazon CloudWatch |
+| Endpoints | Amazon API Gateway, AWS IoT, AWS Step Functions |
+| Development and management tools | AWS CloudFormation, AWS CodePipeline, Amazon CloudWatch |
 | Event and message services | Amazon EventBridge, Amazon SES, Amazon SNS |
 
 The current "Services that can invoke Lambda functions" table has **28 entries** and states the invocation method for each.
@@ -198,11 +203,11 @@ The current "Services that can invoke Lambda functions" table has **28 entries**
 | Event-driven, **asynchronous** | AWS CloudFormation, Amazon CloudWatch Logs, AWS CodeCommit, AWS CodePipeline, AWS Config, AWS IoT, Amazon SES, Amazon SNS, Amazon S3, Amazon EventBridge Scheduler (time based) |
 | Synchronous or asynchronous | Amazon EventBridge (asynchronous for event buses and rules, synchronous or asynchronous for pipes), AWS Step Functions |
 
-Differences from the courseware:
+How the grouping above differs from the current table:
 
-- 🔄 **Amazon Alexa** and **AWS CloudTrail**, which the courseware lists, are not in the current table. Absence from the table does not mean invocation is impossible, so we do not assert that (the `AddPermission` API still has an `EventSourceToken` parameter documented "for Alexa Smart Home functions").
-- 🔄 The courseware's "Amazon CloudWatch" became **Amazon CloudWatch Logs** in the table.
-- 🆕 Added to the table since the courseware: Amazon DocumentDB, Amazon MQ, Amazon MSK, self-managed Apache Kafka, Application Load Balancer, Amazon EventBridge Scheduler, Amazon Data Firehose, Amazon Lex, Amazon S3 Batch, Amazon VPC Lattice, Connect Customer, AWS Config, AWS CodeCommit.
+- 🔄 **Amazon Alexa** and **AWS CloudTrail** are not in the current table. Absence from the table does not mean invocation is impossible, so we do not assert that (the `AddPermission` API still has an `EventSourceToken` parameter documented "for Alexa Smart Home functions").
+- 🔄 "Amazon CloudWatch" became **Amazon CloudWatch Logs** in the table.
+- 🆕 Added to the table more recently: Amazon DocumentDB, Amazon MQ, Amazon MSK, self-managed Apache Kafka, Application Load Balancer, Amazon EventBridge Scheduler, Amazon Data Firehose, Amazon Lex, Amazon S3 Batch, Amazon VPC Lattice, Connect Customer, AWS Config, AWS CodeCommit.
 - 🆕 Beyond event-driven invocation, you can also use Lambda with Amazon EC2, self-managed Apache Kafka, and Kubernetes.
 - 🆕 A function can have **multiple triggers**. Each trigger acts as an independent client, and each event Lambda passes to your function has data from **only one trigger**. Triggers are stored and managed by **the service that generates the events**, not by Lambda.
 
@@ -210,9 +215,9 @@ Differences from the courseware:
 
 ### 3.3 Anatomy of a Lambda Function
 
-Courseware slide 10 shows: **trigger + access permissions + code (handler function, other) + runtime + layers + configuration (concurrency, memory, timeout)**.
+A Lambda function is made up of: **trigger + access permissions + code (handler function, other) + runtime + layers + configuration (concurrency, memory, timeout)**.
 
-| Component | Courseware description |
+| Component | Description |
 |---|---|
 | Code | Contains the handler function and other code. The handler function runs whenever an event occurs |
 | Runtime | Lambda supports runtimes for language-specific environments, and you can also create your own custom runtime |
@@ -221,7 +226,7 @@ Courseware slide 10 shows: **trigger + access permissions + code (handler functi
 | Trigger | An AWS service configured to invoke the function, or an event source mapping resource within Lambda that reads items from a stream or queue and invokes the function |
 | Configuration | Concurrency, memory allocation, timeout, and so on |
 
-What the runtime is responsible for (courseware instructor notes):
+What the runtime is responsible for:
 
 - Running the function's setup code
 - Reading the handler name from an environment variable
@@ -233,7 +238,7 @@ Current documentation also defines the runtime as "a language-specific environme
 
 ### 3.4 Supported Runtimes 🔄
 
-Courseware slide 10 instructor notes list the runtimes as **"Node.js, Java, Python, .NET Core, Go, Ruby."** **This list differs from current reality.** The `.NET Core` family and `go1.x` reached end of support.
+The runtimes are sometimes listed as **"Node.js, Java, Python, .NET Core, Go, Ruby,"** but **this list differs from current reality.** The `.NET Core` family and `go1.x` reached end of support.
 
 Each major language release has a unique **runtime identifier** such as `nodejs24.x` or `python3.14`, and changing the major version means changing the identifier yourself (AWS cannot guarantee backward compatibility between major versions, so this is a customer-driven operation).
 
@@ -277,7 +282,7 @@ A few things to note:
 
 ### 3.5 Runtime Deprecation Policy and Timeline 🆕
 
-The courseware does not cover the fact that runtimes get deprecated at all. It is one of the most frequently encountered topics in practice, so here it is.
+Runtime deprecation is one of the most frequently encountered topics in practice, so here it is.
 
 The standard deprecation policy is to deprecate a runtime when any major component of it (usually the language runtime, sometimes the operating system) reaches the end of community LTS and security updates are no longer available. After deprecation you **can still invoke your functions indefinitely**, but security patches and technical support stop.
 
@@ -296,7 +301,7 @@ Shared responsibility: Lambda curates and publishes security updates for support
 
 ### 3.6 The AWS SDK Included in the Runtime 🔄
 
-Courseware slide 24 instructor notes state: "The runtimes for Python and Node.js include the SDK, so you don't need to bundle these SDKs with your code." **The premise is correct but the conclusion is the opposite of current guidance.**
+The statement "the runtimes for Python and Node.js include the SDK, so you don't need to bundle these SDKs with your code" has a **correct premise but a conclusion that is the opposite of current guidance.**
 
 | Item | Content |
 |---|---|
@@ -315,9 +320,9 @@ Courseware slide 24 instructor notes state: "The runtimes for Python and Node.js
 
 ### 4.1 Three Invocation Models
 
-Courseware slide 12 presents three models side by side.
+There are three invocation models.
 
-| Model | Slide label | Example sources |
+| Model | Shape | Example sources |
 |---|---|---|
 | Synchronous (direct invocation) | `/order` → Amazon API Gateway → Lambda function | Amazon API Gateway |
 | Asynchronous (push) | Event queue → Lambda function → destination | Amazon SNS, Amazon S3 |
@@ -347,7 +352,7 @@ aws lambda invoke \
   --payload '{ "key": "value" }' response.json
 ```
 
-🔄 The `invoke` example on courseware slide 44 passes a JSON string directly to `--payload`. **AWS CLI version 2 requires `--cli-binary-format raw-in-base64-out`.** To make it the default, run `aws configure set cli-binary-format raw-in-base64-out`. The output file contains no information but is still created when you run the command, and if Lambda can't add the event to the queue the error message appears in the command output.
+🔄 A common `invoke` example passes a JSON string directly to `--payload`. **AWS CLI version 2 requires `--cli-binary-format raw-in-base64-out`.** To make it the default, run `aws configure set cli-binary-format raw-in-base64-out`. The output file contains no information but is still created when you run the command, and if Lambda can't add the event to the queue the error message appears in the command output.
 
 > — Source: [Invoking a Lambda function asynchronously](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html)
 
@@ -355,7 +360,7 @@ aws lambda invoke \
 
 An event source mapping is a **Lambda resource** that reads items from stream and queue-based services and invokes a function with batches of records. It is generally designed for services that do not invoke Lambda functions directly. Resources called **event pollers** inside the ESM actively poll for new messages.
 
-The seven services that use ESM are **an exact match between the courseware list and current documentation**.
+Seven services use ESM.
 
 | Service |
 |---|
@@ -367,7 +372,7 @@ The seven services that use ESM are **an exact match between the courseware list
 | Self-managed Apache Kafka |
 | Amazon SQS |
 
-🆕 Here is the **batching behavior** the courseware does not cover. Lambda invokes your function when one of these three criteria is met.
+🆕 It helps to know the **batching behavior**. Lambda invokes your function when one of these three criteria is met.
 
 | Criterion | Content |
 |---|---|
@@ -383,9 +388,9 @@ The seven services that use ESM are **an exact match between the courseware list
 
 #### DynamoDB Stream Polling Rate
 
-The courseware slide 12 note "Lambda polls the stream 4 times per second for new records" is still accurate. Documentation qualifies it as **"at a base rate of 4 times per second."**
+Lambda polls the stream for new records **at a base rate of 4 times per second.**
 
-🆕 Details the courseware does not cover:
+🆕 Additional details:
 
 - `ParallelizationFactor` (1–10, default 1) lets you process one shard with more than one concurrent Lambda invocation, and **in-order processing is still ensured at the item (partition and sort key) level**.
 - Stream polling during ESM creation and updates is **eventually consistent**, so specifying `LATEST` as the starting position could miss events during creation or updates. Specify `TRIM_HORIZON` to ensure no events are missed.
@@ -395,7 +400,7 @@ The courseware slide 12 note "Lambda polls the stream 4 times per second for new
 
 ### 4.2 Function Invocation and Retries
 
-All three values in the courseware slide 13 table **match current documentation**.
+Retry behavior differs by invocation model.
 
 | Invocation | Retries |
 |---|---|
@@ -410,7 +415,7 @@ Supplementary detail from current documentation:
 
 ### 4.3 Asynchronous Retry Behavior and Configuration 🔄
 
-Courseware slide 12 instructor notes state "the number of retries and the retry interval are configurable." **What is configurable is the number of retries and the maximum event age; there is no parameter for the retry interval itself.**
+For asynchronous invocation, **what is configurable is the number of retries and the maximum event age; there is no parameter for the retry interval itself.**
 
 | Situation | Behavior |
 |---|---|
@@ -440,9 +445,7 @@ aws lambda put-function-event-invoke-config \
 
 ### 4.4 Invocation Record Destinations and the DLQ 🔄
 
-The courseware lists **four** invocation record destinations (AWS Lambda, Amazon SNS, Amazon SQS, Amazon EventBridge) and states that "the best practice for asynchronous invocation is to create and use a DLQ." **Both differ from current documentation.**
-
-There are now **five** destinations.
+There are **five** invocation record destinations, and the primary path for asynchronous failure handling is an on-failure destination rather than a DLQ (see below).
 
 | Destination | Required execution role permission | Notes |
 |---|---|---|
@@ -473,7 +476,22 @@ The DLQ message attributes are `RequestID`, `ErrorCode` (the HTTP status code), 
 
 ### 4.5 Execution Environment Lifecycle 🔄
 
-The stages in the courseware slide 14 diagram: **download code → initialize environment (extensions, bootstrap runtime, run function initialization) → invoke (run function handler) → shut down (notify extensions, remove environment)**. The first two stages are labeled **cold start** and the invoke stage **warm start**. This flow corresponds to the phases in current documentation.
+The execution environment moves through these stages. The first two are the **cold start** and the invoke stage is the **warm start**.
+
+```text
+  download code
+      │
+      ▼
+  initialize environment      ┐
+  (extensions, bootstrap       │ cold start
+   runtime, function init)     ┘
+      │
+      ▼
+  invoke (run function handler)  ← warm start (environment reused)
+      │
+      ▼
+  shut down (notify extensions, remove environment)
+```
 
 Here are the current phase names and details.
 
@@ -492,13 +510,13 @@ Here are the current phase names and details.
 
 > — Source: [Understanding the Lambda execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html)
 
-The instructor note "AWS Lambda stores your code in Amazon S3 and encrypts the data at rest" is **correct about encryption at rest but the storage description has changed.** 🔄 Lambda always provides at-rest encryption for environment variables, files you upload (including deployment packages and layer archives), event source mapping filter criteria objects, and durable execution data. The storage location defaults to **Lambda-managed storage** (300 GB unzipped per account per Region), with **self-managed S3 code storage** using your own S3 bucket as an option. With self-managed storage, Lambda does not store a copy of your source code and encryption at rest is managed by your S3 bucket configuration.
+On code storage, Lambda always provides at-rest encryption, but the storage location is not a single place. 🔄 Lambda always provides at-rest encryption for environment variables, files you upload (including deployment packages and layer archives), event source mapping filter criteria objects, and durable execution data. The storage location defaults to **Lambda-managed storage** (300 GB unzipped per account per Region), with **self-managed S3 code storage** using your own S3 bucket as an option. With self-managed storage, Lambda does not store a copy of your source code and encryption at rest is managed by your S3 bucket configuration.
 
 > — Source: [Data encryption at rest for AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/security-encryption-at-rest.html)
 
 ### 4.6 Cold Starts and Warm Starts 🆕
 
-The courseware defines both terms but does not say **how often or how long**.
+Beyond defining both terms, it helps to know **how often and how long** they happen.
 
 | Item | Content |
 |---|---|
@@ -514,7 +532,7 @@ The courseware defines both terms but does not say **how often or how long**.
 
 ### 4.7 Concurrency 🔄
 
-The courseware slide 15 instructor notes align with current documentation.
+Here is how execution environments handle requests.
 
 - New invocation requests are handled by an available execution environment. If none is available or environments are busy, a new one is created to handle the request, and **this new environment does not share resources with other execution environments.**
 - A runtime may be unavailable if it was terminated after a period without events.
@@ -530,7 +548,7 @@ For example, a function averaging 200 ms that receives 5,000 requests per second
 
 #### Reserved Concurrency and Provisioned Concurrency 🔄
 
-The courseware covers only provisioned concurrency on slide 16 and mentions reserved concurrency only as "reserve some of that concurrency" in the slide 45 instructor notes. **The two controls serve different purposes.**
+There are two ways to control concurrency, and **they serve different purposes.**
 
 | Item | Reserved concurrency | Provisioned concurrency |
 |---|---|---|
@@ -556,7 +574,7 @@ aws lambda put-provisioned-concurrency-config --function-name my-function \
 
 #### Concurrency Scaling Rate 🔄
 
-Courseware slide 50 calls this item **"burst concurrency"** and gives the value as "up to 1,000 concurrent executions per 10 seconds per function." **The number is right; the name changed.**
+This item was once called **"burst concurrency"** with a value of "up to 1,000 concurrent executions per 10 seconds per function." The value is unchanged; the name changed.
 
 | Item | Content |
 |---|---|
@@ -571,14 +589,14 @@ Courseware slide 50 calls this item **"burst concurrency"** and gives the value 
 
 ### 4.8 Minimizing Cold Starts 1/2
 
-The two approaches on courseware slide 16.
+There are two ways to reduce cold starts.
 
-| Approach | Slide description |
+| Approach | Description |
 |---|---|
-| Schedule a Lambda function | Create a rule to run the function at a specific interval. Shape label: "EventBridge event (time-based trigger)" |
-| Provisioned concurrency | Initialize a specified number of Lambda runtime environments. Shape label: "warm start (waiting for events)" |
+| Schedule a Lambda function | Create a rule to run the function at a specific interval. An EventBridge time-based trigger keeps the function warm in advance |
+| Provisioned concurrency | Pre-initialize a specified number of Lambda execution environments so they wait for events in a warm-start state |
 
-The EventBridge scheduling document the courseware cites is still valid.
+Running a function on a schedule with EventBridge is covered here.
 
 > — Source: [Tutorial: Schedule AWS Lambda functions using EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-run-lambda-schedule.html)
 
@@ -586,27 +604,23 @@ The current definition and constraints of provisioned concurrency are in [Sectio
 
 ### 4.9 Minimizing Cold Starts 2/2 — Lambda SnapStart 🔄
 
-**The courseware titles both slide 16 and slide 17 "Minimizing cold starts 1/2."** Slide 17 should be 2/2. This document splits the two sections as 1/2 and 2/2.
+The second way to reduce cold starts is Lambda SnapStart. The essentials:
 
-Courseware slide 17 body:
-
-- Lambda SnapStart
-- Improves startup performance by up to 10x
+- Significantly improves startup performance
 - Initializes the function when a new version is published
 - Resumes the execution environment from a cached snapshot
-- Available for the Java 11 and Java 17 managed runtimes
 
-**The mechanism matches the courseware description.** When you publish a function version, Lambda initializes the function, takes a **Firecracker MicroVM snapshot** of the memory and disk state of the initialized execution environment, encrypts it, and caches it for low-latency access. On the first invocation of the version and as invocations scale up, Lambda resumes new execution environments from the cached snapshot instead of initializing from scratch. Lambda maintains several copies of each snapshot for resiliency and automatically patches them with the latest runtime and security updates.
+Here is how it works. When you publish a function version, Lambda initializes the function, takes a **Firecracker MicroVM snapshot** of the memory and disk state of the initialized execution environment, encrypts it, and caches it for low-latency access. On the first invocation of the version and as invocations scale up, Lambda resumes new execution environments from the cached snapshot instead of initializing from scratch. Lambda maintains several copies of each snapshot for resiliency and automatically patches them with the latest runtime and security updates.
 
-Three things changed.
+SnapStart first shipped for the Java managed runtime only, and its coverage and pricing have since widened. Here is the current baseline.
 
-| Item | Courseware | Current |
-|---|---|---|
-| Supported runtimes 🔄 | Java 11 and Java 17 | **Java 11 and later, Python 3.12 and later, .NET 8 and later** |
-| Performance wording 🔄 | "improves startup performance by up to 10x" | No multiplier. **"As low as sub-second startup performance"** |
-| Pricing 🔄 | "at no additional cost" | **No additional cost for Java managed runtimes only.** Otherwise, snapshot caching charges (minimum 3 hours) and restoration charges apply |
+| Item | Current |
+|---|---|
+| Supported runtimes 🔄 | **Java 11 and later, Python 3.12 and later, .NET 8 and later** |
+| Performance wording 🔄 | **"As low as sub-second startup performance"** |
+| Pricing 🔄 | **No additional cost for Java managed runtimes only.** Otherwise, snapshot caching charges (minimum 3 hours) and restoration charges apply |
 
-🆕 Constraints the courseware does not cover:
+🆕 Constraints to keep in mind:
 
 - Other managed runtimes (for example `nodejs24.x`, `ruby4.0`), **OS-only runtimes, and container images are not supported.**
 - **Provisioned concurrency, Amazon EFS, Amazon S3 Files, and ephemeral storage greater than 512 MB are not supported.**
@@ -623,21 +637,16 @@ Three things changed.
 
 ### 5.1 The Two Categories of Permissions
 
-The distinction on courseware slide 19.
+Lambda permissions fall into two broad categories.
 
-| Permission type | Slide description |
+| Permission type | What it is for |
 |---|---|
-| Invocation permission | Grant an event source permission to invoke Lambda / Update the resource policy associated with the Lambda function / Use the Lambda **`AddPermission`** API |
-| Execution permission | Grant AWS Lambda permission to read from a stream / Update the execution role |
+| Invocation permission | The permissions an event source needs to communicate with the Lambda function. Depending on the invocation model (push or pull), you grant these using the execution role or a resource-based policy. A resource-based policy is managed either by adding statements with the `AddPermission` API or with a full JSON policy |
+| Execution permission | The permissions a Lambda function needs to access other AWS resources in your account. You grant these by creating an IAM role (the **execution role**) |
 
-Courseware instructor notes:
+The same content, organized by who is accessing what:
 
-- Invocation permission — The permissions an event source needs to communicate with the Lambda function. Depending on the invocation model (push or pull), you can grant these using the execution role or a resource policy (the access policy associated with the Lambda function).
-- Execution permission — The permissions a Lambda function needs to access other AWS resources in your account. You grant these by creating an IAM role (the **execution role**).
-
-Current documentation uses the same two categories.
-
-| Category | Current documentation |
+| Category | Description |
 |---|---|
 | Permissions the function needs | Defined in a special IAM role called the **execution role**. **Every Lambda function must have an execution role** and at a minimum it needs CloudWatch access (the `AWSLambdaBasicExecutionRole` managed policy) |
 | Permissions others need to access the function | **Identity-based policies**, **resource-based policies**, or **ABAC** (attribute-based access control) using tags 🆕 |
@@ -646,15 +655,11 @@ Current documentation uses the same two categories.
 
 > — Source: [Managing permissions in AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html)
 
-The `intro-permission-model.html` path the courseware cites now redirects to `lambda-permissions.html` (see [Section 10.3](#103-discouraged-or-end-of-support-items)).
+The permission model document path is now `lambda-permissions.html`.
 
-### 5.2 The "No Explicit Permission Needed in the Same Account" Claim 🔄
+### 5.2 Invocation Permission Is Required Even in the Same Account 🔄
 
-Courseware slide 20 instructor notes state:
-
-> Note: If your custom application and the Lambda function it invokes belong to the same AWS account, you don't need to grant explicit permissions.
-
-**This is not accurate.** Current documentation states that the caller needs permission regardless of the account relationship. From the invocation troubleshooting document:
+A caller must have permission to invoke a function regardless of the account relationship. Contrary to the common belief that "no explicit permission is needed in the same account," an IAM user or role in the same account still needs permission to invoke the function. From the invocation troubleshooting document:
 
 > Your user, or the role that you assume, must have permission to invoke a function. This requirement also applies to Lambda functions and other compute resources that invoke functions.
 
@@ -675,21 +680,28 @@ To summarize:
 | An IAM principal in a different account | Both — an identity-based policy plus the function's resource-based policy |
 | An AWS service (S3, SNS, and so on) | The function's **resource-based policy** (Lambda evaluates only the resource-based policy in this case) |
 
-Read charitably, the courseware statement could mean "in the same account you may not need to add a separate resource-based policy," but **the claim that no permission is needed at all is wrong.**
+In the same account you may not need to add a separate resource-based policy, but you still cannot omit the `lambda:InvokeFunction` permission in an identity-based policy.
 
 > — Source: [Troubleshoot invocation issues in Lambda](https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-invocation.html)
 
 ### 5.3 Push or Direct Invocation Model
 
-Courseware slide 20 diagram: event source → (1. push the event to AWS Lambda or invoke the Lambda function directly) → **resource policy** → Lambda → (2. process the event) → **IAM execution role** + permissions policy → services.
+In the push model, an event source pushes the event to Lambda or invokes the function directly. Three permission elements are involved in this path.
 
-| Element | Courseware description |
+```text
+event source ──(1. push event / direct invoke)──▶ [resource-based policy] ──▶ Lambda
+                                                                              │
+                                            (2. process the event)           │
+   services ◀──── [IAM execution role + permissions policy] ◀────────────────┘
+```
+
+| Element | Role |
 |---|---|
-| Resource policy | Grants other accounts and AWS services permission to use Lambda resources |
+| Resource-based policy | Grants other accounts and AWS services permission to use Lambda resources |
 | IAM execution role | Grants the function permission to access AWS services and resources |
-| Access policy | Grants the required resource permissions |
+| Permissions policy | Grants the execution role the required resource permissions |
 
-Using an Amazon S3 trigger as the example, current documentation says: to invoke your function, Amazon S3 needs permission from the function's **resource-based policy**. When you configure an Amazon S3 trigger in the Lambda console, the console modifies the resource-based policy to allow Amazon S3 to invoke the function if the bucket name and account ID match. If you configure the notification in Amazon S3 instead, you use the Lambda API to update the policy. If your function uses the AWS SDK to manage Amazon S3 resources, it also needs **Amazon S3 permissions in its execution role**.
+Using an Amazon S3 trigger as the example: to invoke your function, Amazon S3 needs permission from the function's **resource-based policy**. When you configure an Amazon S3 trigger in the Lambda console, the console modifies the resource-based policy to allow Amazon S3 to invoke the function if the bucket name and account ID match. If you configure the notification in Amazon S3 instead, you use the Lambda API to update the policy. If your function uses the AWS SDK to manage Amazon S3 resources, it also needs **Amazon S3 permissions in its execution role**.
 
 🆕 When you create a trigger in the console, Lambda **automatically adds** the required permissions to the function's resource-based policy.
 
@@ -697,7 +709,7 @@ Using an Amazon S3 trigger as the example, current documentation says: to invoke
 
 ### 5.4 Ways to Configure a Resource-Based Policy 🔄
 
-The courseware presents only the `AddPermission` API for granting invocation permission. Current documentation presents **two methods and recommends the full JSON policy.**
+There are **two methods** for granting invocation permission, and the full JSON policy is currently recommended.
 
 | Method | Tools | Characteristics |
 |---|---|---|
@@ -734,7 +746,7 @@ Required IAM permissions:
 
 ### 5.5 The `AddPermission` API 🆕
 
-The courseware only names the API. Here are the parameters.
+Here are the parameters of `AddPermission`.
 
 | Parameter | Required | Content |
 |---|---|---|
@@ -758,7 +770,7 @@ On success the API returns HTTP 201 and the statement that was added. Key errors
 
 ### 5.6 The Execution Role 🆕
 
-The courseware only says "you grant these permissions by creating an IAM role (the execution role)."
+The execution role is an IAM role that grants the function permission to access other AWS resources. The details:
 
 | Item | Content |
 |---|---|
@@ -796,11 +808,19 @@ aws iam attach-role-policy --role-name lambda-ex \
 
 ### 5.7 The ESM (Polling) Invocation Model and Managed Policies 🆕
 
-Courseware slide 21 diagram: Lambda → (1. poll the event source) → event source / (2. process the event) → services, with an **IAM execution role** on both sides.
+In the pull model, Lambda polls the event source to fetch events and sends processing results to other services. An **IAM execution role** is involved in both directions.
 
-The core statement in the instructor notes — "you must grant AWS Lambda permission to read from the stream, which you do by updating the IAM execution role attached to the Lambda function" — matches current documentation, which says "when you use an event source mapping to invoke your function, Lambda uses the **execution role to read event data**."
+```text
+Lambda ──(1. poll the event source)──▶ event source
+   │
+   └──(2. process the event)──▶ services
+   ▲
+   └── IAM execution role (required on both sides)
+```
 
-🆕 Here are the managed policy names the courseware does not provide.
+When you use an event source mapping to invoke your function, Lambda uses the **execution role to read event data.** So you must grant the execution role permission to read from the stream or queue.
+
+🆕 Here are the AWS managed policy names used for this.
 
 | Managed policy | Permissions granted |
 |---|---|
@@ -815,8 +835,6 @@ The core statement in the instructor notes — "you must grant AWS Lambda permis
 
 🆕 For some features the Lambda console attempts to add missing permissions to your execution role in a customer managed policy, and these policies can become numerous, so **attach the relevant AWS managed policies before enabling features.** When a service assumes a role in your account, you can include the `aws:SourceAccount` and `aws:SourceArn` global condition context keys in the role trust policy to limit access to requests generated by expected resources (cross-service confused deputy prevention).
 
-The `CreateEventSourceMapping` document path the courseware cites now redirects to the API Reference.
-
 > — Source: [Working with AWS managed policies in the execution role](https://docs.aws.amazon.com/lambda/latest/dg/permissions-managed-policies.html)
 
 ---
@@ -825,15 +843,7 @@ The `CreateEventSourceMapping` document path the courseware cites now redirects 
 
 ### 6.1 Development Options 🔄
 
-Courseware slide 23 presents access points as **AWS Management Console / AWS CLI / AWS SDKs / development tools**, and lists the development tools as follows.
-
-- AWS toolkits for IDEs
-- WYSIWYG editor or upload a packaged .zip file
-- Third-party plugins (**Eclipse**, PyCharm, Visual Studio)
-
-**Of the three links the courseware cites, the AWS Toolkit for Eclipse User Guide URL returns HTTP 404, and `csharp-package-toolkit.html` no longer exists as its own page.** `/toolkit-for-eclipse/v1/user-guide/` and its `lambda.html` **redirect to the AWS Toolkit for JetBrains User Guide**.
-
-Here are the tools the current Lambda development tools document presents.
+You access Lambda through the **AWS Management Console / AWS CLI / AWS SDKs / development tools**. Here are the tools the current Lambda development tools document presents.
 
 | Category | Content |
 |---|---|
@@ -845,15 +855,13 @@ Here are the tools the current Lambda development tools document presents.
 
 > — Source: [Development tools for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html)
 
-The PyCharm toolkit the courseware mentions is now part of the **AWS Toolkit for JetBrains**. The JetBrains toolkit includes toolkits for CLion (C and C++), GoLand (Go), IntelliJ (Java), WebStorm (Node.js), Rider (.NET), PhpStorm (PHP), PyCharm (Python), RubyMine (Ruby), and DataGrip (database management), and lets you create, update, run, and debug Lambda functions remotely and locally.
+The PyCharm toolkit is now part of the **AWS Toolkit for JetBrains**. The JetBrains toolkit includes toolkits for CLion (C and C++), GoLand (Go), IntelliJ (Java), WebStorm (Node.js), Rider (.NET), PhpStorm (PHP), PyCharm (Python), RubyMine (Ruby), and DataGrip (database management), and lets you create, update, run, and debug Lambda functions remotely and locally.
 
 > — Source: [Working with the AWS Toolkit for JetBrains](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
 
 ### 6.2 The Lambda Console Code Editor 🔄
 
-Courseware slide 14 instructor notes say "you upload your code as a Lambda function or code directly in the Lambda code editor," and the quota table on slide 50 lists **"inline editing in the console: 3 MB"** under deployment package.
-
-**There is no 3 MB item in the current quota table.** The conditions for using the code editor are these two:
+You can upload your code as a Lambda function or write it directly in the Lambda console code editor. The old "inline editing in the console: 3 MB" limit is a thing of the past, and **there is no 3 MB item in the current quota table.** The conditions for using the code editor are these two:
 
 | Condition | Content |
 |---|---|
@@ -868,25 +876,25 @@ Courseware slide 14 instructor notes say "you upload your code as a Lambda funct
 
 ### 6.3 Planning a Lambda Function — Programming Model
 
-The three columns on courseware slide 24.
+Three dimensions to consider when planning a function.
 
-| Item | Slide body |
+| Item | Content |
 |---|---|
-| Programming model | Use processes, threads, `/tmp`, sockets / AWS SDKs |
-| Stateless | Use external storage to persist data / No affinity with or access to the underlying infrastructure |
-| Monitoring and logging | Request, error, and throttle metrics / Built-in logs to Amazon CloudWatch Logs / AWS X-Ray integration |
+| Programming model | You can use processes, threads, `/tmp`, and sockets, and you use the AWS SDKs |
+| Stateless | Persist data in external storage, and assume no affinity with or access to the underlying infrastructure |
+| Monitoring and logging | Use request, error, and throttle metrics, built-in logs to Amazon CloudWatch Logs, and AWS X-Ray integration |
 
-Courseware instructor notes:
+Recommendations for the planning stage:
 
-- With AWS Lambda you can use common languages and operating system features such as creating additional threads and processes.
-- Instead of creating or updating metrics inside your Lambda function code, use **AWS Lambda metrics and CloudWatch alarms**. You can configure alarms based on the expected Lambda function runtime.
+- You can use common languages and operating system features such as creating additional threads and processes.
+- Instead of creating metrics inside your function code, use **Lambda metrics and CloudWatch alarms**. You can configure alarms based on the expected runtime.
 - Use logging libraries and Lambda metrics and dimensions to identify application errors (ERR, ERROR, WARNING).
 
-The statement about the bundled SDK contradicts current guidance, so it is covered separately in [Section 3.6](#36-the-aws-sdk-included-in-the-runtime).
+The runtime's bundled SDK needs care regarding freshness, so it is covered separately in [Section 3.6](#36-the-aws-sdk-included-in-the-runtime).
 
 ### 6.4 AWS X-Ray Integration 🆕
 
-The courseware only names the item "AWS X-Ray integration."
+Here are the details of the X-Ray integration.
 
 | Item | Content |
 |---|---|
@@ -901,23 +909,23 @@ The courseware only names the item "AWS X-Ray integration."
 
 ### 6.5 Lambda Function: The Handler
 
-Courseware slide 25 shapes: handler function (the function to run on invocation) / event object (the data sent on invocation) / context object (provides information about the current runtime environment).
+The handler has three parts: the **handler function** (the function to run on invocation), the **event object** (the data sent on invocation), and the **context object** (provides information about the current runtime environment).
 
 The handler is a specific code method (Java, C#) or function (Node.js, Python) that you create and include in your package. You specify the handler when you create the Lambda function, and each supported language has its own requirements for defining and referencing the handler. The handler takes two arguments: the **event object** and the **context object (optional)**.
 
-| Argument | Courseware description |
+| Argument | Description |
 |---|---|
 | Event object | Structure and content vary by event source. An event generated by API Gateway includes the path, query string, and request body, while an event Amazon S3 generates when a new object is created includes bucket and new object details |
 | Context object | Content and structure vary by language runtime, but at a minimum it includes AWS RequestId, Timeout (time remaining), and Logging (CloudWatch Logs stream information) |
 
-Best practices (courseware instructor notes):
+Best practices:
 
 - **Separate the Lambda handler (entry point) from your core logic.** This makes the function more unit-testable.
 - **Don't use recursive code.** Recursive code can lead to unintended invocation volume and escalated costs (see [Section 6.7](#67-recursive-loop-detection)).
 
 ### 6.6 Example: Amazon S3 Event
 
-The JSON on courseware slide 26 **matches the current official documentation example in field structure** (the courseware abbreviates some values with `…`). In the example below, only the `principalId` value is replaced with a placeholder. An IAM principal unique ID is not a secret, but it has the same shape as an access key and trips secret scanners. Every other value is as documented.
+Here is the JSON structure of the event Amazon S3 sends to your function. In the example below, only the `principalId` value is replaced with a placeholder. An IAM principal unique ID is not a secret, but it has the same shape as an access key and trips secret scanners. Every other value is as documented.
 
 ```json
 {
@@ -954,17 +962,13 @@ The JSON on courseware slide 26 **matches the current official documentation exa
 }
 ```
 
-🆕 A caution the courseware does not include on slide 26: **if your function writes to the same bucket that triggers it, it can run in an infinite loop.** Use two buckets, or configure the trigger to apply only to a prefix used for incoming objects. Also, `s3.object.key` contains a **URL-encoded** object key name, so processing it as plain text throws a `NoSuchKey` error for names with spaces (`james beswick.jpg`).
+🆕 A caution to keep in mind: **if your function writes to the same bucket that triggers it, it can run in an infinite loop.** Use two buckets, or configure the trigger to apply only to a prefix used for incoming objects. Also, `s3.object.key` contains a **URL-encoded** object key name, so processing it as plain text throws a `NoSuchKey` error for names with spaces (`james beswick.jpg`).
 
 > — Source: [Process Amazon S3 event notifications with Lambda](https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html)
 
 ### 6.7 Recursive Loop Detection 🆕
 
-Courseware slide 25 instructor notes give only this guidance for recursive code:
-
-> If you do accidentally use recursive code, immediately set the function concurrent execution limit to 0 to throttle all invocations to the function while you update the code.
-
-**Lambda now detects certain types of recursive loops and stops them automatically.**
+The traditional response to recursive code was "immediately set the function's concurrent execution limit to 0 to throttle all invocations while you fix the code." **Lambda now detects certain types of recursive loops and stops them automatically.**
 
 | Item | Content |
 |---|---|
@@ -976,17 +980,15 @@ Courseware slide 25 instructor notes give only this guidance for recursive code:
 | Notifications | Health Dashboard (it can take up to 3.5 hours to appear) and email. CloudWatch metrics let you monitor the number of recursive invocations Lambda stopped |
 | Stopped events | If you have an on-failure destination or DLQ configured, Lambda also sends the event from the stopped invocation there. Using **the same resource that invokes your function** as the destination creates another loop |
 
-**The courseware's manual measure is still valid.** Loops involving services like DynamoDB are not detected, so documentation recommends combining setting reserved concurrency to zero with CloudWatch alarms, billing alarms, and AWS Cost Anomaly Detection.
+**The manual measure above is still valid.** Loops involving services like DynamoDB are not detected, so documentation recommends combining setting reserved concurrency to zero with CloudWatch alarms, billing alarms, and AWS Cost Anomaly Detection.
 
 > — Source: [Use Lambda recursive loop detection to prevent infinite loops](https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html)
 
 ### 6.8 The Context Object 🔄
 
-Courseware slide 27 lists the context members for three languages and **gives the default for the same "time remaining" item as 3 seconds for Python but 15 minutes for Java and .NET. This is an internal inconsistency in the courseware.**
+The context object provides an item that returns the "time remaining" in all three languages. All three context documents describe it only as returning **"the number of milliseconds left before the execution times out"** and **do not set a fixed default.** The value is calculated against the timeout configured for the function, so there is no per-language default. The function timeout itself defaults to 3 seconds with a maximum of 900 seconds (15 minutes).
 
-All three context documents say only that the method **"returns the number of milliseconds left before the execution times out"** and **do not state a default.** The value is calculated against the timeout configured for the function, so there is no per-language default. The function timeout itself defaults to 3 seconds with a maximum of 900 seconds (15 minutes), so the Python figure appears to be the default and the Java and .NET figure the maximum, both mistranscribed.
-
-Here are the three lists from current documentation. **The names match the courseware.**
+Here are the context members for the three languages.
 
 | Python | Java | .NET (C#) |
 |---|---|---|
@@ -1002,7 +1004,7 @@ Here are the three lists from current documentation. **The names match the cours
 | `client_context` (mobile apps) 🔄 | `getClientContext()` (mobile apps) | `ClientContext` (mobile apps) |
 | — | `getLogger()` | `Logger` |
 
-🔄 **The courseware's Python list omits `identity` and `client_context`.** Current documentation includes both for Python: `identity` contains `cognito_identity_id` and `cognito_identity_pool_id`, and `client_context` contains `client.installation_id`, `client.app_title`, `client.app_version_name`, `client.app_version_code`, `client.app_package_name`, `custom`, and `env`.
+🔄 The Python context **also has `identity` and `client_context`.** `identity` contains `cognito_identity_id` and `cognito_identity_pool_id`, and `client_context` contains `client.installation_id`, `client.app_title`, `client.app_version_name`, `client.app_version_code`, `client.app_package_name`, `custom`, and `env`.
 
 🆕 The Java context object interface is in the **`aws-lambda-java-core`** library, and you can implement it to create a context class for testing. The Python context object is a class defined in the **Lambda runtime interface client**, and Powertools for AWS Lambda (Python) provides an interface definition for type hints.
 
@@ -1029,7 +1031,7 @@ def lambda_handler(event, context):
 
 #### Python
 
-The syntax and example on courseware slide 28.
+The syntax and example for a Python handler.
 
 ```python
 def handler_name(event, context):
@@ -1055,7 +1057,7 @@ def my_handler(event, context):
 
 #### Java
 
-The syntax and example on courseware slide 29.
+The syntax and example for a Java handler.
 
 ```text
 MyOutput output handlerName(MyEvent event, Context context)
@@ -1080,11 +1082,11 @@ public class Hello implements RequestHandler<Integer, String> {
 
 When you package this code with its dependencies and create the Lambda function, specify **`example.Hello::myHandler`** (`package.class::method-reference`) as the handler. The first handler parameter can be event data (published by an event source such as S3) or custom input that you supply.
 
-The `com.amazonaws.services.lambda.runtime` package is the **`aws-lambda-java-core`** library, not AWS SDK for Java v1, and **current official examples use the same imports.** The courseware code is not out of date here.
+The `com.amazonaws.services.lambda.runtime` package is the **`aws-lambda-java-core`** library, not AWS SDK for Java v1, and **current official examples use the same imports.**
 
 #### C#
 
-The syntax and example on courseware slide 30.
+The syntax and example for a C# handler.
 
 ```text
 myOutput HandlerName(MyEvent event, ILambdaContext context) {
@@ -1112,13 +1114,13 @@ namespace SimpleLambda
 
 You define the Lambda function handler as an instance or static method in a class. To access the Lambda context object, define a parameter of type `ILambdaContext`. This interface gives you access to the current function's name, memory limit, remaining runtime, and logging information.
 
-**`DefaultLambdaJsonSerializer` (SystemTextJson) is still used in the current official context documentation example.** The `csharp-handler.html` path the courseware cites is also still valid.
+**`DefaultLambdaJsonSerializer` (SystemTextJson) is still used in the current official context documentation example.**
 
 > — Source: [Define Lambda function handler in C#](https://docs.aws.amazon.com/lambda/latest/dg/csharp-handler.html)
 
 ### 6.10 Example: Lambda Function (Python) — Lab Code 🔄
 
-The lab code on courseware slide 31.
+The lab code that converts a note to speech.
 
 ```python
 # Initialize outside the handler so the function is easier to unit test
@@ -1142,7 +1144,7 @@ def lambda_handler(event, context):
     return signedURL
 ```
 
-Slide annotations: pull information from the event / pull information from environment variables / separate the Lambda handler from your core logic.
+This code shows three patterns: it pulls information from the event, reads configuration from environment variables, and separates the handler from the core logic.
 
 **Initializing outside the handler is still the recommended pattern.** The current official Python example also initializes the SDK client and logger outside the handler, and documentation explains that this takes advantage of execution environment reuse to improve performance.
 
@@ -1156,30 +1158,30 @@ Existing code keeps working, so **this is not a problem for the lab.** For new c
 
 ### 6.11 Layers
 
-The descriptions on courseware slides 37 and 38 **mostly match current documentation.**
+The essential properties of layers.
 
-| Item | Courseware description | Current documentation |
-|---|---|---|
-| Format | A **.zip file archive** containing code other than business logic, such as libraries, custom runtimes, and other dependencies | Matches |
-| Purpose | Share code across multiple versions of the same function or across functions. Reduces storage usage and keeps deployment packages small so they download faster during a cold start | Matches |
-| Versions | **A deployed layer is an immutable version** and the version number increments each time a new layer is published | Matches. Creating a new layer produces version 1 and each published update increments the number. Each layer version is identified by a unique ARN and you must **specify the exact layer version** when adding it to a function |
-| Count | **Up to 5 per function**, counting toward the standard Lambda deployment size limit | Matches |
-| Sharing | Zipping dependencies as part of the build-deploy process makes it hard to share them with other functions, accounts, or third parties and to propagate changes | Matches |
+| Item | Content |
+|---|---|
+| Format | A **.zip file archive** containing code other than business logic, such as libraries, custom runtimes, and other dependencies |
+| Purpose | Share code across multiple versions of the same function or across functions. Reduces storage usage and keeps deployment packages small so they download faster during a cold start |
+| Versions | **A deployed layer is an immutable version.** Creating a new layer produces version 1 and each published update increments the number. Each layer version is identified by a unique ARN and you must **specify the exact layer version** when adding it to a function |
+| Count | **Up to 5 per function**, counting toward the standard Lambda deployment size limit |
+| Sharing | Zipping dependencies into the build makes it hard to share them with other functions, accounts, or third parties or to propagate changes. Separating them into a layer makes this sharing easier |
 
-🆕 Items the courseware does not cover:
+🆕 Items to keep in mind:
 
 - When you add a layer, Lambda extracts the layer contents into the **`/opt` directory** in the execution environment. All natively supported runtimes include paths to specific directories within `/opt`.
-- **Layers work only with functions deployed as a .zip file archive.** For functions defined as a container image, you package your preferred runtime and all dependencies in the image (which is the same point as the slide 49 instructor note "container images do not use layers").
+- **Layers work only with functions deployed as a .zip file archive.** For functions defined as a container image, you do not use layers; you package your preferred runtime and all dependencies in the image.
 - A fifth reason to use layers: **locking an embedded SDK version.** The embedded SDKs might change without notice, so a layer with a specific version means the function always uses the layer version.
 - **Layers are not recommended for Go and Rust functions.** Including dependencies with the compiled executable avoids loading additional assemblies during initialization, which is better for cold starts.
 
-The shapes on courseware slide 38 present **AWS managed layers** and **partner or third-party layers** but do not name any. This document does not add names it could not verify (see [Section 10.5](#105-items-we-could-not-verify)).
+Layers come in **AWS managed layers** and **partner or third-party layers**. Their specific names are outside what could be verified, so this document does not add them (see [Section 10.5](#105-items-we-could-not-verify)).
 
 > — Source: [Managing Lambda dependencies with layers](https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html)
 
 ### 6.12 Environment Variables 🔄
 
-The description and command on courseware slide 32.
+The basic properties of environment variables and how to set them.
 
 | Item | Content |
 |---|---|
@@ -1191,7 +1193,7 @@ aws lambda update-function-configuration --function-name my-function \
   --environment "Variables={BUCKET=my-bucket,KEY=file.txt}"
 ```
 
-The courseware description matches current documentation. Here is what to add.
+In addition, here is what to keep in mind.
 
 | Item | Content |
 |---|---|
@@ -1202,7 +1204,7 @@ The courseware description matches current documentation. Here is what to add.
 | **Overwrite warning** 🆕 | When you apply environment variables with `update-function-configuration`, the **entire contents of the `Variables` structure is replaced.** To retain existing variables when adding a new one, include all existing values in your request |
 | Sensitive information 🆕 | For database credentials, API keys, and authorization tokens, documentation recommends **AWS Secrets Manager** instead of environment variables |
 
-🔄 **The overwrite warning directly affects the courseware slide 35 example.** If slide 34 sets `TABLE_NAME` and slide 35 specifies only `MP3_BUCKET_NAME` and `Notes_Table`, `TABLE_NAME` **disappears.** To retain existing values, read the current configuration with `get-function-configuration` and pass them all, and pass the `RevisionId` from that output to `update-function-configuration` to ensure values don't change between when you read and when you update.
+🔄 **The overwrite warning directly affects the lab scenario.** If you set `TABLE_NAME` when creating the function and then a later configuration update specifies only `MP3_BUCKET_NAME` and `Notes_Table`, `TABLE_NAME` **disappears.** To retain existing values, read the current configuration with `get-function-configuration` and pass them all, and pass the `RevisionId` from that output to `update-function-configuration` to ensure values don't change between when you read and when you update.
 
 Details on encryption at rest 🆕:
 
@@ -1219,7 +1221,7 @@ Details on encryption at rest 🆕:
 
 ### 6.13 arm64 (Graviton2) Architecture 🆕
 
-The courseware does not cover instruction set architecture selection. **All supported runtimes now support both x86_64 and arm64.**
+You can select an instruction set architecture when you create a function. **All supported runtimes now support both x86_64 and arm64.**
 
 | Item | Content |
 |---|---|
@@ -1234,7 +1236,7 @@ The courseware does not cover instruction set architecture selection. **All supp
 
 ### 6.14 Function URLs 🆕
 
-The courseware presents only Amazon API Gateway as the HTTP request path. **There are now two ways to invoke Lambda over HTTP.**
+There are two ways to invoke Lambda over HTTP: placing Amazon API Gateway in front, or attaching a function URL directly to the function.
 
 | Item | Content |
 |---|---|
@@ -1259,7 +1261,7 @@ Setting the auth type to `NONE` bypasses IAM authentication and creates a **publ
 
 ### 6.15 Response Streaming 🆕
 
-The courseware does not cover response streaming.
+Here are the details of response streaming, where a function sends its result incrementally.
 
 | Item | Content |
 |---|---|
@@ -1276,9 +1278,9 @@ The courseware does not cover response streaming.
 
 ### 6.16 Using the Lambda API
 
-The four APIs on courseware slide 33. **All four names and behaviors are still current.**
+The four core APIs for working with functions.
 
-| API | Slide description |
+| API | Description |
 |---|---|
 | `CreateFunction` | Creates a Lambda function from a deployment package. The package type can be **ZIP or a container image** |
 | `UpdateFunctionCode` | Updates the Lambda function's code. **After you create a version, you can't modify code that is already deployed** |
@@ -1301,21 +1303,21 @@ The four APIs on courseware slide 33. **All four names and behaviors are still c
 
 ### 6.17 Creating a Lambda Function (AWS CLI) 🔄
 
-The command on courseware slide 34. **There are two problems with it.**
+When reading a command that creates a .zip function with the CLI, there are two common pitfalls. Here is a form that contains them.
 
 ```bash
-# Courseware slide 34 (as printed, with problems)
+# A form containing the pitfalls (fails if used as-is)
 aws lambda create-function --function-name dictate-function --handler app.lambda_handler \
   --runtime python3.8 -–role arn:aws:iam::111122223333:role/lambdaPollyRole \
   --environment Variables={TABLE_NAME=$notesTable} --zip-file fileb://dictate-function.zip
 ```
 
-| Problem | Content |
+| Pitfall | Content |
 |---|---|
-| 🔄 `-–role` | Typeset with a **single hyphen plus an en dash (`–`)** instead of two hyphens, so the shell won't recognize it if you copy it verbatim. Every other flag on the same slide uses two hyphens. This is a typesetting error in the courseware |
+| 🔄 `-–role` | Easily typeset with a **single hyphen plus an en dash (`–`)** instead of two hyphens, so the shell won't recognize it if you copy it verbatim. Every flag must use two hyphens |
 | 🔄 `python3.8` | **Reached end of support on October 14, 2024.** Function creation is blocked from February 1, 2027, and function updates from March 3, 2027 |
 
-The account ID in the role ARN has been changed in the quotation above. The value printed in the courseware is not one of the AWS documentation example account IDs, so it was replaced with the documentation example `111122223333`. This is unrelated to the `--role` and `--runtime` problems and does not affect how the command behaves.
+The account ID in the role ARN above is written as the documentation example `111122223333`. This is unrelated to the `--role` and `--runtime` pitfalls and does not affect how the command behaves.
 
 The corrected form:
 
@@ -1339,17 +1341,17 @@ aws lambda create-function --function-name dictate-function \
 | `--handler` | The name of the handler method in your function code |
 | .zip location | Locally, `--zip-file fileb://myFunction.zip`; from S3, `--code S3Bucket=...,S3Key=...,S3ObjectVersion=...` |
 
-In the AWS CLI, the string `fileb://` indicates that the file data is a **binary object**. The courseware and current documentation agree on this point.
+In the AWS CLI, the string `fileb://` indicates that the file data is a **binary object**.
 
 🆕 **If your .zip file is smaller than 50 MB you can upload it from your local build machine; for larger files you must upload from an Amazon S3 bucket.** If you upload from S3 using the CLI, the bucket must be in the **same Region** as your function. For reference, the current official example uses `python3.14`.
 
-The `"MemorySize": 128` in the courseware slide 34 response is still the default memory value. Documentation describes 128 MB as the **lowest possible and default setting**, recommended only for simple functions that transform and route events (see [Section 7.2](#72-testing-goals-and-the-memory-cpu-relationship)).
+The `"MemorySize": 128` you see in the function creation response is still the default memory value. 128 MB is the **lowest possible and default setting**, recommended only for simple functions that transform and route events (see [Section 7.2](#72-testing-goals-and-the-memory-cpu-relationship)).
 
 > — Source: [Creating and updating Python Lambda functions using .zip files](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)
 
 ### 6.18 Updating Function Configuration (AWS CLI)
 
-The command on courseware slide 35.
+The command that changes a function's configuration.
 
 ```bash
 aws lambda update-function-configuration --function-name dictate-function \
@@ -1370,9 +1372,9 @@ With `update-function-configuration` you can change configuration details such a
 
 ### 6.19 Versions and Aliases 🔄
 
-Courseware slide 36 diagram: version 1 / version 2 / version `$Latest`, and two alias ARNs (`...:dictate-function:Prod`, `...:dictate-function:Test`). On the API Gateway side there is `stageVariables.useAlias = Test` and `...:dictate-function:${stageVariable.useAlias}`, with the stage variable `${}` substituted at runtime.
+Using aliases together with versions, you can switch which version is invoked through API Gateway stage variables. For example, with two aliases `Prod` and `Test`, configuring `...:dictate-function:${stageVariables.useAlias}` on the API Gateway side substitutes the stage variable `stageVariables.useAlias` with the alias name at runtime.
 
-The instructor notes match current documentation.
+The basic concepts of versions and aliases:
 
 - Publishing a new version increments the version number and preserves the previous version. Each version has a unique ARN.
 - An alias is like a pointer to a specific function version and can be updated to point to a different version.
@@ -1387,7 +1389,7 @@ aws lambda create-alias --function-name my-function --name alias-name \
   --function-version version-number --description " "
 ```
 
-🔄 Notation difference: the courseware writes `$Latest`, while documentation writes **`$LATEST`**.
+🔄 Notation note: the exact spelling of the unpublished version is **`$LATEST`** (uppercase).
 
 🆕 The exact scope of version immutability:
 
@@ -1404,7 +1406,7 @@ aws lambda create-alias --function-name my-function --name alias-name \
 
 ### 6.20 Weighted Aliases and Canary Deployments 🆕
 
-The courseware covers only pointing an alias at a specific version. **A single alias can now split traffic between two versions.**
+An alias is not limited to pointing at a single version. **A single alias can split traffic between two versions.**
 
 | Item | Content |
 |---|---|
@@ -1461,17 +1463,17 @@ Resources:
 
 ### 7.1 Testing and Debugging
 
-Courseware slide 40 shapes: deployment package (function code) + layer 1, layer 2 → test and debug the application. Upload the deployment package, separate the dependencies you want to share and upload them as layers, and you can test your function code more effectively.
+Separating the dependencies you want to share out of the deployment package (function code) and uploading them as layers lets you test and debug your function code more effectively.
 
 ### 7.2 Testing Goals and the Memory-CPU Relationship
 
-The three goals on courseware slide 41.
+Testing has three goals.
 
-- **Performance test** the Lambda function's memory
-- **Load test** the Lambda function's timeout
+- **Performance test** the function's memory
+- **Load test** the function's timeout
 - Understand Lambda **quotas**
 
-The instructor note "as memory size increases, the CPU capacity available to the function increases correspondingly" **matches current documentation.**
+The key point is that **increasing memory increases CPU capacity proportionally.**
 
 | Item | Content |
 |---|---|
@@ -1484,15 +1486,13 @@ The instructor note "as memory size increases, the CPU capacity available to the
 
 A function's memory usage is determined per invocation and visible in CloudWatch Logs. Analyze how long the function runs to determine the optimal timeout value, which matters especially when the function makes network calls to resources that may not handle Lambda's scaling.
 
-The `limits.html` path the courseware cites now redirects to `gettingstarted-limits.html`.
-
 > — Source: [Configure Lambda function memory](https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html)
 
 ### 7.3 Ways to Test a Lambda Function 🔄
 
-The four methods on courseware slide 42.
+There are four ways to test a function.
 
-| Method | Courseware description |
+| Method | Content |
 |---|---|
 | AWS Management Console | Event templates / custom payloads / use CloudWatch Logs (log group or log stream) |
 | AWS CLI | Invoke a function or a specific function version / monitor through CloudWatch Logs |
@@ -1501,7 +1501,7 @@ The four methods on courseware slide 42.
 
 #### Console Test Events 🆕
 
-When you run a test in the console, Lambda invokes your function **synchronously** with the test event. If your function doesn't require input, use an empty document `{}`. There are two kinds the courseware does not cover.
+When you run a test in the console, Lambda invokes your function **synchronously** with the test event. If your function doesn't require input, use an empty document `{}`. There are two kinds of test event.
 
 | Kind | Content |
 |---|---|
@@ -1516,7 +1516,7 @@ Choosing **Test** before saving creates an unsaved test event that Lambda preser
 
 #### AWS SAM Local Testing 🆕
 
-The courseware only says "use AWS SAM with AWS Toolkits and a debugger to test and debug locally." `sam local` has four subcommands.
+Using AWS SAM with AWS Toolkits and a debugger, you can test and debug functions locally. `sam local` has four subcommands.
 
 | Subcommand | Purpose |
 |---|---|
@@ -1531,7 +1531,7 @@ Before using `sam local` you need the AWS SAM prerequisites and the AWS SAM CLI 
 
 ### 7.4 Invoking a Lambda Function (CLI) 🔄
 
-The CLI syntax on courseware slide 43.
+The CLI syntax of `aws lambda invoke`.
 
 ```text
 invoke
@@ -1544,7 +1544,7 @@ invoke
 <outfile>
 ```
 
-The courseware's parameter descriptions **match current documentation.** Here are the details filled in.
+Here are the details of each parameter.
 
 | Parameter | Content |
 |---|---|
@@ -1572,10 +1572,10 @@ This operation requires the **`lambda:InvokeFunction`** permission.
 
 ### 7.5 Example: Invoking a Function 🔄
 
-The command and output on courseware slide 44.
+The command and output for invoking a function.
 
 ```bash
-# Courseware slide 44 (AWS CLI v2 needs one more option)
+# AWS CLI v2 needs one more option
 aws lambda invoke --function-name dictate-function \
   --payload '{"UserId": "newbie","NoteId": "2","VoiceId": "Joey"}' response.txt
 ```
@@ -1604,14 +1604,14 @@ You can make it the default with `aws configure set cli-binary-format raw-in-bas
 
 ### 7.6 Error Handling 🔄
 
-The two columns on courseware slide 45. **The two categories and the header name match current documentation.**
+Lambda errors fall into two categories.
 
-| Category | Courseware body |
+| Category | Content |
 |---|---|
 | Invocation errors | Response error codes: **400 or 500 series**. Common error types — request (too large or invalid) / caller (not authorized) / account (maximum function instances reached, too many requests — concurrent execution limit of 1,000) |
 | Function errors | Response header: **`X-Amz-Function-Error`**. Function error (determines your error handling strategy) / runtime error (timeout, syntax error) |
 
-🆕 An important fact the courseware does not state: **when your function code or the Lambda runtime returns an error, the status code in the response is 200 OK.** The presence of an error is indicated only by the `X-Amz-Function-Error` header. The 400 and 500-series status codes are **reserved for invocation errors**. In other words, judging success by a 200 status code alone will miss function errors.
+🆕 An easy fact to miss: **when your function code or the Lambda runtime returns an error, the status code in the response is still 200 OK.** The presence of an error is indicated only by the `X-Amz-Function-Error` header. The 400 and 500-series status codes are **reserved for invocation errors**. In other words, judging success by a 200 status code alone will miss function errors.
 
 Where to find errors:
 
@@ -1625,14 +1625,14 @@ Where to find errors:
 - You can **request an increase** to tens of thousands.
 - **New AWS accounts start with reduced concurrency and memory quotas** that AWS raises automatically based on your usage.
 
-The instructor note that **code must be idempotent** if your system relies on retries is still valid, and the ESM documentation states that event source mappings process each event at least once and duplicate processing can occur, so making function code idempotent is **strongly recommended**.
+If your system relies on retries, your **code must be idempotent.** The ESM documentation states that event source mappings process each event at least once and duplicate processing can occur, so making function code idempotent is **strongly recommended**.
 
 🆕 Two invocation errors you'll see often:
 
 | Error | Cause and response |
 |---|---|
 | `Sandbox.Timedout` (Init phase timeout) | When the `Init` phase times out, Lambda re-runs `Init` on the next invocation request (a suppressed init). With a short timeout such as 3 seconds, `Init` can time out again or leave too little time for `Invoke`. Extend the timeout, increase memory (which increases CPU proportionally), or optimize initialization code |
-| `lambda:InvokeFunction not authorized` | The caller lacks the `lambda:InvokeFunction` permission (see [Section 5.2](#52-the-no-explicit-permission-needed-in-the-same-account-claim)) |
+| `lambda:InvokeFunction not authorized` | The caller lacks the `lambda:InvokeFunction` permission (see [Section 5.2](#52-invocation-permission-is-required-even-in-the-same-account)) |
 
 > — Source: [Troubleshoot execution issues in Lambda](https://docs.aws.amazon.com/lambda/latest/dg/python-exceptions.html)
 
@@ -1642,7 +1642,7 @@ The instructor note that **code must be idempotent** if your system relies on re
 
 ### 8.1 Packaging Considerations
 
-The three principles on courseware slide 47.
+Follow three principles when building a deployment package.
 
 - Control the dependencies in your function's deployment package.
 - Minimize the deployment package size to its runtime necessities.
@@ -1650,7 +1650,7 @@ The three principles on courseware slide 47.
 
 Lambda supports two types of deployment package: **container images** and **.zip file archives**.
 
-Details from the courseware instructor notes:
+Details for each principle:
 
 | Principle | Content |
 |---|---|
@@ -1662,7 +1662,7 @@ Details from the courseware instructor notes:
 
 ### 8.2 Deploying .zip File Archives
 
-The table on courseware slide 48.
+.zip deployment by language.
 
 | .zip deployment by language | Node.js, Python, Ruby | Java | .NET Core |
 |---|---|---|---|
@@ -1670,9 +1670,9 @@ The table on courseware slide 48.
 | How | Install libraries using npm, pip, or other build/packaging tools | Use Maven, the Eclipse IDE plugin, or other build/packaging tools | Use Nuget, the Visual Studio plugin, or other build/packaging tools |
 | Location | All dependencies must be at the **root level** | Compiled classes and resource files at the root level, required jars in the **`/lib` directory** | **All assemblies (`.dll`) at the root level** |
 
-🔄 The column name **".NET Core"** is no longer a current runtime name (see [Section 3.4](#34-supported-runtimes)). It is now `.NET 8` and `.NET 10`.
+🔄 The **".NET Core"** label in the table above is no longer a current runtime name (see [Section 3.4](#34-supported-runtimes)). It is now `.NET 8` and `.NET 10`.
 
-Language-specific notes from the instructor notes:
+Language-specific notes:
 
 - **Node.js, Ruby, and Python** — Create a .zip archive of your code and dependencies and set appropriate security permissions. **Zip the contents of the directory, not the directory itself.** The contents of the zip file are available as your Lambda function's current working directory.
 - **Java** — Decide whether the deployment package is a .zip file or a standalone jar.
@@ -1688,9 +1688,16 @@ Language-specific notes from the instructor notes:
 
 ### 8.3 Deploying with Containers
 
-The four steps on courseware slide 49: create the project and code → build the container using an AWS base image (Lambda runtime interface client) → **upload the container to Amazon ECR (10 GB)** → create the Lambda function using the container image.
+Deploying with a container image follows four steps.
 
-**Every core fact in the instructor notes matches current documentation.**
+```text
+1. Create the project and code
+2. Build the container using an AWS base image (Lambda runtime interface client)
+3. Upload the container to Amazon ECR (up to 10 GB uncompressed)
+4. Create the Lambda function using the container image
+```
+
+Here are the core facts.
 
 | Item | Content |
 |---|---|
@@ -1699,7 +1706,7 @@ The four steps on courseware slide 49: create the project and code → build the
 | Runtime API | To use Lambda, the image must implement the **Lambda runtime API**, and AWS provides a **runtime interface client** for all supported runtimes. The implementations use an open-source license, are shared with the community, and are available through native package managers |
 | Layers | **Container images do not use layers.** You package the required runtime, libraries, and dependencies into the image |
 
-🆕 Items the courseware does not cover:
+🆕 Items to keep in mind:
 
 | Item | Content |
 |---|---|
@@ -1717,25 +1724,25 @@ The four steps on courseware slide 49: create the project and code → build the
 
 ### 8.4 Lambda Function Quotas 🔄
 
-**The header of the courseware slide 50 table reads "Quota (as of September 2021)."** Here is the comparison.
+Several Lambda quotas have changed since 2021. The table below shows current values alongside the values that were commonly cited earlier.
 
-| Resource | Courseware (September 2021) | Current | Verdict |
+| Resource | Earlier value (around September 2021) | Current | Verdict |
 |---|---|---|---|
-| Memory allocation | 128–10,240 MB | 128 MB to 10,240 MB, in **1-MB increments**. 1 vCPU at 1,769 MB | Matches |
-| Maximum runtime (timeout) | 15 minutes | 900 seconds (15 minutes) | Matches |
+| Memory allocation | 128–10,240 MB | 128 MB to 10,240 MB, in **1-MB increments**. 1 vCPU at 1,769 MB | Unchanged |
+| Maximum runtime (timeout) | 15 minutes | 900 seconds (15 minutes) | Unchanged |
 | Burst concurrency | Up to 1,000 concurrent executions per 10 seconds per function | **1,000 execution environments every 10 seconds** per function per Region. Now called the **concurrency scaling limit** | 🔄 Name changed |
 | Invocation payload | Synchronous 6 MB / **asynchronous 256 KB** | Synchronous 6 MB each for request and response / **asynchronous 1 MB** / streamed response 200 MB / 1 MB for the total combined size of request line and header values | 🔄 **Asynchronous limit changed** |
 | Deployment package | Zip 50 MB, unzipped 250 MB, **console inline editing 3 MB**, container image 10 GB | 50 MB zipped through the Lambda API or SDKs, **50 MB through the console**, 250 MB unzipped including layers and custom runtimes, container image 10 GB | 🔄 **Console item changed** |
 | `/tmp` storage | 10 GB | **Between 512 MB and 10,240 MB, in 1-MB increments** | 🔄 **Now a range** |
-| Concurrent executions | (Slide 45) 1,000 | Default quota 1,000, **increasable to tens of thousands**. New accounts start with reduced values | 🔄 |
+| Concurrent executions | 1,000 | Default quota 1,000, **increasable to tens of thousands**. New accounts start with reduced values | 🔄 |
 
-🆕 Current quotas that are not in the courseware table.
+🆕 Current quotas not in the table above.
 
 | Resource | Quota |
 |---|---|
 | Environment variables | **4 KB** for all of a function's environment variables in aggregate |
 | Resource-based policy | **20 KB** |
-| Layers | **5** (matches courseware slide 38) |
+| Layers | **5** |
 | Streamed response bandwidth | Uncapped for the first 6 MB, then **2 MBps** |
 | Network bandwidth per execution environment | **625 Mbps.** Functions not attached to a VPC can request an increase (after approval, bandwidth scales proportionally with memory starting at 2,048 MB and reaching up to 3,000 Mbps at 10,240 MB) |
 | Container image settings size | **16 KB** |
@@ -1756,11 +1763,9 @@ The four steps on courseware slide 49: create the project and code → build the
 | `GetPolicy` | 15 requests per second (cannot be increased) |
 | Remainder of control plane API requests | 15 requests per second **across all APIs** (cannot be increased) |
 
-The instructor note "a function's concurrency is the number of instances serving requests at a given time, and a sudden increase in the number of instances needed to run the requested number of functions is called a burst" is still conceptually valid.
+A function's concurrency is the number of instances serving requests at a given time, and a sudden increase in the number of instances needed is called a **burst**.
 
 🆕 A practical pitfall the documentation raises: **quota mismatches between services.** API Gateway has a default throttle limit of 10,000 requests per second whereas Lambda has a default concurrency of 1,000, so API Gateway can send more requests than Lambda can handle. Resolve it by requesting a Lambda concurrency increase that matches your expected traffic.
-
-The `gettingstarted-limits.html` path the courseware cites is still valid.
 
 > — Source: [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html)
 
@@ -1768,20 +1773,20 @@ The `gettingstarted-limits.html` path the courseware cites is still valid.
 
 ## 9. Demo and Lab 4
 
-### 9.1 Demo: Creating a Lambda Function in the AWS Console (Slide 52)
+### 9.1 Demo: Creating a Lambda Function in the AWS Console
 
-Demo items:
+Create a function in the console and walk through the following.
 
 - Overview of the Lambda environment
 - Using global/scope constraints — environment variables and parameters
 - Deploying versions, aliases, and Lambda layers
 - Monitoring with CloudWatch
 
-### 9.2 Lab 4 Overview: Developing a Solution with AWS Lambda (Slides 55–56)
+### 9.2 Lab 4 Overview: Developing a Solution with AWS Lambda
 
-Diagram labels: user → Delete / Dictate / Search / List / Create-update → Notes table, MP3 hosting, Amazon Polly.
+This lab is built around a notes application. When a user invokes the Delete / Dictate / Search / List / Create-update actions, a Notes table, an MP3 hosting bucket, and Amazon Polly work together.
 
-Lab objectives (courseware instructor notes):
+Lab objectives:
 
 - Create AWS Lambda functions and interact with them programmatically using the AWS SDKs and the AWS CLI
 - Configure AWS Lambda functions to use environment variables and integrate with other services
@@ -1791,7 +1796,7 @@ Lab objectives (courseware instructor notes):
 
 ### 9.3 Where the Lab Can Trip You Up 🆕
 
-Here are the points where the lab code and commands, taken verbatim from the courseware, can trip you up. The evidence for each is in the referenced section.
+Here are the points where following the lab code and commands as written can trip you up. The evidence for each is in the referenced section.
 
 | Point | Content | Reference |
 |---|---|---|
@@ -1800,7 +1805,7 @@ Here are the points where the lab code and commands, taken verbatim from the cou
 | `--payload` | AWS CLI v2 requires `--cli-binary-format raw-in-base64-out` | [Section 7.5](#75-example-invoking-a-function) |
 | Environment variable overwrite | `update-function-configuration` **replaces the entire** `Variables` structure | [Section 6.12](#612-environment-variables) |
 | `boto3.resource` | An interface that receives no new features, but it keeps working, so the lab is fine | [Section 6.10](#610-example-lambda-function-python-lab-code) |
-| Invoke permission | `lambda:InvokeFunction` is required even in the same account | [Section 5.2](#52-the-no-explicit-permission-needed-in-the-same-account-claim) |
+| Invoke permission | `lambda:InvokeFunction` is required even in the same account | [Section 5.2](#52-invocation-permission-is-required-even-in-the-same-account) |
 | Provisioned concurrency | Cannot be applied to `$LATEST` | [Section 4.7](#47-concurrency) |
 | Timeout | The default is 3 seconds. Heavy initialization combined with the 10-second `Init` limit can cause consecutive timeouts | [Section 4.5](#45-execution-environment-lifecycle) · [Section 7.6](#76-error-handling) |
 
@@ -1810,87 +1815,87 @@ Here are the points where the lab code and commands, taken verbatim from the cou
 
 ## 10. Changes from the Courseware
 
-These are items in the courseware (instructor deck) that differ from current behavior. Learners have the official courseware in hand, so we keep a record of what changed and why.
+Learners may have the official courseware in hand, so this section gathers in one place where this material diverges from it. The evidence for the items flagged as new or corrected in earlier sections lives here.
 
-This module has the largest delta in the course. The quota table on courseware slide 50 is explicitly labeled **"as of September 2021"**, the runtime list has changed substantially since then, and many features added after the courseware — SnapStart, function URLs, response streaming, recursive loop detection — did not exist yet.
+This module has the largest delta in the course. The courseware quota table was based on **"as of September 2021"**, the runtime list has changed substantially since then, and many features added afterward — SnapStart, function URLs, response streaming, recursive loop detection — did not exist yet.
 
-### 10.1 Where the Courseware Differs from Fact
+### 10.1 Differences from the Courseware
 
-| Item | Courseware | Verified content | Source |
+| Item | Courseware statement | Verified content | Source |
 |---|---|---|---|
-| Invoke permission in the same account (slide 20 notes) | "If your custom application and the Lambda function it invokes belong to the same AWS account, you don't need to grant explicit permissions" | The caller needs the **`lambda:InvokeFunction` permission** regardless of the account relationship. When a user accesses a Lambda resource, Lambda evaluates **both** identity-based and resource-based policies; when an AWS service invokes, it evaluates only the resource-based policy. Without the permission you get an "is not authorized to perform: lambda:InvokeFunction" error, and this requirement also applies to Lambda functions and other compute resources that invoke functions | [Managing permissions in AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html) |
-| Context "time remaining" default (slide 27 notes) | Python `(default = 3 seconds)`, Java and .NET `(default = 15 minutes)` | All three context documents say only that it **"returns the number of milliseconds left before the execution times out"** and do not state a default. The value is calculated against the function's configured timeout, so there is no per-language default. Since the function timeout defaults to 3 seconds with a maximum of 900 seconds, the Python figure is the default and the Java and .NET figure the maximum — an **internal inconsistency in the courseware** | [Python context object](https://docs.aws.amazon.com/lambda/latest/dg/python-context.html) |
-| Python context list (slide 27 notes) | Only the 7 properties from `function_name` to `log_stream_name` | Current documentation includes **`identity` (mobile apps) and `client_context` (mobile apps)** for Python as well. `identity` contains `cognito_identity_id` and `cognito_identity_pool_id`; `client_context` contains `client.installation_id`, `app_title`, `app_version_name`, `app_version_code`, `app_package_name`, `custom`, and `env` | [Python context object](https://docs.aws.amazon.com/lambda/latest/dg/python-context.html) |
-| The `-–role` CLI flag (slide 34) | A single hyphen plus an en dash (`–`) | The shell won't recognize it. Every other flag on the same slide uses two hyphens. The output JSON in the same code block also contains a truncated fragment, `"State": "Active", -n:dictate-function",`. This is a typesetting error in the courseware, so we corrected only the notation without citing AWS documentation | — (see [Section 10.5](#105-items-we-could-not-verify)) |
-| Duplicate titles on slides 16 and 17 | Both read "Minimizing cold starts 1/2" | Slide 16 covers scheduled triggers and provisioned concurrency while slide 17 covers Lambda SnapStart, so slide 17 should be **"2/2."** This document splits the two sections as 1/2 and 2/2 | — (see [Section 10.5](#105-items-we-could-not-verify)) |
+| Invoke permission in the same account | "If your custom application and the Lambda function it invokes belong to the same AWS account, you don't need to grant explicit permissions" | The caller needs the **`lambda:InvokeFunction` permission** regardless of the account relationship. When a user accesses a Lambda resource, Lambda evaluates **both** identity-based and resource-based policies; when an AWS service invokes, it evaluates only the resource-based policy. Without the permission you get an "is not authorized to perform: lambda:InvokeFunction" error, and this requirement also applies to Lambda functions and other compute resources that invoke functions | [Managing permissions in AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html) |
+| Context "time remaining" default | Python `(default = 3 seconds)`, Java and .NET `(default = 15 minutes)` | All three context documents say only that it **"returns the number of milliseconds left before the execution times out"** and do not state a default. The value is calculated against the function's configured timeout, so there is no per-language default. Since the function timeout defaults to 3 seconds with a maximum of 900 seconds, the Python figure appears to be the default and the Java and .NET figure the maximum — an **internal inconsistency** | [Python context object](https://docs.aws.amazon.com/lambda/latest/dg/python-context.html) |
+| Python context list | Only the 7 properties from `function_name` to `log_stream_name` | Current documentation includes **`identity` (mobile apps) and `client_context` (mobile apps)** for Python as well. `identity` contains `cognito_identity_id` and `cognito_identity_pool_id`; `client_context` contains `client.installation_id`, `app_title`, `app_version_name`, `app_version_code`, `app_package_name`, `custom`, and `env` | [Python context object](https://docs.aws.amazon.com/lambda/latest/dg/python-context.html) |
+| The `-–role` CLI flag | A single hyphen plus an en dash (`–`) | The shell won't recognize it. Every other flag uses two hyphens. The output JSON in the same code block also contains a truncated fragment, `"State": "Active", -n:dictate-function",`. This is a typesetting error, so we corrected only the notation without citing AWS documentation | — (see [Section 10.5](#105-items-we-could-not-verify)) |
+| Duplicate "minimizing cold starts" titles | Both sections read "Minimizing cold starts 1/2" | The first section covers scheduled triggers and provisioned concurrency while the second covers Lambda SnapStart, so the second should be **"2/2."** This material splits the two sections as 1/2 and 2/2 | — (see [Section 10.5](#105-items-we-could-not-verify)) |
 
 ### 10.2 Changed Behavior or Defaults
 
-| Item | Courseware | Current | Source |
+| Item | Courseware statement | Current | Source |
 |---|---|---|---|
-| Supported runtime list (slide 10 notes) | "Node.js, Java, Python, .NET Core, Go, Ruby" | The supported runtimes table lists Node.js (22, 24, 26 preview), Python (3.10–3.15 preview), Java (8, 11, 17, 21, 25), **.NET (8, 9, 10)**, Ruby (3.3, 3.4, 4.0), and the OS-only runtime (`provided.al2023`). The `.NET Core` family and `go1.x` reached end of support, and Go and Rust run on the OS-only runtime. The Fargate vs. Lambda decision guide also includes **PowerShell** among natively supported languages | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| Asynchronous invocation payload (slide 50) | 256 KB | **1 MB.** Synchronous 6 MB matches the courseware, and streamed response 200 MB plus 1 MB for combined request line and header values were added | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
-| `/tmp` storage (slide 50) | 10 GB (presented as a fixed value) | A setting you configure **between 512 MB and 10,240 MB in 1-MB increments.** No additional cost up to 512 MB; beyond that billed per GB-second. SnapStart does not support more than 512 MB | [Configure ephemeral storage](https://docs.aws.amazon.com/lambda/latest/dg/configuration-ephemeral-storage.html) |
-| Deployment package "console inline editing 3 MB" (slide 50) | 3 MB | **This item is not in the current quota table.** The table lists 50 MB zipped through the Lambda API or SDKs, **50 MB through the console**, and 250 MB unzipped. The code editor conditions are **an interpreted language runtime (Python, Node.js, Ruby) plus a package smaller than 50 MB unzipped**, and container image functions can't be edited in the console | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
-| "Burst concurrency" (slide 50) | The item name | The number (1,000 execution environments every 10 seconds per function per Region) is the same and **the name changed.** It is now the **concurrency scaling rate**, and the concurrency scaling limit in the quota table. Unused portions do not accrue | [Lambda scaling behavior](https://docs.aws.amazon.com/lambda/latest/dg/scaling-behavior.html) |
-| Concurrent execution limit of 1,000 (slide 45) | Presented as a fixed limit | An **increasable default quota** (to tens of thousands). **New AWS accounts start with reduced concurrency and memory quotas** that AWS raises automatically based on usage | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
-| SnapStart supported runtimes (slide 17) | "The Java 11 and Java 17 managed runtimes" | **Java 11 and later, Python 3.12 and later, .NET 8 and later.** Other managed runtimes, OS-only runtimes, and container images are not supported | [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html) |
-| SnapStart "at no additional cost" (slide 17 notes) | Free without qualification | **No additional cost for Java managed runtimes only.** Otherwise, snapshot caching charges (**minimum 3 hours**) and restoration charges apply, both depending on the memory you allocate | [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html) |
-| SnapStart "up to 10x" (slide 17) | A multiplier | Current documentation uses **"as low as sub-second startup performance"** rather than a multiplier. It also notes that SnapStart works best at scale and that infrequently invoked functions might not see the same improvement. We found no basis to declare 10x wrong; we only confirmed that **the current documentation does not use that phrasing** | [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html) |
-| Asynchronous invocation record destinations (slide 12 notes) | AWS Lambda, SNS, SQS, EventBridge — four | Those four **plus an Amazon S3 bucket (on failure only)**, five total. Each requires `sqs:SendMessage`, `sns:Publish`, `s3:PutObject` + `s3:ListBucket`, `lambda:InvokeFunction`, or `events:PutEvents` in the execution role | [Capturing records of asynchronous invocations](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html) |
-| Asynchronous retry configuration (slide 12 notes) | "The number of retries and the retry interval are configurable" | What is configurable is the **number of retries (`MaximumRetryAttempts`, 0–2) and the maximum event age (`MaximumEventAgeInSeconds`, up to 6 hours)**; there is no parameter for the retry interval itself. The default intervals are one minute between the first two attempts and two minutes between the second and third | [Configuring error handling settings](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-configuring.html) |
-| Runtime-included SDK (slide 24 notes) | "The runtimes for Python and Node.js include the SDK, so you don't need to bundle them" | The inclusion is correct and **Ruby is included too**, but the conclusion is reversed. Current documentation recommends **always including SDK modules in your deployment package or a layer** for dependency control and backward compatibility during automatic runtime updates, and using the included SDK only when you can't add packages, such as the console code editor or CloudFormation inline code | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| Code storage location (slide 14 notes) | "AWS Lambda stores your code in Amazon S3 and encrypts the data at rest" | Encryption at rest is correct. The storage location defaults to **Lambda-managed storage** (300 GB unzipped per account per Region) with **self-managed S3 code storage** using your own bucket as an option. With self-managed storage, Lambda does not store a copy of your source code | [Data encryption at rest](https://docs.aws.amazon.com/lambda/latest/dg/security-encryption-at-rest.html) |
-| Recursive code response (slide 25 notes) | "Immediately set the function concurrent execution limit to 0" | Lambda now **detects recursive loops and stops them automatically** (approximately 16 invocations in the same chain of requests, on by default and free). However, detection covers only loops between your functions and SQS, S3, and SNS, plus loops of Lambda functions alone, so **loops involving DynamoDB are not detected** and the courseware's manual measure is still valid | [Recursive loop detection](https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html) |
-| `invoke --payload` (slide 44) | Passes a JSON string directly | AWS CLI **version 2 requires `--cli-binary-format raw-in-base64-out`.** You can make it the default with `aws configure set cli-binary-format raw-in-base64-out` | [Invoking a function asynchronously](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html) |
-| Event source list (slide 9) | Includes Amazon Alexa, AWS CloudTrail, Amazon CloudWatch | **Amazon Alexa and AWS CloudTrail are not in** the current "Services that can invoke Lambda functions" table (28 entries). Absence from the table does not mean invocation is impossible, so we do not assert that. "Amazon CloudWatch" became **Amazon CloudWatch Logs**. The courseware qualified its list with "including but not limited to," so the list itself is not wrong | [Invoking Lambda with events from other AWS services](https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html) |
-| The `.NET Core` column name (slide 48) | ".NET Core" | Current runtime names are `.NET 8`, `.NET 9` (container only), and `.NET 10`. All `.NET Core` family runtimes reached end of support | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| `$Latest` notation (slide 36) | `$Latest` | Documentation writes **`$LATEST`** | [Manage Lambda function versions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) |
-| Old documentation paths (slides 20, 21, 41 notes) | `limits.html`, `intro-permission-model.html`, `dg/API_AddPermission.html`, `dg/API_CreateEventSourceMapping.html` | All are **alive via redirects.** `limits.html`→`gettingstarted-limits.html`, `intro-permission-model.html`→`lambda-permissions.html`, and `dg/API_*.html`→`api/API_*.html`. Since the API Reference was separated from the Developer Guide, citing the new paths directly is more accurate | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
-| How to grant invocation permission (slides 19, 20) | Only the `AddPermission` API | Current documentation presents the **full JSON policy (`PutResourcePolicy`) as the recommended path** and positions `AddPermission` for adding individual `Allow` statements. A full JSON policy can use the complete range of IAM global condition keys and explicit `Deny`, up to 20 KB. `put-resource-policy` **overwrites** the entire existing policy | [Working with resource-based policies](https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html) |
-| DLQ as the asynchronous best practice (slide 12 notes) | "The best practice for asynchronous invocation is to create and use a DLQ" | Current documentation presents the DLQ as an **alternative to an on-failure destination.** On-failure destinations support more target types, include details about the function's response, and can be configured on a function, version, or alias. A DLQ is function-level only and sends only the event content. The DLQ itself is still supported | [Capturing records of asynchronous invocations](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html) |
-| Serverless compute classification (slides 5, 6) | Only Lambda in the serverless column; Fargate only in the instructor notes | The current decision guide **classifies Fargate as serverless compute alongside Lambda.** It also presents other compute options such as AWS Batch, Elastic Beanstalk, ECS/EKS Anywhere, and Lightsail | [Choosing an AWS compute service](https://docs.aws.amazon.com/decision-guides/latest/compute-on-aws-how-to-choose/choosing-aws-compute-service.html) |
-| Development tools (slide 23, slide 54 notes) | Third-party plugins (Eclipse, PyCharm, Visual Studio) | The current development tools document presents **AWS Toolkit for VS Code** as the local development tool and does not mention the Eclipse toolkit. The PyCharm toolkit is part of the **AWS Toolkit for JetBrains**. It also presents IaC (SAM, CDK, CloudFormation), GitHub Actions, and Powertools for AWS Lambda | [Development tools for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html) |
+| Supported runtime list | "Node.js, Java, Python, .NET Core, Go, Ruby" | The supported runtimes table lists Node.js (22, 24, 26 preview), Python (3.10–3.15 preview), Java (8, 11, 17, 21, 25), **.NET (8, 9, 10)**, Ruby (3.3, 3.4, 4.0), and the OS-only runtime (`provided.al2023`). The `.NET Core` family and `go1.x` reached end of support, and Go and Rust run on the OS-only runtime. The Fargate vs. Lambda decision guide also includes **PowerShell** among natively supported languages | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| Asynchronous invocation payload | 256 KB | **1 MB.** Synchronous 6 MB matches the courseware, and streamed response 200 MB plus 1 MB for combined request line and header values were added | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
+| `/tmp` storage | 10 GB (presented as a fixed value) | A setting you configure **between 512 MB and 10,240 MB in 1-MB increments.** No additional cost up to 512 MB; beyond that billed per GB-second. SnapStart does not support more than 512 MB | [Configure ephemeral storage](https://docs.aws.amazon.com/lambda/latest/dg/configuration-ephemeral-storage.html) |
+| Deployment package "console inline editing 3 MB" | 3 MB | **This item is not in the current quota table.** The table lists 50 MB zipped through the Lambda API or SDKs, **50 MB through the console**, and 250 MB unzipped. The code editor conditions are **an interpreted language runtime (Python, Node.js, Ruby) plus a package smaller than 50 MB unzipped**, and container image functions can't be edited in the console | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
+| "Burst concurrency" | The item name | The number (1,000 execution environments every 10 seconds per function per Region) is the same and **the name changed.** It is now the **concurrency scaling rate**, and the concurrency scaling limit in the quota table. Unused portions do not accrue | [Lambda scaling behavior](https://docs.aws.amazon.com/lambda/latest/dg/scaling-behavior.html) |
+| Concurrent execution limit of 1,000 | Presented as a fixed limit | An **increasable default quota** (to tens of thousands). **New AWS accounts start with reduced concurrency and memory quotas** that AWS raises automatically based on usage | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
+| SnapStart supported runtimes | "The Java 11 and Java 17 managed runtimes" | **Java 11 and later, Python 3.12 and later, .NET 8 and later.** Other managed runtimes, OS-only runtimes, and container images are not supported | [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html) |
+| SnapStart "at no additional cost" | Free without qualification | **No additional cost for Java managed runtimes only.** Otherwise, snapshot caching charges (**minimum 3 hours**) and restoration charges apply, both depending on the memory you allocate | [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html) |
+| SnapStart "up to 10x" | A multiplier | Current documentation uses **"as low as sub-second startup performance"** rather than a multiplier. It also notes that SnapStart works best at scale and that infrequently invoked functions might not see the same improvement. We found no basis to declare 10x wrong; we only confirmed that **the current documentation does not use that phrasing** | [Lambda SnapStart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html) |
+| Asynchronous invocation record destinations | AWS Lambda, SNS, SQS, EventBridge — four | Those four **plus an Amazon S3 bucket (on failure only)**, five total. Each requires `sqs:SendMessage`, `sns:Publish`, `s3:PutObject` + `s3:ListBucket`, `lambda:InvokeFunction`, or `events:PutEvents` in the execution role | [Capturing records of asynchronous invocations](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html) |
+| Asynchronous retry configuration | "The number of retries and the retry interval are configurable" | What is configurable is the **number of retries (`MaximumRetryAttempts`, 0–2) and the maximum event age (`MaximumEventAgeInSeconds`, up to 6 hours)**; there is no parameter for the retry interval itself. The default intervals are one minute between the first two attempts and two minutes between the second and third | [Configuring error handling settings](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-configuring.html) |
+| Runtime-included SDK | "The runtimes for Python and Node.js include the SDK, so you don't need to bundle them" | The inclusion is correct and **Ruby is included too**, but the conclusion is reversed. Current documentation recommends **always including SDK modules in your deployment package or a layer** for dependency control and backward compatibility during automatic runtime updates, and using the included SDK only when you can't add packages, such as the console code editor or CloudFormation inline code | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| Code storage location | "AWS Lambda stores your code in Amazon S3 and encrypts the data at rest" | Encryption at rest is correct. The storage location defaults to **Lambda-managed storage** (300 GB unzipped per account per Region) with **self-managed S3 code storage** using your own bucket as an option. With self-managed storage, Lambda does not store a copy of your source code | [Data encryption at rest](https://docs.aws.amazon.com/lambda/latest/dg/security-encryption-at-rest.html) |
+| Recursive code response | "Immediately set the function concurrent execution limit to 0" | Lambda now **detects recursive loops and stops them automatically** (approximately 16 invocations in the same chain of requests, on by default and free). However, detection covers only loops between your functions and SQS, S3, and SNS, plus loops of Lambda functions alone, so **loops involving DynamoDB are not detected** and the courseware's manual measure is still valid | [Recursive loop detection](https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html) |
+| `invoke --payload` | Passes a JSON string directly | AWS CLI **version 2 requires `--cli-binary-format raw-in-base64-out`.** You can make it the default with `aws configure set cli-binary-format raw-in-base64-out` | [Invoking a function asynchronously](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html) |
+| Event source list | Includes Amazon Alexa, AWS CloudTrail, Amazon CloudWatch | **Amazon Alexa and AWS CloudTrail are not in** the current "Services that can invoke Lambda functions" table (28 entries). Absence from the table does not mean invocation is impossible, so we do not assert that. "Amazon CloudWatch" became **Amazon CloudWatch Logs**. The courseware qualified its list with "including but not limited to," so the list itself is not wrong | [Invoking Lambda with events from other AWS services](https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html) |
+| The `.NET Core` column name | ".NET Core" | Current runtime names are `.NET 8`, `.NET 9` (container only), and `.NET 10`. All `.NET Core` family runtimes reached end of support | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| `$Latest` notation | `$Latest` | Documentation writes **`$LATEST`** | [Manage Lambda function versions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) |
+| Old documentation paths | `limits.html`, `intro-permission-model.html`, `dg/API_AddPermission.html`, `dg/API_CreateEventSourceMapping.html` | All are **alive via redirects.** `limits.html`→`gettingstarted-limits.html`, `intro-permission-model.html`→`lambda-permissions.html`, and `dg/API_*.html`→`api/API_*.html`. Since the API Reference was separated from the Developer Guide, citing the new paths directly is more accurate | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
+| How to grant invocation permission | Only the `AddPermission` API | Current documentation presents the **full JSON policy (`PutResourcePolicy`) as the recommended path** and positions `AddPermission` for adding individual `Allow` statements. A full JSON policy can use the complete range of IAM global condition keys and explicit `Deny`, up to 20 KB. `put-resource-policy` **overwrites** the entire existing policy | [Working with resource-based policies](https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html) |
+| DLQ as the asynchronous best practice | "The best practice for asynchronous invocation is to create and use a DLQ" | Current documentation presents the DLQ as an **alternative to an on-failure destination.** On-failure destinations support more target types, include details about the function's response, and can be configured on a function, version, or alias. A DLQ is function-level only and sends only the event content. The DLQ itself is still supported | [Capturing records of asynchronous invocations](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html) |
+| Serverless compute classification | Only Lambda in the serverless column; Fargate only in the instructor notes | The current decision guide **classifies Fargate as serverless compute alongside Lambda.** It also presents other compute options such as AWS Batch, Elastic Beanstalk, ECS/EKS Anywhere, and Lightsail | [Choosing an AWS compute service](https://docs.aws.amazon.com/decision-guides/latest/compute-on-aws-how-to-choose/choosing-aws-compute-service.html) |
+| Development tools | Third-party plugins (Eclipse, PyCharm, Visual Studio) | The current development tools document presents **AWS Toolkit for VS Code** as the local development tool and does not mention the Eclipse toolkit. The PyCharm toolkit is part of the **AWS Toolkit for JetBrains**. It also presents IaC (SAM, CDK, CloudFormation), GitHub Actions, and Powertools for AWS Lambda | [Development tools for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html) |
 
 ### 10.3 Discouraged or End-of-Support Items
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
-| `python3.8` runtime (slide 34) | **End of support October 14, 2024.** Function create blocked February 1, 2027; function update blocked March 3, 2027 | A Python runtime from the current supported table (`python3.12`, `python3.13`, `python3.14`, and so on). The projected deprecation dates are for planning, so check the table again before adopting | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| `.NET Core` runtimes (slides 10, 48) | Entire family end of support: `dotnetcore3.1` 2023-04-03, `dotnetcore2.1` 2022-01-05, `dotnetcore1.0` 2019-06-27, `dotnetcore2.0` 2019-05-30 | `.NET 8` (`dotnet8`), `.NET 10` (`dotnet10`). For containers only, `dotnet9` | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| Go 1.x runtime ("Go" in slide 10 notes) | **End of support January 8, 2024**, function create blocked February 8, 2024. Lambda continues to support the Go language itself | Deploy a Go executable on the OS-only runtime (`provided.al2023`). For containers, use an AWS OS-only base image | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| AWS Toolkit for Eclipse User Guide link (slide 23 notes) | The cited URL returns **HTTP 404**. `/toolkit-for-eclipse/v1/user-guide/` redirects to the AWS Toolkit for JetBrains User Guide, and the current development tools document does not include the Eclipse toolkit. Relatedly, AWS SDK for Java 1.x reached end of support on December 31, 2025 | AWS Toolkit for VS Code. For JetBrains IDEs, the AWS Toolkit for JetBrains; for Visual Studio, the AWS Toolkit for Visual Studio | [Development tools for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html) |
-| `csharp-package-toolkit.html` (slide 23 notes) | No longer exists as its own page; redirects to the Developer Guide root (status 200 but the destination is not the original topic) | The Lambda development tools document or the AWS Toolkit for Visual Studio User Guide | [Development tools for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html) |
-| boto3 resources interface (slide 31) | Discouraged. The AWS Python SDK team **does not intend to add new features**, and newer service features are available only through the client interface. Existing interfaces continue to operate during boto3's lifecycle | `boto3.client('dynamodb')`. Resource instances are not thread safe, so create a new one per thread | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
+| `python3.8` runtime | **End of support October 14, 2024.** Function create blocked February 1, 2027; function update blocked March 3, 2027 | A Python runtime from the current supported table (`python3.12`, `python3.13`, `python3.14`, and so on). The projected deprecation dates are for planning, so check the table again before adopting | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| `.NET Core` runtimes | Entire family end of support: `dotnetcore3.1` 2023-04-03, `dotnetcore2.1` 2022-01-05, `dotnetcore1.0` 2019-06-27, `dotnetcore2.0` 2019-05-30 | `.NET 8` (`dotnet8`), `.NET 10` (`dotnet10`). For containers only, `dotnet9` | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| Go 1.x runtime (the "Go" entry) | **End of support January 8, 2024**, function create blocked February 8, 2024. Lambda continues to support the Go language itself | Deploy a Go executable on the OS-only runtime (`provided.al2023`). For containers, use an AWS OS-only base image | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| AWS Toolkit for Eclipse User Guide link | The cited URL returns **HTTP 404**. `/toolkit-for-eclipse/v1/user-guide/` redirects to the AWS Toolkit for JetBrains User Guide, and the current development tools document does not include the Eclipse toolkit. Relatedly, AWS SDK for Java 1.x reached end of support on December 31, 2025 | AWS Toolkit for VS Code. For JetBrains IDEs, the AWS Toolkit for JetBrains; for Visual Studio, the AWS Toolkit for Visual Studio | [Development tools for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html) |
+| `csharp-package-toolkit.html` | No longer exists as its own page; redirects to the Developer Guide root (status 200 but the destination is not the original topic) | The Lambda development tools document or the AWS Toolkit for Visual Studio User Guide | [Development tools for Lambda](https://docs.aws.amazon.com/lambda/latest/dg/tools-to-develop-deploy-manage.html) |
+| boto3 resources interface | Discouraged. The AWS Python SDK team **does not intend to add new features**, and newer service features are available only through the client interface. Existing interfaces continue to operate during boto3's lifecycle | `boto3.client('dynamodb')`. Resource instances are not thread safe, so create a new one per thread | [Boto3 Resources](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html) |
 
-### 10.4 Added Since the Courseware
+### 10.4 What This Material Adds
 
-| Item | Summary | Source |
-|---|---|---|
-| Runtime deprecation policy and timeline | At least 180 days' notice → deprecation date (console create and update blocked, CLI/SAM/CFN still work) → at least 30 days later, create blocked → at least 60 days later, update blocked. Invocation remains possible indefinitely after deprecation. **Deprecation notifications are not available** for container image functions | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
-| Function URLs | A dedicated HTTP(S) endpoint at `https://<url-id>.lambda-url.<region>.on.aws`. Resource-based policies and CORS, auth type `AWS_IAM` or `NONE`. Applies only to aliases or `$LATEST`. Public internet only (no PrivateLink) | [Lambda function URLs](https://docs.aws.amazon.com/lambda/latest/dg/lambda-urls.html) |
-| Response streaming | Up to 200 MB through function URLs, `InvokeWithResponseStream`, or the API Gateway proxy integration. Uncapped for the first 6 MB, then 2 MBps. Node.js only among managed runtimes. Always shows as buffered in console tests | [Response streaming](https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html) |
-| Recursive loop detection | Tracks chains of requests using X-Ray tracing headers. Stops the next invocation at approximately 16 in the same chain. On by default and free. Detection covers your functions, SQS, S3, and SNS. Requires a minimum SDK version | [Recursive loop detection](https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html) |
-| arm64 (Graviton2) | All supported runtimes support both x86_64 and arm64. Price and performance benefits. Requires checking arm64 compatibility of dependencies, layers, and extensions. Default is `x86_64` when `Architectures` is omitted | [Instruction set architecture](https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html) |
-| Weighted alias canary deployments | One alias splits traffic across up to two versions. Both versions must share the execution role and DLQ configuration and both must be published. Confirm with the `x-amz-executed-version` header and the `START` log. Rolling deployments with CodeDeploy and SAM (`AutoPublishAlias`, `DeploymentPreference`) | [Weighted alias canary deployments](https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html) |
-| The precise meaning of reserved concurrency | A control that sets **both the maximum and the minimum.** Also used to prevent overwhelming downstream resources. **No additional charge.** Provisioned concurrency is billed, can't be used on `$LATEST`, and is capped at unreserved concurrency minus 100 | [Understanding Lambda function scaling](https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html) |
-| The 10-second `Init` limit | The `Init` phase is limited to 10 seconds. If exceeded, Lambda retries at the first invocation using the configured timeout (suppressed init). Provisioned concurrency, SnapStart, and Managed Instances get 130 seconds or the configured timeout, whichever is higher (up to 900 seconds) | [Execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
-| Cold start statistics | Under **1% of invocations**, from under 100 ms to over 1 second. More common in infrequently invoked development and test functions | [Execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
-| ESM batching and provisioned mode | Invocation on whichever comes first: batching window (0–300 seconds; default 0 for Kinesis, DynamoDB, and SQS, 500 ms for Kafka, MQ, and DocumentDB), batch size, or a 6 MB payload. At-least-once processing makes idempotency essential. Provisioned mode sets minimum and maximum pollers for MSK, Kafka, and SQS | [Event source mappings](https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html) |
-| DynamoDB ESM details | The 4-times-per-second polling is a **base rate**. `ParallelizationFactor` 1–10 (default 1) for concurrency per shard, with item-level ordering preserved. `TRIM_HORIZON` is recommended as the starting position. Up to 2 functions per shard for single-Region tables, 1 recommended for global tables | [Using Lambda with DynamoDB](https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html) |
-| Shareable test events | Private (10 per function) and shareable. Shareable events are stored in the `lambda-testevent-schemas` EventBridge schema registry and require all the relevant API permissions. Also invokable with `sam remote test-event` | [Testing Lambda functions in the console](https://docs.aws.amazon.com/lambda/latest/dg/testing-functions.html) |
-| `sam local` subcommands | `generate-event`, `invoke`, `start-api`, `start-lambda` | [Testing with sam local](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local.html) |
-| Environment variable limits and cautions | 4 KB total, version-specific configuration, keys must start with a letter and be at least 2 characters using only letters, numbers, and `_`. **`update-function-configuration` replaces the entire structure.** Secrets Manager recommended for sensitive data. Default AWS managed key (free) or a customer managed key, plus helpers for encryption in transit | [Environment variables](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) |
-| Layer details | Extracted into the `/opt` directory. **Available only for .zip functions.** Useful for locking an embedded SDK version. Not recommended for Go and Rust | [Lambda layers](https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html) |
-| Three kinds of container base image | AWS base images (including the runtime interface emulator), AWS OS-only base images, and non-AWS base images. **The package type (.zip ↔ image) can't be changed for an existing function.** Multi-architecture images are not supported. AL2023 transition | [Container images](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html)  |
-| The list of changes that qualify for version publication | Code, environment variables, runtime, handler, layers, memory, timeout, VPC, DLQ, IAM role, description, architecture, ephemeral storage, package type, code storage mode, logging, file system, SnapStart, tracing. **Reserved concurrency does not qualify.** Version numbers are never reused | [Manage function versions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) |
-| X-Ray details | `Active` and `PassThrough` modes. Sampling of 1 request per second plus 5 percent (not configurable). Two segments per trace (`AWS::Lambda`, `AWS::Lambda::Function`). Not supported for MSK, Kafka, MQ, or DocumentDB ESMs | [Visualize invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
-| Lambda API request quotas | Synchronous invocation is 10 requests per second per instance (total limit = concurrency × 10). `GetFunction` 100 per second, `GetPolicy` 15 per second, and the remainder of control plane APIs 15 per second across all APIs (none increasable) | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
-| Other new quotas | Environment variables 4 KB, resource-based policy 20 KB, streaming bandwidth 2 MBps, network bandwidth per execution environment 625 Mbps, container image settings 16 KB, test events 10, file descriptors and threads 1,024, Lambda-managed code storage 300 GB, ENIs per VPC 500 | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
-| More granular pricing structure | Separate x86 and Arm price tables with GB-second tiers, a free tier of 1 million requests and 400,000 GB-seconds per month, ephemeral storage billed above 512 MB, provisioned concurrency and SnapStart billed separately, and Lambda MicroVMs billed per instance-second | [AWS Lambda pricing](https://aws.amazon.com/lambda/pricing/) |
-| Lambda durable functions | Workflows that run for **up to 1 year** using checkpoint-and-replay execution. No compute charges during wait periods. SDKs for JavaScript, TypeScript, Python, Java, and C# (.NET) | [AWS Fargate or AWS Lambda?](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html) |
-| Lambda Managed Instances and MicroVMs | Managed Instances run functions on a wide range of EC2 instance types while retaining Lambda's operational simplicity. MicroVMs are session-based isolated sandboxes for running untrusted code, a distinct compute primitive | [AWS Fargate or AWS Lambda?](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html) |
-| ABAC for function access control | Attach tags to a function and specify the same tags on API requests or IAM principals, then use them in the condition element of an IAM policy to control function access | [Managing permissions in AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html) |
+| Item | Summary | Why it was added | Source |
+|---|---|---|---|
+| Runtime deprecation policy and timeline | At least 180 days' notice → deprecation date (console create and update blocked, CLI/SAM/CFN still work) → at least 30 days later, create blocked → at least 60 days later, update blocked. Invocation remains possible indefinitely after deprecation. **Deprecation notifications are not available** for container image functions | Runtime end-of-support is this module's biggest change, so you need to know when each block takes effect to plan your response | [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) |
+| Function URLs | A dedicated HTTP(S) endpoint at `https://<url-id>.lambda-url.<region>.on.aws`. Resource-based policies and CORS, auth type `AWS_IAM` or `NONE`. Applies only to aliases or `$LATEST`. Public internet only (no PrivateLink) | It corrects the assumption that API Gateway is the only HTTP path, and it postdates the course | [Lambda function URLs](https://docs.aws.amazon.com/lambda/latest/dg/lambda-urls.html) |
+| Response streaming | Up to 200 MB through function URLs, `InvokeWithResponseStream`, or the API Gateway proxy integration. Uncapped for the first 6 MB, then 2 MBps. Node.js only among managed runtimes. Always shows as buffered in console tests | It is the answer people reach for when a response exceeds the 6 MB limit | [Response streaming](https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html) |
+| Recursive loop detection | Tracks chains of requests using X-Ray tracing headers. Stops the next invocation at approximately 16 in the same chain. On by default and free. Detection covers your functions, SQS, S3, and SNS. Requires a minimum SDK version | The old "set concurrency to 0" guidance is now only half the picture | [Recursive loop detection](https://docs.aws.amazon.com/lambda/latest/dg/invocation-recursion.html) |
+| arm64 (Graviton2) | All supported runtimes support both x86_64 and arm64. Price and performance benefits. Requires checking arm64 compatibility of dependencies, layers, and extensions. Default is `x86_64` when `Architectures` is omitted | Architecture is a basic decision at function creation but was missing from the original material | [Instruction set architecture](https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html) |
+| Weighted alias canary deployments | One alias splits traffic across up to two versions. Both versions must share the execution role and DLQ configuration and both must be published. Confirm with the `x-amz-executed-version` header and the `START` log. Rolling deployments with CodeDeploy and SAM (`AutoPublishAlias`, `DeploymentPreference`) | It goes beyond "an alias points to one version" to the safety mechanism used in real deployments | [Weighted alias canary deployments](https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html) |
+| The precise meaning of reserved concurrency | A control that sets **both the maximum and the minimum.** Also used to prevent overwhelming downstream resources. **No additional charge.** Provisioned concurrency is billed, can't be used on `$LATEST`, and is capped at unreserved concurrency minus 100 | Reserved and provisioned concurrency are easily confused, so their purpose, price, and constraints are separated | [Understanding Lambda function scaling](https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html) |
+| The 10-second `Init` limit | The `Init` phase is limited to 10 seconds. If exceeded, Lambda retries at the first invocation using the configured timeout (suppressed init). Provisioned concurrency, SnapStart, and Managed Instances get 130 seconds or the configured timeout, whichever is higher (up to 900 seconds) | You meet the cause of timeouts in heavy-initialization functions directly in the lab | [Execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
+| Cold start statistics | Under **1% of invocations**, from under 100 ms to over 1 second. More common in infrequently invoked development and test functions | Knowing the frequency and duration, not just the definition, lets you gauge the real impact | [Execution environment lifecycle](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) |
+| ESM batching and provisioned mode | Invocation on whichever comes first: batching window (0–300 seconds; default 0 for Kinesis, DynamoDB, and SQS, 500 ms for Kafka, MQ, and DocumentDB), batch size, or a 6 MB payload. At-least-once processing makes idempotency essential. Provisioned mode sets minimum and maximum pollers for MSK, Kafka, and SQS | These are the values you actually tune the polling model with | [Event source mappings](https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html) |
+| DynamoDB ESM details | The 4-times-per-second polling is a **base rate**. `ParallelizationFactor` 1–10 (default 1) for concurrency per shard, with item-level ordering preserved. `TRIM_HORIZON` is recommended as the starting position. Up to 2 functions per shard for single-Region tables, 1 recommended for global tables | These are the first settings to reach for when increasing stream throughput | [Using Lambda with DynamoDB](https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html) |
+| Shareable test events | Private (10 per function) and shareable. Shareable events are stored in the `lambda-testevent-schemas` EventBridge schema registry and require all the relevant API permissions. Also invokable with `sam remote test-event` | Teams often get blocked on permissions when trying to share test events | [Testing Lambda functions in the console](https://docs.aws.amazon.com/lambda/latest/dg/testing-functions.html) |
+| `sam local` subcommands | `generate-event`, `invoke`, `start-api`, `start-lambda` | Actually running local tests requires distinguishing the subcommands | [Testing with sam local](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local.html) |
+| Environment variable limits and cautions | 4 KB total, version-specific configuration, keys must start with a letter and be at least 2 characters using only letters, numbers, and `_`. **`update-function-configuration` replaces the entire structure.** Secrets Manager recommended for sensitive data. Default AWS managed key (free) or a customer managed key, plus helpers for encryption in transit | Not knowing the full-replace behavior loses existing variables in the lab | [Environment variables](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) |
+| Layer details | Extracted into the `/opt` directory. **Available only for .zip functions.** Useful for locking an embedded SDK version. Not recommended for Go and Rust | Knowing the constraints and uses of layers is what tells you when to use them | [Lambda layers](https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html) |
+| Three kinds of container base image | AWS base images (including the runtime interface emulator), AWS OS-only base images, and non-AWS base images. **The package type (.zip ↔ image) can't be changed for an existing function.** Multi-architecture images are not supported. AL2023 transition | These are the choices and the irreversible constraint when picking container deployment | [Container images](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html)  |
+| The list of changes that qualify for version publication | Code, environment variables, runtime, handler, layers, memory, timeout, VPC, DLQ, IAM role, description, architecture, ephemeral storage, package type, code storage mode, logging, file system, SnapStart, tracing. **Reserved concurrency does not qualify.** Version numbers are never reused | Knowing what creates a new version makes version management predictable | [Manage function versions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html) |
+| X-Ray details | `Active` and `PassThrough` modes. Sampling of 1 request per second plus 5 percent (not configurable). Two segments per trace (`AWS::Lambda`, `AWS::Lambda::Function`). Not supported for MSK, Kafka, MQ, or DocumentDB ESMs | The X-Ray integration, previously just a name, is filled in so it can actually be read | [Visualize invocations using AWS X-Ray](https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html) |
+| Lambda API request quotas | Synchronous invocation is 10 requests per second per instance (total limit = concurrency × 10). `GetFunction` 100 per second, `GetPolicy` 15 per second, and the remainder of control plane APIs 15 per second across all APIs (none increasable) | This is the basis for judging which limit you hit when you see throttling | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
+| Other new quotas | Environment variables 4 KB, resource-based policy 20 KB, streaming bandwidth 2 MBps, network bandwidth per execution environment 625 Mbps, container image settings 16 KB, test events 10, file descriptors and threads 1,024, Lambda-managed code storage 300 GB, ENIs per VPC 500 | These items were absent from the old quota table, so they are filled in with current values | [Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) |
+| More granular pricing structure | Separate x86 and Arm price tables with GB-second tiers, a free tier of 1 million requests and 400,000 GB-seconds per month, ephemeral storage billed above 512 MB, provisioned concurrency and SnapStart billed separately, and Lambda MicroVMs billed per instance-second | Understanding the cost impact of cold starts and provisioned concurrency needs the billing structure | [AWS Lambda pricing](https://aws.amazon.com/lambda/pricing/) |
+| Lambda durable functions | Workflows that run for **up to 1 year** using checkpoint-and-replay execution. No compute charges during wait periods. SDKs for JavaScript, TypeScript, Python, Java, and C# (.NET) | It is the newer execution model that goes beyond the 15-minute limit assumption | [AWS Fargate or AWS Lambda?](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html) |
+| Lambda Managed Instances and MicroVMs | Managed Instances run functions on a wide range of EC2 instance types while retaining Lambda's operational simplicity. MicroVMs are session-based isolated sandboxes for running untrusted code, a distinct compute primitive | They are recent changes that broaden the compute choices, so their existence and place are noted | [AWS Fargate or AWS Lambda?](https://docs.aws.amazon.com/decision-guides/latest/decision-guides/fargate-or-lambda.html) |
+| ABAC for function access control | Attach tags to a function and specify the same tags on API requests or IAM principals, then use them in the condition element of an IAM policy to control function access | It is the third access control current documentation presents, beyond identity- and resource-based policies | [Managing permissions in AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html) |
 
 ### 10.5 Items We Could Not Verify
 
@@ -1899,12 +1904,12 @@ Recorded honestly. Check these before stating them definitively in class.
 | Item | Status |
 |---|---|
 | The SnapStart "up to 10x" figure | We confirmed only that **the current SnapStart documentation does not contain that phrasing**; it says "as low as sub-second." **Whether 10x was accurate in the past or holds under specific conditions today could not be determined from documentation.** If you cite a multiplier in class, make clear that the source is the courseware |
-| The specific names of AWS managed layers | The shapes on courseware slide 38 present "AWS managed layers" and "partner or third-party layers" without naming any. We verified the layer documentation's overview, versioning, and packaging topics, but **did not fetch a page that names or exemplifies the managed layers AWS provides.** We did not guess names |
+| The specific names of AWS managed layers | Layers come in "AWS managed layers" and "partner or third-party layers," but we could not find a source that names them. We verified the layer documentation's overview, versioning, and packaging topics, but **did not fetch a page that names or exemplifies the managed layers AWS provides.** We did not guess names |
 | Whether Amazon Alexa can still invoke Lambda | We confirmed only that **Amazon Alexa and AWS CloudTrail are absent** from the "Services that can invoke Lambda functions" table (28 entries). Absence from the table does not mean invocation is impossible. The `AddPermission` API documentation still has an `EventSourceToken` parameter "for Alexa Smart Home functions," which suggests support remains, but **we did not fetch the Alexa Skills Kit documentation** |
 | The official support status of the AWS Toolkit for Eclipse | We confirmed three things: the URL the courseware cites returns 404, `/toolkit-for-eclipse/v1/user-guide/` redirects to the JetBrains toolkit guide, and the current Lambda development tools document does not include the Eclipse toolkit. **We did not find a statement declaring that the AWS Toolkit for Eclipse has reached end of support.** Documentation disappearing and an end-of-support declaration are different things, so we did not assert it |
-| The `-–role` typesetting error on slide 34 | A notation error the shell can't parse. This is not the kind of fact you verify against AWS documentation but a typesetting problem in the courseware, so we corrected only the notation without citing a source. The same applies to the `"State": "Active", -n:dictate-function",` fragment in the same code block |
-| Duplicate titles on slides 16 and 17 | Not a documentation matter for the same reason. We split the two sections as 1/2 and 2/2 |
-| The remaining fields in the courseware slide 34 response JSON | Whether fields such as `LastUpdateStatus`, `RevisionId`, `State`, and `PackageType` still appear in the current `CreateFunction` **response** was checked only as far as the `CreateFunction` **request** documentation; **we did not fetch the full list of response elements.** We did confirm that `State`, `StateReason`, and `StateReasonCode` appear in the `GetFunctionConfiguration` response |
+| The `-–role` typesetting error | A notation error the shell can't parse. This is not the kind of fact you verify against AWS documentation but a typesetting problem, so we corrected only the notation without citing a source. The same applies to the `"State": "Active", -n:dictate-function",` fragment in the same code block |
+| Duplicate "minimizing cold starts" titles | Not a documentation matter for the same reason. We split the two sections as 1/2 and 2/2 |
+| The remaining fields in the function creation response JSON | Whether fields such as `LastUpdateStatus`, `RevisionId`, `State`, and `PackageType` still appear in the current `CreateFunction` **response** was checked only as far as the `CreateFunction` **request** documentation; **we did not fetch the full list of response elements.** We did confirm that `State`, `StateReason`, and `StateReasonCode` appear in the `GetFunctionConfiguration` response |
 | Detailed behavior of Lambda MicroVMs and durable functions | We confirmed that both features exist and that they are billed per instance-second and run for up to 1 year respectively, from the quota documentation and the decision guide. **We did not fetch their dedicated guides (`lambda-microvms-guide.html`, `durable-functions.html`).** They are outside this module's scope, so we recorded only their existence and location |
 | Actual Lambda unit prices | We confirmed the **billing structure** on the pricing page (requests + GB-seconds, separate x86 and Arm tables, tier boundaries, and a free tier of 1 million requests and 400,000 GB-seconds). **The specific dollar amounts could not be retrieved because the page renders them dynamically through a Region selector and the values are not in the source HTML.** If you need unit prices, select your Region on the pricing page and read them directly |
-| The detailed procedure for Lab 4 | Courseware slides 55–56 contain only an architecture diagram and the objectives, with no procedural text. With no source text to summarize, this document covers only the objectives and the cautions in [Section 9.3](#93-where-the-lab-can-trip-you-up) |
+| The detailed procedure for Lab 4 | The original lab material contains only an architecture diagram and the objectives, with no step-by-step procedural text. With no source text to summarize, this material covers only the objectives and the cautions in [Section 9.3](#93-where-the-lab-can-trip-you-up) |
