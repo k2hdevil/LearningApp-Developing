@@ -15,16 +15,15 @@
 7. [The Four Exam Prep Steps](#7-the-four-exam-prep-steps)
 8. [Registering and Sitting the Exam](#8-registering-and-sitting-the-exam)
 9. [Changes from the Courseware](#9-changes-from-the-courseware)
-10. [Summary](#10-summary)
 
 > **Notation**
 >
-> - 🆕 Content that is not in the original instructor deck. Verified against AWS official documentation.
-> - 🔄 Content where the original instructor deck differs from current fact and has been corrected. What changed and how is recorded in [Chapter 9](#9-changes-from-the-courseware).
+> - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
+> - 🔄 Material that has changed since the class and has been corrected here. See [Chapter 9](#9-changes-from-the-courseware) for what changed and how.
 > - Verified on: August 25, 2026. Training and certification programs change more often than technical documentation. **Before registering for an exam, always re-check the schedule at the linked original.**
 > - This module is not technical content but a **guide to the training program**. That is why most of its sourcing lives on `aws.amazon.com` rather than `docs.aws.amazon.com`. This project only cites domains AWS operates directly.
-> - **One fact goes first.** The certification exam that matches this course, **AWS Certified Developer – Associate, is being revised to DVA-C03.** The last day to take the current version, DVA-C02, is **November 30, 2026**, and DVA-C03 is delivered from December 1, 2026 ([Section 6.3](#63-the-exam-revision-schedule)). The deck contains neither the exam code nor the revision schedule.
-> - Several of the courseware's URLs now redirect or have moved. Which one went where is tabulated in [Section 9.2](#92-changed-urls-and-names).
+> - **One fact goes first.** The certification exam that matches this course, **AWS Certified Developer – Associate, is being revised to DVA-C03.** The last day to take the current version, DVA-C02, is **November 30, 2026**, and DVA-C03 is delivered from December 1, 2026 ([Section 6.3](#63-the-exam-revision-schedule)).
+> - Several URLs related to this course now redirect or have moved. Which one went where is tabulated in [Section 9.2](#92-changed-urls-and-names).
 
 ---
 
@@ -32,7 +31,7 @@
 
 ### What You Learned in This Course
 
-The three items the courseware lists.
+The three objectives of this course.
 
 - Configure IAM permissions to support a development environment
 - Design, diagram, build, and deploy cloud-native applications using AWS SDKs
@@ -48,7 +47,7 @@ explain "so what am I now able to do" is attached in
 
 ## 2. What This Course Covered
 
-This unfolds the courseware's three objectives at module granularity. The detail for each module
+This unfolds the course's three objectives at module granularity. The detail for each module
 is in that module's document on this site.
 
 ### Fundamentals and Environment (Modules 1–3)
@@ -97,10 +96,9 @@ maintain).
 
 ### And What This Material Added
 
-Every module document on this site has one extra chapter the courseware does not have:
-**`N. Changes from the Courseware`**. Because the courseware is based on 2023, each module has 20
-to 40 items that now differ. When you have the book in hand and want to answer "but the book says
-this", that is the chapter to read.
+Every module document on this site has a **`N. Changes from the Courseware`** chapter. Because
+the original training material is based on 2023, each module has 20 to 40 items that now differ,
+collected so you can compare them while reading the official courseware alongside.
 
 ---
 
@@ -117,7 +115,7 @@ this", that is the chapter to read.
 | AWS Ramp-Up Guides | [Page](https://aws.amazon.com/training/ramp-up-guides/) |
 | Tech Talks 🔄 | [Page](https://aws.amazon.com/events/online-tech-talks/) |
 
-The pricing whitepaper URL the courseware gives ends in `welcome.html`, which now redirects to the
+The pricing whitepaper's older URL ends in `welcome.html`, which now redirects to the
 directory path. Tech Talks now lives at the parent path rather than `/on-demand`
 ([Section 9.2](#92-changed-urls-and-names)).
 
@@ -127,17 +125,17 @@ directory path. Tech Talks now lives at the parent path rather than `/on-demand`
 
 ### Next Steps (Follow-on Courses)
 
-The four courses the courseware lists. Every registration path has moved to AWS Skill Builder
+Four follow-on courses after this one. Every registration path has moved to AWS Skill Builder
 ([Section 9.2](#92-changed-urls-and-names)).
 
 | Course | Format | Current path |
 |---|---|---|
 | Advanced Developing on AWS | Classroom | [aws.amazon.com/training/classroom/advanced-developing-on-aws](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/) |
 | Developing Serverless Solutions on AWS | Classroom | [aws.amazon.com/training/classroom/developing-serverless-solutions-on-aws](https://aws.amazon.com/training/classroom/developing-serverless-solutions-on-aws/) |
-| Getting Started with DevOps on AWS | Digital | The courseware gives `www.aws.training/Details/eLearning?id=66768` |
-| AWS Cloud Development Kit Primer | Digital | The courseware gives `www.aws.training/Details/Curriculum?id=64511` |
+| Getting Started with DevOps on AWS | Digital | The earlier path is `www.aws.training/Details/eLearning?id=66768` |
+| AWS Cloud Development Kit Primer | Digital | The earlier path is `www.aws.training/Details/Curriculum?id=64511` |
 
-The `www.aws.training/SessionSearch?...` URLs the courseware gives for the two classroom courses
+The earlier `www.aws.training/SessionSearch?...` URLs for the two classroom courses
 are superseded by the paths above, and those paths in turn redirect to Skill Builder. The two
 digital courses still respond at their `www.aws.training` paths, but that domain is not in this
 project's sourcing allowlist, so it appears only as code. The surest way to find their current
@@ -146,7 +144,7 @@ location is to search by course name on
 
 > — Source: [AWS Classroom Training](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/)
 
-### A Follow-on Course Not in the Courseware 🆕
+### A New Follow-on Course 🆕
 
 There is a new branch for a developer who has finished this course.
 
@@ -155,7 +153,7 @@ There is a new branch for a developer who has finished this course.
 | Advanced Generative AI Development on AWS | Foundation model implementation, retrieval augmentation with Amazon Bedrock Knowledge Bases, agentic AI development with Bedrock AgentCore, and enterprise integration patterns. **Three-day hands-on format** |
 
 This course pairs with the `AWS Certified Generative AI Developer – Professional` certification
-covered later ([Section 5.4](#54-certifications-added-since-the-courseware)).
+covered later ([Section 5.4](#54-certifications-added-since)).
 
 > — Source: [AWS expands AI certification portfolio and updates security certification](https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/)
 
@@ -165,10 +163,10 @@ covered later ([Section 5.4](#54-certifications-added-since-the-courseware)).
 
 ### 4.1 What It Is
 
-AWS's online learning center. The courseware says "600-plus digital courses"; the scale is
+AWS's online learning center. It used to be described as "600-plus digital courses"; the scale is
 different now.
 
-| Item | Courseware | Verified current value |
+| Item | Earlier value | Verified current value |
 |---|---|---|
 | Free self-paced digital courses | 600+ | **Over 900** |
 | Free learning resources overall | (not mentioned) | **Over 1,000** |
@@ -177,13 +175,12 @@ different now.
 
 ### 4.2 Three Ways to Learn 🔄
 
-The courseware presents two branches, "free digital training" and "classroom training". There are
-three now.
+It used to be two branches, "free digital training" and "classroom training"; there are three now.
 
 | Mode | Content | Availability |
 |---|---|---|
 | Digital Courses (self-paced) | Over 900 free self-paced courses covering every AWS service and skill level, with knowledge assessments | Free |
-| Digital Classroom (self-paced) | Instructor-delivered videos, hands-on labs, knowledge checks, and course assessments for focused topic areas | **Individual Annual or Team subscription** |
+| Digital Classroom (self-paced) | Instructor-delivered videos, hands-on labs, comprehension checks, and course assessments for focused topic areas | **Individual Annual or Team subscription** |
 | AWS Classroom Training (live) | AWS-accredited instructors teaching through presentations, discussions, and hands-on labs. Ask questions, work through solutions in real time, and get personalized feedback. In person or virtual, public or private sessions | Paid |
 
 To access the full suite of immersive learning experiences you have to upgrade to a **Skill
@@ -198,7 +195,7 @@ Builder Individual or Team subscription**.
 | Practice environments | Practice in hands-on labs and immersive environments that mirror actual AWS scenarios |
 | Skills Profile | Display your certifications, badges, and hands-on accomplishments in one professional profile. Amplify it on LinkedIn |
 
-The page for **AWS Builder Labs**, which slide 10 of the courseware names, now redirects to
+The page for **AWS Builder Labs** now redirects to
 `aws.amazon.com/training/digital/immersive-learning/`
 ([Section 9.2](#92-changed-urls-and-names)).
 
@@ -212,17 +209,16 @@ The page for **AWS Builder Labs**, which slide 10 of the courseware names, now r
 
 ### 5.1 The Four Levels
 
-The four levels the courseware lists. Slide 7 itself **has an empty title**
-([Section 9.1](#91-items-where-the-courseware-differs-from-fact)).
+The four levels of AWS Certification.
 
-| Level | Nature | Recommended experience (courseware) |
+| Level | Nature | Recommended experience |
 |---|---|---|
 | Foundational | Knowledge-based. AWS Cloud fundamentals | 6 months of foundational AWS Cloud experience and industry knowledge. **No prior experience is required** |
 | Associate | Role-based. Demonstrates your knowledge and skills | 1 year of solving problems and implementing solutions with the AWS Cloud |
 | Professional | Job-based. Validates advanced skills and knowledge | 2 years of designing, operating, and troubleshooting solutions with the AWS Cloud |
 | Specialty | Focused on a specific topic | Technical experience in the domains specified in the exam guide. Recommended level varies |
 
-Compared against verified values, the courseware's level descriptions hold up.
+Compared against verified values, these level descriptions hold up.
 
 | Certification | Verified recommended experience |
 |---|---|
@@ -238,7 +234,7 @@ Compared against verified values, the courseware's level descriptions hold up.
 
 ### 5.2 How to Determine an Exam's Scope
 
-There is an important sentence in the courseware's instructor notes.
+AWS states an important principle.
 
 > AWS does not publish a list of every service or feature covered on a certification exam.
 > However, each exam's exam guide lists the current topic areas and objectives covered on the exam.
@@ -246,19 +242,18 @@ There is an important sentence in the courseware's instructor notes.
 So **the exam guide is the only official scope document.** The answer to "will this service be on
 the exam" is the domains and task statements in the exam guide.
 
-The same notes also warn:
+AWS also cautions:
 
 > Exams are updated frequently, and details about which exams are offered and the test items on
 > each exam are subject to change.
 
-**That warning came true precisely.** The certification lineup has changed several times since the
-courseware was made ([Section 5.3](#53-certifications-retired-since-the-courseware),
-[Section 5.4](#54-certifications-added-since-the-courseware)).
+**That is exactly what happened.** The certification lineup has changed several times since
+([Section 5.3](#53-certifications-retired-since),
+[Section 5.4](#54-certifications-added-since)).
 
-### 5.3 Certifications Retired Since the Courseware 🔄
+### 5.3 Certifications Retired Since 🔄
 
-Slide 7 says "the slide shows the AWS Certifications currently offered". That list is no longer
-current.
+That earlier list is no longer current.
 
 | Certification | Last day to take it | Replacement path |
 |---|---|---|
@@ -282,7 +277,7 @@ Three things you have to know.
 
 > — Source: [AWS expands AI certification portfolio and updates security certification](https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/)
 
-### 5.4 Certifications Added Since the Courseware 🆕
+### 5.4 Certifications Added Since 🆕
 
 | Certification | Level | Content |
 |---|---|---|
@@ -315,7 +310,7 @@ March 31, 2026, and registration for the standard version is open.
 
 ### 5.5 Microcredentials 🆕
 
-The courseware treats certification as the only form of validation. There is one more now.
+Validation used to be certification only; there is one more now.
 
 | Type | What it validates |
 |---|---|
@@ -343,8 +338,8 @@ provisioned AWS environment it assesses your ability to:
 
 ## 6. The Certification That Matches This Course
 
-**This is the biggest gap in the deck.** The courseware explains the certification levels and
-**never says which exam to take.** It is the first question students ask and the deck has no answer.
+Knowing only the certification levels does not tell you **which exam to take**. It is the first
+question students ask, so this chapter answers it.
 
 ### 6.1 AWS Certified Developer – Associate 🆕
 
@@ -369,8 +364,7 @@ This is the certification that matches this course.
 
 ### 6.2 Validity and Recertification 🆕
 
-**Not one line in the deck, and the most important thing after you earn it.** Not knowing it means
-letting it expire.
+**The most important thing after you earn it.** Not knowing it means letting it expire.
 
 | Item | Content |
 |---|---|
@@ -401,7 +395,7 @@ and completing it extends validity by 3 years.
 ### 6.3 The Exam Revision Schedule 🆕
 
 **Exams are revised by code.** You need the schedule so that what you prepared for and what you sit
-do not diverge. The deck has neither exam codes nor revision schedules.
+do not diverge.
 
 | Date | What happens |
 |---|---|
@@ -477,8 +471,6 @@ you to design AI itself.
 
 ### 6.5 Exam Fee Discount 🆕
 
-Not in the courseware.
-
 **Once you earn one AWS Certification you get a 50% discount on your next AWS Certification exam.**
 You access the discount in your AWS Certification Account.
 
@@ -488,7 +480,7 @@ You access the discount in your AWS Certification Account.
 
 ## 7. The Four Exam Prep Steps
 
-### 7.1 The Courseware's Four Steps
+### 7.1 The Four Steps
 
 | Step | Content |
 |---|---|
@@ -542,15 +534,15 @@ Some materials **require an AWS Skill Builder subscription.**
 
 There are still four steps, but **the step names and the tools have changed.**
 
-| Step | Current content | Difference from the courseware |
+| Step | Current content | What changed |
 |---|---|---|
 | 1 | Get to know the exam with exam-style questions | The same |
-| 2 | Enroll in digital courses where you have gaps and practice with **AWS Builder Labs, AWS Cloud Quest, and AWS Jam** | **AWS Jam is not in the courseware** |
-| 3 | Review the exam scope and each domain's topics, follow instructors walking through exam-style questions and test-taking strategies, and keep practicing with **AWS SimuLearn** | **AWS SimuLearn is not in the courseware** |
-| 4 | Assess readiness with the **AWS Certification Official Pretest** | The courseware says "official practice exam" |
+| 2 | Enroll in digital courses where you have gaps and practice with **AWS Builder Labs, AWS Cloud Quest, and AWS Jam** | **AWS Jam is new** |
+| 3 | Review the exam scope and each domain's topics, follow instructors walking through exam-style questions and test-taking strategies, and keep practicing with **AWS SimuLearn** | **AWS SimuLearn is new** |
+| 4 | Assess readiness with the **AWS Certification Official Pretest** | Formerly the "official practice exam" |
 
 The whole Official Exam Prep offering is broader too: **question sets, pretests, exam prep courses,
-Escape Room, SimuLearn, and practice exams.** The courseware names only the official practice
+Escape Room, SimuLearn, and practice exams.** Formerly there were only the official practice
 question set and the official practice exam.
 
 > — Source: [AWS Certified Generative AI Developer – Professional](https://aws.amazon.com/certification/certified-generative-ai-developer-professional/)
@@ -561,8 +553,7 @@ question set and the official practice exam.
 
 ## 8. Registering and Sitting the Exam
 
-Slide 13 of the courseware is **a section header with no body**. It has only the subtitle "Learn
-about your exam testing options" and one link. Here is that content.
+How to register for and sit the exam.
 
 ### 8.1 Online Proctored Exams 🆕
 
@@ -591,7 +582,7 @@ translated term is confusing, use it to check the original wording.
 
 ### 8.3 Course Feedback
 
-The procedure slide 14 gives.
+The procedure for leaving course feedback.
 
 | Step | Content |
 |---|---|
@@ -600,14 +591,14 @@ The procedure slide 14 gives.
 | 3 | Choose the Archived tab |
 | 4 | Select the course you completed and choose Evaluate |
 
-> **Courseware error.** Step 4 in the original says "select the completed **Architecting on AWS**
-> course". This deck belongs to the **Developing on AWS** course. It looks like a copy from another
-> course's deck. The course name is omitted from the table above
+> **Error in the original material.** Step 4 in the original says "select the completed
+> **Architecting on AWS** course". This course is **Developing on AWS**, yet the original points to
+> Architecting on AWS, so it looks like it was carried over from another course's material. The
+> course name is omitted from the table above
 > ([Section 9.1](#91-items-where-the-courseware-differs-from-fact)).
 
-The instructor notes state that this slide applies only to AWS internal and freelance instructors,
-and that AWS Training Partners should replace it with information appropriate to their own learning
-management system. **So your feedback path depends on where you took this course.** If you took it
+This procedure applies only to AWS internal and freelance instructors, and AWS Training Partners
+replace it with information appropriate to their own learning management system. **So your feedback path depends on where you took this course.** If you took it
 through a training partner, follow that partner's instructions.
 
 ---
@@ -622,19 +613,19 @@ changes, 1 discouraged item, and 4 end-of-delivery items.
 
 | Courseware says | Verified | Source |
 |---|---|---|
-| Slide 5: "600-plus digital courses" and "over 600 on-demand digital courses" | Over 900 free self-paced digital courses now, and over 1,000 free learning resources across the online learning center | [AWS Skill Builder](https://aws.amazon.com/training/digital/) |
-| Slide 7 notes: "the slide shows the AWS Certifications currently offered" | Four Specialty certifications have ended and four have been added since the courseware ([Section 5.3](#53-certifications-retired-since-the-courseware), [Section 5.4](#54-certifications-added-since-the-courseware)) | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
+| "600-plus digital courses" and "over 600 on-demand digital courses" | Over 900 free self-paced digital courses now, and over 1,000 free learning resources across the online learning center | [AWS Skill Builder](https://aws.amazon.com/training/digital/) |
+| The listed "AWS Certifications currently offered" | Four Specialty certifications have ended and four have been added since ([Section 5.3](#53-certifications-retired-since), [Section 5.4](#54-certifications-added-since)) | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
 
 Items where the courseware contradicts itself. These are not disagreements with external
 documentation, so they carry no 🆕 or 🔄 marker.
 
 | Where it conflicts | Content | How this document handles it |
 |---|---|---|
-| Course name | Step 4 on slide 14 says "select the completed **Architecting on AWS** course". This deck belongs to Developing on AWS | Dropped the course name and kept the procedure ([Section 8.3](#83-course-feedback)) |
-| Missing slide title | Slide 7 has an empty title field, with "AWS Certification levels" only in a body text box | Used that phrase as the section title ([Section 5.1](#51-the-four-levels)) |
-| Duplicated sentence | Slide 7's notes repeat "Exams are updated frequently …" **twice**, joined by "however" | Included it once ([Section 5.2](#52-how-to-determine-an-exams-scope)) |
-| Duplicated caution | Slide 11's notes state the subscription requirement **twice** with different wording | Included it once ([Section 7.1](#71-the-coursewares-four-steps)) |
-| Missing link label | In slide 3's notes, two URLs follow `Advanced Developing on AWS` and the second (`courseId=53785`) has no course name | Matched it against the body list, judged it to be `Developing Serverless Solutions on AWS`, and labeled it accordingly ([Chapter 3](#3-additional-resources)) |
+| Course name | Step 4 of the course feedback procedure says "select the completed **Architecting on AWS** course". This course is Developing on AWS | Dropped the course name and kept the procedure ([Section 8.3](#83-course-feedback)) |
+| Missing title | The level overview screen has an empty title field, with "AWS Certification levels" only in a body text box | Used that phrase as the section title ([Section 5.1](#51-the-four-levels)) |
+| Duplicated sentence | The original note repeats "Exams are updated frequently …" **twice**, joined by "however" | Included it once ([Section 5.2](#52-how-to-determine-an-exams-scope)) |
+| Duplicated caution | The original note states the subscription requirement **twice** with different wording | Included it once ([Section 7.1](#71-the-four-steps)) |
+| Missing link label | In the follow-on course notes, two URLs follow `Advanced Developing on AWS` and the second (`courseId=53785`) has no course name | Matched it against the body list, judged it to be `Developing Serverless Solutions on AWS`, and labeled it accordingly ([Chapter 3](#3-additional-resources)) |
 
 ### 9.2 Changed URLs and Names
 
@@ -675,7 +666,7 @@ Items where the program structure changed.
 
 | Item | Status | Replacement | Source |
 |---|---|---|---|
-| The `www.aws.training` portal | Discouraged — the current learning entry point AWS points to is AWS Skill Builder, and the classroom course paths the courseware gives redirect to Skill Builder. `www.aws.training` itself still responds but is not in this project's sourcing allowlist, so it is not cited | [AWS Skill Builder](https://aws.amazon.com/training/digital/) | [AWS Classroom Training](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/) |
+| The `www.aws.training` portal | Discouraged — the current learning entry point AWS points to is AWS Skill Builder, and the classroom course paths this course's material gives redirect to Skill Builder. `www.aws.training` itself still responds but is not in this project's sourcing allowlist, so it is not cited | [AWS Skill Builder](https://aws.amazon.com/training/digital/) | [AWS Classroom Training](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/) |
 | AWS Certified Machine Learning – Specialty | **No longer delivered** — last day March 31, 2026 | AI Practitioner, Machine Learning Engineer – Associate, Data Engineer – Associate, Generative AI Developer – Professional | [AWS expands AI certification portfolio](https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/) |
 | AWS Certified Data Analytics – Specialty | **No longer delivered** — last day April 8, 2024 | AWS Certified Data Engineer – Associate | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
 | AWS Certified Database – Specialty | **No longer delivered** — last day April 29, 2024 | — | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
@@ -694,7 +685,7 @@ materials retired along with the exams.**
 | The DVA-C03 revision schedule, exam information, and what changes | [Section 6.3](#63-the-exam-revision-schedule) and [Section 6.4](#64-what-changes-in-dva-c03) |
 | The 50% discount on your next exam after earning one certification | [Section 6.5](#65-exam-fee-discount) |
 | Microcredentials and AWS Agentic AI Demonstrated | [Section 5.5](#55-microcredentials) |
-| The four certifications added since the courseware | [Section 5.4](#54-certifications-added-since-the-courseware) |
+| The four certifications added since | [Section 5.4](#54-certifications-added-since) |
 | The actual conditions of online proctoring and the language hours | [Section 8.1](#81-online-proctored-exams) and [Section 8.2](#82-proctoring-languages-and-hours) |
 | The toggle that shows questions in English on a localized exam | [Section 8.2](#82-proctoring-languages-and-hours) |
 | Skills Profile | [Section 4.3](#43-hands-on-practice-and-showing-achievements) |
@@ -705,54 +696,13 @@ materials retired along with the exams.**
 
 | Item | Why we could not verify it |
 |---|---|
-| Whether the three course objectives on slide 2 match the objectives on the current course description page | The Developing on AWS course page redirects to Skill Builder, which is not in this project's sourcing allowlist, so we cannot cite the objective wording. We relayed the courseware wording |
+| Whether the three course objectives match the objectives on the current course description page | The Developing on AWS course page redirects to Skill Builder, which is not in this project's sourcing allowlist, so we cannot cite the objective wording. We relayed the courseware wording |
 | The current location of Getting Started with DevOps on AWS and AWS Cloud Development Kit Primer | The `www.aws.training` paths the courseware gives respond but are outside the allowlist, and we could not confirm the corresponding `aws.amazon.com` paths. We recommend searching by course name on Skill Builder ([Chapter 3](#3-additional-resources)) |
-| The **full** list of AWS Certifications currently offered | The certification page renders dynamically and we could not retrieve the complete list. We included only what we confirmed from individual certification pages and the AWS Training and Certification blog ([Section 5.3](#53-certifications-retired-since-the-courseware) and [Section 5.4](#54-certifications-added-since-the-courseware)) |
+| The **full** list of AWS Certifications currently offered | The certification page renders dynamically and we could not retrieve the complete list. We included only what we confirmed from individual certification pages and the AWS Training and Certification blog ([Section 5.3](#53-certifications-retired-since) and [Section 5.4](#54-certifications-added-since)) |
 | DVA-C02's current duration, question count, and cost | We could not retrieve the exam overview table from the individual certification page. The DVA-C03 values were confirmed from the September 2026 blog post ([Section 6.3](#63-the-exam-revision-schedule)) |
 | The conditions for sitting the exam at a test center | The documentation we verified describes online proctoring. We could not confirm the test center conditions ([Section 8.1](#81-online-proctored-exams)) |
 | The detailed makeup of AWS Jam, AWS SimuLearn, and Escape Room individually | We confirmed their names and roles in the Exam Prep Plan description but not the detail of each tool ([Section 7.2](#72-the-current-exam-prep-plan)) |
 
 ---
-
-## 10. Summary
-
-### 10.1 What to Do Now
-
-What to do, in order, at the point of finishing this course.
-
-| Order | What to do | Reference |
-|---|---|---|
-| 1 | Confirm the matching certification is **AWS Certified Developer – Associate** | [Section 6.1](#61-aws-certified-developer-associate) |
-| 2 | **Decide the exam code.** DVA-C02 (through November 30, 2026) or DVA-C03 (from December 1) | [Section 6.3](#63-the-exam-revision-schedule) |
-| 3 | Read the **exam guide**. It is the only official scope document | [Section 5.2](#52-how-to-determine-an-exams-scope) |
-| 4 | Follow the four steps of the Skill Builder **Exam Prep Plan** | [Section 7.2](#72-the-current-exam-prep-plan) |
-| 5 | Check your readiness with the **Official Pretest** | [Section 7.2](#72-the-current-exam-prep-plan) |
-| 6 | Book an **online proctored exam or a test center** with Pearson VUE | [Section 8.1](#81-online-proctored-exams) |
-| 7 | Record that it is **valid for 3 years**, along with the recertification options | [Section 6.2](#62-validity-and-recertification) |
-
-### 10.2 Easy Things to Miss
-
-| Item | Key point |
-|---|---|
-| Exam code | Not knowing the revision date means sitting a different exam from the one you prepared for. **DVA-C02 runs through November 30, 2026** |
-| Validity | 3 years. Renewal extends by 3 years, maintenance by 1 year, and maintenance requires a Skill Builder subscription |
-| Discount | Earn one certification and your next exam is **50% off** |
-| Automatic recertification | Earning DevOps Engineer – Professional automatically recertifies Developer – Associate |
-| Language toggle | Even sitting a localized exam, you can **switch the questions to English** mid-exam |
-| Microcredentials | A separate way to validate hands-on ability. **No subscription required** |
-| Retired exams | Four Specialty certifications are gone. Remove them from any old study plan |
-
-### 10.3 How to Keep Using This Material
-
-This site does not replace the courseware. It is **a comparison table you read alongside it.**
-
-- When you read the courseware and wonder "is this still true", go to that module's
-  **`Changes from the Courseware`** chapter.
-- Every fact in this material carries a link to the **AWS official documentation page we actually
-  fetched**. What we could not confirm is written down as unconfirmed. Each module's
-  `Items We Could Not Verify` section is that list.
-- The verification date is **August 25, 2026**. Training and certification schedules in this module
-  in particular change often, so re-check the schedule at the linked original before registering for
-  an exam.
 
 Well done.

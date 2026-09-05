@@ -15,16 +15,15 @@
 7. [시험 준비 4단계](#7-시험-준비-4단계)
 8. [시험 등록과 응시](#8-시험-등록과-응시)
 9. [교재 대비 변경 사항](#9-교재-대비-변경-사항)
-10. [핵심 정리](#10-핵심-정리)
 
 > **표기 설명**
 >
-> - 🆕 원본 강사용 덱에 없는 내용. AWS 공식 문서로 확인한 항목입니다.
-> - 🔄 원본 강사용 덱의 내용이 현재와 달라 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [9장](#9-교재-대비-변경-사항)에 정리했습니다.
+> - 🆕 강의에서 다루지 않은 내용. AWS 공식 문서로 확인해 더한 항목입니다.
+> - 🔄 강의 당시와 달라져 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [9장](#9-교재-대비-변경-사항)에 모아 두었습니다.
 > - 검증일: 2026년 8월 25일. 교육·자격증 프로그램은 기술 문서보다 자주 바뀝니다. **시험 등록 전에는 반드시 링크된 원문에서 일정을 다시 확인하세요.**
 > - 이 모듈은 기술 내용이 아니라 **교육 프로그램 안내**입니다. 그래서 근거가 대부분 `docs.aws.amazon.com` 이 아니라 `aws.amazon.com` 에 있습니다. 이 프로젝트는 AWS 가 직접 운영하는 도메인만 근거로 씁니다.
-> - **가장 중요한 사실 하나를 앞에 둡니다.** 이 과정에 대응하는 자격증 시험 **AWS Certified Developer – Associate 가 DVA-C03 으로 개정됩니다.** 현재 버전 DVA-C02 의 마지막 응시일은 **2026년 11월 30일**이고, DVA-C03 은 2026년 12월 1일부터 제공됩니다([6.3절](#63-시험-개정-일정)). 덱에는 시험 코드도 개정 일정도 없습니다.
-> - 교재의 URL 중 여러 개가 리디렉션되거나 다른 곳으로 옮겨졌습니다. 어느 것이 어디로 갔는지는 [9.2절](#92-변경된-url-과-이름)에 표로 정리했습니다.
+> - **가장 중요한 사실 하나를 앞에 둡니다.** 이 과정에 대응하는 자격증 시험 **AWS Certified Developer – Associate 가 DVA-C03 으로 개정됩니다.** 현재 버전 DVA-C02 의 마지막 응시일은 **2026년 11월 30일**이고, DVA-C03 은 2026년 12월 1일부터 제공됩니다([6.3절](#63-시험-개정-일정)).
+> - 이 과정과 관련된 URL 여러 개가 리디렉션되거나 옮겨졌습니다. 어느 것이 어디로 갔는지는 [9.2절](#92-변경된-url-과-이름)에 표로 정리했습니다.
 
 ---
 
@@ -32,7 +31,7 @@
 
 ### 이 과정에서 배운 것
 
-교재가 드는 세 항목입니다.
+이 과정의 세 가지 목표입니다.
 
 - 개발 환경을 지원하도록 IAM 권한 구성
 - AWS SDK를 사용한 클라우드 네이티브 애플리케이션 설계, 다이어그램, 구축, 배포
@@ -47,7 +46,7 @@
 
 ## 2. 이 과정이 다룬 것
 
-교재 목표 세 줄을 모듈 단위로 펼친 것입니다. 각 모듈의 상세는 이 사이트의 해당 모듈 문서에
+과정의 세 목표를 모듈 단위로 펼친 것입니다. 각 모듈의 상세는 이 사이트의 해당 모듈 문서에
 있습니다.
 
 ### 기초와 환경 (모듈 1~3)
@@ -95,9 +94,9 @@
 
 ### 그리고 이 자료가 덧붙인 것
 
-이 사이트의 각 모듈 문서에는 교재에 없는 장이 하나 더 있습니다. **`N. 교재 대비 변경 사항`**
-입니다. 교재가 2023년 기준이라 지금과 다른 부분이 모듈마다 20~40건씩 있습니다. 교재를 손에
-들고 볼 때 "책에는 이렇게 나오는데요?"에 답하려면 그 장을 보세요.
+이 사이트의 각 모듈 문서에는 **`N. 교재 대비 변경 사항`** 장이 있습니다. 원본 교육 자료가
+2023년 기준이라 지금과 다른 부분이 모듈마다 20~40건씩 있어, 공식 교재를 함께 볼 때 대조할 수
+있게 모았습니다.
 
 ---
 
@@ -114,7 +113,7 @@
 | AWS 램프업 가이드 | [페이지](https://aws.amazon.com/training/ramp-up-guides/) |
 | Tech Talks 🔄 | [페이지](https://aws.amazon.com/events/online-tech-talks/) |
 
-교재가 제시한 요금제 백서 URL은 `welcome.html` 로 끝나는데 현재는 디렉터리 경로로
+요금제 백서의 예전 URL은 `welcome.html` 로 끝나는데 현재는 디렉터리 경로로
 리디렉션됩니다. Tech Talks 도 `/on-demand` 가 아니라 상위 경로가 현재 위치입니다
 ([9.2절](#92-변경된-url-과-이름)).
 
@@ -124,17 +123,17 @@
 
 ### 다음 단계 (후속 과정)
 
-교재가 드는 네 과정입니다. 등록 경로가 모두 AWS Skill Builder 로 옮겨졌습니다
+이 과정을 마친 뒤의 후속 과정 네 가지입니다. 등록 경로가 모두 AWS Skill Builder 로 옮겨졌습니다
 ([9.2절](#92-변경된-url-과-이름)).
 
 | 과정 | 성격 | 현재 경로 |
 |---|---|---|
 | Advanced Developing on AWS | 강의식 | [aws.amazon.com/training/classroom/advanced-developing-on-aws](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/) |
 | Developing Serverless Solutions on AWS | 강의식 | [aws.amazon.com/training/classroom/developing-serverless-solutions-on-aws](https://aws.amazon.com/training/classroom/developing-serverless-solutions-on-aws/) |
-| Getting Started with DevOps on AWS | 디지털 | 교재는 `www.aws.training/Details/eLearning?id=66768` 을 제시합니다 |
-| AWS Cloud Development Kit Primer | 디지털 | 교재는 `www.aws.training/Details/Curriculum?id=64511` 을 제시합니다 |
+| Getting Started with DevOps on AWS | 디지털 | 이전 경로는 `www.aws.training/Details/eLearning?id=66768` 입니다 |
+| AWS Cloud Development Kit Primer | 디지털 | 이전 경로는 `www.aws.training/Details/Curriculum?id=64511` 입니다 |
 
-교재가 제시한 두 강의식 과정의 `www.aws.training/SessionSearch?...` URL 은 위 경로로 대체되고,
+두 강의식 과정의 이전 `www.aws.training/SessionSearch?...` URL 은 위 경로로 대체되고,
 그 경로가 다시 Skill Builder 로 리디렉션됩니다. 디지털 과정 두 개는 `www.aws.training` 경로가
 아직 응답하지만, 이 프로젝트의 근거 도메인 규칙상 인용 대상이 아니어서 코드로만 적었습니다.
 현재 위치는 [AWS Skill Builder](https://aws.amazon.com/training/digital/)에서 과정 이름으로
@@ -142,7 +141,7 @@
 
 > — 출처: [AWS Classroom Training](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/)
 
-### 교재에 없는 후속 과정 🆕
+### 새로 생긴 후속 과정 🆕
 
 이 과정을 마친 개발자에게 지금 새로 생긴 갈래가 있습니다.
 
@@ -151,7 +150,7 @@
 | Advanced Generative AI Development on AWS | 파운데이션 모델 구현, Amazon Bedrock Knowledge Bases 를 사용한 검색 증강, Bedrock AgentCore 를 사용한 에이전틱 AI 개발, 엔터프라이즈 통합 패턴. **3일 실습 형식** |
 
 이 과정은 뒤에 나오는 `AWS Certified Generative AI Developer – Professional` 자격증과
-짝을 이룹니다([5.4절](#54-교재-이후-추가된-자격증)).
+짝을 이룹니다([5.4절](#54-이후-추가된-자격증)).
 
 > — 출처: [AWS expands AI certification portfolio and updates security certification](https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/)
 
@@ -161,10 +160,10 @@
 
 ### 4.1 무엇인가
 
-AWS 의 온라인 학습 센터입니다. 교재는 "600여 개의 디지털 과정"이라고 하는데 지금은 규모가
+AWS 의 온라인 학습 센터입니다. 예전에는 "600여 개의 디지털 과정"으로 소개됐지만 지금은 규모가
 달라졌습니다.
 
-| 항목 | 교재 | 확인된 현재 값 |
+| 항목 | 이전 값 | 확인된 현재 값 |
 |---|---|---|
 | 무료 자습형 디지털 과정 | 600개 이상 | **900개가 넘습니다** |
 | 무료 학습 리소스 전체 | (언급 없음) | **1,000개가 넘습니다** |
@@ -173,12 +172,12 @@ AWS 의 온라인 학습 센터입니다. 교재는 "600여 개의 디지털 과
 
 ### 4.2 학습 방식 세 갈래 🔄
 
-교재는 "무료 디지털 교육"과 "강의식 교육" 두 갈래로 제시합니다. 현재는 셋입니다.
+예전에는 "무료 디지털 교육"과 "강의식 교육" 두 갈래였지만 현재는 셋입니다.
 
 | 방식 | 내용 | 제공 조건 |
 |---|---|---|
 | Digital Courses (자습형) | AWS 서비스와 기술 수준 전반을 다루는 900개 이상의 무료 자습형 과정. 지식 평가 포함 | 무료 |
-| Digital Classroom (자습형) | 강사가 진행한 영상, 실습, 지식 확인, 과정 평가로 특정 주제를 깊게 다룹니다 | **Individual Annual 또는 Team 구독** |
+| Digital Classroom (자습형) | 강사가 진행한 영상, 실습, 이해도 점검, 과정 평가로 특정 주제를 깊게 다룹니다 | **Individual Annual 또는 Team 구독** |
 | AWS Classroom Training (라이브) | AWS 인증 강사가 발표·토론·실습으로 진행합니다. 질문하고 실시간으로 해법을 함께 만들며 개별 피드백을 받습니다. 대면 또는 가상, 공개 세션 또는 팀 전용 세션 | 유료 |
 
 몰입형 학습 경험 전체를 쓰려면 **Skill Builder Individual 또는 Team 구독**으로 업그레이드해야
@@ -193,7 +192,7 @@ AWS 의 온라인 학습 센터입니다. 교재는 "600여 개의 디지털 과
 | 실습 환경 | 실제 AWS 시나리오를 재현한 실습과 몰입형 환경에서 연습합니다 |
 | Skills Profile | 자격증, 배지, 실습 성과를 하나의 프로필에 모아 공개합니다. LinkedIn 으로 확장할 수 있습니다 |
 
-교재 슬라이드 10이 드는 **AWS Builder Labs** 의 페이지는 현재
+**AWS Builder Labs** 의 페이지는 현재
 `aws.amazon.com/training/digital/immersive-learning/` 로 리디렉션됩니다
 ([9.2절](#92-변경된-url-과-이름)).
 
@@ -207,17 +206,16 @@ AWS 의 온라인 학습 센터입니다. 교재는 "600여 개의 디지털 과
 
 ### 5.1 네 레벨
 
-교재가 드는 네 레벨입니다. 슬라이드 7 자체에는 **제목이 비어 있습니다**
-([9.1절](#91-교재-기술이-사실과-다른-항목)).
+AWS Certification 의 네 레벨입니다.
 
-| 레벨 | 성격 | 권장 경험 (교재) |
+| 레벨 | 성격 | 권장 경험 |
 |---|---|---|
 | Foundational | 지식 기반. AWS Cloud 기본 사항 | 기초 AWS 클라우드 경험 및 업계 지식 6개월. **이전 경험은 필요하지 않습니다** |
 | Associate | 역할 기반. 지식과 기술을 보여 줍니다 | AWS 클라우드를 통한 문제 해결 및 솔루션 구현 경험 1년 |
 | Professional | 직무 기반. 고급 기술과 지식을 검증합니다 | AWS 클라우드를 통한 솔루션 설계·운영·문제 해결 경험 2년 |
 | Specialty | 구체적인 주제에 중점 | 시험 가이드에 지정된 도메인에서의 기술 경험. 권장 수준은 다양합니다 |
 
-문서로 확인한 실제 값과 대조하면 교재의 레벨 설명은 맞습니다.
+문서로 확인한 실제 값과 대조하면 이 레벨 설명은 맞습니다.
 
 | 자격증 | 확인된 권장 경험 |
 |---|---|
@@ -233,7 +231,7 @@ AWS 의 온라인 학습 센터입니다. 교재는 "600여 개의 디지털 과
 
 ### 5.2 시험 범위를 확인하는 방법
 
-교재 강사 노트에 중요한 문장이 있습니다.
+AWS 가 밝힌 중요한 원칙이 있습니다.
 
 > AWS는 자격증 시험에서 다루는 모든 서비스 또는 기능의 목록을 게시하지 않습니다. 그러나 각
 > 시험의 시험 가이드에는 시험에서 다루는 현재 주제 영역 및 목표가 나열되어 있습니다.
@@ -241,18 +239,17 @@ AWS 의 온라인 학습 센터입니다. 교재는 "600여 개의 디지털 과
 그래서 **시험 가이드가 유일한 공식 범위 문서**입니다. "이 서비스가 시험에 나오나요"라는 질문에
 대한 답은 시험 가이드에 있는 도메인과 태스크 문장입니다.
 
-같은 노트가 이렇게도 경고합니다.
+AWS 는 이렇게도 안내합니다.
 
 > 시험은 자주 업데이트되며 제공되는 시험과 각 시험의 테스트 항목에 관한 세부 정보는 변경될
 > 수 있습니다.
 
-**이 경고가 정확히 실현되었습니다.** 교재가 만들어진 뒤 자격증 목록이 여러 번 바뀌었습니다
-([5.3절](#53-교재-이후-종료된-자격증), [5.4절](#54-교재-이후-추가된-자격증)).
+**이 안내대로 되었습니다.** 이후 자격증 목록이 여러 번 바뀌었습니다
+([5.3절](#53-이후-종료된-자격증), [5.4절](#54-이후-추가된-자격증)).
 
-### 5.3 교재 이후 종료된 자격증 🔄
+### 5.3 이후 종료된 자격증 🔄
 
-교재 슬라이드 7은 "슬라이드에는 현재 제공되는 AWS Certification이 나와 있습니다"라고 합니다.
-그 목록은 지금과 다릅니다.
+예전 목록은 지금과 다릅니다.
 
 | 자격증 | 마지막 응시일 | 대체 경로 |
 |---|---|---|
@@ -268,7 +265,7 @@ AWS 가 밝힌 이유는 **Specialty 자격증 수를 줄이고 Foundational · 
 
 - **이미 취득한 자격증은 유지됩니다.** 취득일로부터 3년간 활성 상태로 남고 Credly 디지털 배지도
   계속 표시할 수 있습니다.
-- **재인증은 불가능합니다.** 은퇴일 이후에는 시험을 제공하지 않기 때문입니다.
+- **재인증은 불가능합니다.** 종료일 이후에는 시험을 제공하지 않기 때문입니다.
 - **시험 준비 자료도 함께 종료되었습니다.** Official Practice Question Sets, Official Practice
   Exams, Exam Prep 과정이 모두 포함됩니다.
 
@@ -276,7 +273,7 @@ AWS 가 밝힌 이유는 **Specialty 자격증 수를 줄이고 Foundational · 
 
 > — 출처: [AWS expands AI certification portfolio and updates security certification](https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/)
 
-### 5.4 교재 이후 추가된 자격증 🆕
+### 5.4 이후 추가된 자격증 🆕
 
 | 자격증 | 레벨 | 내용 |
 |---|---|---|
@@ -308,7 +305,7 @@ AI/ML 또는 데이터 엔지니어링 경험, 그리고 생성형 AI 솔루션 
 
 ### 5.5 마이크로크리덴셜 🆕
 
-교재는 검증 수단으로 자격증만 다룹니다. 지금은 하나 더 있습니다.
+예전에는 검증 수단이 자격증뿐이었지만 지금은 하나 더 있습니다.
 
 | 구분 | 무엇을 검증하는가 |
 |---|---|
@@ -336,8 +333,8 @@ AWS 환경에서 다음을 평가합니다.
 
 ## 6. 이 과정과 직결되는 자격증
 
-**덱에서 가장 큰 공백입니다.** 교재는 자격증 레벨만 설명하고 **어느 시험을 보라는 말이
-없습니다.** 수강생이 가장 먼저 묻는 질문인데 답이 없습니다.
+자격증 레벨만으로는 **어느 시험을 봐야 하는지** 알 수 없습니다. 수강생이 가장 먼저 묻는
+질문이라 여기서 답합니다.
 
 ### 6.1 AWS Certified Developer – Associate 🆕
 
@@ -362,7 +359,7 @@ AWS 환경에서 다음을 평가합니다.
 
 ### 6.2 유효 기간과 재인증 🆕
 
-**덱에 한 줄도 없는데 취득 후 가장 중요한 내용입니다.** 모르면 만료됩니다.
+**취득 후 가장 중요한 내용입니다.** 모르면 만료됩니다.
 
 | 항목 | 내용 |
 |---|---|
@@ -393,7 +390,7 @@ Cloud Practitioner` 게임 기반 학습을 완료하면 됩니다. 만료 6개�
 ### 6.3 시험 개정 일정 🆕
 
 **시험은 코드로 개정됩니다.** 준비한 범위와 실제로 보는 시험이 어긋나지 않게 일정을 알아야
-합니다. 덱에는 시험 코드도 개정 일정도 없습니다.
+합니다.
 
 | 날짜 | 무슨 일 |
 |---|---|
@@ -469,8 +466,6 @@ Amazon SageMaker AI, AI 거버넌스 프레임워크 설계입니다. AI 가 들
 
 ### 6.5 시험 응시료 할인 🆕
 
-교재에 없습니다.
-
 **AWS Certification 하나를 취득하면 다음 AWS Certification 시험에 50% 할인**을 받습니다.
 할인은 AWS Certification 계정에서 확인합니다.
 
@@ -480,7 +475,7 @@ Amazon SageMaker AI, AI 거버넌스 프레임워크 설계입니다. AI 가 들
 
 ## 7. 시험 준비 4단계
 
-### 7.1 교재의 4단계
+### 7.1 기본 4단계
 
 | 단계 | 내용 |
 |---|---|
@@ -534,16 +529,16 @@ Amazon SageMaker AI, AI 거버넌스 프레임워크 설계입니다. AI 가 들
 
 단계 수는 넷 그대로인데 **단계 이름과 쓰는 도구가 달라졌습니다.**
 
-| 단계 | 현재 내용 | 교재와의 차이 |
+| 단계 | 현재 내용 | 예전과의 차이 |
 |---|---|---|
 | 1 | 시험 스타일 문제로 시험을 파악합니다 | 같습니다 |
-| 2 | 부족한 부분에 맞는 디지털 과정에 등록하고 **AWS Builder Labs · AWS Cloud Quest · AWS Jam** 으로 연습합니다 | **AWS Jam 이 교재에 없습니다** |
-| 3 | 시험 범위와 도메인별 주제를 검토하고, 강사의 문제 풀이와 응시 전략을 따라가며 **AWS SimuLearn** 으로 계속 연습합니다 | **AWS SimuLearn 이 교재에 없습니다** |
-| 4 | **AWS Certification Official Pretest** 로 준비 상태를 평가합니다 | 교재는 "공식 연습 시험(Official Practice Exam)"이라고 합니다 |
+| 2 | 부족한 부분에 맞는 디지털 과정에 등록하고 **AWS Builder Labs · AWS Cloud Quest · AWS Jam** 으로 연습합니다 | **예전에는 AWS Jam 이 없었습니다** |
+| 3 | 시험 범위와 도메인별 주제를 검토하고, 강사의 문제 풀이와 응시 전략을 따라가며 **AWS SimuLearn** 으로 계속 연습합니다 | **예전에는 AWS SimuLearn 이 없었습니다** |
+| 4 | **AWS Certification Official Pretest** 로 준비 상태를 평가합니다 | 예전에는 "공식 연습 시험(Official Practice Exam)"이었습니다 |
 
 Official Exam Prep 전체 구성도 넓어졌습니다. **question sets, pretests, exam prep courses,
-Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문제 모음"과 "공식 연습
-시험" 두 가지만 듭니다.
+Escape Room, SimuLearn, practice exams** 입니다. 예전에는 "공식 연습 문제 모음"과 "공식 연습
+시험" 두 가지뿐이었습니다.
 
 > — 출처: [AWS Certified Generative AI Developer – Professional](https://aws.amazon.com/certification/certified-generative-ai-developer-professional/)
 
@@ -553,8 +548,7 @@ Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문
 
 ## 8. 시험 등록과 응시
 
-교재 슬라이드 13은 **섹션 표지 하나뿐이고 본문이 없습니다.** 부제 "시험 응시 옵션에 대해
-알아봅니다"와 링크 하나만 있습니다. 그 내용을 채웁니다.
+시험 등록과 응시 방법입니다.
 
 ### 8.1 온라인 감독 시험 🆕
 
@@ -582,7 +576,7 @@ Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문
 
 ### 8.3 과정 피드백
 
-교재 슬라이드 14가 드는 절차입니다.
+과정 평가를 남기는 절차입니다.
 
 | 단계 | 내용 |
 |---|---|
@@ -591,12 +585,13 @@ Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문
 | 3 | Archived 탭을 선택합니다 |
 | 4 | 완료한 과정을 선택하고 Evaluate 를 선택합니다 |
 
-> **교재 오류.** 4번 단계는 원문에서 "완료한 **Architecting on AWS** 교육 과정을 선택하고"라고
-> 합니다. 이 덱은 **Developing on AWS** 과정의 것입니다. 다른 과정 덱에서 복사해 온 흔적으로
-> 보입니다. 위 표에서는 과정 이름을 뺐습니다([9.1절](#91-교재-기술이-사실과-다른-항목)).
+> **원본 자료의 오류.** 4번 단계는 원문에서 "완료한 **Architecting on AWS** 교육 과정을
+> 선택하고"라고 합니다. 이 과정은 **Developing on AWS** 인데 원문은 Architecting on AWS 를
+> 가리켜, 다른 과정 자료에서 옮겨 온 것으로 보입니다. 위 표에서는 과정 이름을 뺐습니다
+> ([9.1절](#91-교재-기술이-사실과-다른-항목)).
 
-강사 노트는 이 슬라이드가 AWS 내부·프리랜서 강사에게만 적용되고, AWS 교육 파트너는 자기 학습
-관리 시스템의 정보로 바꾸라고 안내합니다. **지금 이 과정을 어디서 들었는지에 따라 피드백 경로가
+이 절차는 AWS 내부·프리랜서 강사에게만 적용되고, AWS 교육 파트너는 자기 학습
+관리 시스템의 정보로 바꿔 안내합니다. **지금 이 과정을 어디서 들었는지에 따라 피드백 경로가
 다릅니다.** 교육 파트너를 통해 수강했다면 그 파트너의 안내를 따르세요.
 
 ---
@@ -610,19 +605,19 @@ Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문
 
 | 교재 기재 | 확인된 내용 | 근거 |
 |---|---|---|
-| 슬라이드 5: "600여 개의 디지털 과정" / "600개가 넘는 온디맨드 디지털 과정" | 현재 900개가 넘는 무료 자습형 디지털 과정, 온라인 학습 센터 전체로는 1,000개가 넘는 무료 학습 리소스 | [AWS Skill Builder](https://aws.amazon.com/training/digital/) |
-| 슬라이드 7 노트: "슬라이드에는 현재 제공되는 AWS Certification이 나와 있습니다" | 교재 시점 이후 Specialty 네 개가 종료되고 네 개가 새로 추가되었습니다([5.3절](#53-교재-이후-종료된-자격증), [5.4절](#54-교재-이후-추가된-자격증)) | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
+| "600여 개의 디지털 과정" / "600개가 넘는 온디맨드 디지털 과정" | 현재 900개가 넘는 무료 자습형 디지털 과정, 온라인 학습 센터 전체로는 1,000개가 넘는 무료 학습 리소스 | [AWS Skill Builder](https://aws.amazon.com/training/digital/) |
+| 소개된 "현재 제공되는 AWS Certification 목록" | 이후 Specialty 네 개가 종료되고 네 개가 새로 추가되었습니다([5.3절](#53-이후-종료된-자격증), [5.4절](#54-이후-추가된-자격증)) | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
 
 교재 안에서 어긋나는 항목입니다. 외부 문서와의 불일치가 아니므로 🆕 · 🔄 표기를 붙이지
 않았습니다.
 
 | 어긋나는 지점 | 내용 | 이 문서의 처리 |
 |---|---|---|
-| 과정 이름 | 슬라이드 14 본문 4번이 "완료한 **Architecting on AWS** 교육 과정을 선택하고"라고 합니다. 이 덱은 Developing on AWS 과정의 것입니다 | 과정 이름을 빼고 절차만 실었습니다([8.3절](#83-과정-피드백)) |
-| 슬라이드 제목 누락 | 슬라이드 7 은 제목 자리가 비어 있고 본문 텍스트 박스에 "AWS Certification 레벨"이라고만 적혀 있습니다 | 그 문구를 절 제목으로 썼습니다([5.1절](#51-네-레벨)) |
-| 문장 중복 | 슬라이드 7 노트가 "시험은 자주 업데이트되며 …" 문장을 "그러나"로 이어 **두 번** 반복합니다 | 한 번만 실었습니다([5.2절](#52-시험-범위를-확인하는-방법)) |
-| 주의사항 중복 | 슬라이드 11 노트가 구독 필요 안내를 표현만 바꿔 **두 번** 적습니다 | 한 번만 실었습니다([7.1절](#71-교재의-4단계)) |
-| 링크 라벨 누락 | 슬라이드 3 노트의 "다음 단계"에서 `Advanced Developing on AWS` 뒤에 URL 두 개가 연달아 나오고 두 번째(`courseId=53785`)에 과정 이름이 없습니다 | 본문 목록과 대조해 `Developing Serverless Solutions on AWS` 로 판단하고 그렇게 실었습니다([3장](#3-추가-리소스)) |
+| 과정 이름 | 과정 평가 절차의 4번 단계가 "완료한 **Architecting on AWS** 교육 과정을 선택하고"라고 합니다. 이 과정은 Developing on AWS 입니다 | 과정 이름을 빼고 절차만 실었습니다([8.3절](#83-과정-피드백)) |
+| 제목 누락 | 레벨 소개 화면은 제목 자리가 비어 있고 본문 텍스트 박스에 "AWS Certification 레벨"이라고만 적혀 있습니다 | 그 문구를 절 제목으로 썼습니다([5.1절](#51-네-레벨)) |
+| 문장 중복 | 원본 노트가 "시험은 자주 업데이트되며 …" 문장을 "그러나"로 이어 **두 번** 반복합니다 | 한 번만 실었습니다([5.2절](#52-시험-범위를-확인하는-방법)) |
+| 주의사항 중복 | 원본 노트가 구독 필요 안내를 표현만 바꿔 **두 번** 적습니다 | 한 번만 실었습니다([7.1절](#71-기본-4단계)) |
+| 링크 라벨 누락 | 후속 과정 안내의 "다음 단계"에서 `Advanced Developing on AWS` 뒤에 URL 두 개가 연달아 나오고 두 번째(`courseId=53785`)에 과정 이름이 없습니다 | 본문 목록과 대조해 `Developing Serverless Solutions on AWS` 로 판단하고 그렇게 실었습니다([3장](#3-추가-리소스)) |
 
 ### 9.2 변경된 URL 과 이름
 
@@ -663,7 +658,7 @@ Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문
 
 | 항목 | 상태 | 대체 | 근거 |
 |---|---|---|---|
-| `www.aws.training` 포털 | 비권장 — AWS 가 안내하는 현재 학습 진입점은 AWS Skill Builder 입니다. 교재가 제시한 강의식 과정 경로는 Skill Builder 로 리디렉션됩니다. `www.aws.training` 자체는 아직 응답하지만 이 프로젝트의 근거 도메인 허용 목록에 없어 인용 대상이 아닙니다 | [AWS Skill Builder](https://aws.amazon.com/training/digital/) | [AWS Classroom Training](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/) |
+| `www.aws.training` 포털 | 비권장 — AWS 가 안내하는 현재 학습 진입점은 AWS Skill Builder 입니다. 이 과정 자료가 제시한 강의식 과정 경로는 Skill Builder 로 리디렉션됩니다. `www.aws.training` 자체는 아직 응답하지만 이 프로젝트의 근거 도메인 허용 목록에 없어 인용 대상이 아닙니다 | [AWS Skill Builder](https://aws.amazon.com/training/digital/) | [AWS Classroom Training](https://aws.amazon.com/training/classroom/advanced-developing-on-aws/) |
 | AWS Certified Machine Learning – Specialty | **제공 종료** — 마지막 응시일 2026년 3월 31일 | AI Practitioner, Machine Learning Engineer – Associate, Data Engineer – Associate, Generative AI Developer – Professional | [AWS expands AI certification portfolio](https://aws.amazon.com/blogs/training-and-certification/big-news-aws-expands-ai-certification-portfolio-and-updates-security-certification/) |
 | AWS Certified Data Analytics – Specialty | **제공 종료** — 마지막 응시일 2024년 4월 8일 | AWS Certified Data Engineer – Associate | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
 | AWS Certified Database – Specialty | **제공 종료** — 마지막 응시일 2024년 4월 29일 | — | [AWS Certification retirements and launches](https://aws.amazon.com/blogs/training-and-certification/aws-certification-retirements-and-launches/) |
@@ -681,7 +676,7 @@ Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문
 | DVA-C03 개정 일정, 시험 정보, 바뀌는 내용 | [6.3절](#63-시험-개정-일정) · [6.4절](#64-dva-c03-에서-무엇이-바뀌나) |
 | 자격증 취득 후 다음 시험 50% 할인 | [6.5절](#65-시험-응시료-할인) |
 | 마이크로크리덴셜과 AWS Agentic AI Demonstrated | [5.5절](#55-마이크로크리덴셜) |
-| 교재 이후 추가된 자격증 네 개 | [5.4절](#54-교재-이후-추가된-자격증) |
+| 이후 추가된 자격증 네 개 | [5.4절](#54-이후-추가된-자격증) |
 | 온라인 감독 시험의 실제 조건과 언어별 가능 시간 | [8.1절](#81-온라인-감독-시험) · [8.2절](#82-감독-언어와-가능-시간) |
 | 현지화된 시험에서 영어로 문제를 볼 수 있는 토글 | [8.2절](#82-감독-언어와-가능-시간) |
 | Skills Profile | [4.3절](#43-실습과-성과-표시) |
@@ -692,51 +687,13 @@ Escape Room, SimuLearn, practice exams** 입니다. 교재는 "공식 연습 문
 
 | 항목 | 왜 확인하지 못했는가 |
 |---|---|
-| 슬라이드 2의 과정 목표 세 항목이 현재 과정 설명 페이지의 목표와 일치하는지 | Developing on AWS 과정 페이지가 Skill Builder 로 리디렉션되고, Skill Builder 는 이 프로젝트의 근거 도메인 허용 목록에 없어 목표 문구를 인용할 수 없습니다. 교재 문구를 그대로 실었습니다 |
+| 과정 목표 세 항목이 현재 과정 설명 페이지의 목표와 일치하는지 | Developing on AWS 과정 페이지가 Skill Builder 로 리디렉션되고, Skill Builder 는 이 프로젝트의 근거 도메인 허용 목록에 없어 목표 문구를 인용할 수 없습니다. 교재 문구를 그대로 실었습니다 |
 | Getting Started with DevOps on AWS 와 AWS Cloud Development Kit Primer 의 현재 위치 | 교재가 제시한 `www.aws.training` 경로는 응답하지만 허용 목록 밖이고, `aws.amazon.com` 쪽 대응 경로를 확인하지 못했습니다. Skill Builder 에서 과정 이름으로 검색하는 것을 권합니다([3장](#3-추가-리소스)) |
-| 현재 제공되는 AWS Certification **전체** 목록 | 자격증 페이지가 동적으로 렌더링되어 전체 목록을 그대로 가져오지 못했습니다. 개별 자격증 페이지와 AWS Training and Certification 블로그로 확인한 범위만 실었습니다([5.3절](#53-교재-이후-종료된-자격증) · [5.4절](#54-교재-이후-추가된-자격증)) |
+| 현재 제공되는 AWS Certification **전체** 목록 | 자격증 페이지가 동적으로 렌더링되어 전체 목록을 그대로 가져오지 못했습니다. 개별 자격증 페이지와 AWS Training and Certification 블로그로 확인한 범위만 실었습니다([5.3절](#53-이후-종료된-자격증) · [5.4절](#54-이후-추가된-자격증)) |
 | DVA-C02 의 현재 시험 시간·문항 수·응시료 | 개별 자격증 페이지에서 시험 개요 표를 가져오지 못했습니다. DVA-C03 의 값은 2026년 9월 블로그로 확인했습니다([6.3절](#63-시험-개정-일정)) |
 | 시험 센터 응시(오프라인)의 조건 | 확인한 문서는 온라인 감독 시험을 설명합니다. 시험 센터 응시 조건은 확인하지 못했습니다([8.1절](#81-온라인-감독-시험)) |
 | AWS Jam, AWS SimuLearn, Escape Room 각각의 상세 구성 | Exam Prep Plan 설명에서 이름과 역할만 확인했고 각 도구의 상세는 확인하지 못했습니다([7.2절](#72-현재의-exam-prep-plan)) |
 
 ---
-
-## 10. 핵심 정리
-
-### 10.1 지금 할 일
-
-이 과정을 마친 시점에서 순서대로 할 일입니다.
-
-| 순서 | 할 일 | 참고 |
-|---|---|---|
-| 1 | 대응 자격증이 **AWS Certified Developer – Associate** 임을 확인합니다 | [6.1절](#61-aws-certified-developer-associate) |
-| 2 | **시험 코드를 정합니다.** DVA-C02(2026년 11월 30일까지) 또는 DVA-C03(12월 1일부터) | [6.3절](#63-시험-개정-일정) |
-| 3 | **시험 가이드**를 읽습니다. 공식 범위 문서는 이것뿐입니다 | [5.2절](#52-시험-범위를-확인하는-방법) |
-| 4 | Skill Builder 의 **Exam Prep Plan** 4단계를 따릅니다 | [7.2절](#72-현재의-exam-prep-plan) |
-| 5 | **Official Pretest** 로 준비 상태를 확인합니다 | [7.2절](#72-현재의-exam-prep-plan) |
-| 6 | Pearson VUE 로 **온라인 감독 시험 또는 시험 센터**를 예약합니다 | [8.1절](#81-온라인-감독-시험) |
-| 7 | 취득 후 **3년 유효**임을 기록해 둡니다. 재인증 방법도 함께 | [6.2절](#62-유효-기간과-재인증) |
-
-### 10.2 놓치기 쉬운 것
-
-| 항목 | 요점 |
-|---|---|
-| 시험 코드 | 개정 시점을 모르면 준비한 범위와 다른 시험을 봅니다. **DVA-C02 는 2026년 11월 30일까지** |
-| 유효 기간 | 3년입니다. 갱신은 3년 연장, 유지는 1년 연장이고 유지는 Skill Builder 구독이 필요합니다 |
-| 할인 | 자격증 하나를 취득하면 다음 시험이 **50% 할인**입니다 |
-| 자동 재인증 | DevOps Engineer – Professional 을 취득하면 Developer – Associate 가 자동 재인증됩니다 |
-| 언어 토글 | 한국어로 응시해도 시험 중 문제를 **영어로 전환**할 수 있습니다 |
-| 마이크로크리덴셜 | 자격증과 별개로 실무 능력을 검증하는 수단이 생겼습니다. **구독이 필요하지 않습니다** |
-| 종료된 시험 | Specialty 네 개가 종료되었습니다. 오래된 학습 계획에 남아 있으면 지우세요 |
-
-### 10.3 이 자료를 계속 쓰는 방법
-
-이 사이트는 교재를 대체하지 않습니다. **교재와 나란히 보는 대조표**입니다.
-
-- 교재를 읽다가 "이게 아직 맞나" 싶으면 해당 모듈의 **`교재 대비 변경 사항`** 장을 보세요.
-- 이 자료의 모든 사실에는 **조회한 AWS 공식 문서 링크**가 붙어 있습니다. 확인하지 못한 것은
-  확인하지 못했다고 적었습니다. 각 모듈의 `검증하지 못한 항목` 절이 그 목록입니다.
-- 검증일은 **2026년 8월 25일**입니다. 특히 이 모듈의 교육·자격증 일정은 자주 바뀌므로 시험
-  등록 전에는 링크된 원문에서 일정을 다시 확인하세요.
 
 수고하셨습니다.
