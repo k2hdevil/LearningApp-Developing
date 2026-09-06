@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import SideNavigation from '@cloudscape-design/components/side-navigation';
 import Badge from '@cloudscape-design/components/badge';
 import { navigationTree, nodeTitle } from '../data/navigationTree';
@@ -17,38 +16,6 @@ import { getStrings } from '../i18n/strings';
 export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollapsedChange }) {
   const { locale } = useLocale();
   const text = getStrings(locale);
-  const rootRef = useRef(null);
-
-  /*
-   * 섹션 접힘 감지는 실제 DOM 의 aria-expanded 를 관찰해서 합니다.
-   *
-   * onChange 의 event.detail.expanded 는 Cloudscape 내부 상태와 한 박자 어긋나게
-   * 들어와, 그대로 쓰면 클릭마다 접힘/펴짐 판단이 밀립니다(3번째 클릭에 트리가
-   * 통째로 펼쳐지는 증상). 그래서 이벤트 값 대신, 섹션 헤더의 aria-expanded 가
-   * 실제로 바뀌는 것을 MutationObserver 로 지켜보고 그때의 값을 씁니다. 이러면
-   * 클릭·이벤트 타이밍과 무관하게 화면 상태와 항상 일치합니다.
-   */
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return undefined;
-
-    const report = () => {
-      const header = root.querySelector('[aria-expanded]');
-      if (!header) return;
-      onTreeCollapsedChange?.(header.getAttribute('aria-expanded') === 'false');
-    };
-
-    // 초기 상태를 한 번 반영합니다.
-    report();
-
-    const observer = new MutationObserver(report);
-    observer.observe(root, {
-      attributes: true,
-      attributeFilter: ['aria-expanded'],
-      subtree: true,
-    });
-    return () => observer.disconnect();
-  }, [onTreeCollapsedChange, locale]);
 
   const buildItem = (node) => {
     const title = nodeTitle(node, locale);
@@ -69,8 +36,12 @@ export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollaps
     };
   };
 
-  // 섹션 펼침/접힘은 Cloudscape 내부 상태 하나만 씁니다(비제어, defaultExpanded).
-  // 제어용 expanded prop 을 넘기면 우리 상태와 이중 관리가 되어 어긋납니다.
+  // 접기/펴기는 전적으로 Cloudscape 에 맡깁니다(비제어, defaultExpanded).
+  //
+  // 제어용 `expanded` prop 을 주면 우리 상태와 Cloudscape 내부 토글이 충돌해
+  // 몇 번 클릭 뒤 접기가 굳어 버립니다. `expanded` 를 주지 않으면 Cloudscape 의
+  // 자체 토글이 항상 정상 동작합니다. 우리는 onChange 로 그 변화를 감지해서
+  // 아래 목차를 위로 올리는 데만 씁니다(목차 이동은 접기의 부수 효과).
   const items = navigationTree.map((series) => ({
     type: 'section',
     text: nodeTitle(series, locale),
@@ -85,11 +56,25 @@ export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollaps
     onNavigate(target);
   };
 
+  // 섹션을 접거나 펴면 발생합니다. event.detail.expanded 는 실제 렌더보다 한
+  // 박자 밀려 오므로, 대신 다음 프레임에 DOM 의 aria-expanded 를 읽어 판단합니다.
+  // (접기 자체는 Cloudscape 가 하고, 여기서는 목차를 올릴지만 정합니다.)
+  const handleChange = (event) => {
+    if (event.detail.item.type !== 'section') return;
+    requestAnimationFrame(() => {
+      const header = document.querySelector('.doa-nav-tree [aria-expanded]');
+      onTreeCollapsedChange?.(header?.getAttribute('aria-expanded') === 'false');
+    });
+  };
+
   // header 를 주지 않으면 상단 제목 영역이 렌더되지 않습니다.
   // 과정명은 아래 섹션 제목에 이미 있어서 중복이라 두지 않습니다.
   return (
-    <div ref={rootRef}>
-      <SideNavigation activeHref={`#${activeItemId}`} items={items} onFollow={handleFollow} />
-    </div>
+    <SideNavigation
+      activeHref={`#${activeItemId}`}
+      items={items}
+      onFollow={handleFollow}
+      onChange={handleChange}
+    />
   );
 }
