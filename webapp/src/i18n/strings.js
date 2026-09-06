@@ -25,7 +25,7 @@ export function nextLocale(locale) {
 
 const strings = {
   ko: {
-    seriesTitle: 'AWS Training Series',
+    seriesTitle: 'Developing on AWS',
     courseTitle: 'Developing on AWS (한국어)',
     navigationLabel: '사이드 내비게이션',
     navigationClose: '내비게이션 닫기',
@@ -51,7 +51,7 @@ const strings = {
     diagramZoomClose: '확대 닫기',
     // Cloudscape 는 Anchor navigation 과 짝지을 헤딩 문구로 "On this page" 를
     // 지정합니다. 한국어는 지정된 문구가 없어 본문에서 쓰던 "목차" 를 씁니다.
-    outlineHeading: '목차',
+    outlineHeading: '모듈 목차',
     outlineLabel: '이 문서의 목차',
     // 트리(과정 목차) 제목. 시리즈명 전체는 상단 바·breadcrumb 에 이미 있어
     // 중복이고 축소 버튼과 겹치므로, 짧은 제목으로 둡니다.
@@ -62,7 +62,7 @@ const strings = {
       '시험·실무 적용 전에는 본문의 출처 링크를 확인하세요.',
   },
   en: {
-    seriesTitle: 'AWS Training Series',
+    seriesTitle: 'Developing on AWS',
     courseTitle: 'Developing on AWS',
     navigationLabel: 'Side navigation',
     navigationClose: 'Close navigation',
@@ -86,7 +86,7 @@ const strings = {
     diagramErrorPrefix: 'Unable to load the diagram',
     diagramZoom: 'Expand diagram',
     diagramZoomClose: 'Close expanded view',
-    outlineHeading: 'On this page',
+    outlineHeading: 'Module contents',
     outlineLabel: 'On this page',
     treeHeading: 'Course contents',
     footer:
