@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import SideNavigation from '@cloudscape-design/components/side-navigation';
 import Badge from '@cloudscape-design/components/badge';
 import { navigationTree, nodeTitle } from '../data/navigationTree';
@@ -17,14 +17,38 @@ import { getStrings } from '../i18n/strings';
 export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollapsedChange }) {
   const { locale } = useLocale();
   const text = getStrings(locale);
+  const rootRef = useRef(null);
 
-  // 시리즈 섹션의 펼침 상태를 직접 관리합니다(제어 컴포넌트). 기본은 펼침입니다.
-  // 접히면 부모에 알려, 아래 목차를 위로 끌어올리는 데 씁니다.
-  const [sectionExpanded, setSectionExpanded] = useState(true);
-
+  /*
+   * 섹션 접힘 감지는 실제 DOM 의 aria-expanded 를 관찰해서 합니다.
+   *
+   * onChange 의 event.detail.expanded 는 Cloudscape 내부 상태와 한 박자 어긋나게
+   * 들어와, 그대로 쓰면 클릭마다 접힘/펴짐 판단이 밀립니다(3번째 클릭에 트리가
+   * 통째로 펼쳐지는 증상). 그래서 이벤트 값 대신, 섹션 헤더의 aria-expanded 가
+   * 실제로 바뀌는 것을 MutationObserver 로 지켜보고 그때의 값을 씁니다. 이러면
+   * 클릭·이벤트 타이밍과 무관하게 화면 상태와 항상 일치합니다.
+   */
   useEffect(() => {
-    onTreeCollapsedChange?.(!sectionExpanded);
-  }, [sectionExpanded, onTreeCollapsedChange]);
+    const root = rootRef.current;
+    if (!root) return undefined;
+
+    const report = () => {
+      const header = root.querySelector('[aria-expanded]');
+      if (!header) return;
+      onTreeCollapsedChange?.(header.getAttribute('aria-expanded') === 'false');
+    };
+
+    // 초기 상태를 한 번 반영합니다.
+    report();
+
+    const observer = new MutationObserver(report);
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ['aria-expanded'],
+      subtree: true,
+    });
+    return () => observer.disconnect();
+  }, [onTreeCollapsedChange, locale]);
 
   const buildItem = (node) => {
     const title = nodeTitle(node, locale);
@@ -45,12 +69,12 @@ export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollaps
     };
   };
 
-  // 시리즈가 하나뿐이라 그 섹션의 펼침 상태 하나로 트리 접힘을 판단합니다.
-  // 여러 시리즈로 늘어나면 인덱스별 상태 배열로 바꿔야 합니다.
+  // 섹션 펼침/접힘은 Cloudscape 내부 상태 하나만 씁니다(비제어, defaultExpanded).
+  // 제어용 expanded prop 을 넘기면 우리 상태와 이중 관리가 되어 어긋납니다.
   const items = navigationTree.map((series) => ({
     type: 'section',
     text: nodeTitle(series, locale),
-    expanded: sectionExpanded,
+    defaultExpanded: true,
     items: (series.children || []).map(buildItem),
   }));
 
@@ -61,22 +85,11 @@ export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollaps
     onNavigate(target);
   };
 
-  // 섹션 제목의 삼각형을 눌러 접거나 펴면 발생합니다. 우리 트리는 섹션이
-  // 하나뿐이므로 그 확장 여부를 그대로 상태로 씁니다.
-  const handleChange = (event) => {
-    if (event.detail.item.type === 'section') {
-      setSectionExpanded(event.detail.expanded);
-    }
-  };
-
   // header 를 주지 않으면 상단 제목 영역이 렌더되지 않습니다.
   // 과정명은 아래 섹션 제목에 이미 있어서 중복이라 두지 않습니다.
   return (
-    <SideNavigation
-      activeHref={`#${activeItemId}`}
-      items={items}
-      onFollow={handleFollow}
-      onChange={handleChange}
-    />
+    <div ref={rootRef}>
+      <SideNavigation activeHref={`#${activeItemId}`} items={items} onFollow={handleFollow} />
+    </div>
   );
 }
