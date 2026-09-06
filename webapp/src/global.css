@@ -36,6 +36,10 @@ body {
  */
 [class*='awsui_navigation-close'] {
   transform: translateY(-8px);
+  /* 트리 제목(.doa-tree-toggle)이 불투명 배경 + z-index:1 로 이 버튼 자리를 덮어
+     가려지므로, 더 위에 오도록 쌓임 순서를 올립니다. */
+  position: relative;
+  z-index: 2;
 }
 
 /* ── 하단 면책 문구 ── */
