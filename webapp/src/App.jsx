@@ -9,6 +9,7 @@ import Spinner from '@cloudscape-design/components/spinner';
 import Alert from '@cloudscape-design/components/alert';
 import Badge from '@cloudscape-design/components/badge';
 import Box from '@cloudscape-design/components/box';
+import Icon from '@cloudscape-design/components/icon';
 
 import TreeNavigation from './components/TreeNavigation';
 import BreadcrumbNav from './components/BreadcrumbNav';
@@ -201,16 +202,26 @@ export default function App() {
         navigation={
           <div className={`doa-nav${treeCollapsed ? ' doa-nav--tree-collapsed' : ''}`}>
             {/*
-              모듈 트리와 목차를 6:4 로 나눕니다(PageOutline.css). 트리를 접으면
-              treeCollapsed 가 켜져 트리 래퍼가 제 높이만 쓰고, 아래 목차가 위로
-              올라옵니다.
+              모듈 트리와 목차를 6:4 로 나눕니다(PageOutline.css). 트리 접기는 우리가
+              직접 만든 삼각형 버튼으로 합니다(Cloudscape 섹션 토글은 상태가 밖에서
+              어긋나 클릭이 밀렸습니다). 접힘 상태는 treeCollapsed 하나뿐이라 밀림이
+              없고, 접으면 트리 리스트를 숨겨 아래 목차가 위로 올라옵니다.
             */}
+            <button
+              type="button"
+              className="doa-tree-toggle"
+              aria-expanded={!treeCollapsed}
+              onClick={() => setTreeCollapsed((v) => !v)}
+            >
+              <span className="doa-tree-caret" aria-hidden="true">
+                <Icon name={treeCollapsed ? 'caret-right-filled' : 'caret-down-filled'} />
+              </span>
+              <Box variant="h3" padding="n" margin="n" color="text-body-secondary">
+                {nodeTitle(navigationTree[0], locale)}
+              </Box>
+            </button>
             <div className="doa-nav-tree">
-              <TreeNavigation
-                activeItemId={activeItemId}
-                onNavigate={handleNavigate}
-                onTreeCollapsedChange={setTreeCollapsed}
-              />
+              <TreeNavigation activeItemId={activeItemId} onNavigate={handleNavigate} />
             </div>
             {/* 열려 있는 모듈의 목차. 콘텐츠를 불러오는 중이거나 실패했으면 두지 않습니다. */}
             {!loading && !error ? (

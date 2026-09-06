@@ -40,16 +40,41 @@
    목차는 제목 줄만 남아 원래 자리에 그대로 있고, 그 아래가 빈 공간이 됩니다.
    "목차를 접었을 때 위치는 그대로"라는 요구에 맞춘 것입니다. */
 
-/* 모듈 트리(과정 목차)를 접으면 트리 래퍼가 접힌 제목 줄 높이만 차지하게 하여,
-   아래 목차가 남은 공간을 받아 위로 올라옵니다. 목차 자체의 접기와는 독립입니다.
-
-   flex: none 으로 두는 이유: 기본값이 flex: 6 1 0 (flex-basis 0)이라 grow 만
-   0 으로 내리면 높이가 0 에 붙어 접힌 섹션 제목까지 사라집니다. flex: none 은
-   콘텐츠(제목 줄) 높이만큼 잡으므로 제목이 남습니다. overflow 도 풀어 잘리지
-   않게 합니다. */
-.doa-nav--tree-collapsed .doa-nav-tree {
+/* 트리 제목 + 접기 삼각형. 모듈별 목차의 토글 버튼과 같은 모양·정렬입니다.
+   버튼 기본 모양을 지우고 왼쪽 정렬한 한 줄로 둡니다. 색은 안쪽 Box 가 토큰으로
+   칠합니다. */
+.doa-tree-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  inline-size: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  /* 왼쪽 8px 은 목차 토글·SideNavigation 링크와 같은 기준선입니다.
+     아래쪽에 약간의 간격을 둬 트리 리스트와 붙지 않게 합니다. */
+  padding-inline: 8px 0;
+  padding-block: 4px 8px;
   flex: none;
-  overflow-y: visible;
+  /* caret 과 제목의 세로 중앙을 맞춥니다. Box h3 의 기본 마진을 없앴으므로
+     두 요소 높이가 비슷해 가운데 정렬이 어긋나지 않습니다. */
+  min-block-size: 0;
+}
+
+.doa-tree-caret {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  /* caret 이 제목 글자 크기(h3)와 세로로 맞도록 아이콘 줄 높이를 텍스트에 맞춥니다. */
+  line-height: 1;
+}
+
+/* 모듈 트리(과정 목차)를 접으면 트리 리스트를 숨깁니다. 제목(위 버튼)은 남고,
+   트리가 차지하던 공간이 비면서 아래 목차가 위로 올라옵니다. 목차 자체의 접기와는
+   독립입니다. 접힘 상태는 App 의 treeCollapsed 하나뿐이라 어긋나지 않습니다. */
+.doa-nav--tree-collapsed .doa-nav-tree {
+  display: none;
 }
 
 .doa-outline {

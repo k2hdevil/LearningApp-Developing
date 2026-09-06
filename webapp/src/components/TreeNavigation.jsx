@@ -10,10 +10,16 @@ import { getStrings } from '../i18n/strings';
  * 콘텐츠가 준비되지 않은 모듈(contentFile 없음)은 "(준비 중)"으로 표시하고
  * 클릭해도 이동하지 않게 해서, 수강생이 빈 화면을 보는 일이 없게 합니다.
  *
+ * 접기/펴기는 여기서 하지 않습니다. Cloudscape SideNavigation 섹션의 접힘
+ * 상태는 밖에서 신뢰성 있게 제어·감지하기 어려워(제어 prop 미지원, onChange 값
+ * 밀림) 클릭이 어긋났습니다. 그래서 섹션 헤더를 쓰지 않고 링크만 렌더하며,
+ * 제목과 접기 버튼은 App 이 직접 그립니다(모듈별 목차와 같은 방식). 이렇게 하면
+ * 접힘 상태가 App 의 React state 하나뿐이라 어긋날 수 없습니다.
+ *
  * 읽음 표시는 두지 않습니다. 강의 중에는 강사가 순서를 오가며 열기 때문에
  * "읽음"이 진도를 뜻하지 않아 오히려 혼란을 줍니다.
  */
-export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollapsedChange }) {
+export default function TreeNavigation({ activeItemId, onNavigate }) {
   const { locale } = useLocale();
   const text = getStrings(locale);
 
@@ -36,18 +42,12 @@ export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollaps
     };
   };
 
-  // 접기/펴기는 전적으로 Cloudscape 에 맡깁니다(비제어, defaultExpanded).
-  //
-  // 제어용 `expanded` prop 을 주면 우리 상태와 Cloudscape 내부 토글이 충돌해
-  // 몇 번 클릭 뒤 접기가 굳어 버립니다. `expanded` 를 주지 않으면 Cloudscape 의
-  // 자체 토글이 항상 정상 동작합니다. 우리는 onChange 로 그 변화를 감지해서
-  // 아래 목차를 위로 올리는 데만 씁니다(목차 이동은 접기의 부수 효과).
-  const items = navigationTree.map((series) => ({
-    type: 'section',
-    text: nodeTitle(series, locale),
-    defaultExpanded: true,
-    items: (series.children || []).map(buildItem),
-  }));
+  // 섹션을 쓰지 않고 각 시리즈의 모듈 링크를 평탄하게 나열합니다. 제목은 App 이
+  // 트리 위에 접기 버튼과 함께 렌더합니다. 시리즈가 여럿이면 divider 로 나눕니다.
+  const items = navigationTree.flatMap((series, index) => {
+    const links = (series.children || []).map(buildItem);
+    return index === 0 ? links : [{ type: 'divider' }, ...links];
+  });
 
   const handleFollow = (event) => {
     event.preventDefault();
@@ -56,25 +56,5 @@ export default function TreeNavigation({ activeItemId, onNavigate, onTreeCollaps
     onNavigate(target);
   };
 
-  // 섹션을 접거나 펴면 발생합니다. event.detail.expanded 는 실제 렌더보다 한
-  // 박자 밀려 오므로, 대신 다음 프레임에 DOM 의 aria-expanded 를 읽어 판단합니다.
-  // (접기 자체는 Cloudscape 가 하고, 여기서는 목차를 올릴지만 정합니다.)
-  const handleChange = (event) => {
-    if (event.detail.item.type !== 'section') return;
-    requestAnimationFrame(() => {
-      const header = document.querySelector('.doa-nav-tree [aria-expanded]');
-      onTreeCollapsedChange?.(header?.getAttribute('aria-expanded') === 'false');
-    });
-  };
-
-  // header 를 주지 않으면 상단 제목 영역이 렌더되지 않습니다.
-  // 과정명은 아래 섹션 제목에 이미 있어서 중복이라 두지 않습니다.
-  return (
-    <SideNavigation
-      activeHref={`#${activeItemId}`}
-      items={items}
-      onFollow={handleFollow}
-      onChange={handleChange}
-    />
-  );
+  return <SideNavigation activeHref={`#${activeItemId}`} items={items} onFollow={handleFollow} />;
 }
