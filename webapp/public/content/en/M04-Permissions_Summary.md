@@ -19,7 +19,7 @@
 >
 > - 🆕 Material the class did not cover, added after verifying it against official AWS documentation.
 > - 🔄 Material that has changed since the class and has been corrected here. See [Section 8](#8-changes-from-the-courseware) for what changed and how.
-> - Example access key IDs have **characters 5-8 masked with `#`**, as in `AKIA####ODNN7EXAMPLE`, to keep credential scanners from mistaking them for real keys. The four-character prefixes (`AKIA`, `ASIA`) are kept because the distinction is part of the material.
+> - Example access key IDs and secret keys have **characters 5-8 masked with `#`**, as in `AKIA####ODNN7EXAMPLE` and `wJal####nFEMI/...`, to keep credential scanners from mistaking them for real keys. The four-character prefixes (`AKIA`, `ASIA`) are kept because the distinction is part of the material.
 > - Verified on: August 25, 2026. Documentation may change after this date, so check the linked sources before relying on this for exams or production work.
 
 ---
@@ -733,7 +733,7 @@ aws sts assume-role \
 # 4) Export the Credentials values from the response as environment variables.
 #    The temporary access key ID starts with ASIA.
 export AWS_ACCESS_KEY_ID=ASIA####ODNN7EXAMPLE
-export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+export AWS_SECRET_ACCESS_KEY=wJal####nFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 export AWS_SESSION_TOKEN=<SessionToken>
 
 # 5) Confirm the role was assumed
@@ -842,7 +842,7 @@ The basic procedure is as follows.
 ```bash
 $ aws configure
 AWS Access Key ID [None]: AKIA####ODNN7EXAMPLE
-AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+AWS Secret Access Key [None]: wJal####nFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 Default region name [None]: us-west-2
 Default output format [None]: json
 

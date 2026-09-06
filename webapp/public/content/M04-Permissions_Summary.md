@@ -19,7 +19,7 @@
 >
 > - 🆕 강의에서 다루지 않은 내용. AWS 공식 문서로 확인해 더한 항목입니다.
 > - 🔄 강의 당시와 달라져 교정한 항목입니다. 무엇이 어떻게 달라졌는지는 [8장](#8-교재-대비-변경-사항)에 모아 두었습니다.
-> - 예시 액세스 키 ID 는 `AKIA####ODNN7EXAMPLE` 처럼 **5~8번째 글자를 `#` 로 가렸습니다.** 자격 증명 스캐너가 실제 키로 오인하는 것을 막기 위한 것입니다. 접두사 4자(`AKIA`·`ASIA`)는 구분이 학습 내용이므로 그대로 두었습니다.
+> - 예시 액세스 키 ID 와 시크릿 키 는 `AKIA####ODNN7EXAMPLE`, `wJal####nFEMI/...` 처럼 **5~8번째 글자를 `#` 로 가렸습니다.** 자격 증명 스캐너가 실제 키로 오인하는 것을 막기 위한 것입니다. 접두사 4자(`AKIA`·`ASIA`)는 구분이 학습 내용이므로 그대로 두었습니다.
 > - 검증일: 2026년 8월 25일. 이후 문서가 갱신될 수 있으니 시험·실무 적용 전에는 링크된 원문을 확인하세요.
 
 ---
@@ -733,7 +733,7 @@ aws sts assume-role \
 # 4) 응답의 Credentials 값을 환경 변수로 내보냅니다.
 #    임시 액세스 키 ID 는 ASIA 로 시작합니다.
 export AWS_ACCESS_KEY_ID=ASIA####ODNN7EXAMPLE
-export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+export AWS_SECRET_ACCESS_KEY=wJal####nFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 export AWS_SESSION_TOKEN=<SessionToken>
 
 # 5) 역할을 수임했는지 확인
@@ -842,7 +842,7 @@ aws s3 mb s3://devonawstest-bucket
 ```bash
 $ aws configure
 AWS Access Key ID [None]: AKIA####ODNN7EXAMPLE
-AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+AWS Secret Access Key [None]: wJal####nFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 Default region name [None]: us-west-2
 Default output format [None]: json
 
