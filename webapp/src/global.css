@@ -28,6 +28,16 @@ body {
   z-index: 1002;
 }
 
+/*
+ * 네비게이션 패널 닫기(<) 버튼을 트리 제목("Developing on AWS")과 같은 라인에
+ * 맞춥니다. AppLayout 이 이 버튼을 제목보다 약간 아래에 두어 라인이 어긋나므로
+ * 위로 올려 제목 텍스트의 세로 중심에 맞춥니다. 클래스 해시는 버전마다 바뀔 수
+ * 있어 부분 매칭으로 잡습니다.
+ */
+[class*='awsui_navigation-close'] {
+  transform: translateY(-15px);
+}
+
 /* ── 하단 면책 문구 ── */
 
 .app-footer {
