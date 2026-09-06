@@ -53,6 +53,9 @@ const strings = {
     // 지정합니다. 한국어는 지정된 문구가 없어 본문에서 쓰던 "목차" 를 씁니다.
     outlineHeading: '목차',
     outlineLabel: '이 문서의 목차',
+    // 트리(과정 목차) 제목. 시리즈명 전체는 상단 바·breadcrumb 에 이미 있어
+    // 중복이고 축소 버튼과 겹치므로, 짧은 제목으로 둡니다.
+    treeHeading: '과정 목차',
     footer:
       '이 자료는 AWS T&C 공식 교육 자료가 아닙니다. 강사가 🤖 Kiro로 빌드한 보조 자료이며, ' +
       '원본 강사용 덱을 AWS 공식 문서로 검증·최신화한 결과입니다. 일부 오류가 있을 수 있으므로 ' +
@@ -85,6 +88,7 @@ const strings = {
     diagramZoomClose: 'Close expanded view',
     outlineHeading: 'On this page',
     outlineLabel: 'On this page',
+    treeHeading: 'Course contents',
     footer:
       'This is not official AWS T&C training material. It is a supplementary resource built by ' +
       'the instructor with 🤖 Kiro, produced by verifying and updating the original instructor ' +

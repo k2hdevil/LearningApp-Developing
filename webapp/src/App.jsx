@@ -217,7 +217,7 @@ export default function App() {
                 <Icon name={treeCollapsed ? 'caret-right-filled' : 'caret-down-filled'} />
               </span>
               <Box variant="h3" padding="n" margin="n" color="text-body-secondary">
-                {nodeTitle(navigationTree[0], locale)}
+                {text.treeHeading}
               </Box>
             </button>
             <div className="doa-nav-tree">

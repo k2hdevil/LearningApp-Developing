@@ -34,6 +34,9 @@
   overflow-y: auto;
   /* 스크롤바가 항목 텍스트에 붙지 않게 띄웁니다. */
   padding-inline-end: 2px;
+  /* SideNavigation 루트가 트리 컨테이너 안에서 약 16px 아래에서 시작해 제목과
+     첫 모듈 사이가 벌어집니다. 위로 조금 당겨 모듈 간 간격 수준으로 좁힙니다. */
+  margin-block-start: -8px;
 }
 
 /* 모듈별 목차를 접어도 트리 비율은 그대로 둡니다(트리를 늘리지 않음).
@@ -53,9 +56,10 @@
   cursor: pointer;
   text-align: start;
   /* 왼쪽 8px 은 목차 토글·SideNavigation 링크와 같은 기준선입니다.
-     아래쪽에 약간의 간격을 둬 트리 리스트와 붙지 않게 합니다. */
-  padding-inline: 8px 0;
-  padding-block: 4px 8px;
+     오른쪽은 패널 닫기(<) 버튼 영역(약 44px)을 비워 제목 클릭 영역이 그 버튼과
+     겹치지 않게 합니다. 아래·위 여백은 최소로 두어 첫 모듈과의 간격을 줄입니다. */
+  padding-inline: 8px 44px;
+  padding-block: 2px;
   flex: none;
   /* caret 과 제목의 세로 중앙을 맞춥니다. Box h3 의 기본 마진을 없앴으므로
      두 요소 높이가 비슷해 가운데 정렬이 어긋나지 않습니다. */
