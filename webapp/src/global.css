@@ -35,7 +35,7 @@ body {
  * 있어 부분 매칭으로 잡습니다.
  */
 [class*='awsui_navigation-close'] {
-  transform: translateY(-15px);
+  transform: translateY(-8px);
 }
 
 /* ── 하단 면책 문구 ── */
