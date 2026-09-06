@@ -24,9 +24,10 @@
  * 좁은 화면 처리는 따로 하지 않습니다. AppLayout 이 내비게이션 패널 전체를
  * 접어 주므로 목차도 함께 접힙니다.
  */
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import AnchorNavigation from '@cloudscape-design/components/anchor-navigation';
 import Box from '@cloudscape-design/components/box';
+import Icon from '@cloudscape-design/components/icon';
 import './PageOutline.css';
 
 /**
@@ -44,6 +45,8 @@ function scrollBehavior() {
 
 export default function PageOutline({ anchors, heading, ariaLabel }) {
   const headingId = useId();
+  // 모듈별 목차도 모듈 트리처럼 접었다 펼 수 있게 합니다. 기본은 펼침입니다.
+  const [expanded, setExpanded] = useState(true);
 
   if (!anchors?.length) return null;
 
@@ -66,9 +69,25 @@ export default function PageOutline({ anchors, heading, ariaLabel }) {
   };
 
   return (
-    <nav className="doa-outline" aria-label={ariaLabel}>
-      {/* 들여쓰기는 CSS 에서 다룹니다. Box 는 타이포그래피와 색만 맡습니다. */}
-      <div className="doa-outline-heading">
+    <nav
+      className={`doa-outline${expanded ? '' : ' doa-outline--collapsed'}`}
+      aria-label={ariaLabel}
+    >
+      {/*
+        제목 전체를 접기/펴기 버튼으로 만듭니다. 삼각형 아이콘은 모듈 트리
+        (SideNavigation 섹션)의 caret 과 같은 모양이라 두 목록의 접기 동작이
+        시각적으로 일관됩니다. 들여쓰기는 CSS 에서 다룹니다.
+      */}
+      <button
+        type="button"
+        className="doa-outline-toggle"
+        aria-expanded={expanded}
+        aria-controls={`${headingId}-list`}
+        onClick={() => setExpanded((v) => !v)}
+      >
+        <span className="doa-outline-caret" aria-hidden="true">
+          <Icon name={expanded ? 'caret-down-filled' : 'caret-right-filled'} />
+        </span>
         <Box
           id={headingId}
           variant="h3"
@@ -77,13 +96,17 @@ export default function PageOutline({ anchors, heading, ariaLabel }) {
         >
           {heading}
         </Box>
-      </div>
-      <AnchorNavigation
-        anchors={anchors}
-        ariaLabelledby={headingId}
-        scrollSpyOffset={STICKY_HEADER_OFFSET}
-        onFollow={handleFollow}
-      />
+      </button>
+      {expanded ? (
+        <div id={`${headingId}-list`}>
+          <AnchorNavigation
+            anchors={anchors}
+            ariaLabelledby={headingId}
+            scrollSpyOffset={STICKY_HEADER_OFFSET}
+            onFollow={handleFollow}
+          />
+        </div>
+      ) : null}
     </nav>
   );
 }
