@@ -59,6 +59,8 @@ export default function App() {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // 모듈 트리(과정 목차)가 접혔는지. 접히면 아래 목차를 위로 끌어올립니다.
+  const [treeCollapsed, setTreeCollapsed] = useState(false);
 
   const activeNode = useMemo(() => findNode(navigationTree, activeItemId), [activeItemId]);
 
@@ -197,14 +199,18 @@ export default function App() {
           navigationToggle: text.navigationToggle,
         }}
         navigation={
-          <div className="doa-nav">
+          <div className={`doa-nav${treeCollapsed ? ' doa-nav--tree-collapsed' : ''}`}>
             {/*
-              모듈 트리에 높이 상한을 둡니다. 모듈이 16개라 상한이 없으면 트리가
-              패널을 거의 다 차지하고 아래의 목차가 화면 밖으로 밀립니다.
-              두 블록이 각각 스크롤됩니다.
+              모듈 트리와 목차를 6:4 로 나눕니다(PageOutline.css). 트리를 접으면
+              treeCollapsed 가 켜져 트리 래퍼가 제 높이만 쓰고, 아래 목차가 위로
+              올라옵니다.
             */}
             <div className="doa-nav-tree">
-              <TreeNavigation activeItemId={activeItemId} onNavigate={handleNavigate} />
+              <TreeNavigation
+                activeItemId={activeItemId}
+                onNavigate={handleNavigate}
+                onTreeCollapsedChange={setTreeCollapsed}
+              />
             </div>
             {/* 열려 있는 모듈의 목차. 콘텐츠를 불러오는 중이거나 실패했으면 두지 않습니다. */}
             {!loading && !error ? (
